@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "compatibilityLevel": "JAVA_8",
+  "package": "org.progreso.client.mixin.mixins",
+  "refmap": "mixins.progreso.refmap.json",
+  "mixins": [
+    "MixinMinecraft",
+    "MixinNetworkManager",
+    "MixinPlayerControllerMP",
+    "accessors.IEntity"
+  ]
+}

@@ -1,0 +1,17 @@
+[
+  {
+    "modid": "progreso",
+    "name": "Progreso Client",
+    "description": "",
+    "version": "0.1",
+    "mcversion": "1.12.2",
+    "logoFile": "",
+    "url": "https://github.com/ya-ilya/progreso",
+    "updateUrl": "https://github.com/ya-ilya/progreso",
+    "authorList": [
+      "ya-ilya"
+    ],
+    "screenshots": [],
+    "dependencies": []
+  }
+]

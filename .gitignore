@@ -1,0 +1,29 @@
+# Idea
+out
+*.ipr
+*.iws
+*.iml
+.idea/*
+
+!.idea/inspectionProfiles
+!.idea/codeStyles
+!.idea/misc.xml
+
+# Eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
+
+# Gradle
+build
+.gradle
+
+# Minecraft
+progreso-client/run
+
+# Progreso
+progreso-api/progreso
+progreso-todo

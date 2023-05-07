@@ -1,0 +1,47 @@
+package org.progreso.client.gui.component.components
+
+import org.progreso.client.gui.component.AbstractComponent
+import org.progreso.client.gui.component.ChildComponent
+
+open class ListComponent(
+    height: Int,
+    parent: AbstractComponent
+) : ChildComponent(height, parent) {
+    protected val listComponents = mutableListOf<AbstractComponent>()
+    protected var opened = false
+
+    var header: AbstractComponent? = null
+        set(value) {
+            if (field != null) {
+                components.removeAt(0)
+            }
+
+            field = value
+
+            if (value != null) {
+                components.add(0, value)
+            }
+        }
+
+    init {
+        renderRect = false
+    }
+
+    override var height = 0; get() = visibleComponents.sumOf { it.height }
+
+    override fun mouseClicked(mouseX: Int, mouseY: Int, mouseButton: Int) {
+        super.mouseClicked(mouseX, mouseY, mouseButton)
+
+        if (header?.isHover(mouseX, mouseY) == true) {
+            if (mouseButton == 1) {
+                if (opened) {
+                    components.removeIf { listComponents.contains(it) }
+                } else {
+                    components.addAll(listComponents)
+                }
+
+                opened = !opened
+            }
+        }
+    }
+}
