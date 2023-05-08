@@ -23,6 +23,7 @@ class ModuleComponent(
                 is NumberSetting<*> -> SliderComponent(this, height, parent)
                 is GroupSetting -> GroupComponent(this, height, parent)
                 is ColorSetting -> ColorComponent(this, height, parent)
+                is StringSetting -> StringComponent(this, height, parent)
                 else -> throw RuntimeException("Unknown setting type")
             }
         }

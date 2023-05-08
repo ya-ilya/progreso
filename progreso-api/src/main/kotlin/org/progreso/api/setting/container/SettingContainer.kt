@@ -48,6 +48,12 @@ interface SettingContainer {
         visibility: () -> Boolean = { true }
     ) where T : Number, T : Comparable<T> = setting(NumberSetting(name, initialValue, range, visibility))
 
+    fun setting(
+        name: String,
+        initialValue: String,
+        visibility: () -> Boolean = { true }
+    ) = setting(StringSetting(name, initialValue, visibility))
+
     fun <T : AbstractSetting<V>, V> setting(setting: T): T =
         setting.also {
             settings.add(it)
