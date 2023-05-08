@@ -7,15 +7,15 @@ import org.progreso.api.Api
 import org.progreso.api.config.AbstractConfigHelper
 import org.progreso.api.managers.ConfigManager
 
-class ConfigHelperArgument : ArgumentType<String> {
+class ConfigHelperArgumentType : ArgumentType<String> {
     companion object {
-        fun create() = ConfigHelperArgument()
+        fun create() = ConfigHelperArgumentType()
 
-        fun get(context: CommandContext<*>): AbstractConfigHelper<*> {
+        fun get(context: CommandContext<*>): AbstractConfigHelper<*>? {
             val helperName = context.getArgument("helper", String::class.java)
             val helper = ConfigManager.getOrNull(helperName)
             if (helper == null) Api.CHAT.send("Helper $helperName not found")
-            return helper!!
+            return helper
         }
     }
 

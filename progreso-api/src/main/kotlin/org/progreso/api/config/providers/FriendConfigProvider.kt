@@ -8,12 +8,12 @@ object FriendConfigProvider : AbstractConfigProvider<FriendConfig>() {
     override fun create(name: String): FriendConfig {
         return FriendConfig(
             name,
-            FriendManager.friends
+            FriendManager.friends.map { it.name }
         )
     }
 
     override fun apply(config: FriendConfig) {
         FriendManager.friends.clear()
-        FriendManager.friends.addAll(config.friends)
+        FriendManager.friends.addAll(config.friends.map { FriendManager.Friend(it) })
     }
 }
