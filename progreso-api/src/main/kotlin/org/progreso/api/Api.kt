@@ -5,10 +5,7 @@ import com.google.gson.GsonBuilder
 import org.progreso.api.accessor.ChatAccessor
 import org.progreso.api.accessor.EventAccessor
 import org.progreso.api.accessor.LoggerAccessor
-import org.progreso.api.managers.CommandManager
-import org.progreso.api.managers.ConfigManager
-import org.progreso.api.managers.FriendManager
-import org.progreso.api.managers.ModuleManager
+import org.progreso.api.managers.*
 import kotlin.properties.Delegates
 
 object Api {
@@ -39,10 +36,20 @@ object Api {
         FriendManager
         ConfigManager
 
+        logger.info("Initializing plugins...")
+        for (plugin in PluginManager) {
+            plugin.initializePlugin()
+        }
+
         logger.info("Adding shutdown hook...")
         Runtime.getRuntime().addShutdownHook(Thread {
             LOGGER.info("Unloading managers...")
             ConfigManager.save()
+
+            LOGGER.info("Uninitializing plugins...")
+            for (plugin in PluginManager) {
+                plugin.uninitializePlugin()
+            }
 
             initialized = false
         })

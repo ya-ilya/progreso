@@ -25,7 +25,7 @@ object CommandManager : CommandContainer {
                     Api.CHAT.send("§cInvalid syntax")
                 }
             } catch (ex: CommandSyntaxException) {
-                Api.CHAT.send("§cInvalid syntax")
+                Api.CHAT.send("§cInvalid syntax (see error in logs)")
                 ex.printStackTrace()
             } catch (ex: Exception) {
                 Api.CHAT.send("§cCommand not found")

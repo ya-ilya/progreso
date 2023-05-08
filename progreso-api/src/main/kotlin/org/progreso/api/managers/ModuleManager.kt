@@ -8,10 +8,10 @@ object ModuleManager : ModuleContainer {
     override val modules = mutableListOf<AbstractModule>()
 
     fun onKey(key: Int) {
-        modules.filter { it.bind.value == key }.forEach { it.toggle() }
+        (modules + PluginManager.modules).filter { it.bind.value == key }.forEach { it.toggle() }
     }
 
     operator fun get(category: Category): List<AbstractModule> {
-        return modules.filter { it.category == category }
+        return (modules + PluginManager.modules).filter { it.category == category }
     }
 }
