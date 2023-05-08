@@ -3,17 +3,18 @@ package org.progreso.client.command.commands
 import com.mojang.brigadier.Command.SINGLE_SUCCESS
 import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
+import org.progreso.api.command.arguments.ConfigHelperArgument
 import org.progreso.api.managers.ConfigManager
 import org.progreso.client.command.Command
 
 class ConfigCommand : Command("config") {
     override fun build(builder: LiteralArgumentBuilder<Any>) {
-        builder.then(argument("helper", StringArgumentType.string())
+        builder.then(argument("helper", ConfigHelperArgument.create())
             .then(
                 literal("load").then(
                     argument("config", StringArgumentType.string()).executes { context ->
+                        val helper = ConfigHelperArgument.get(context)
                         val config = StringArgumentType.getString(context, "config")
-                        val helper = ConfigManager[StringArgumentType.getString(context, "helper")]
 
                         try {
                             helper.load(config)
@@ -32,7 +33,7 @@ class ConfigCommand : Command("config") {
                 literal("save").then(
                     argument("config", StringArgumentType.string()).executes { context ->
                         val config = StringArgumentType.getString(context, "config")
-                        val helper = ConfigManager[StringArgumentType.getString(context, "helper")]
+                        val helper = ConfigHelperArgument.get(context)
 
                         try {
                             helper.save(config)
@@ -46,7 +47,7 @@ class ConfigCommand : Command("config") {
                         return@executes SINGLE_SUCCESS
                     }
                 ).executes { context ->
-                    val helper = ConfigManager[StringArgumentType.getString(context, "helper")]
+                    val helper = ConfigHelperArgument.get(context)
                     helper.save()
 
                     send("Saved ${helper.name} configs")
@@ -57,7 +58,7 @@ class ConfigCommand : Command("config") {
             .then(
                 literal("refresh").then(
                     argument("config", StringArgumentType.string()).executes { context ->
-                        val helper = ConfigManager[StringArgumentType.getString(context, "helper")]
+                        val helper = ConfigHelperArgument.get(context)
                         helper.refresh()
 
                         send("Refreshed ${helper.name}")
@@ -68,7 +69,7 @@ class ConfigCommand : Command("config") {
             )
             .then(
                 literal("list").executes { context ->
-                    val helper = ConfigManager[StringArgumentType.getString(context, "helper")]
+                    val helper = ConfigHelperArgument.get(context)
 
                     send("Configs in ${helper.name}: ${helper.configs.map { it.name }}")
 
