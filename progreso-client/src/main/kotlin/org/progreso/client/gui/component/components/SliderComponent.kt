@@ -60,7 +60,7 @@ class SliderComponent(
             setting.setNumberValue(
                 String.format(
                     "%.1f",
-                    setting.min.toDouble() + ((setting.max.toDouble() - setting.min.toDouble()) * (sliderWidth.toFloat() / sliderMaxWidth))
+                    setting.min.toDouble() + (setting.max.toDouble() - setting.min.toDouble()) * (sliderWidth.toFloat() / sliderMaxWidth)
                 ).toDouble()
             )
 

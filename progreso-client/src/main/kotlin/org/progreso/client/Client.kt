@@ -21,9 +21,12 @@ class Client {
         const val MOD_ID = "progreso"
         const val MOD_NAME = "Progreso Client"
 
-        @JvmField val LOGGER = LogManager.getLogger("progreso")!!
-        @JvmField val EVENT_BUS = EventBus()
-        @JvmField val CLICK_GUI: ClickGUI = ClickGUI()
+        @JvmField
+        val LOGGER = LogManager.getLogger("progreso")!!
+        @JvmField
+        val EVENT_BUS = EventBus()
+        @JvmField
+        val CLICK_GUI: ClickGUI = ClickGUI()
 
         @JvmStatic
         fun initialize() {

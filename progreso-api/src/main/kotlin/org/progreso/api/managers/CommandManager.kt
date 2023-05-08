@@ -1,21 +1,36 @@
 package org.progreso.api.managers
 
+import com.mojang.brigadier.Command.SINGLE_SUCCESS
+import com.mojang.brigadier.CommandDispatcher
+import com.mojang.brigadier.exceptions.CommandSyntaxException
 import org.progreso.api.Api
 import org.progreso.api.command.AbstractCommand
 import org.progreso.api.command.container.CommandContainer
 
 object CommandManager : CommandContainer {
-    const val PREFIX = "."
+    private const val PREFIX = "."
+    private val DISPATCHER = CommandDispatcher<Any>()
 
     override val commands = mutableListOf<AbstractCommand>()
 
-    fun onChat(message: String): Boolean {
-        val args = message.split(" ")
+    override fun add(command: AbstractCommand) {
+        command.register(DISPATCHER)
+        super.add(command)
+    }
 
-        if (args[0].startsWith(PREFIX)) {
-            val commandName = args[0].removePrefix(PREFIX)
-            commands.firstOrNull { it.name == commandName }?.execute(args.drop(1))
-                ?: Api.CHAT.send("§cCommand not found.")
+    fun onChat(message: String): Boolean {
+        if (message.startsWith(PREFIX)) {
+            try {
+                if (DISPATCHER.execute(message.removePrefix(PREFIX), Any()) != SINGLE_SUCCESS) {
+                    Api.CHAT.send("§cInvalid syntax")
+                }
+            } catch (ex: CommandSyntaxException) {
+                Api.CHAT.send("§cInvalid syntax")
+                ex.printStackTrace()
+            } catch (ex: Exception) {
+                Api.CHAT.send("§cCommand not found")
+                ex.printStackTrace()
+            }
 
             Api.CHAT.addToSentMessages(message)
             return true

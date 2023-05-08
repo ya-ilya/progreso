@@ -1,57 +1,87 @@
 package org.progreso.client.command.commands
 
+import com.mojang.brigadier.Command.SINGLE_SUCCESS
+import com.mojang.brigadier.arguments.StringArgumentType
+import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import org.progreso.api.managers.ConfigManager
 import org.progreso.client.command.Command
 
 class ConfigCommand : Command("config") {
-    private companion object {
-        val helperNames get() = ConfigManager.helpers.map { it.key.name }
-    }
+    override fun build(builder: LiteralArgumentBuilder<Any>) {
+        builder.then(argument("helper", StringArgumentType.string())
+            .then(
+                literal("load").then(
+                    argument("config", StringArgumentType.string()).executes { context ->
+                        val config = StringArgumentType.getString(context, "config")
+                        val helper = ConfigManager[StringArgumentType.getString(context, "helper")]
 
-    override fun execute(args: List<String>) {
-        if (args.isEmpty()) {
-            return send("Not enough arguments. Correct usage - config <${helperNames.joinToString("/")}> <load/save/list> [name]")
-        }
+                        try {
+                            helper.load(config)
+                        } catch (ex: Exception) {
+                            send("Config $config not found")
+                            return@executes SINGLE_SUCCESS
+                        }
 
-        val helperName = args[0].lowercase()
+                        send("Loaded ${ConfigManager[helper]} config")
 
-        if (helperName !in helperNames) {
-            return send("Unknown argument type - ${helperName}. Excepted ${helperNames.joinToString("/")}")
-        }
+                        return@executes SINGLE_SUCCESS
+                    }
+                )
+            )
+            .then(
+                literal("save").then(
+                    argument("config", StringArgumentType.string()).executes { context ->
+                        val config = StringArgumentType.getString(context, "config")
+                        val helper = ConfigManager[StringArgumentType.getString(context, "helper")]
 
-        val helper = ConfigManager[helperName]
+                        try {
+                            helper.save(config)
+                        } catch (ex: Exception) {
+                            send("Config $config not found")
+                            return@executes SINGLE_SUCCESS
+                        }
 
-        if (args.size == 1) {
-            return send("Current config: ${ConfigManager[helper]}")
-        }
+                        send("Saved ${ConfigManager[helper]} config")
 
-        when (args[1].lowercase()) {
-            "load" -> {
-                if (args.size < 3) {
-                    return send("Not enough arguments. Correct usage - config $helperName load [name]")
-                }
-
-                helper.load(args[2])
-                send("Config loaded")
-            }
-
-            "save" -> {
-                if (args.size < 3) {
+                        return@executes SINGLE_SUCCESS
+                    }
+                ).executes { context ->
+                    val helper = ConfigManager[StringArgumentType.getString(context, "helper")]
                     helper.save()
-                } else {
-                    helper.save(args[2])
+
+                    send("Saved ${helper.name} configs")
+
+                    return@executes SINGLE_SUCCESS
                 }
+            )
+            .then(
+                literal("refresh").then(
+                    argument("config", StringArgumentType.string()).executes { context ->
+                        val helper = ConfigManager[StringArgumentType.getString(context, "helper")]
+                        helper.refresh()
 
-                send("Config saved")
-            }
+                        send("Refreshed ${helper.name}")
 
-            "list" -> {
-                send("Configs: ${helper.configs.joinToString { it.name }}")
-            }
+                        return@executes SINGLE_SUCCESS
+                    }
+                )
+            )
+            .then(
+                literal("list").executes { context ->
+                    val helper = ConfigManager[StringArgumentType.getString(context, "helper")]
 
-            else -> {
-                send("Unknown argument type - ${args[1]}. Expected load/save/list")
+                    send("Configs in ${helper.name}: ${helper.configs.map { it.name }}")
+
+                    return@executes SINGLE_SUCCESS
+                }
+            )
+            .executes { context ->
+                val helper = ConfigManager[StringArgumentType.getString(context, "helper")]
+
+                send("Current ${helper.name} config: ${ConfigManager[helper]}")
+
+                return@executes SINGLE_SUCCESS
             }
-        }
+        )
     }
 }

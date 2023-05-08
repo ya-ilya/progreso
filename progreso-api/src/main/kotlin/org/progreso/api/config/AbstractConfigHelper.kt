@@ -49,8 +49,8 @@ abstract class AbstractConfigHelper<T : AbstractConfig>(
         checkCurrent()
         checkDirectory()
 
-        configs.first { it.name == name }.also { config ->
-            var currentConfig = config
+        configs.firstOrNull { it.name == name }.also { config ->
+            var currentConfig = config ?: provider.create(name)
 
             if (currentConfig.name.equals(container[this], true)) {
                 configs.remove(currentConfig)

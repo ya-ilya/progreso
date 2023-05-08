@@ -1,52 +1,47 @@
 package org.progreso.client.command.commands
 
+import com.mojang.brigadier.Command.SINGLE_SUCCESS
+import com.mojang.brigadier.arguments.StringArgumentType
+import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import org.progreso.api.managers.FriendManager
 import org.progreso.client.command.Command
 
 class FriendCommand : Command("friend") {
-    override fun execute(args: List<String>) {
-        if (args.isEmpty()) {
-            return send("Not enough arguments. Correct usage - friend <add/del/list> [name]")
-        }
+    override fun build(builder: LiteralArgumentBuilder<Any>) {
+        builder.then(literal("add").then(
+            argument("player", StringArgumentType.string()).executes { context ->
+                val player = StringArgumentType.getString(context, "player")
 
-        when (args[0].lowercase()) {
-            "add" -> {
-                if (args.size < 2) {
-                    return send("Not enough arguments. Correct usage - friend add [name]")
-                }
-
-                val name = args[1]
-
-                if (FriendManager.isFriend(name)) {
+                if (FriendManager.isFriend(player)) {
                     send("$name already your friend")
                 } else {
-                    FriendManager.friends.add(name)
+                    FriendManager.friends.add(player)
                     send("$name now is your friend")
                 }
+
+                return@executes SINGLE_SUCCESS
             }
+        ))
 
-            "del" -> {
-                if (args.size < 2) {
-                    return send("Not enough arguments. Correct usage - friend del [name]")
-                }
+        builder.then(literal("add").then(
+            argument("player", StringArgumentType.string()).executes { context ->
+                val player = StringArgumentType.getString(context, "player")
 
-                val name = args[1]
-
-                if (FriendManager.isFriend(name)) {
-                    FriendManager.friends.remove(name)
-                    send("$name now isn't your friend")
+                if (FriendManager.isFriend(player)) {
+                    FriendManager.friends.remove(player)
+                    send("$player now isn't your friend")
                 } else {
-                    send("$name isn't your friend")
+                    send("$player isn't your friend")
                 }
-            }
 
-            "list" -> {
-                send("Friends: ${FriendManager.friends.joinToString()}")
+                return@executes SINGLE_SUCCESS
             }
+        ))
 
-            else -> {
-                send("Unknown argument type - ${args[0]}. Expected add/del/list")
-            }
-        }
+        builder.then(literal("list").executes {
+            send("Friends: ${FriendManager.friends.joinToString()}")
+
+            return@executes SINGLE_SUCCESS
+        })
     }
 }

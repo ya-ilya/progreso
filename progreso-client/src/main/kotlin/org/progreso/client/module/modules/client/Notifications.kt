@@ -2,10 +2,9 @@ package org.progreso.client.module.modules.client
 
 import com.mojang.realmsclient.gui.ChatFormatting
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraftforge.event.entity.living.LivingDeathEvent
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import org.progreso.api.Api
 import org.progreso.client.events.client.ModuleEvent
+import org.progreso.client.events.entity.EntityDeathEvent
 import org.progreso.client.events.player.TotemPopEvent
 import org.progreso.client.manager.managers.minecraft.CombatManager
 import org.progreso.client.module.Category
@@ -31,15 +30,14 @@ class Notifications : Module("Notifications", Category.Client) {
                 Api.CHAT.send("[Notifications] ${event.player.name} has popped ${event.count} totems")
             }
         }
-    }
 
-    @SubscribeEvent
-    fun onLivingDeath(event: LivingDeathEvent) {
-        if (!pops) return
-        if (event.entity is EntityPlayer) {
-            val pops = CombatManager[event.entity as EntityPlayer] ?: return
+        safeEventListener<EntityDeathEvent> { event ->
+            if (!pops) return@safeEventListener
+            if (event.entity is EntityPlayer) {
+                val pops = CombatManager[event.entity] ?: return@safeEventListener
 
-            Api.CHAT.send("[Notifications] ${event.entity.name} died after popping $pops totems")
+                Api.CHAT.send("[Notifications] ${event.entity.name} died after popping $pops totems")
+            }
         }
     }
 }
