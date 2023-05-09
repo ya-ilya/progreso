@@ -11,7 +11,7 @@ object ModuleManager : ModuleContainer {
         (modules + PluginManager.modules).filter { it.bind.value == key }.forEach { it.toggle() }
     }
 
-    operator fun get(category: Category): List<AbstractModule> {
+    fun getModulesByCategory(category: Category): List<AbstractModule> {
         return (modules + PluginManager.modules).filter { it.category == category }
     }
 }

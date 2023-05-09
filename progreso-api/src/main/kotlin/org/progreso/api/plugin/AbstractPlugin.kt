@@ -1,5 +1,7 @@
 package org.progreso.api.plugin
 
+import org.progreso.api.command.AbstractCommand
+import org.progreso.api.command.container.CommandContainer
 import org.progreso.api.config.helpers.ModuleConfigHelper
 import org.progreso.api.config.providers.ModuleConfigProvider
 import org.progreso.api.managers.PluginManager
@@ -22,8 +24,9 @@ abstract class AbstractPlugin(
     val author: String,
     val description: String? = null,
     val mixinConfigs: Array<String> = arrayOf()
-) : ModuleContainer {
+) : ModuleContainer, CommandContainer {
     override val modules = mutableListOf<AbstractModule>()
+    override val commands = mutableListOf<AbstractCommand>()
 
     private val configHelper = ModuleConfigHelper(
         name = "plugin",
@@ -34,7 +37,7 @@ abstract class AbstractPlugin(
     )
 
     init {
-        PluginManager.configContainer[configHelper] = name
+        PluginManager.configContainer.setHelperConfig(configHelper, name)
     }
 
     abstract fun initialize()
@@ -45,9 +48,8 @@ abstract class AbstractPlugin(
 
         configHelper.load(name)
 
-        for (module in modules) {
-            PluginManager.modules.add(module)
-        }
+        PluginManager.modules.addAll(modules)
+        PluginManager.commands.addAll(commands)
     }
 
     fun uninitializePlugin() {
@@ -55,8 +57,7 @@ abstract class AbstractPlugin(
 
         configHelper.save(name)
 
-        for (module in modules) {
-            PluginManager.modules.remove(module)
-        }
+        PluginManager.modules.removeAll(modules)
+        PluginManager.commands.removeAll(commands)
     }
 }

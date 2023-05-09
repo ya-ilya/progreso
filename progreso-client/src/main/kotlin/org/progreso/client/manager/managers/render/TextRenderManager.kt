@@ -1,16 +1,13 @@
 package org.progreso.client.manager.managers.render
 
-import org.progreso.api.managers.ModuleManager
+import org.progreso.client.gui.ClickGUI
 import org.progreso.client.manager.Manager
-import org.progreso.client.module.modules.client.ClickGUI
 import org.progreso.client.util.font.CustomFontRenderer
 import java.awt.Color
 import java.awt.Font
 
 object TextRenderManager : Manager() {
-    private val CLICK_GUI = ModuleManager[ClickGUI::class]
-
-    private val isCustomFont get() = CLICK_GUI.customFont
+    private val isCustomFont get() = ClickGUI.MODULE.customFont
     private val customFontRenderer = CustomFontRenderer(
         createFont("assets/progreso/font/Barlow-Medium.ttf", 14f)!!,
         antiAlias = true,

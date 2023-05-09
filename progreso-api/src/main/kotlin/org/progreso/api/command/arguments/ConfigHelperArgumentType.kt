@@ -13,7 +13,7 @@ class ConfigHelperArgumentType : ArgumentType<String> {
 
         fun get(context: CommandContext<*>): AbstractConfigHelper<*>? {
             val helperName = context.getArgument("helper", String::class.java)
-            val helper = ConfigManager.getOrNull(helperName)
+            val helper = ConfigManager.getHelperByNameOrNull(helperName)
             if (helper == null) Api.CHAT.send("Helper $helperName not found")
             return helper
         }

@@ -23,8 +23,10 @@ class Client {
 
         @JvmField
         val LOGGER = LogManager.getLogger("progreso")!!
+
         @JvmField
         val EVENT_BUS = EventBus()
+
         @JvmField
         val CLICK_GUI: ClickGUI = ClickGUI()
 
@@ -33,7 +35,7 @@ class Client {
             LOGGER.info("Initializing client modules...")
             for (clazz in Reflections("org.progreso.client.module.modules").getSubTypesOf(AbstractModule::class.java)) {
                 try {
-                    ModuleManager.add(clazz.newInstance())
+                    ModuleManager.addModule(clazz.newInstance())
                 } catch (ex: Exception) {
                     // Ignored
                 }
@@ -42,7 +44,7 @@ class Client {
             LOGGER.info("Initializing client commands...")
             for (clazz in Reflections("org.progreso.client.command.commands").getSubTypesOf(AbstractCommand::class.java)) {
                 try {
-                    CommandManager.add(clazz.newInstance())
+                    CommandManager.addCommand(clazz.newInstance())
                 } catch (ex: Exception) {
                     // Ignored
                 }

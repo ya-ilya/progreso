@@ -13,9 +13,9 @@ object CommandManager : CommandContainer {
 
     override val commands = mutableListOf<AbstractCommand>()
 
-    override fun add(command: AbstractCommand) {
+    override fun addCommand(command: AbstractCommand) {
         command.register(DISPATCHER)
-        super.add(command)
+        super.addCommand(command)
     }
 
     fun onChat(message: String): Boolean {

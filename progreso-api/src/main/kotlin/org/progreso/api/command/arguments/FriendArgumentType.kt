@@ -12,7 +12,7 @@ class FriendArgumentType : ArgumentType<String> {
 
         fun get(context: CommandContext<*>): FriendManager.Friend? {
             val friendName = context.getArgument("friend", String::class.java)
-            val friend = FriendManager.getOrNull(friendName)
+            val friend = FriendManager.getFriendByNameOrNull(friendName)
             if (friend == null) Api.CHAT.send("Friend $friendName not found")
             return friend
         }

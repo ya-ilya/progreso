@@ -22,7 +22,7 @@ class ModuleConfigProvider(private val container: ModuleContainer) : AbstractCon
         }
 
         for (moduleData in config.modules) {
-            val module = container[moduleData.name]
+            val module = container.getModuleByName(moduleData.name)
             module.enabled = moduleData.enabled
             moduleData.settings.removeIf { setting ->
                 !module.settings.any { it.name == setting.name }

@@ -11,8 +11,8 @@ import org.progreso.client.module.Module
 
 @Suppress("SpellCheckingInspection")
 class Criticals : Module("Criticals", Category.Combat) {
-    companion object {
-        private val KILL_AURA = ModuleManager[KillAura::class]
+    private companion object {
+        val KILL_AURA = ModuleManager.getModuleByClass(KillAura::class)
     }
 
     private val onlyKillAura by setting("OnlyKillAura", false)

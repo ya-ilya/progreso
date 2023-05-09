@@ -52,7 +52,7 @@ abstract class AbstractConfigHelper<T : AbstractConfig>(
         configs.firstOrNull { it.name == name }.also { config ->
             var currentConfig = config ?: provider.create(name)
 
-            if (currentConfig.name.equals(container[this], true)) {
+            if (currentConfig.name.equals(container.getHelperConfig(this), true)) {
                 configs.remove(currentConfig)
 
                 provider.create(name).also {
@@ -64,7 +64,7 @@ abstract class AbstractConfigHelper<T : AbstractConfig>(
             writeConfig(name, currentConfig)
 
             if (setCurrent) {
-                container[this] = currentConfig.name
+                container.setHelperConfig(this, currentConfig.name)
             }
         }
     }
@@ -78,7 +78,7 @@ abstract class AbstractConfigHelper<T : AbstractConfig>(
 
         configs.first { it.name == name }.also { config ->
             provider.apply(config)
-            container[this] = name
+            container.setHelperConfig(this, name)
         }
     }
 
@@ -109,7 +109,7 @@ abstract class AbstractConfigHelper<T : AbstractConfig>(
     }
 
     private fun checkCurrent() {
-        val current = container[this]!!
+        val current = container.getHelperConfig(this)!!
         if (!configs.any { it.name == current }) {
             configs.add(provider.create(current))
         }

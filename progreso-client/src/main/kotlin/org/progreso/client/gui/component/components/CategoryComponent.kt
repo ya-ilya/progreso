@@ -15,7 +15,7 @@ class CategoryComponent(
 ) : ListComponent(height, parent) {
     init {
         listComponents.addAll(
-            ModuleManager[category].sortedBy { it.name }.map {
+            ModuleManager.getModulesByCategory(category).sortedBy { it.name }.map {
                 ModuleComponent(
                     it,
                     ClickGUI.COMPONENT_HEIGHT,

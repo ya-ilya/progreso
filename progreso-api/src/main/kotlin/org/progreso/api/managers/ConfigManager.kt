@@ -25,7 +25,7 @@ object ConfigManager : AbstractConfigHelperContainer {
 
     fun load() {
         for ((key, value) in GSON.fromJson<Map<String, String>>(checkConfigs().readText(), Map::class.java)) {
-            this[key].load(value, true)
+            getHelperByName(key).load(value, true)
         }
     }
 

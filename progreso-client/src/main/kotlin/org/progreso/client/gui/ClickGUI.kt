@@ -15,7 +15,7 @@ open class ClickGUI : GuiScreen() {
         const val COMPONENT_WIDTH = 90
 
         val DEFAULT_RECT_COLOR = Color(0, 0, 0, 130)
-        val MODULE by lazy { ModuleManager[ClickGUI::class] }
+        val MODULE by lazy { ModuleManager.getModuleByClass(ClickGUI::class) }
     }
 
     private var components = mutableListOf<AbstractComponent>()

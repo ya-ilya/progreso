@@ -7,25 +7,20 @@ import kotlin.reflect.KClass
  * Interface for module containers
  *
  * Current implementations: ModuleManager
- * TODO implementations: AbstractPlugin
  */
 interface ModuleContainer {
     val modules: MutableList<AbstractModule>
 
-    fun add(module: AbstractModule) {
+    fun addModule(module: AbstractModule) {
         modules.add(module)
     }
 
-    operator fun get(value: String): AbstractModule {
-        return modules.first { it.name == value }
+    fun getModuleByName(name: String): AbstractModule {
+        return modules.first { it.name == name }
     }
 
     @Suppress("UNCHECKED_CAST")
-    operator fun <T : AbstractModule> get(clazz: KClass<T>): T {
+    fun <T : AbstractModule> getModuleByClass(clazz: KClass<T>): T {
         return modules.first { it::class == clazz } as T
-    }
-
-    operator fun iterator(): Iterator<AbstractModule> {
-        return modules.iterator()
     }
 }

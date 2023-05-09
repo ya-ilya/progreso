@@ -3,11 +3,11 @@ package org.progreso.api.managers
 object FriendManager {
     val friends = mutableListOf<Friend>()
 
-    fun add(name: String) {
+    fun addFriendByName(name: String) {
         friends.add(Friend(name))
     }
 
-    fun remove(name: String) {
+    fun removeFriendByName(name: String) {
         friends.removeIf { it.name == name }
     }
 
@@ -15,11 +15,11 @@ object FriendManager {
         return friends.any { it.name == name }
     }
 
-    operator fun get(name: String): Friend {
-        return getOrNull(name)!!
+    fun getFriendByName(name: String): Friend {
+        return getFriendByNameOrNull(name)!!
     }
 
-    fun getOrNull(name: String): Friend? {
+    fun getFriendByNameOrNull(name: String): Friend? {
         return friends.firstOrNull { it.name == name }
     }
 

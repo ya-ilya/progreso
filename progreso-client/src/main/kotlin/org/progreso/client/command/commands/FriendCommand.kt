@@ -16,7 +16,7 @@ class FriendCommand : Command("friend") {
                 if (FriendManager.isFriend(player)) {
                     send("$player already your friend")
                 } else {
-                    FriendManager.add(player)
+                    FriendManager.addFriendByName(player)
                     send("$player now is your friend")
                 }
 
@@ -28,7 +28,7 @@ class FriendCommand : Command("friend") {
             argument("friend", FriendArgumentType.create()).executes { context ->
                 val friend = FriendArgumentType.get(context) ?: return@executes SINGLE_SUCCESS
 
-                FriendManager.remove(friend.name)
+                FriendManager.removeFriendByName(friend.name)
                 send("${friend.name} now isn't your friend")
 
                 return@executes SINGLE_SUCCESS

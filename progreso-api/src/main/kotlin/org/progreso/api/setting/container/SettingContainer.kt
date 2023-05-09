@@ -59,8 +59,4 @@ interface SettingContainer {
             settings.add(it)
             it.valueChanged(setting.initialValue, setting.initialValue)
         }
-
-    operator fun iterator(): Iterator<AbstractSetting<*>> {
-        return settings.iterator()
-    }
 }

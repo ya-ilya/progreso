@@ -23,7 +23,7 @@ class ConfigCommand : Command("config") {
                             return@executes SINGLE_SUCCESS
                         }
 
-                        send("Loaded ${ConfigManager[helper]} config")
+                        send("Loaded ${ConfigManager.getHelperConfig(helper)} config")
 
                         return@executes SINGLE_SUCCESS
                     }
@@ -42,7 +42,7 @@ class ConfigCommand : Command("config") {
                             return@executes SINGLE_SUCCESS
                         }
 
-                        send("Saved ${ConfigManager[helper]} config")
+                        send("Saved ${ConfigManager.getHelperConfig(helper)} config")
 
                         return@executes SINGLE_SUCCESS
                     }
@@ -87,7 +87,7 @@ class ConfigCommand : Command("config") {
             .executes { context ->
                 val helper = ConfigHelperArgumentType.get(context) ?: return@executes SINGLE_SUCCESS
 
-                send("Current ${helper.name} config: ${ConfigManager[helper]}")
+                send("Current ${helper.name} config: ${ConfigManager.getHelperConfig(helper)}")
 
                 return@executes SINGLE_SUCCESS
             }

@@ -1,5 +1,6 @@
 package org.progreso.api.managers
 
+import org.progreso.api.command.AbstractCommand
 import org.progreso.api.config.AbstractConfigHelper
 import org.progreso.api.config.container.AbstractConfigHelperContainer
 import org.progreso.api.module.AbstractModule
@@ -10,11 +11,12 @@ object PluginManager {
     private val plugins = mutableListOf<AbstractPlugin>()
 
     val modules = mutableListOf<AbstractModule>()
+    val commands = mutableListOf<AbstractCommand>()
 
     val configContainer = object : AbstractConfigHelperContainer {
         override val helpers = mutableMapOf<AbstractConfigHelper<*>, String>()
 
-        override fun get(name: String): AbstractConfigHelper<*> {
+        override fun getHelperByName(name: String): AbstractConfigHelper<*> {
             throw OperationNotSupportedException()
         }
     }
