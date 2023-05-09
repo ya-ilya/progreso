@@ -4,7 +4,7 @@ import org.progreso.client.Client
 import org.progreso.client.module.Category
 import org.progreso.client.module.Module
 
-class HudClickGUI : Module("HudClickGUI", Category.Client) {
+class HudEditor : Module("HudEditor", Category.Client) {
     init {
         onEnable {
             mc.displayGuiScreen(Client.HUD_EDITOR)

@@ -1,6 +1,7 @@
 package org.progreso.api.module
 
 import org.progreso.api.Api
+import org.progreso.api.event.events.ModuleEvent
 import org.progreso.api.setting.AbstractSetting
 import org.progreso.api.setting.container.SettingContainer
 import org.progreso.api.setting.settings.BooleanSetting
@@ -24,11 +25,14 @@ abstract class AbstractModule(
 
     var enabled by object : BooleanSetting("Enabled", false) {
         override fun valueChanged(oldValue: Boolean, newValue: Boolean) {
+            if (oldValue == newValue) return
             if (newValue) {
                 Api.EVENT.register(this@AbstractModule)
+                Api.API_EVENT_BUS.post(ModuleEvent(this@AbstractModule))
                 onEnable()
             } else {
                 Api.EVENT.unregister(this@AbstractModule)
+                Api.API_EVENT_BUS.post(ModuleEvent(this@AbstractModule))
                 onDisable()
             }
         }

@@ -5,8 +5,6 @@ import kotlin.reflect.KClass
 
 /**
  * Interface for command containers
- *
- * Current implementations: CommandManager
  */
 interface CommandContainer {
     val commands: MutableList<AbstractCommand>

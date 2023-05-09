@@ -12,7 +12,7 @@ object ModuleManager : ModuleContainer {
     }
 
     fun getModulesByCategory(category: Category, vararg exclude: AbstractModule): List<AbstractModule> {
-        return (modules + PluginManager.modules)
+        return modules
             .filter { it.category == category }
             .filter { it !in exclude }
     }

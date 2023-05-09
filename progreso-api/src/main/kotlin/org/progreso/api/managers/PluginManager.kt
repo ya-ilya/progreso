@@ -5,10 +5,11 @@ import org.progreso.api.config.AbstractConfigHelper
 import org.progreso.api.config.container.AbstractConfigHelperContainer
 import org.progreso.api.module.AbstractModule
 import org.progreso.api.plugin.AbstractPlugin
+import org.progreso.api.plugin.container.PluginContainer
 import javax.naming.OperationNotSupportedException
 
-object PluginManager {
-    private val plugins = mutableListOf<AbstractPlugin>()
+object PluginManager : PluginContainer {
+    override val plugins = mutableListOf<AbstractPlugin>()
 
     val modules = mutableListOf<AbstractModule>()
     val commands = mutableListOf<AbstractCommand>()
@@ -19,17 +20,5 @@ object PluginManager {
         override fun getHelperByName(name: String): AbstractConfigHelper<*> {
             throw OperationNotSupportedException()
         }
-    }
-
-    fun add(plugin: AbstractPlugin) {
-        plugins.add(plugin)
-    }
-
-    operator fun get(name: String): AbstractPlugin {
-        return plugins.first { it.name == name }
-    }
-
-    operator fun iterator(): Iterator<AbstractPlugin> {
-        return plugins.iterator()
     }
 }

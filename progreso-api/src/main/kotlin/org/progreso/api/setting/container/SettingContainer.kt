@@ -6,8 +6,6 @@ import java.awt.Color
 
 /**
  * Interface for setting container
- *
- * Current implementations: AbstractModule
  */
 interface SettingContainer {
     val settings: MutableList<AbstractSetting<*>>

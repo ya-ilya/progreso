@@ -79,7 +79,7 @@ class ConfigCommand : Command("config") {
                 literal("list").executes { context ->
                     val helper = ConfigHelperArgumentType.get(context) ?: return@executes SINGLE_SUCCESS
 
-                    send("Configs in ${helper.name}: ${helper.configs.map { it.name }}")
+                    send("Configs in ${helper.name}: ${helper.configs.joinToString { it.name }}")
 
                     return@executes SINGLE_SUCCESS
                 }

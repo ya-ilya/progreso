@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder
 import org.progreso.api.accessor.ChatAccessor
 import org.progreso.api.accessor.EventAccessor
 import org.progreso.api.accessor.LoggerAccessor
+import org.progreso.api.event.EventBus
 import org.progreso.api.managers.*
 import kotlin.properties.Delegates
 
@@ -14,6 +15,8 @@ object Api {
     var EVENT by Delegates.notNull<EventAccessor>()
     var CHAT by Delegates.notNull<ChatAccessor>()
     var LOGGER by Delegates.notNull<LoggerAccessor>()
+
+    var API_EVENT_BUS = EventBus()
 
     @JvmStatic
     val GSON: Gson = GsonBuilder()
@@ -37,7 +40,7 @@ object Api {
         ConfigManager
 
         logger.info("Initializing plugins...")
-        for (plugin in PluginManager) {
+        for (plugin in PluginManager.plugins) {
             plugin.initializePlugin()
         }
 
@@ -47,8 +50,9 @@ object Api {
             ConfigManager.save()
 
             LOGGER.info("Uninitializing plugins...")
-            for (plugin in PluginManager) {
+            for (plugin in PluginManager.plugins.toList()) {
                 plugin.uninitializePlugin()
+                PluginManager.plugins.remove(plugin)
             }
 
             initialized = false

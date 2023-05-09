@@ -10,11 +10,13 @@ import org.progreso.client.util.Render2DUtil.drawStringRelatively
 import java.awt.Color
 
 class ModuleComponent(
-    module: AbstractModule,
+    private val module: AbstractModule,
     height: Int,
     parent: AbstractComponent
 ) : ListComponent(height, parent) {
     companion object {
+        val MODULE_COMPONENTS = mutableMapOf<AbstractModule, ModuleComponent>()
+
         fun AbstractSetting<*>.createComponent(height: Int, parent: AbstractComponent): AbstractComponent {
             return when (this) {
                 is BindSetting -> BindComponent(this, height, parent)
@@ -39,7 +41,6 @@ class ModuleComponent(
                 super.drawComponent(mouseX, mouseY, partialTicks)
 
                 if (module.enabled) {
-                    //drawRoundedRect(x + 1, y + 1, width - 2, height - 2, 5, theme)
                     drawStringRelatively(
                         module.name,
                         4,
@@ -62,6 +63,8 @@ class ModuleComponent(
                 }
             }
         }
+
+        MODULE_COMPONENTS[module] = this
     }
 
     override fun drawComponent(mouseX: Int, mouseY: Int, partialTicks: Float) {

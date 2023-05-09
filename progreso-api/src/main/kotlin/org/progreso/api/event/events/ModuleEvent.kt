@@ -1,4 +1,4 @@
-package org.progreso.client.events.client
+package org.progreso.api.event.events
 
 import org.progreso.api.event.Event
 import org.progreso.api.module.AbstractModule

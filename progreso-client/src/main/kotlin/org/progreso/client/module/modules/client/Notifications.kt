@@ -3,7 +3,7 @@ package org.progreso.client.module.modules.client
 import com.mojang.realmsclient.gui.ChatFormatting
 import net.minecraft.entity.player.EntityPlayer
 import org.progreso.api.Api
-import org.progreso.client.events.client.ModuleEvent
+import org.progreso.api.event.events.ModuleEvent
 import org.progreso.client.events.entity.EntityDeathEvent
 import org.progreso.client.events.player.TotemPopEvent
 import org.progreso.client.events.safeEventListener
@@ -18,7 +18,7 @@ class Notifications : Module("Notifications", Category.Client) {
     init {
         safeEventListener<ModuleEvent> { event ->
             if (!modules) return@safeEventListener
-            if (event.module is ClickGUI || event.module is Notifications) return@safeEventListener
+            if (event.module is ClickGUI || event.module is HudEditor || event.module is Notifications) return@safeEventListener
 
             Api.CHAT.send("[Notifications] ${if (event.module.enabled) ChatFormatting.GREEN else ChatFormatting.RED}${event.module.name}")
         }

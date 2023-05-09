@@ -4,8 +4,6 @@ import net.minecraft.client.Minecraft
 import net.minecraftforge.client.event.RenderGameOverlayEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import org.progreso.api.module.AbstractHudModule
-import org.progreso.client.Client
-import org.progreso.client.events.client.ModuleEvent
 import org.progreso.client.gui.ClickGUI
 import org.progreso.client.gui.HudEditor
 import org.progreso.client.util.Render2DUtil.drawRect
@@ -28,17 +26,5 @@ abstract class HudModule(
         }
 
         render()
-    }
-
-    override fun onEnable() {
-        if (Client.EVENT_BUS.post(ModuleEvent(this))) {
-            return
-        }
-    }
-
-    override fun onDisable() {
-        if (Client.EVENT_BUS.post(ModuleEvent(this))) {
-            return
-        }
     }
 }

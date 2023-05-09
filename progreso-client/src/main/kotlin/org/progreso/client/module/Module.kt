@@ -2,8 +2,6 @@ package org.progreso.client.module
 
 import net.minecraft.client.Minecraft
 import org.progreso.api.module.AbstractModule
-import org.progreso.client.Client
-import org.progreso.client.events.client.ModuleEvent
 
 abstract class Module(
     name: String,
@@ -20,18 +18,10 @@ abstract class Module(
     }
 
     override fun onEnable() {
-        if (Client.EVENT_BUS.post(ModuleEvent(this))) {
-            return
-        }
-
         enableBlock.invoke()
     }
 
     override fun onDisable() {
-        if (Client.EVENT_BUS.post(ModuleEvent(this))) {
-            return
-        }
-
         disableBlock.invoke()
     }
 

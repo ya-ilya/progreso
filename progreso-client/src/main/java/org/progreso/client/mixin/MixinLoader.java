@@ -43,7 +43,7 @@ public class MixinLoader implements IFMLLoadingPlugin {
                     Mixins.addConfiguration(mixinConfig);
                 }
 
-                PluginManager.INSTANCE.add(plugin);
+                PluginManager.INSTANCE.addPlugin(plugin);
             }
         }
     }

@@ -5,8 +5,6 @@ import kotlin.reflect.KClass
 
 /**
  * Interface for module containers
- *
- * Current implementations: ModuleManager
  */
 interface ModuleContainer {
     val modules: MutableList<AbstractModule>

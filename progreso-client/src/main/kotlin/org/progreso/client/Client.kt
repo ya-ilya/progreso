@@ -4,7 +4,6 @@ import net.minecraftforge.fml.common.Mod
 import org.apache.logging.log4j.LogManager
 import org.progreso.api.Api
 import org.progreso.api.command.AbstractCommand
-import org.progreso.api.event.EventBus
 import org.progreso.api.managers.CommandManager
 import org.progreso.api.managers.ModuleManager
 import org.progreso.api.module.AbstractModule
@@ -26,7 +25,7 @@ class Client {
         val LOGGER = LogManager.getLogger("progreso")!!
 
         @JvmField
-        val EVENT_BUS = EventBus()
+        val EVENT_BUS = Api.API_EVENT_BUS
 
         @JvmField
         val CLICK_GUI = ClickGUI()
@@ -54,14 +53,14 @@ class Client {
                 }
             }
 
+            LOGGER.info("Initializing client guis...")
+            CLICK_GUI.initialize()
+            HUD_EDITOR.initialize()
+
             Api.initialize(EventAccessor, ChatAccessor, LoggerAccessor)
 
             LOGGER.info("Initializing client managers...")
             Managers.initialize()
-
-            LOGGER.info("Initializing client guis...")
-            CLICK_GUI.initialize()
-            HUD_EDITOR.initialize()
         }
     }
 }
