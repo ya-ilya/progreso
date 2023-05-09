@@ -5,6 +5,7 @@ import net.minecraft.init.Enchantments
 import net.minecraft.item.ItemStack
 import net.minecraft.util.math.BlockPos
 import org.progreso.client.events.block.DamageBlockEvent
+import org.progreso.client.events.safeEventListener
 import org.progreso.client.module.Category
 import org.progreso.client.module.Module
 import org.progreso.client.util.InventoryUtil

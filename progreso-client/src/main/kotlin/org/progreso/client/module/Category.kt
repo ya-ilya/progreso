@@ -8,5 +8,6 @@ enum class Category : Category {
     Movement,
     Render,
     Misc,
-    Client
+    Client,
+    Hud
 }

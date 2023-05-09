@@ -12,6 +12,7 @@ import org.progreso.client.accessors.ChatAccessor
 import org.progreso.client.accessors.EventAccessor
 import org.progreso.client.accessors.LoggerAccessor
 import org.progreso.client.gui.ClickGUI
+import org.progreso.client.gui.HudEditor
 import org.progreso.client.manager.Managers
 import org.reflections.Reflections
 
@@ -28,7 +29,10 @@ class Client {
         val EVENT_BUS = EventBus()
 
         @JvmField
-        val CLICK_GUI: ClickGUI = ClickGUI()
+        val CLICK_GUI = ClickGUI()
+
+        @JvmField
+        val HUD_EDITOR = HudEditor()
 
         @JvmStatic
         fun initialize() {
@@ -55,8 +59,9 @@ class Client {
             LOGGER.info("Initializing client managers...")
             Managers.initialize()
 
-            LOGGER.info("Initializing client ClickGUI...")
+            LOGGER.info("Initializing client guis...")
             CLICK_GUI.initialize()
+            HUD_EDITOR.initialize()
         }
     }
 }

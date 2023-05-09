@@ -18,12 +18,12 @@ open class ClickGUI : GuiScreen() {
         val MODULE by lazy { ModuleManager.getModuleByClass(ClickGUI::class) }
     }
 
-    private var components = mutableListOf<AbstractComponent>()
+    protected var components = mutableListOf<AbstractComponent>()
 
-    fun initialize() {
+    open fun initialize() {
         var x = 10
 
-        for (category in Category.values()) {
+        for (category in Category.values().filter { it != Category.Hud }) {
             components.add(Window(x, 10, COMPONENT_WIDTH).apply {
                 x += COMPONENT_WIDTH + 10
 

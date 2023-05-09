@@ -4,6 +4,7 @@ import net.minecraft.entity.EntityLiving
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.item.ItemSword
 import org.progreso.client.events.misc.TickEvent
+import org.progreso.client.events.safeEventListener
 import org.progreso.client.module.Category
 import org.progreso.client.module.Module
 import org.progreso.client.util.EntityUtil.EntityType

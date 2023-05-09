@@ -4,6 +4,7 @@ import net.minecraft.entity.EntityLivingBase
 import net.minecraft.network.play.client.CPacketPlayer
 import net.minecraft.network.play.client.CPacketUseEntity
 import org.progreso.api.managers.ModuleManager
+import org.progreso.client.events.eventListener
 import org.progreso.client.events.network.PacketEvent
 import org.progreso.client.mixin.mixins.accessors.IEntity
 import org.progreso.client.module.Category

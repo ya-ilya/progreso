@@ -1,45 +1,44 @@
 package org.progreso.client.module
 
 import net.minecraft.client.Minecraft
-import org.progreso.api.module.AbstractModule
+import net.minecraftforge.client.event.RenderGameOverlayEvent
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
+import org.progreso.api.module.AbstractHudModule
 import org.progreso.client.Client
 import org.progreso.client.events.client.ModuleEvent
+import org.progreso.client.gui.ClickGUI
+import org.progreso.client.gui.HudEditor
+import org.progreso.client.util.Render2DUtil.drawRect
 
-abstract class Module(
+abstract class HudModule(
     name: String,
     description: String,
     category: Category
-) : AbstractModule(name, description, category) {
-    private var enableBlock: () -> Unit = { }
-    private var disableBlock: () -> Unit = { }
-
+) : AbstractHudModule(name, description, category) {
     constructor(name: String, category: Category) : this(name, "", category)
 
     protected companion object {
         val mc: Minecraft = Minecraft.getMinecraft()
     }
 
+    @SubscribeEvent
+    fun onRender(event: RenderGameOverlayEvent.Text) {
+        if (mc.currentScreen is HudEditor) {
+            drawRect(x, y, width, height, ClickGUI.DEFAULT_RECT_COLOR)
+        }
+
+        render()
+    }
+
     override fun onEnable() {
         if (Client.EVENT_BUS.post(ModuleEvent(this))) {
             return
         }
-
-        enableBlock.invoke()
     }
 
     override fun onDisable() {
         if (Client.EVENT_BUS.post(ModuleEvent(this))) {
             return
         }
-
-        disableBlock.invoke()
-    }
-
-    protected fun onEnable(block: () -> Unit) {
-        enableBlock = block
-    }
-
-    protected fun onDisable(block: () -> Unit) {
-        disableBlock = block
     }
 }

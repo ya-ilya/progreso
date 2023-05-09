@@ -11,7 +11,9 @@ object ModuleManager : ModuleContainer {
         (modules + PluginManager.modules).filter { it.bind.value == key }.forEach { it.toggle() }
     }
 
-    fun getModulesByCategory(category: Category): List<AbstractModule> {
-        return (modules + PluginManager.modules).filter { it.category == category }
+    fun getModulesByCategory(category: Category, vararg exclude: AbstractModule): List<AbstractModule> {
+        return (modules + PluginManager.modules)
+            .filter { it.category == category }
+            .filter { it !in exclude }
     }
 }

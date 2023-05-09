@@ -6,6 +6,7 @@ import org.progreso.api.Api
 import org.progreso.client.events.client.ModuleEvent
 import org.progreso.client.events.entity.EntityDeathEvent
 import org.progreso.client.events.player.TotemPopEvent
+import org.progreso.client.events.safeEventListener
 import org.progreso.client.manager.managers.minecraft.CombatManager
 import org.progreso.client.module.Category
 import org.progreso.client.module.Module
