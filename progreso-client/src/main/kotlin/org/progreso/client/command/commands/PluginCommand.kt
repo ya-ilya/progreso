@@ -1,6 +1,5 @@
 package org.progreso.client.command.commands
 
-import com.mojang.brigadier.Command.SINGLE_SUCCESS
 import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import com.mojang.realmsclient.gui.ChatFormatting
@@ -12,7 +11,7 @@ import org.progreso.client.command.Command
 class PluginCommand : Command("plugin") {
     override fun build(builder: LiteralArgumentBuilder<Any>) {
         builder.then(literal("load").then(
-            argument("path", StringArgumentType.string()).executes { context ->
+            argument("path", StringArgumentType.string()).executesSuccess { context ->
                 val path = StringArgumentType.getString(context, "path")
 
                 try {
@@ -25,26 +24,26 @@ class PluginCommand : Command("plugin") {
                     ex.printStackTrace()
                 }
 
-                return@executes SINGLE_SUCCESS
+                return@executesSuccess
             }
         ))
 
         builder.then(literal("unload").then(
-            argument("plugin", PluginArgumentType.create()).executes { context ->
-                val plugin = PluginArgumentType.get(context) ?: return@executes SINGLE_SUCCESS
+            argument("plugin", PluginArgumentType.create()).executesSuccess { context ->
+                val plugin = PluginArgumentType.get(context) ?: return@executesSuccess
 
                 plugin.uninitializePlugin()
                 PluginManager.plugins.remove(plugin)
 
                 send("Unloaded ${plugin.name} plugin")
 
-                return@executes SINGLE_SUCCESS
+                return@executesSuccess
             }
         ))
 
         builder.then(literal("info").then(
-            argument("plugin", PluginArgumentType.create()).executes { context ->
-                val plugin = PluginArgumentType.get(context) ?: return@executes SINGLE_SUCCESS
+            argument("plugin", PluginArgumentType.create()).executesSuccess { context ->
+                val plugin = PluginArgumentType.get(context) ?: return@executesSuccess
 
                 send("--------")
                 send("Name: ${plugin.name}")
@@ -55,14 +54,14 @@ class PluginCommand : Command("plugin") {
                     send("Description: ${plugin.description}")
                 }
 
-                return@executes SINGLE_SUCCESS
+                return@executesSuccess
             }
         ))
 
-        builder.then(literal("list").executes { _ ->
+        builder.then(literal("list").executesSuccess { _ ->
             send("Plugins: ${PluginManager.plugins.joinToString { it.name }}")
 
-            return@executes SINGLE_SUCCESS
+            return@executesSuccess
         })
     }
 }

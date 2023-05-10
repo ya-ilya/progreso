@@ -1,9 +1,12 @@
 package org.progreso.api.command
 
+import com.mojang.brigadier.Command.SINGLE_SUCCESS
 import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.arguments.ArgumentType
+import com.mojang.brigadier.builder.ArgumentBuilder
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import com.mojang.brigadier.builder.RequiredArgumentBuilder
+import com.mojang.brigadier.context.CommandContext
 import org.progreso.api.Api
 
 /**
@@ -26,13 +29,23 @@ abstract class AbstractCommand(
         dispatcher.root.children.removeIf { it.name == name }
     }
 
-    protected fun literal(name: String): LiteralArgumentBuilder<Any> {
-        return LiteralArgumentBuilder.literal(name)!!
-    }
+    protected companion object {
+        fun literal(name: String): LiteralArgumentBuilder<Any> {
+            return LiteralArgumentBuilder.literal(name)!!
+        }
 
-    protected fun <T> argument(name: String, type: ArgumentType<T>): RequiredArgumentBuilder<Any, T> {
-        return RequiredArgumentBuilder.argument(name, type)
-    }
+        fun <T> argument(name: String, type: ArgumentType<T>): RequiredArgumentBuilder<Any, T> {
+            return RequiredArgumentBuilder.argument(name, type)
+        }
 
-    protected fun send(message: String) = Api.CHAT.send(message)
+        fun <S, T : ArgumentBuilder<S, T>> T.executesSuccess(block: (CommandContext<S>) -> Unit): T {
+            this.executes {
+                block(it)
+                return@executes SINGLE_SUCCESS
+            }
+            return this
+        }
+
+        fun send(message: String) = Api.CHAT.send(message)
+    }
 }
