@@ -1,7 +1,7 @@
 package org.progreso.api.managers
 
 object FriendManager {
-    val friends = mutableListOf<Friend>()
+    val friends = mutableSetOf<Friend>()
 
     fun addFriendByName(name: String) {
         friends.add(Friend(name))

@@ -22,6 +22,10 @@ abstract class AbstractCommand(
         dispatcher.register(literal(name).also { build(it) })
     }
 
+    fun unregister(dispatcher: CommandDispatcher<Any>) {
+        dispatcher.root.children.removeIf { it.name == name }
+    }
+
     protected fun literal(name: String): LiteralArgumentBuilder<Any> {
         return LiteralArgumentBuilder.literal(name)!!
     }

@@ -5,7 +5,7 @@ import org.progreso.api.module.Category
 import org.progreso.api.module.container.ModuleContainer
 
 object ModuleManager : ModuleContainer {
-    override val modules = mutableListOf<AbstractModule>()
+    override val modules = mutableSetOf<AbstractModule>()
 
     fun onKey(key: Int) {
         (modules + PluginManager.modules).filter { it.bind.value == key }.forEach { it.toggle() }

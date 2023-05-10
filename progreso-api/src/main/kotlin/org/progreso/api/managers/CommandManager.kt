@@ -11,11 +11,16 @@ object CommandManager : CommandContainer {
     private const val PREFIX = "."
     private val DISPATCHER = CommandDispatcher<Any>()
 
-    override val commands = mutableListOf<AbstractCommand>()
+    override val commands = mutableSetOf<AbstractCommand>()
 
     override fun addCommand(command: AbstractCommand) {
         command.register(DISPATCHER)
         super.addCommand(command)
+    }
+
+    fun removeCommand(command: AbstractCommand) {
+        command.unregister(DISPATCHER)
+        commands.remove(command)
     }
 
     fun onChat(message: String): Boolean {

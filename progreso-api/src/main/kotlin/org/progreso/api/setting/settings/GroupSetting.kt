@@ -6,13 +6,13 @@ import org.progreso.api.setting.container.SettingContainer
 open class GroupSetting(
     name: String,
     visibility: () -> Boolean
-) : AbstractSetting<List<AbstractSetting<*>>>(name, emptyList(), visibility), SettingContainer {
-    override val settings = mutableListOf<AbstractSetting<*>>()
+) : AbstractSetting<Set<AbstractSetting<*>>>(name, emptySet(), visibility), SettingContainer {
+    override val settings = mutableSetOf<AbstractSetting<*>>()
 
-    override var value: List<AbstractSetting<*>>
+    override var value: Set<AbstractSetting<*>>
         get() = settings
         set(value) {
-            val oldValue = settings.toList()
+            val oldValue = settings.toSet()
             settings.clear()
             settings.addAll(value)
             valueChanged(oldValue, settings)

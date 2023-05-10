@@ -7,7 +7,7 @@ import kotlin.reflect.KClass
  * Interface for plugin containers
  */
 interface PluginContainer {
-    val plugins: MutableList<AbstractPlugin>
+    val plugins: MutableSet<AbstractPlugin>
 
     fun addPlugin(plugin: AbstractPlugin) {
         if (getPluginByNameOrNull(plugin.name) != null) {

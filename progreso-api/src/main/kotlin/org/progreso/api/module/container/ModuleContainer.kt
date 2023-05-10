@@ -7,7 +7,7 @@ import kotlin.reflect.KClass
  * Interface for module containers
  */
 interface ModuleContainer {
-    val modules: MutableList<AbstractModule>
+    val modules: MutableSet<AbstractModule>
 
     fun addModule(module: AbstractModule) {
         modules.add(module)

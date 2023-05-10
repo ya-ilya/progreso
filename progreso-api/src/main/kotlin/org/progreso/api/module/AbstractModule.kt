@@ -18,7 +18,7 @@ abstract class AbstractModule(
     val description: String,
     val category: Category
 ) : SettingContainer {
-    override val settings = mutableListOf<AbstractSetting<*>>()
+    override val settings = mutableSetOf<AbstractSetting<*>>()
 
     @Suppress("LeakingThis")
     val bind = setting("Bind", 0)

@@ -27,8 +27,8 @@ abstract class AbstractPlugin(
     val description: String? = null,
     val mixinConfigs: Array<String> = arrayOf()
 ) : ModuleContainer, CommandContainer {
-    override val modules = mutableListOf<AbstractModule>()
-    override val commands = mutableListOf<AbstractCommand>()
+    override val modules = mutableSetOf<AbstractModule>()
+    override val commands = mutableSetOf<AbstractCommand>()
 
     private val configHelper = ModuleConfigHelper(
         name = "plugin",

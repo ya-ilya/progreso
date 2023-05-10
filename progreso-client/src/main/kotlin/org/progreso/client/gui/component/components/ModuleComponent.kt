@@ -10,7 +10,7 @@ import org.progreso.client.util.Render2DUtil.drawStringRelatively
 import java.awt.Color
 
 class ModuleComponent(
-    private val module: AbstractModule,
+    module: AbstractModule,
     height: Int,
     parent: AbstractComponent
 ) : ListComponent(height, parent) {

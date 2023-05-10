@@ -7,7 +7,7 @@ import kotlin.reflect.KClass
  * Interface for command containers
  */
 interface CommandContainer {
-    val commands: MutableList<AbstractCommand>
+    val commands: MutableSet<AbstractCommand>
 
     fun addCommand(command: AbstractCommand) {
         commands.add(command)

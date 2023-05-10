@@ -8,7 +8,7 @@ import java.awt.Color
  * Interface for setting container
  */
 interface SettingContainer {
-    val settings: MutableList<AbstractSetting<*>>
+    val settings: MutableSet<AbstractSetting<*>>
 
     fun setting(
         name: String,
