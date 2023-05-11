@@ -7,9 +7,8 @@ open class ListComponent(
     height: Int,
     parent: AbstractComponent
 ) : ChildComponent(height, parent) {
-    protected var opened = false
-
-    val listComponents = mutableListOf<AbstractComponent>()
+    val listComponents = mutableSetOf<AbstractComponent>()
+    var opened = false
 
     var header: AbstractComponent? = null
         set(value) {

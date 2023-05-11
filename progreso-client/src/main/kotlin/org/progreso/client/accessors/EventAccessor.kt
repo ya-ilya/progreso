@@ -41,17 +41,17 @@ object EventAccessor : EventAccessor {
         if (event.loaded) {
             for (module in event.plugin.modules) {
                 CategoryComponent.CATEGORY_COMPONENTS[module.category]?.apply {
-                    components.removeIf { listComponents.contains(it) }
+                    if (opened) components.removeIf { listComponents.contains(it) }
                     listComponents.add(ModuleComponent(module, ClickGUI.COMPONENT_HEIGHT, this))
-                    components.addAll(listComponents)
+                    if (opened) components.addAll(listComponents)
                 }
             }
         } else {
             for (module in event.plugin.modules) {
                 CategoryComponent.CATEGORY_COMPONENTS[module.category]?.apply {
-                    components.removeIf { listComponents.contains(it) }
+                    if (opened) components.removeIf { listComponents.contains(it) }
                     listComponents.remove(ModuleComponent.MODULE_COMPONENTS.remove(module) ?: return)
-                    components.addAll(listComponents)
+                    if (opened) components.addAll(listComponents)
                 }
             }
         }
