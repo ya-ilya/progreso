@@ -1,16 +1,16 @@
 package org.progreso.client.command.commands
 
-import com.mojang.brigadier.arguments.StringArgumentType
-import com.mojang.brigadier.builder.LiteralArgumentBuilder
-import org.progreso.api.command.arguments.FriendArgumentType
+import org.progreso.api.command.argument.arguments.FriendArgumentType
+import org.progreso.api.command.argument.arguments.StringArgumentType.Companion.string
+import org.progreso.api.command.argument.ArgumentBuilder
 import org.progreso.api.managers.FriendManager
 import org.progreso.client.command.Command
 
 class FriendCommand : Command("friend") {
-    override fun build(builder: LiteralArgumentBuilder<Any>) {
-        builder.then(literal("add").then(
-            argument("player", StringArgumentType.string()).executesSuccess { context ->
-                val player = StringArgumentType.getString(context, "player")
+    override fun build(builder: ArgumentBuilder) {
+        builder.literal("add") {
+            argument("player", string()).executes { context ->
+                val player = context.get<String>("player")
 
                 if (FriendManager.isFriend(player)) {
                     send("$player already your friend")
@@ -18,26 +18,20 @@ class FriendCommand : Command("friend") {
                     FriendManager.addFriendByName(player)
                     send("$player now is your friend")
                 }
-
-                return@executesSuccess
             }
-        ))
+        }
 
-        builder.then(literal("remove").then(
-            argument("friend", FriendArgumentType.create()).executesSuccess { context ->
-                val friend = FriendArgumentType.get(context) ?: return@executesSuccess
+        builder.literal("remove") {
+            argument("friend", FriendArgumentType.create()).executes { context ->
+                val friend = context.getNullable<FriendManager.Friend>("friend") ?: return@executes
 
                 FriendManager.removeFriendByName(friend.name)
                 send("${friend.name} now isn't your friend")
-
-                return@executesSuccess
             }
-        ))
+        }
 
-        builder.then(literal("list").executesSuccess {
+        builder.literal("list").executes { _ ->
             send("Friends: ${FriendManager.friends.joinToString()}")
-
-            return@executesSuccess
-        })
+        }
     }
 }

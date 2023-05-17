@@ -1,8 +1,8 @@
 package org.progreso.client.command.commands
 
-import com.mojang.brigadier.arguments.StringArgumentType
-import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import org.java_websocket.handshake.ServerHandshake
+import org.progreso.api.command.argument.arguments.StringArgumentType.Companion.string
+import org.progreso.api.command.argument.ArgumentBuilder
 import org.progreso.api.irc.IRCClient
 import org.progreso.api.irc.packet.IRCPacket
 import org.progreso.api.irc.packet.packets.IRCAuthFailedPacket
@@ -20,10 +20,10 @@ class IRCCommand : Command("irc") {
         send("[IRC] $message")
     }
 
-    override fun build(builder: LiteralArgumentBuilder<Any>) {
-        builder.then(literal("connect").then(
-            argument("address", StringArgumentType.greedyString()).executesSuccess { context ->
-                val address = StringArgumentType.getString(context, "address")
+    override fun build(builder: ArgumentBuilder) {
+        builder.literal("connect") {
+            argument("address", string()).executes { context ->
+                val address = context.get<String>("address")
 
                 if (client?.isOpen == true && client?.isClosed == false) client?.close()
                 client = object : IRCClient(URI.create(address)) {
@@ -58,25 +58,25 @@ class IRCCommand : Command("irc") {
                     }
                 }
             }
-        ))
+        }
 
-        builder.then(literal("disconnect").executesSuccess {
+        builder.literal("disconnect").executes {
             if (client == null || client?.isClosed == true || client?.isOpen == false) {
-                return@executesSuccess sendIRCInfo("Client isn't connected to the server")
+                return@executes sendIRCInfo("Client isn't connected to the server")
             }
 
             client?.close()
             client = null
-        })
+        }
 
-        builder.then(literal("send").then(
-            argument("message", StringArgumentType.greedyString()).executesSuccess { context ->
+        builder.literal("send") {
+            argument("message", string()).executes { context ->
                 if (client == null || client?.isClosed == true || client?.isOpen == false) {
-                    return@executesSuccess sendIRCInfo("Client isn't connected to the server")
+                    return@executes sendIRCInfo("Client isn't connected to the server")
                 }
 
-                client?.send(IRCMessagePacket(mc.player.name, StringArgumentType.getString(context, "message")))
+                client?.send(IRCMessagePacket(mc.player.name, context.get<String>("message")))
             }
-        ))
+        }
     }
 }

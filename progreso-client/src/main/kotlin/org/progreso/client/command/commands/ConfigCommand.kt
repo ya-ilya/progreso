@@ -1,95 +1,85 @@
 package org.progreso.client.command.commands
 
-import com.mojang.brigadier.arguments.StringArgumentType
-import com.mojang.brigadier.builder.LiteralArgumentBuilder
-import org.progreso.api.command.arguments.ConfigHelperArgumentType
+import org.progreso.api.command.argument.arguments.ConfigHelperArgumentType
+import org.progreso.api.command.argument.arguments.StringArgumentType.Companion.string
+import org.progreso.api.command.argument.ArgumentBuilder
+import org.progreso.api.command.dispatcher.CommandContext
+import org.progreso.api.config.AbstractConfigHelper
 import org.progreso.api.managers.ConfigManager
 import org.progreso.client.command.Command
 
 class ConfigCommand : Command("config") {
-    override fun build(builder: LiteralArgumentBuilder<Any>) {
-        builder.then(argument("helper", ConfigHelperArgumentType.create())
-            .then(
-                literal("load").then(
-                    argument("config", StringArgumentType.string()).executesSuccess { context ->
-                        val config = StringArgumentType.getString(context, "config")
-                        val helper = ConfigHelperArgumentType.get(context) ?: return@executesSuccess
+    override fun build(builder: ArgumentBuilder) {
+        builder.argument("helper", ConfigHelperArgumentType.create()) {
+            literal("load") {
+                argument("config", string()).executes { context ->
+                    val config = context.get<String>("config")
+                    val helper = context.helper() ?: return@executes
 
-                        try {
-                            helper.load(config)
-                        } catch (ex: Exception) {
-                            send("Config $config not found")
-                            return@executesSuccess
-                        }
-
-                        send("Loaded ${ConfigManager.getHelperConfig(helper)} config")
-
-                        return@executesSuccess
+                    try {
+                        helper.load(config)
+                    } catch (ex: Exception) {
+                        send("Config $config not found")
+                        return@executes
                     }
-                )
-            )
-            .then(
-                literal("save").then(
-                    argument("config", StringArgumentType.string()).executesSuccess { context ->
-                        val config = StringArgumentType.getString(context, "config")
-                        val helper = ConfigHelperArgumentType.get(context) ?: return@executesSuccess
 
-                        try {
-                            helper.save(config)
-                        } catch (ex: Exception) {
-                            send("Config $config not found")
-                            return@executesSuccess
-                        }
+                    send("Loaded ${ConfigManager.getHelperConfig(helper)} config")
+                }
+            }
 
-                        send("Saved ${ConfigManager.getHelperConfig(helper)} config")
+            literal("save") {
+                argument("config", string()).executes { context ->
+                    val config = context.get<String>("config")
+                    val helper = context.helper() ?: return@executes
 
-                        return@executesSuccess
+                    try {
+                        helper.save(config)
+                    } catch (ex: Exception) {
+                        send("Config $config not found")
+                        return@executes
                     }
-                ).executesSuccess { context ->
-                    val helper = ConfigHelperArgumentType.get(context) ?: return@executesSuccess
+
+                    send("Saved ${ConfigManager.getHelperConfig(helper)} config")
+                }
+
+                executes { context ->
+                    val helper = context.helper() ?: return@executes
                     helper.save()
 
                     send("Saved ${helper.name} configs")
-
-                    return@executesSuccess
                 }
-            )
-            .then(
-                literal("refresh").then(
-                    argument("config", StringArgumentType.string()).executesSuccess { context ->
-                        val config = StringArgumentType.getString(context, "config")
-                        val helper = ConfigHelperArgumentType.get(context) ?: return@executesSuccess
-                        helper.refresh(config)
+            }
 
-                        send("Refreshed $config ${helper.name} config")
+            literal("refresh") {
+                argument("config", string()).executes { context ->
+                    val config = context.get<String>("config")
+                    val helper = context.helper() ?: return@executes
 
-                        return@executesSuccess
-                    }
-                ).executesSuccess { context ->
-                    val helper = ConfigHelperArgumentType.get(context) ?: return@executesSuccess
+                    helper.refresh(config)
+                    send("Refreshed $config ${helper.name} config")
+                }
+
+                executes { context ->
+                    val helper = context.helper() ?: return@executes
                     helper.refresh()
 
                     send("Refreshed ${helper.name} configs")
-
-                    return@executesSuccess
                 }
-            )
-            .then(
-                literal("list").executesSuccess { context ->
-                    val helper = ConfigHelperArgumentType.get(context) ?: return@executesSuccess
-
-                    send("Configs in ${helper.name}: ${helper.configs.joinToString { it.name }}")
-
-                    return@executesSuccess
-                }
-            )
-            .executesSuccess { context ->
-                val helper = ConfigHelperArgumentType.get(context) ?: return@executesSuccess
-
-                send("Current ${helper.name} config: ${ConfigManager.getHelperConfig(helper)}")
-
-                return@executesSuccess
             }
-        )
+
+            literal("list").executes { context ->
+                val helper = context.helper() ?: return@executes
+
+                send("Configs in ${helper.name}: ${helper.configs.joinToString { it.name }}")
+            }
+        }.executes { context ->
+            val helper = context.helper() ?: return@executes
+
+            send("Current ${helper.name} config: ${ConfigManager.getHelperConfig(helper)}")
+        }
+    }
+    
+    private fun CommandContext.helper(): AbstractConfigHelper<*>? {
+        return getNullable("helper")
     }
 }

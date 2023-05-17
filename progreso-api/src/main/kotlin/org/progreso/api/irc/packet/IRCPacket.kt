@@ -1,10 +1,10 @@
 package org.progreso.api.irc.packet
 
 import com.google.gson.GsonBuilder
+import org.progreso.api.irc.gson.RuntimeTypeAdapterFactory
 import org.progreso.api.irc.packet.packets.IRCAuthFailedPacket
 import org.progreso.api.irc.packet.packets.IRCAuthPacket
 import org.progreso.api.irc.packet.packets.IRCMessagePacket
-import org.progreso.api.irc.typeadapters.RuntimeTypeAdapterFactory
 
 interface IRCPacket {
     companion object {

@@ -1,39 +1,39 @@
 package org.progreso.api.managers
 
-import com.mojang.brigadier.Command.SINGLE_SUCCESS
-import com.mojang.brigadier.CommandDispatcher
-import com.mojang.brigadier.exceptions.CommandSyntaxException
 import org.progreso.api.Api
 import org.progreso.api.command.AbstractCommand
+import org.progreso.api.command.argument.ArgumentBuilder
 import org.progreso.api.command.container.CommandContainer
+import org.progreso.api.command.dispatcher.CommandDispatcher
+import org.progreso.api.command.exceptions.SyntaxException
 
 object CommandManager : CommandContainer {
     private const val PREFIX = "."
-    private val DISPATCHER = CommandDispatcher<Any>()
+    private val DISPATCHER = CommandDispatcher()
 
     override val commands = mutableSetOf<AbstractCommand>()
 
     override fun addCommand(command: AbstractCommand) {
-        command.register(DISPATCHER)
+        DISPATCHER.register(command.name, ArgumentBuilder().also { command.build(it) })
         super.addCommand(command)
     }
 
     fun removeCommand(command: AbstractCommand) {
-        command.unregister(DISPATCHER)
+        DISPATCHER.unregister(command.name)
         commands.remove(command)
     }
 
     fun onChat(message: String): Boolean {
         if (message.startsWith(PREFIX)) {
             try {
-                if (DISPATCHER.execute(message.removePrefix(PREFIX), Any()) != SINGLE_SUCCESS) {
-                    Api.CHAT.send("§cInvalid syntax")
+                if (!DISPATCHER.dispatch(message.removePrefix(PREFIX))) {
+                    Api.CHAT.send("§cCommand not found")
                 }
-            } catch (ex: CommandSyntaxException) {
-                Api.CHAT.send("§cInvalid syntax (see error in logs)")
+            } catch (ex: SyntaxException) {
+                Api.CHAT.send("§cInvalid syntax. ${ex.message}")
                 ex.printStackTrace()
             } catch (ex: Exception) {
-                Api.CHAT.send("§cCommand not found")
+                Api.CHAT.send("§cFailed to execute command")
                 ex.printStackTrace()
             }
 

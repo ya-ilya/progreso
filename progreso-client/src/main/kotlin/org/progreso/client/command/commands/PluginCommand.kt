@@ -1,18 +1,20 @@
 package org.progreso.client.command.commands
 
-import com.mojang.brigadier.arguments.StringArgumentType
-import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import com.mojang.realmsclient.gui.ChatFormatting
-import org.progreso.api.command.arguments.PluginArgumentType
+import org.progreso.api.command.argument.arguments.PluginArgumentType
+import org.progreso.api.command.argument.arguments.StringArgumentType.Companion.string
+import org.progreso.api.command.argument.ArgumentBuilder
+import org.progreso.api.command.dispatcher.CommandContext
 import org.progreso.api.managers.PluginManager
+import org.progreso.api.plugin.AbstractPlugin
 import org.progreso.api.plugin.loader.PluginLoader
 import org.progreso.client.command.Command
 
 class PluginCommand : Command("plugin") {
-    override fun build(builder: LiteralArgumentBuilder<Any>) {
-        builder.then(literal("load").then(
-            argument("path", StringArgumentType.string()).executesSuccess { context ->
-                val path = StringArgumentType.getString(context, "path")
+    override fun build(builder: ArgumentBuilder) {
+        builder.literal("load") {
+            argument("path", string()).executes { context ->
+                val path = context.get<String>("path")
 
                 try {
                     val plugin = PluginLoader.loadPlugin(path)
@@ -23,27 +25,23 @@ class PluginCommand : Command("plugin") {
                     send("${ChatFormatting.RED}Error loading plugin (see error in logs)")
                     ex.printStackTrace()
                 }
-
-                return@executesSuccess
             }
-        ))
-
-        builder.then(literal("unload").then(
-            argument("plugin", PluginArgumentType.create()).executesSuccess { context ->
-                val plugin = PluginArgumentType.get(context) ?: return@executesSuccess
+        }
+        
+        builder.literal("unload") {
+            argument("plugin", PluginArgumentType.create()).executes { context ->
+                val plugin = context.plugin() ?: return@executes
 
                 plugin.uninitializePlugin()
                 PluginManager.plugins.remove(plugin)
 
                 send("Unloaded ${plugin.name} plugin")
-
-                return@executesSuccess
             }
-        ))
-
-        builder.then(literal("info").then(
-            argument("plugin", PluginArgumentType.create()).executesSuccess { context ->
-                val plugin = PluginArgumentType.get(context) ?: return@executesSuccess
+        }
+        
+        builder.literal("info") {
+            argument("plugin", PluginArgumentType.create()).executes { context ->
+                val plugin = context.plugin() ?: return@executes
 
                 send("--------")
                 send("Name: ${plugin.name}")
@@ -53,15 +51,15 @@ class PluginCommand : Command("plugin") {
                 if (plugin.description != null) {
                     send("Description: ${plugin.description}")
                 }
-
-                return@executesSuccess
             }
-        ))
-
-        builder.then(literal("list").executesSuccess { _ ->
+        }
+        
+        builder.literal("list").executes { _ ->
             send("Plugins: ${PluginManager.plugins.joinToString { it.name }}")
-
-            return@executesSuccess
-        })
+        }
+    }
+    
+    private fun CommandContext.plugin(): AbstractPlugin? {
+        return getNullable<AbstractPlugin>("plugin")
     }
 }
