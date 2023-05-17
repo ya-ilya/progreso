@@ -30,6 +30,6 @@ jobs:
         with:
           name: progreso
           path: |
-            ./progreso-client/build/libs/*all.jar
-            ./progreso-client/build/libs/*api.jar
-            ./progreso-client/build/libs/*api-source.jar
+            ./progreso-client/build/libs/progreso-client.jar
+            ./progreso-client/build/libs/progreso-client-api.jar
+            ./progreso-client/build/libs/progreso-client-api-source.jar

@@ -18,6 +18,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@IFMLLoadingPlugin.Name("progreso")
+@IFMLLoadingPlugin.MCVersion("1.12.2")
 public class MixinLoader implements IFMLLoadingPlugin {
     public MixinLoader() throws IOException {
         MixinBootstrap.init();

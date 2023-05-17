@@ -1,5 +1,3 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-
 val mixinVersion: String by project
 val forgeVersion: String by project
 val mappingsChannel: String by project
@@ -8,14 +6,13 @@ val mappingsVersion: String by project
 buildscript {
     repositories {
         mavenCentral()
-        maven("https://files.minecraftforge.net/maven/")
+        maven("https://maven.minecraftforge.net/")
         maven("https://repo.spongepowered.org/maven/")
     }
 
     dependencies {
         classpath("net.minecraftforge.gradle:ForgeGradle:4.+")
         classpath("org.spongepowered:mixingradle:0.7-SNAPSHOT")
-        classpath("com.github.jengelman.gradle.plugins:shadow:6.1.0")
     }
 }
 
@@ -25,7 +22,6 @@ plugins {
 
 apply(plugin = "net.minecraftforge.gradle")
 apply(plugin = "org.spongepowered.mixin")
-apply(plugin = "com.github.johnrengelman.shadow")
 
 group = "org.progreso"
 
@@ -77,20 +73,20 @@ dependencies {
     implementation(configurations["library"])
 }
 
-tasks.processResources {
-    from(sourceSets["main"].resources.srcDirs) {
-        duplicatesStrategy = DuplicatesStrategy.INCLUDE
-        include("mcmod.info")
-        expand(
-            mapOf(
-                "version" to version,
-                "mcversion" to "1.12.2"
-            )
-        )
-    }
-}
-
 tasks {
+    processResources {
+        from(sourceSets["main"].resources.srcDirs) {
+            duplicatesStrategy = DuplicatesStrategy.INCLUDE
+            include("mcmod.info")
+            expand(
+                mapOf(
+                    "version" to version,
+                    "mcversion" to "1.12.2"
+                )
+            )
+        }
+    }
+
     register<Jar>("buildApi") {
         group = "progreso"
 
@@ -115,7 +111,7 @@ tasks {
         dependsOn("buildApi", "buildApiSource", "build")
     }
 
-    named<ShadowJar>("shadowJar") {
+    jar {
         manifest.attributes(
             mapOf(
                 "Manifest-Version" to 1.0,
@@ -135,14 +131,11 @@ tasks {
             "META-INF/*.kotlin_module",
             "LICENSE.txt",
             "kotlin/**/*.kotlin_metadata",
-            "kotlin/**/*.kotlin_builtins",
             "META-INF/*.version"
         )
 
-        configurations = listOf(project.configurations["library"])
-    }
-
-    build {
-        dependsOn("shadowJar")
+        from(configurations["library"].map {
+            if (it.isDirectory) it else zipTree(it)
+        })
     }
 }
