@@ -19,7 +19,7 @@ import org.progreso.api.module.container.ModuleContainer
  * @param description Plugin Description
  * @param mixinConfigs Plugin Mixin Configs
  */
-@Suppress("MemberVisibilityCanBePrivate", "SpellCheckingInspection")
+@Suppress("MemberVisibilityCanBePrivate")
 abstract class AbstractPlugin(
     val name: String,
     val version: String,
@@ -42,11 +42,11 @@ abstract class AbstractPlugin(
         PluginManager.configContainer.setHelperConfig(configHelper, name)
     }
 
-    abstract fun initialize()
-    abstract fun uninitialize()
+    abstract fun load()
+    abstract fun unload()
 
-    fun initializePlugin() {
-        initialize()
+    fun loadPlugin() {
+        load()
 
         configHelper.load(name)
 
@@ -56,8 +56,8 @@ abstract class AbstractPlugin(
         Api.API_EVENT_BUS.post(PluginEvent(this, true))
     }
 
-    fun uninitializePlugin() {
-        uninitialize()
+    fun unloadPlugin() {
+        unload()
 
         configHelper.save(name)
 

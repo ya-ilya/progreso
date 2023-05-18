@@ -19,7 +19,7 @@ class PluginCommand : Command("plugin") {
                 try {
                     val plugin = PluginLoader.loadPlugin(path)
                     PluginManager.addPlugin(plugin)
-                    plugin.initializePlugin()
+                    plugin.loadPlugin()
                     send("Loaded ${plugin.name} plugin")
                 } catch (ex: Exception) {
                     send("${ChatFormatting.RED}Error loading plugin (see error in logs)")
@@ -32,7 +32,7 @@ class PluginCommand : Command("plugin") {
             argument("plugin", PluginArgumentType.create()).executes { context ->
                 val plugin = context.plugin() ?: return@executes
 
-                plugin.uninitializePlugin()
+                plugin.unloadPlugin()
                 PluginManager.plugins.remove(plugin)
 
                 send("Unloaded ${plugin.name} plugin")

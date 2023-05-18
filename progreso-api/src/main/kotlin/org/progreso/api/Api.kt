@@ -39,21 +39,21 @@ object Api {
         FriendManager
         ConfigManager
 
-        logger.info("Initializing plugins...")
+        logger.info("Loading plugins...")
         for (plugin in PluginManager.plugins) {
-            plugin.initializePlugin()
+            plugin.loadPlugin()
         }
 
         logger.info("Adding shutdown hook...")
         Runtime.getRuntime().addShutdownHook(Thread {
-            LOGGER.info("Unloading managers...")
-            ConfigManager.save()
-
-            LOGGER.info("Uninitializing plugins...")
+            LOGGER.info("Unloading plugins...")
             for (plugin in PluginManager.plugins.toList()) {
-                plugin.uninitializePlugin()
+                plugin.unloadPlugin()
                 PluginManager.plugins.remove(plugin)
             }
+
+            LOGGER.info("Unloading managers...")
+            ConfigManager.save()
 
             initialized = false
         })
