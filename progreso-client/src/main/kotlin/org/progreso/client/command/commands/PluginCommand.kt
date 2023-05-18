@@ -27,7 +27,7 @@ class PluginCommand : Command("plugin") {
                 }
             }
         }
-        
+
         builder.literal("unload") {
             argument("plugin", PluginArgumentType.create()).executes { context ->
                 val plugin = context.plugin() ?: return@executes
@@ -38,7 +38,7 @@ class PluginCommand : Command("plugin") {
                 info("Unloaded ${plugin.name} plugin")
             }
         }
-        
+
         builder.literal("info") {
             argument("plugin", PluginArgumentType.create()).executes { context ->
                 val plugin = context.plugin() ?: return@executes
@@ -53,12 +53,12 @@ class PluginCommand : Command("plugin") {
                 }
             }
         }
-        
+
         builder.literal("list").executes { _ ->
             info("Plugins: ${PluginManager.plugins.joinToString { it.name }}")
         }
     }
-    
+
     private fun CommandContext.plugin(): AbstractPlugin? {
         return getNullable<AbstractPlugin>("plugin")
     }

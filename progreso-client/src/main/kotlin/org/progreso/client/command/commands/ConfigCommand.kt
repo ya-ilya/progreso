@@ -72,7 +72,7 @@ class ConfigCommand : Command("config") {
             info("Current ${helper.name} config: ${ConfigManager.getHelperConfig(helper)}")
         }
     }
-    
+
     private fun CommandContext.helper(): AbstractConfigHelper<*>? {
         return getNullable("helper")
     }
