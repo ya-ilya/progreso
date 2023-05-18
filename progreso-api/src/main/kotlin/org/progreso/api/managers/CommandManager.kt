@@ -27,13 +27,13 @@ object CommandManager : CommandContainer {
         if (message.startsWith(PREFIX)) {
             try {
                 if (!DISPATCHER.dispatch(message.removePrefix(PREFIX))) {
-                    Api.CHAT.send("§cCommand not found")
+                    Api.CHAT.error("Command not found")
                 }
             } catch (ex: SyntaxException) {
-                Api.CHAT.send("§cInvalid syntax. ${ex.message}")
+                Api.CHAT.error("Invalid syntax. ${ex.message}")
                 ex.printStackTrace()
             } catch (ex: Exception) {
-                Api.CHAT.send("§cFailed to execute command")
+                Api.CHAT.error("Failed to execute command")
                 ex.printStackTrace()
             }
 

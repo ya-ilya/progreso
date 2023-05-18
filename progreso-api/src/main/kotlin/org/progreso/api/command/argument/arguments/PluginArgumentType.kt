@@ -14,7 +14,7 @@ class PluginArgumentType : ArgumentType<AbstractPlugin?> {
     override fun parse(reader: StringReader): AbstractPlugin? {
         val pluginName = reader.readString()
         val plugin = PluginManager.getPluginByNameOrNull(pluginName)
-        if (plugin == null) Api.CHAT.send("Plugin $pluginName not found")
+        if (plugin == null) Api.CHAT.error("Plugin $pluginName not found")
         return plugin
     }
 

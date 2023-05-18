@@ -1,9 +1,9 @@
 package org.progreso.client.command.commands
 
 import com.mojang.realmsclient.gui.ChatFormatting
+import org.progreso.api.command.argument.ArgumentBuilder
 import org.progreso.api.command.argument.arguments.PluginArgumentType
 import org.progreso.api.command.argument.arguments.StringArgumentType.Companion.string
-import org.progreso.api.command.argument.ArgumentBuilder
 import org.progreso.api.command.dispatcher.CommandContext
 import org.progreso.api.managers.PluginManager
 import org.progreso.api.plugin.AbstractPlugin
@@ -20,9 +20,9 @@ class PluginCommand : Command("plugin") {
                     val plugin = PluginLoader.loadPlugin(path)
                     PluginManager.addPlugin(plugin)
                     plugin.loadPlugin()
-                    send("Loaded ${plugin.name} plugin")
+                    info("Loaded ${plugin.name} plugin")
                 } catch (ex: Exception) {
-                    send("${ChatFormatting.RED}Error loading plugin (see error in logs)")
+                    error("${ChatFormatting.RED}Error loading plugin (see error in logs)")
                     ex.printStackTrace()
                 }
             }
@@ -35,7 +35,7 @@ class PluginCommand : Command("plugin") {
                 plugin.unloadPlugin()
                 PluginManager.plugins.remove(plugin)
 
-                send("Unloaded ${plugin.name} plugin")
+                info("Unloaded ${plugin.name} plugin")
             }
         }
         
@@ -43,19 +43,19 @@ class PluginCommand : Command("plugin") {
             argument("plugin", PluginArgumentType.create()).executes { context ->
                 val plugin = context.plugin() ?: return@executes
 
-                send("--------")
-                send("Name: ${plugin.name}")
-                send("Version: ${plugin.version}")
-                send("Author: ${plugin.author}")
+                info("--------")
+                info("Name: ${plugin.name}")
+                info("Version: ${plugin.version}")
+                info("Author: ${plugin.author}")
 
                 if (plugin.description != null) {
-                    send("Description: ${plugin.description}")
+                    info("Description: ${plugin.description}")
                 }
             }
         }
         
         builder.literal("list").executes { _ ->
-            send("Plugins: ${PluginManager.plugins.joinToString { it.name }}")
+            info("Plugins: ${PluginManager.plugins.joinToString { it.name }}")
         }
     }
     

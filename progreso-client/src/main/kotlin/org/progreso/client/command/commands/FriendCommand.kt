@@ -1,8 +1,8 @@
 package org.progreso.client.command.commands
 
+import org.progreso.api.command.argument.ArgumentBuilder
 import org.progreso.api.command.argument.arguments.FriendArgumentType
 import org.progreso.api.command.argument.arguments.StringArgumentType.Companion.string
-import org.progreso.api.command.argument.ArgumentBuilder
 import org.progreso.api.managers.FriendManager
 import org.progreso.client.command.Command
 
@@ -13,10 +13,10 @@ class FriendCommand : Command("friend") {
                 val player = context.get<String>("player")
 
                 if (FriendManager.isFriend(player)) {
-                    send("$player already your friend")
+                    error("$player already your friend")
                 } else {
                     FriendManager.addFriendByName(player)
-                    send("$player now is your friend")
+                    info("$player now is your friend")
                 }
             }
         }
@@ -26,12 +26,12 @@ class FriendCommand : Command("friend") {
                 val friend = context.getNullable<FriendManager.Friend>("friend") ?: return@executes
 
                 FriendManager.removeFriendByName(friend.name)
-                send("${friend.name} now isn't your friend")
+                info("${friend.name} now isn't your friend")
             }
         }
 
         builder.literal("list").executes { _ ->
-            send("Friends: ${FriendManager.friends.joinToString()}")
+            info("Friends: ${FriendManager.friends.joinToString()}")
         }
     }
 }

@@ -15,7 +15,10 @@ abstract class AbstractCommand(
 ) {
     abstract fun build(builder: ArgumentBuilder)
 
-    companion object {
-        fun send(message: String) = Api.CHAT.send(message)
+    protected companion object {
+        fun send(message: Any) = Api.CHAT.send(message)
+        fun info(message: Any) = Api.CHAT.info(message)
+        fun warn(message: Any) = Api.CHAT.warn(message)
+        fun error(message: Any) = Api.CHAT.error(message)
     }
 }

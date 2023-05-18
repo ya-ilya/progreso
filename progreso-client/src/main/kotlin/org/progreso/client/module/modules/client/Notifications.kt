@@ -20,7 +20,7 @@ class Notifications : Module("Notifications", Category.Client) {
             if (!modules) return@safeEventListener
             if (event.module is ClickGUI || event.module is HudEditor || event.module is Notifications) return@safeEventListener
 
-            Api.CHAT.send("[Notifications] ${if (event.module.enabled) ChatFormatting.GREEN else ChatFormatting.RED}${event.module.name}")
+            Api.CHAT.info("[Notifications] ${if (event.module.enabled) ChatFormatting.GREEN else ChatFormatting.RED}${event.module.name}")
         }
 
         safeEventListener<TotemPopEvent> { event ->
@@ -28,7 +28,7 @@ class Notifications : Module("Notifications", Category.Client) {
             if (event.player == mc.player) return@safeEventListener
 
             if (event.count != null) {
-                Api.CHAT.send("[Notifications] ${event.player.name} has popped ${event.count} totems")
+                Api.CHAT.info("[Notifications] ${event.player.name} has popped ${event.count} totems")
             }
         }
 
@@ -37,7 +37,7 @@ class Notifications : Module("Notifications", Category.Client) {
             if (event.entity is EntityPlayer) {
                 val pops = CombatManager[event.entity] ?: return@safeEventListener
 
-                Api.CHAT.send("[Notifications] ${event.entity.name} died after popping $pops totems")
+                Api.CHAT.info("[Notifications] ${event.entity.name} died after popping $pops totems")
             }
         }
     }

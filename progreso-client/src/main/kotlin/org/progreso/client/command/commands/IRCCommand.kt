@@ -1,8 +1,8 @@
 package org.progreso.client.command.commands
 
 import org.java_websocket.handshake.ServerHandshake
-import org.progreso.api.command.argument.arguments.StringArgumentType.Companion.string
 import org.progreso.api.command.argument.ArgumentBuilder
+import org.progreso.api.command.argument.arguments.StringArgumentType.Companion.string
 import org.progreso.api.irc.IRCClient
 import org.progreso.api.irc.packet.IRCPacket
 import org.progreso.api.irc.packet.packets.IRCAuthFailedPacket
@@ -16,10 +16,6 @@ class IRCCommand : Command("irc") {
         var client: IRCClient? = null
     }
 
-    private fun sendIRCInfo(message: String) {
-        send("[IRC] $message")
-    }
-
     override fun build(builder: ArgumentBuilder) {
         builder.literal("connect") {
             argument("address", string()).executes { context ->
@@ -31,30 +27,30 @@ class IRCCommand : Command("irc") {
                         try {
                             connect()
                         } catch (ex: Exception) {
-                            sendIRCInfo("Failed to connect to the server")
+                            error("[IRC] Failed to connect to the server")
                         }
                     }
 
                     override fun onPacket(packet: IRCPacket) {
                         when (packet) {
                             is IRCAuthFailedPacket -> {
-                                sendIRCInfo("Authentication failed. Reason: ${packet.reason}")
+                                error("[IRC] Authentication failed. Reason: ${packet.reason}")
                                 close()
                             }
 
                             is IRCMessagePacket -> {
-                                sendIRCInfo("${packet.author}: ${packet.message}")
+                                info("[IRC] ${packet.author}: ${packet.message}")
                             }
                         }
                     }
 
                     override fun onOpen(handshakedata: ServerHandshake) {
                         send(IRCAuthPacket(mc.player.name))
-                        sendIRCInfo("Connected to $address")
+                        info("[IRC] Connected to $address")
                     }
 
                     override fun onClose(code: Int, reason: String, remote: Boolean) {
-                        sendIRCInfo("Disconnected")
+                        info("[IRC] Disconnected")
                     }
                 }
             }
@@ -62,7 +58,7 @@ class IRCCommand : Command("irc") {
 
         builder.literal("disconnect").executes {
             if (client == null || client?.isClosed == true || client?.isOpen == false) {
-                return@executes sendIRCInfo("Client isn't connected to the server")
+                return@executes error("[IRC] Client isn't connected to the server")
             }
 
             client?.close()
@@ -72,7 +68,7 @@ class IRCCommand : Command("irc") {
         builder.literal("send") {
             argument("message", string()).executes { context ->
                 if (client == null || client?.isClosed == true || client?.isOpen == false) {
-                    return@executes sendIRCInfo("Client isn't connected to the server")
+                    return@executes error("[IRC] Client isn't connected to the server")
                 }
 
                 client?.send(IRCMessagePacket(mc.player.name, context.get<String>("message")))

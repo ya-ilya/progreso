@@ -1,8 +1,8 @@
 package org.progreso.client.command.commands
 
+import org.progreso.api.command.argument.ArgumentBuilder
 import org.progreso.api.command.argument.arguments.ConfigHelperArgumentType
 import org.progreso.api.command.argument.arguments.StringArgumentType.Companion.string
-import org.progreso.api.command.argument.ArgumentBuilder
 import org.progreso.api.command.dispatcher.CommandContext
 import org.progreso.api.config.AbstractConfigHelper
 import org.progreso.api.managers.ConfigManager
@@ -19,11 +19,11 @@ class ConfigCommand : Command("config") {
                     try {
                         helper.load(config)
                     } catch (ex: Exception) {
-                        send("Config $config not found")
+                        error("Config $config not found")
                         return@executes
                     }
 
-                    send("Loaded ${ConfigManager.getHelperConfig(helper)} config")
+                    info("Loaded ${ConfigManager.getHelperConfig(helper)} config")
                 }
             }
 
@@ -32,21 +32,15 @@ class ConfigCommand : Command("config") {
                     val config = context.get<String>("config")
                     val helper = context.helper() ?: return@executes
 
-                    try {
-                        helper.save(config)
-                    } catch (ex: Exception) {
-                        send("Config $config not found")
-                        return@executes
-                    }
-
-                    send("Saved ${ConfigManager.getHelperConfig(helper)} config")
+                    helper.save(config)
+                    info("Saved ${ConfigManager.getHelperConfig(helper)} config")
                 }
 
                 executes { context ->
                     val helper = context.helper() ?: return@executes
                     helper.save()
 
-                    send("Saved ${helper.name} configs")
+                    info("Saved ${helper.name} configs")
                 }
             }
 
@@ -56,26 +50,26 @@ class ConfigCommand : Command("config") {
                     val helper = context.helper() ?: return@executes
 
                     helper.refresh(config)
-                    send("Refreshed $config ${helper.name} config")
+                    info("Refreshed $config ${helper.name} config")
                 }
 
                 executes { context ->
                     val helper = context.helper() ?: return@executes
                     helper.refresh()
 
-                    send("Refreshed ${helper.name} configs")
+                    info("Refreshed ${helper.name} configs")
                 }
             }
 
             literal("list").executes { context ->
                 val helper = context.helper() ?: return@executes
 
-                send("Configs in ${helper.name}: ${helper.configs.joinToString { it.name }}")
+                info("Configs in ${helper.name}: ${helper.configs.joinToString { it.name }}")
             }
         }.executes { context ->
             val helper = context.helper() ?: return@executes
 
-            send("Current ${helper.name} config: ${ConfigManager.getHelperConfig(helper)}")
+            info("Current ${helper.name} config: ${ConfigManager.getHelperConfig(helper)}")
         }
     }
     
