@@ -8,6 +8,8 @@ class BooleanArgumentType : ArgumentType<Boolean> {
         fun boolean() = BooleanArgumentType()
     }
 
+    override val name = "boolean"
+
     override fun parse(reader: StringReader): Boolean {
         return reader.readString().toBooleanStrict()
     }

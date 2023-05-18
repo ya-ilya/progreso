@@ -1,4 +1,4 @@
-package org.progreso.client.gui.component.data
+package org.progreso.client.gui.clickgui.component.data
 
 data class ComponentOffsets(
     val textOffset: Int = 0,

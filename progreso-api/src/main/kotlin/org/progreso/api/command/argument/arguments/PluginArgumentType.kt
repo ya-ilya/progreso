@@ -11,6 +11,8 @@ class PluginArgumentType : ArgumentType<AbstractPlugin?> {
         fun create() = PluginArgumentType()
     }
 
+    override val name = "plugin"
+
     override fun parse(reader: StringReader): AbstractPlugin? {
         val pluginName = reader.readString()
         val plugin = PluginManager.getPluginByNameOrNull(pluginName)

@@ -1,9 +1,9 @@
-package org.progreso.client.gui.component.components
+package org.progreso.client.gui.clickgui.component.components
 
 import org.progreso.api.managers.ModuleManager
-import org.progreso.client.gui.ClickGUI
-import org.progreso.client.gui.component.AbstractComponent
-import org.progreso.client.gui.component.ChildComponent
+import org.progreso.client.gui.clickgui.ClickGUI
+import org.progreso.client.gui.clickgui.component.AbstractComponent
+import org.progreso.client.gui.clickgui.component.ChildComponent
 import org.progreso.client.module.Category
 import org.progreso.client.util.Render2DUtil.drawCenteredString
 import java.awt.Color

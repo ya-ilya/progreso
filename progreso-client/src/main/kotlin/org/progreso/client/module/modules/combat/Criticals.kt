@@ -6,7 +6,7 @@ import net.minecraft.network.play.client.CPacketUseEntity
 import org.progreso.api.managers.ModuleManager
 import org.progreso.client.events.eventListener
 import org.progreso.client.events.network.PacketEvent
-import org.progreso.client.mixin.mixins.accessors.AccessorEntity
+import org.progreso.client.mixins.isInWeb
 import org.progreso.client.module.Category
 import org.progreso.client.module.Module
 
@@ -23,7 +23,7 @@ class Criticals : Module("Criticals", Category.Combat) {
             if (event.packet !is CPacketUseEntity) return@eventListener
             if (event.packet.action != CPacketUseEntity.Action.ATTACK) return@eventListener
             if (onlyKillAura && !KILL_AURA.enabled) return@eventListener
-            if (mc.player.isInWater || mc.player.isInLava || (mc.player as AccessorEntity).isInWeb) return@eventListener
+            if (mc.player.isInWater || mc.player.isInLava || mc.player.isInWeb) return@eventListener
 
             val entity = event.packet.getEntityFromWorld(mc.world)
 

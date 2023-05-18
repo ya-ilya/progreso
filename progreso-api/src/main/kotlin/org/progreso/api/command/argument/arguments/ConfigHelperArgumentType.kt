@@ -11,6 +11,8 @@ class ConfigHelperArgumentType : ArgumentType<AbstractConfigHelper<*>?> {
         fun create() = ConfigHelperArgumentType()
     }
 
+    override val name = "helper"
+
     override fun parse(reader: StringReader): AbstractConfigHelper<*>? {
         val helperName = reader.readString()
         val helper = ConfigManager.getHelperByNameOrNull(helperName)

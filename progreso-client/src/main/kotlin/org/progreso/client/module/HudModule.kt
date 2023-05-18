@@ -4,8 +4,8 @@ import net.minecraft.client.Minecraft
 import net.minecraftforge.client.event.RenderGameOverlayEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import org.progreso.api.module.AbstractHudModule
-import org.progreso.client.gui.ClickGUI
-import org.progreso.client.gui.HudEditor
+import org.progreso.client.gui.clickgui.ClickGUI
+import org.progreso.client.gui.clickgui.HudEditor
 import org.progreso.client.util.Render2DUtil.drawRect
 
 abstract class HudModule(

@@ -10,8 +10,8 @@ import org.progreso.api.module.AbstractModule
 import org.progreso.client.accessors.ChatAccessor
 import org.progreso.client.accessors.EventAccessor
 import org.progreso.client.accessors.LoggerAccessor
-import org.progreso.client.gui.ClickGUI
-import org.progreso.client.gui.HudEditor
+import org.progreso.client.gui.clickgui.ClickGUI
+import org.progreso.client.gui.clickgui.HudEditor
 import org.progreso.client.manager.Managers
 import org.reflections.Reflections
 

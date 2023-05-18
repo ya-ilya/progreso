@@ -1,10 +1,10 @@
-package org.progreso.client.gui.component.components
+package org.progreso.client.gui.clickgui.component.components
 
 import org.progreso.api.module.AbstractModule
 import org.progreso.api.setting.AbstractSetting
 import org.progreso.api.setting.settings.*
-import org.progreso.client.gui.component.AbstractComponent
-import org.progreso.client.gui.component.ChildComponent
+import org.progreso.client.gui.clickgui.component.AbstractComponent
+import org.progreso.client.gui.clickgui.component.ChildComponent
 import org.progreso.client.util.Render2DUtil
 import org.progreso.client.util.Render2DUtil.drawStringRelatively
 import java.awt.Color

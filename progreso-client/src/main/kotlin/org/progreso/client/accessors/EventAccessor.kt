@@ -1,5 +1,6 @@
 package org.progreso.client.accessors
 
+import net.minecraft.client.Minecraft
 import net.minecraftforge.client.event.ClientChatEvent
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
@@ -10,11 +11,14 @@ import org.progreso.api.managers.CommandManager
 import org.progreso.api.managers.ModuleManager
 import org.progreso.client.Client
 import org.progreso.client.events.input.KeyboardEvent
-import org.progreso.client.gui.ClickGUI
-import org.progreso.client.gui.component.components.CategoryComponent
-import org.progreso.client.gui.component.components.ModuleComponent
+import org.progreso.client.gui.clickgui.ClickGUI
+import org.progreso.client.gui.clickgui.component.components.CategoryComponent
+import org.progreso.client.gui.clickgui.component.components.ModuleComponent
+import org.progreso.client.gui.mc.ProgresoGuiChat
 
 object EventAccessor : EventAccessor {
+    private val mc: Minecraft = Minecraft.getMinecraft()
+
     init {
         register(this)
     }
@@ -33,6 +37,12 @@ object EventAccessor : EventAccessor {
     fun onKey(event: KeyboardEvent) {
         if (event.state) {
             ModuleManager.onKey(event.key)
+
+            if (!mc.gameSettings.keyBindSneak.isKeyDown) {
+                if (event.char.equals(CommandManager.PREFIX, true)) {
+                    mc.displayGuiScreen(ProgresoGuiChat(event.char.toString()))
+                }
+            }
         }
     }
 

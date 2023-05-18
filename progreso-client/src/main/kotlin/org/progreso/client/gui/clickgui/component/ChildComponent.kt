@@ -1,6 +1,6 @@
-package org.progreso.client.gui.component
+package org.progreso.client.gui.clickgui.component
 
-import org.progreso.client.gui.component.data.ComponentOffsets
+import org.progreso.client.gui.clickgui.component.data.ComponentOffsets
 
 open class ChildComponent(
     override var height: Int,

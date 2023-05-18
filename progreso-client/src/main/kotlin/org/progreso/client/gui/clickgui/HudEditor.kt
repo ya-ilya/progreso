@@ -1,8 +1,8 @@
-package org.progreso.client.gui
+package org.progreso.client.gui.clickgui
 
 import org.progreso.api.managers.ModuleManager
 import org.progreso.api.module.AbstractHudModule
-import org.progreso.client.gui.component.components.CategoryComponent
+import org.progreso.client.gui.clickgui.component.components.CategoryComponent
 import org.progreso.client.module.Category
 
 class HudEditor : ClickGUI() {

@@ -5,22 +5,40 @@ import org.progreso.api.command.exceptions.SyntaxException
 import org.progreso.api.command.reader.StringReader
 
 class CommandDispatcher {
-    private val builders = mutableMapOf<String, ArgumentBuilder>()
+    private val nodes = mutableListOf<ArgumentBuilder.Node.LiteralNode>()
 
     fun register(name: String, builder: ArgumentBuilder) {
-        builders[name] = builder
+        nodes.add(ArgumentBuilder.Node.LiteralNode(name, builder))
     }
 
     fun unregister(name: String) {
-        builders.remove(name)
+        nodes.removeIf { it.name == name }
     }
 
     fun dispatch(string: String): Boolean {
-        val arguments = string.split(" ").let { argument -> argument.map { it.trim() } }
-        val builder = builders[arguments[0]] ?: return false
-        val reader = StringReader(arguments.drop(1).joinToString(" "))
-        executeBuilder(builder, reader, CommandContext())
+        val (first, reader) = parseArguments(string)
+        val node = nodes.firstOrNull { it.name == first } ?: return false
+        executeBuilder(node.builder, reader, CommandContext())
         return true
+    }
+
+    fun predictNode(string: String): ArgumentBuilder.Node? {
+        if (string.isBlank() || string.endsWith(" ")) return null
+        val (first, reader) = parseArguments(string)
+        val node = nodes.firstOrNull { it.name.startsWith(first) } ?: return null
+        return predictNode(node, reader)
+    }
+
+    fun getVariants(string: String): List<String>? {
+        if (string.isBlank() || !string.endsWith(" ")) return null
+        val (first, reader) = parseArguments(string)
+        val node = nodes.firstOrNull { it.name == first } ?: return null
+        return getVariants(node, reader)
+    }
+
+    private fun parseArguments(string: String): Pair<String, StringReader> {
+        val arguments = string.split(" ").let { arguments -> arguments.map { it.trim() } }
+        return arguments[0] to StringReader(arguments.drop(1).joinToString(" "))
     }
 
     private fun executeBuilder(
@@ -44,6 +62,58 @@ class CommandDispatcher {
         } else {
             reader.readString() // Skip literal name
             executeBuilder(literal.builder, reader, context)
+        }
+    }
+
+    private fun predictNode(
+        node: ArgumentBuilder.Node,
+        reader: StringReader
+    ): ArgumentBuilder.Node? {
+        if (!reader.hasNext()) {
+            return if (node is ArgumentBuilder.Node.LiteralNode) {
+                node
+            } else {
+                null
+            }
+        }
+
+        val string = reader.peek()
+        val literal = node.builder.findLiteral { it.name.startsWith(string) }
+
+        return if (literal == null) {
+            reader.readString()
+            val argument = node.builder.findArgument { it.type.checkType(reader) } ?: return null
+            predictNode(argument, reader)
+        } else {
+            reader.readString() // Skip literal string
+            predictNode(literal, reader)
+        }
+    }
+
+    private fun getVariants(
+        node: ArgumentBuilder.Node,
+        reader: StringReader
+    ): List<String>? {
+        if (!reader.hasNext()) {
+            return node.builder.nodes.map {
+                if (it is ArgumentBuilder.Node.ArgumentNode) {
+                    "${it.name} (${it.type.name})"
+                } else {
+                    it.name
+                }
+            }
+        }
+
+        val string = reader.peek()
+        val literal = node.builder.findLiteral { it.name.startsWith(string) }
+
+        return if (literal == null) {
+            reader.readString()
+            val argument = node.builder.findArgument { it.type.checkType(reader) } ?: return null
+            getVariants(argument, reader)
+        } else {
+            reader.readString()
+            getVariants(literal, reader)
         }
     }
 }

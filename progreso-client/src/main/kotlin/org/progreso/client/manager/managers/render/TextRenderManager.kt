@@ -1,6 +1,6 @@
 package org.progreso.client.manager.managers.render
 
-import org.progreso.client.gui.ClickGUI
+import org.progreso.client.gui.clickgui.ClickGUI
 import org.progreso.client.manager.Manager
 import org.progreso.client.util.font.CustomFontRenderer
 import java.awt.Color

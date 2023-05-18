@@ -12,6 +12,8 @@ class NumberArgumentType<T : Number>(
         inline fun <reified T : Number> number() = NumberArgumentType(T::class)
     }
 
+    override val name = "number"
+
     override fun parse(reader: StringReader): T {
         val string = reader.readString()
 
@@ -26,6 +28,12 @@ class NumberArgumentType<T : Number>(
     }
 
     override fun checkType(reader: StringReader): Boolean {
-        return reader.peek().count { it == '.' } <= 1 && reader.peek().all { it.isDigit() || it == '.' }
+        val peeked = reader.peek()
+
+        return if (type == Float::class || type == Double::class) {
+            peeked.count { it == '.' } <= 1 && peeked.all { it.isDigit() || it == '.' }
+        } else {
+            peeked.all { it.isDigit() }
+        }
     }
 }

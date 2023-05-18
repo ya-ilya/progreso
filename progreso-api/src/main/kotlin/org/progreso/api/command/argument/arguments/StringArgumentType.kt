@@ -10,6 +10,8 @@ class StringArgumentType(
         fun string(greedy: Boolean = false) = StringArgumentType(greedy)
     }
 
+    override val name = "string"
+
     override fun parse(reader: StringReader): String {
         return if (greedy) {
             val builder = StringBuilder()

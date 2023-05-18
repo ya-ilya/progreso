@@ -3,7 +3,7 @@ package org.progreso.api.command.argument
 import org.progreso.api.command.dispatcher.CommandContext
 
 open class ArgumentBuilder {
-    private val nodes = mutableListOf<Node>()
+    val nodes = mutableListOf<Node>()
     var executes: (CommandContext) -> Unit = { }
 
     fun literal(

@@ -1,7 +1,7 @@
 package org.progreso.api.command.reader
 
 class StringReader(string: String) {
-    private var arguments = string.split(" ")
+    private var arguments = string.split(" ").filter { it.isNotEmpty() }
 
     fun hasNext(): Boolean {
         return arguments.isNotEmpty()

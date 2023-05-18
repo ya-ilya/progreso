@@ -1,10 +1,10 @@
-package org.progreso.client.gui.component.components
+package org.progreso.client.gui.clickgui.component.components
 
 import org.lwjgl.opengl.GL11
 import org.progreso.api.setting.settings.ColorSetting
 import org.progreso.api.setting.settings.NumberSetting
-import org.progreso.client.gui.component.AbstractComponent
-import org.progreso.client.gui.component.ChildComponent
+import org.progreso.client.gui.clickgui.component.AbstractComponent
+import org.progreso.client.gui.clickgui.component.ChildComponent
 import org.progreso.client.util.Render2DUtil.drawRect
 import org.progreso.client.util.Render2DUtil.drawStringRelatively
 import org.progreso.client.util.Render2DUtil.glColors

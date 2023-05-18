@@ -1,10 +1,10 @@
-package org.progreso.client.gui
+package org.progreso.client.gui.clickgui
 
 import net.minecraft.client.gui.GuiScreen
 import org.lwjgl.input.Mouse
 import org.progreso.api.managers.ModuleManager
-import org.progreso.client.gui.component.AbstractComponent
-import org.progreso.client.gui.component.components.CategoryComponent
+import org.progreso.client.gui.clickgui.component.AbstractComponent
+import org.progreso.client.gui.clickgui.component.components.CategoryComponent
 import org.progreso.client.module.Category
 import org.progreso.client.module.modules.client.ClickGUI
 import java.awt.Color

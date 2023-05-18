@@ -1,10 +1,10 @@
-package org.progreso.client.gui.component.components
+package org.progreso.client.gui.clickgui.component.components
 
 import net.minecraft.util.ChatAllowedCharacters
 import org.lwjgl.input.Keyboard
 import org.progreso.api.setting.settings.StringSetting
-import org.progreso.client.gui.component.AbstractComponent
-import org.progreso.client.gui.component.ChildComponent
+import org.progreso.client.gui.clickgui.component.AbstractComponent
+import org.progreso.client.gui.clickgui.component.ChildComponent
 import org.progreso.client.manager.managers.render.TextRenderManager
 import org.progreso.client.util.Render2DUtil.drawStringRelatively
 import java.awt.Color

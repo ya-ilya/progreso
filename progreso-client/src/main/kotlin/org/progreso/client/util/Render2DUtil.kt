@@ -4,12 +4,11 @@ import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.Gui
 import net.minecraft.client.renderer.GlStateManager
 import org.lwjgl.opengl.GL11
-import org.progreso.client.gui.component.AbstractComponent
+import org.progreso.client.gui.clickgui.component.AbstractComponent
 import org.progreso.client.manager.managers.render.TextRenderManager
 import java.awt.Color
 import kotlin.math.cos
 import kotlin.math.sin
-
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 object Render2DUtil {

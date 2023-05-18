@@ -1,7 +1,7 @@
-package org.progreso.client.gui.component
+package org.progreso.client.gui.clickgui.component
 
-import org.progreso.client.gui.ClickGUI
-import org.progreso.client.gui.component.data.ComponentOffsets
+import org.progreso.client.gui.clickgui.ClickGUI
+import org.progreso.client.gui.clickgui.component.data.ComponentOffsets
 import org.progreso.client.util.Render2DUtil
 import java.awt.Color
 

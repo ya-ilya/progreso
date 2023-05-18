@@ -8,8 +8,8 @@ import org.progreso.api.command.dispatcher.CommandDispatcher
 import org.progreso.api.command.exceptions.SyntaxException
 
 object CommandManager : CommandContainer {
-    private const val PREFIX = "."
-    private val DISPATCHER = CommandDispatcher()
+    const val PREFIX = '.'
+    val DISPATCHER = CommandDispatcher()
 
     override val commands = mutableSetOf<AbstractCommand>()
 
@@ -26,7 +26,7 @@ object CommandManager : CommandContainer {
     fun onChat(message: String): Boolean {
         if (message.startsWith(PREFIX)) {
             try {
-                if (!DISPATCHER.dispatch(message.removePrefix(PREFIX))) {
+                if (!DISPATCHER.dispatch(message.removePrefix(PREFIX.toString()))) {
                     Api.CHAT.error("Command not found")
                 }
             } catch (ex: SyntaxException) {

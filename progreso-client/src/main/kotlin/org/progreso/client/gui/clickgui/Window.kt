@@ -1,7 +1,7 @@
-package org.progreso.client.gui
+package org.progreso.client.gui.clickgui
 
-import org.progreso.client.gui.component.AbstractComponent
-import org.progreso.client.gui.component.components.ListComponent
+import org.progreso.client.gui.clickgui.component.AbstractComponent
+import org.progreso.client.gui.clickgui.component.components.ListComponent
 
 @Suppress("SuspiciousVarProperty")
 class Window(

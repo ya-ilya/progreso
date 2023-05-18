@@ -1,7 +1,7 @@
-package org.progreso.client.gui.component.components
+package org.progreso.client.gui.clickgui.component.components
 
-import org.progreso.client.gui.component.AbstractComponent
-import org.progreso.client.gui.component.ChildComponent
+import org.progreso.client.gui.clickgui.component.AbstractComponent
+import org.progreso.client.gui.clickgui.component.ChildComponent
 
 open class ListComponent(
     height: Int,

@@ -5,8 +5,10 @@
   "refmap": "mixins.progreso.refmap.json",
   "mixins": [
     "MixinMinecraft",
+    "MixinGuiChat",
     "MixinNetworkManager",
     "MixinPlayerControllerMP",
-    "accessors.AccessorEntity"
+    "accessors.AccessorEntity",
+    "accessors.AccessorGuiChat"
   ]
 }
