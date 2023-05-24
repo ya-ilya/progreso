@@ -9,6 +9,7 @@ import org.progreso.api.managers.PluginManager
 import org.progreso.api.plugin.AbstractPlugin
 import org.progreso.api.plugin.loader.PluginLoader
 import org.progreso.client.command.Command
+import org.progreso.client.gui.mc.ProgresoGuiPlugins
 
 class PluginCommand : Command("plugin") {
     override fun build(builder: ArgumentBuilder) {
@@ -56,6 +57,10 @@ class PluginCommand : Command("plugin") {
 
         builder.literal("list").executes { _ ->
             info("Plugins: ${PluginManager.plugins.joinToString { it.name }}")
+        }
+
+        builder.literal("gui").executes { _ ->
+            mc.displayGuiScreen(ProgresoGuiPlugins(PluginManager.plugins.toList()))
         }
     }
 

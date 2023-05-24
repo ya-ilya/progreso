@@ -13,10 +13,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(GuiChat.class)
 public class MixinGuiChat {
-    @Shadow protected GuiTextField inputField;
-
-    @Shadow private String historyBuffer;
-    @Shadow private int sentHistoryCursor;
+    private static final String PREFIX_STRING = String.valueOf(CommandManager.PREFIX);
+    @Shadow
+    protected GuiTextField inputField;
+    @Shadow
+    private String historyBuffer;
+    @Shadow
+    private int sentHistoryCursor;
 
     @Inject(
         method = "keyTyped",
@@ -25,7 +28,7 @@ public class MixinGuiChat {
     public void keyTypedHook(char typedChar, int keyCode, CallbackInfo callbackInfo) {
         if (getThis() instanceof ProgresoGuiChat) return;
         if (inputField.getText().isEmpty() && typedChar == CommandManager.PREFIX) {
-            displayProgresoGuiChat(String.valueOf(CommandManager.PREFIX));
+            displayProgresoGuiChat(PREFIX_STRING);
         }
     }
 
@@ -33,6 +36,7 @@ public class MixinGuiChat {
         return (GuiChat) (Object) this;
     }
 
+    @SuppressWarnings("SameParameterValue")
     private void displayProgresoGuiChat(String defaultText) {
         Minecraft.getMinecraft().displayGuiScreen(new ProgresoGuiChat(
             defaultText,

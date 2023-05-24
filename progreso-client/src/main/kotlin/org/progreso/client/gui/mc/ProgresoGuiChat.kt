@@ -29,10 +29,10 @@ class ProgresoGuiChat(
             Keyboard.KEY_ESCAPE -> mc.displayGuiScreen(null)
 
             Keyboard.KEY_RETURN, Keyboard.KEY_NUMPADENTER -> {
+                mc.displayGuiScreen(null)
                 val message = inputField.text.trim()
                 if (message.isNotEmpty()) sendChatMessage(message)
                 chatGUI.addToSentMessages(message)
-                mc.displayGuiScreen(null)
             }
 
             Keyboard.KEY_TAB -> {

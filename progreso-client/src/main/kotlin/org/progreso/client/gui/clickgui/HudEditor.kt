@@ -15,8 +15,6 @@ class HudEditor : ClickGUI() {
 
     override fun initialize() {
         components.add(Window(10, 10, COMPONENT_WIDTH).apply {
-            x += COMPONENT_WIDTH + 10
-
             this.components.add(
                 CategoryComponent(
                     Category.Hud,

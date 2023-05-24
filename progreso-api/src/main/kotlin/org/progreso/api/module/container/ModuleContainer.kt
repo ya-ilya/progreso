@@ -14,7 +14,11 @@ interface ModuleContainer {
     }
 
     fun getModuleByName(name: String): AbstractModule {
-        return modules.first { it.name == name }
+        return getModuleByNameOrNull(name)!!
+    }
+
+    fun getModuleByNameOrNull(name: String): AbstractModule? {
+        return modules.firstOrNull { it.name == name }
     }
 
     @Suppress("UNCHECKED_CAST")
