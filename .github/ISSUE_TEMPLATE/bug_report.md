@@ -21,7 +21,7 @@ Steps to reproduce the behavior:
 A clear and concise description of what you expected to happen.
 
 **Crashlog**
-If your game crashes, attach the crash log
+If your game crashes, attach the crash log.
 
 **Additional context**
 Add any other context about the problem here.
