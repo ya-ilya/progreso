@@ -1,3 +1,4 @@
+val progresoVersion: String by project
 val mixinVersion: String by project
 val forgeVersion: String by project
 val mappingsChannel: String by project
@@ -18,12 +19,14 @@ buildscript {
 
 plugins {
     kotlin("jvm")
+    `maven-publish`
 }
 
 apply(plugin = "net.minecraftforge.gradle")
 apply(plugin = "org.spongepowered.mixin")
 
 group = "org.progreso"
+version = progresoVersion
 
 configure<net.minecraftforge.gradle.userdev.UserDevExtension> {
     mappings(mappingsChannel, mappingsVersion)
@@ -137,5 +140,15 @@ tasks {
         from(configurations["library"].map {
             if (it.isDirectory) it else zipTree(it)
         })
+    }
+}
+
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            artifact(tasks.getByName("buildApi")) { classifier = null }
+            artifact(tasks.getByName("buildApiSource")) { classifier = "sources" }
+        }
     }
 }
