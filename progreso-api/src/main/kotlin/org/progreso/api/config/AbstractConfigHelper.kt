@@ -127,18 +127,18 @@ abstract class AbstractConfigHelper<T : AbstractConfig>(
     }
 
     private fun writeConfig(name: String, config: T) {
-        val path = configPath(name)
+        val path = name.configPath
         Api.GSON.newJsonWriter(path.writer()).use {
             write(config, it)
         }
     }
 
     private fun readConfig(name: String): T {
-        val path = configPath(name)
+        val path = name.configPath
         return Api.GSON.newJsonReader(path.reader()).use {
             read(path.nameWithoutExtension, it)
         }
     }
 
-    private fun configPath(name: String) = Paths.get("$path${File.separator}$name.json")
+    private val String.configPath get() = Paths.get("$path${File.separator}$this.json")
 }

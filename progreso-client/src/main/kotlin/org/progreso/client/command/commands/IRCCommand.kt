@@ -11,10 +11,8 @@ import org.progreso.api.irc.packet.packets.IRCMessagePacket
 import org.progreso.client.command.Command
 import java.net.URI
 
-class IRCCommand : Command("irc") {
-    private companion object {
-        var client: IRCClient? = null
-    }
+object IRCCommand : Command("irc") {
+    private var client: IRCClient? = null
 
     override fun build(builder: ArgumentBuilder) {
         builder.literal("connect") {

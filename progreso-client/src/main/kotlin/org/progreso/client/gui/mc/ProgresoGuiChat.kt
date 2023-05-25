@@ -3,9 +3,9 @@ package org.progreso.client.gui.mc
 import net.minecraft.client.gui.GuiChat
 import org.lwjgl.input.Keyboard
 import org.progreso.api.managers.CommandManager
-import org.progreso.client.gui.clickgui.ClickGUI
 import org.progreso.client.mixins.historyBuffer
 import org.progreso.client.mixins.sentHistoryCursor
+import org.progreso.client.module.modules.client.ClickGUI
 import org.progreso.client.util.Render2DUtil
 import java.awt.Color
 
@@ -73,14 +73,14 @@ class ProgresoGuiChat(
     }
 
     override fun drawScreen(mouseX: Int, mouseY: Int, partialTicks: Float) {
-        Render2DUtil.drawBorderedRect(2, height - 14, width - 4, 12, Color(Int.MIN_VALUE), ClickGUI.MODULE.theme)
+        Render2DUtil.drawBorderedRect(2, height - 14, width - 4, 12, Color(Int.MIN_VALUE), ClickGUI.theme)
 
         if (predict.isNotEmpty()) {
             fontRenderer.drawStringWithShadow(
                 predict.joinToString("/"),
                 (fontRenderer.getStringWidth(inputField.text) + inputField.x).toFloat(),
                 inputField.y.toFloat(),
-                ClickGUI.MODULE.theme.rgb
+                ClickGUI.theme.rgb
             )
         }
 

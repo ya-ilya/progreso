@@ -7,7 +7,7 @@ import org.progreso.client.module.HudModule
 import org.progreso.client.util.Render2DUtil.drawString
 import java.awt.Color
 
-class Watermark : HudModule("Watermark", Category.Hud) {
+object Watermark : HudModule("Watermark", Category.Hud) {
     private val color by setting("Color", Color.RED)
 
     init {

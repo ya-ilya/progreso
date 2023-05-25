@@ -31,5 +31,4 @@ class FriendConfigHelper : AbstractConfigHelper<FriendConfig>(
         }
         writer.endArray()
     }
-
 }

@@ -16,9 +16,7 @@ object Api {
     var CHAT by Delegates.notNull<ChatAccessor>()
     var LOGGER by Delegates.notNull<LoggerAccessor>()
 
-    var API_EVENT_BUS = EventBus()
-
-    @JvmStatic
+    val API_EVENT_BUS = EventBus()
     val GSON: Gson = GsonBuilder()
         .setPrettyPrinting()
         .create()

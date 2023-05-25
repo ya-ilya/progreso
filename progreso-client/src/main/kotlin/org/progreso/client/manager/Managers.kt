@@ -5,7 +5,7 @@ import org.progreso.client.manager.managers.minecraft.EventManager
 import org.progreso.client.manager.managers.render.TextRenderManager
 
 object Managers {
-    fun initialize() {
+    init {
         EventManager
         CombatManager
         TextRenderManager

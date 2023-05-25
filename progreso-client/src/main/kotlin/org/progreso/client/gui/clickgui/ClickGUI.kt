@@ -2,20 +2,15 @@ package org.progreso.client.gui.clickgui
 
 import net.minecraft.client.gui.GuiScreen
 import org.lwjgl.input.Mouse
-import org.progreso.api.managers.ModuleManager
 import org.progreso.client.gui.clickgui.component.AbstractComponent
 import org.progreso.client.gui.clickgui.component.components.CategoryComponent
 import org.progreso.client.module.Category
 import org.progreso.client.module.modules.client.ClickGUI
-import java.awt.Color
 
 open class ClickGUI : GuiScreen() {
     companion object {
         const val COMPONENT_HEIGHT = 14
         const val COMPONENT_WIDTH = 90
-
-        val DEFAULT_RECT_COLOR = Color(0, 0, 0, 130)
-        val MODULE by lazy { ModuleManager.getModuleByClass(ClickGUI::class) }
     }
 
     protected var components = mutableListOf<AbstractComponent>()
@@ -44,9 +39,9 @@ open class ClickGUI : GuiScreen() {
         val wheel = Mouse.getDWheel()
 
         if (wheel > 0) {
-            components.forEach { it.y += MODULE.scrollSpeed }
+            components.forEach { it.y += ClickGUI.scrollSpeed }
         } else if (wheel < 0) {
-            components.forEach { it.y -= MODULE.scrollSpeed }
+            components.forEach { it.y -= ClickGUI.scrollSpeed }
         }
 
         components.forEach { it.drawComponent(mouseX, mouseY, partialTicks) }

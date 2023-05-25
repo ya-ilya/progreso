@@ -11,7 +11,7 @@ import org.progreso.api.plugin.loader.PluginLoader
 import org.progreso.client.command.Command
 import org.progreso.client.gui.mc.ProgresoGuiPlugins
 
-class PluginCommand : Command("plugin") {
+object PluginCommand : Command("plugin") {
     override fun build(builder: ArgumentBuilder) {
         builder.literal("load") {
             argument("path", string()).executes { context ->

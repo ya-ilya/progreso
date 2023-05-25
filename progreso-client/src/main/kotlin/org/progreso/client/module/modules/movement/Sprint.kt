@@ -5,7 +5,7 @@ import org.progreso.client.events.safeEventListener
 import org.progreso.client.module.Category
 import org.progreso.client.module.Module
 
-class Sprint : Module("Sprint", Category.Movement) {
+object Sprint : Module("Sprint", Category.Movement) {
     init {
         safeEventListener<TickEvent> { _ ->
             if (mc.gameSettings.keyBindForward.isKeyDown) {

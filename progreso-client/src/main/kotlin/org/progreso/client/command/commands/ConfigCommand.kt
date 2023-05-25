@@ -8,7 +8,7 @@ import org.progreso.api.config.AbstractConfigHelper
 import org.progreso.api.managers.ConfigManager
 import org.progreso.client.command.Command
 
-class ConfigCommand : Command("config") {
+object ConfigCommand : Command("config") {
     override fun build(builder: ArgumentBuilder) {
         builder.argument("helper", ConfigHelperArgumentType.create()) {
             literal("load") {

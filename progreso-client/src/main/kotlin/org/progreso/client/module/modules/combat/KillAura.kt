@@ -12,7 +12,7 @@ import org.progreso.client.util.EntityUtil.canBeAttacked
 import org.progreso.client.util.EntityUtil.entityType
 import org.progreso.client.util.PlayerUtil
 
-class KillAura : Module("KillAura", Category.Combat) {
+object KillAura : Module("KillAura", Category.Combat) {
     private val distance by setting("Distance", 4, 1..6)
     private val onlySword by setting("OnlySword", true)
     private val target by setting("Target", Target.Distance)

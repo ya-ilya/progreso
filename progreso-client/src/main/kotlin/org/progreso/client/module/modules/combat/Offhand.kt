@@ -9,7 +9,7 @@ import org.progreso.client.module.Category
 import org.progreso.client.module.Module
 import org.progreso.client.util.InventoryUtil
 
-class Offhand : Module("Offhand", Category.Combat) {
+object Offhand : Module("Offhand", Category.Combat) {
     private val mode by setting("Mode", Mode.Totem)
     private val totemHealth by setting("TotemHealth", 10, 1..20)
 

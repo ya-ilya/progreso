@@ -10,7 +10,7 @@ import org.progreso.client.module.Category
 import org.progreso.client.module.Module
 import org.progreso.client.util.InventoryUtil
 
-class AutoTool : Module("AutoTool", Category.Misc) {
+object AutoTool : Module("AutoTool", Category.Misc) {
     init {
         safeEventListener<DamageBlockEvent> { event ->
             val best = InventoryUtil.hotbar.maxByOrNull { slot -> getDestroySpeedForBlock(slot.stack, event.pos) }

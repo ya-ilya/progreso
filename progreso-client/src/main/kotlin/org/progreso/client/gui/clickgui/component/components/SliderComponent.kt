@@ -21,7 +21,6 @@ class SliderComponent(
     }
 
     private var dragging = false
-    private var calculateValue = false
     private var sliderWidth = 0
 
     private val sliderMaxWidth get() = width - SLIDER_START_OFFSET - SLIDER_END_OFFSET
@@ -45,8 +44,6 @@ class SliderComponent(
         super.drawComponent(mouseX, mouseY, partialTicks)
 
         if (dragging) {
-            calculateValue = true
-
             sliderWidth = if (mouseX < sliderStartX) {
                 0
             } else if (mouseX > sliderEndX) {
@@ -54,9 +51,7 @@ class SliderComponent(
             } else {
                 mouseX - x - SLIDER_START_OFFSET
             }
-        }
 
-        if (calculateValue) {
             setting.setNumberValue(
                 String.format(
                     "%.1f",

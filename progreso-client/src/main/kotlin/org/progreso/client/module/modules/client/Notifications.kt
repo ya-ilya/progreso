@@ -11,7 +11,7 @@ import org.progreso.client.manager.managers.minecraft.CombatManager
 import org.progreso.client.module.Category
 import org.progreso.client.module.Module
 
-class Notifications : Module("Notifications", Category.Client) {
+object Notifications : Module("Notifications", Category.Client) {
     private val modules by setting("Modules", true)
     private val pops by setting("Pops", true)
 

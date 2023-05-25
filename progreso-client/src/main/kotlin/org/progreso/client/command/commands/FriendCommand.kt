@@ -6,7 +6,7 @@ import org.progreso.api.command.argument.arguments.StringArgumentType.Companion.
 import org.progreso.api.managers.FriendManager
 import org.progreso.client.command.Command
 
-class FriendCommand : Command("friend") {
+object FriendCommand : Command("friend") {
     override fun build(builder: ArgumentBuilder) {
         builder.literal("add") {
             argument("player", string()).executes { context ->

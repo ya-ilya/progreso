@@ -8,7 +8,7 @@ import org.progreso.client.module.Module
 import java.util.*
 
 
-class FakePlayer : Module("FakePlayer", Category.Misc) {
+object FakePlayer : Module("FakePlayer", Category.Misc) {
     private val fakePlayerName by setting("Name", "FakePlayer")
 
     init {

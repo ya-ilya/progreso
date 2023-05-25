@@ -1,13 +1,13 @@
 package org.progreso.client.gui.clickgui.component
 
-import org.progreso.client.gui.clickgui.ClickGUI
 import org.progreso.client.gui.clickgui.component.data.ComponentOffsets
+import org.progreso.client.module.modules.client.ClickGUI
 import org.progreso.client.util.Render2DUtil
-import java.awt.Color
 
 abstract class AbstractComponent {
     protected companion object {
-        val theme: Color get() = ClickGUI.MODULE.theme
+        val theme get() = ClickGUI.theme
+        val rectColor get() = ClickGUI.rectColor
     }
 
     var components = mutableListOf<AbstractComponent>()
@@ -25,7 +25,7 @@ abstract class AbstractComponent {
 
     open fun drawComponent(mouseX: Int, mouseY: Int, partialTicks: Float) {
         if (renderRect) {
-            Render2DUtil.drawRect(x, y, width, height, ClickGUI.DEFAULT_RECT_COLOR)
+            Render2DUtil.drawRect(x, y, width, height, rectColor)
         }
 
         visibleComponents.forEach { it.drawComponent(mouseX, mouseY, partialTicks) }

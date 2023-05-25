@@ -38,7 +38,7 @@ class Client {
             LOGGER.info("Initializing client modules...")
             for (clazz in Reflections("org.progreso.client.module.modules").getSubTypesOf(AbstractModule::class.java)) {
                 try {
-                    ModuleManager.addModule(clazz.newInstance())
+                    ModuleManager.addModule(clazz.getField("INSTANCE").get(null) as AbstractModule)
                 } catch (ex: Exception) {
                     // Ignored
                 }
@@ -47,20 +47,20 @@ class Client {
             LOGGER.info("Initializing client commands...")
             for (clazz in Reflections("org.progreso.client.command.commands").getSubTypesOf(AbstractCommand::class.java)) {
                 try {
-                    CommandManager.addCommand(clazz.newInstance())
+                    CommandManager.addCommand(clazz.getField("INSTANCE").get(null) as AbstractCommand)
                 } catch (ex: Exception) {
                     // Ignored
                 }
             }
 
+            Api.initialize(EventAccessor, ChatAccessor, LoggerAccessor)
+
             LOGGER.info("Initializing client guis...")
             CLICK_GUI.initialize()
             HUD_EDITOR.initialize()
 
-            Api.initialize(EventAccessor, ChatAccessor, LoggerAccessor)
-
             LOGGER.info("Initializing client managers...")
-            Managers.initialize()
+            Managers
         }
     }
 }

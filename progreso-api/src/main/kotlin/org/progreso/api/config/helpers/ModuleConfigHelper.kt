@@ -108,7 +108,7 @@ class ModuleConfigHelper(
                 writer.name(setting.name)
 
                 when (val value = setting.value) {
-                    is Color -> writer.value(value.hex)
+                    is Color -> writer.value(colorToString(value))
                     is Enum<*> -> writer.value(value.name)
                     is String -> writer.value(value)
                     is Boolean -> writer.value(value)
@@ -124,9 +124,8 @@ class ModuleConfigHelper(
             }
         }
 
-        val Color.hex: String
-            get() {
-                return String.format("#%02x%02x%02x%02x", alpha, red, green, blue)
-            }
+        fun colorToString(color: Color): String {
+            return "${color.red}-${color.green}-${color.blue}-${color.alpha}"
+        }
     }
 }

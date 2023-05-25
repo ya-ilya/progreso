@@ -40,12 +40,7 @@ class ColorComponent(
 
     private val alphaSetting = object : NumberSetting<Int>("Alpha", setting.value.alpha, 0..255) {
         override fun valueChanged(oldValue: Int, newValue: Int) {
-            setting.value = Color(
-                setting.value.red,
-                setting.value.green,
-                setting.value.blue,
-                newValue
-            )
+            setting.value = setting.value.copy(alpha = newValue)
         }
     }
 
@@ -151,16 +146,23 @@ class ColorComponent(
 
     private fun setHue(hue: Float) {
         val hsb = hsbValue
-        setting.value = Color(Color.HSBtoRGB(hue, hsb[1], hsb[2]))
+        val alpha = setting.value.alpha
+        setting.value = Color(Color.HSBtoRGB(hue, hsb[1], hsb[2])).copy(alpha = alpha)
     }
 
     private fun setSaturation(saturation: Float) {
         val hsb = hsbValue
-        setting.value = Color(Color.HSBtoRGB(hsb[0], saturation, hsb[2]))
+        val alpha = setting.value.alpha
+        setting.value = Color(Color.HSBtoRGB(hsb[0], saturation, hsb[2])).copy(alpha = alpha)
     }
 
     private fun setBrightness(brightness: Float) {
         val hsb = hsbValue
-        setting.value = Color(Color.HSBtoRGB(hsb[0], hsb[1], brightness))
+        val alpha = setting.value.alpha
+        setting.value = Color(Color.HSBtoRGB(hsb[0], hsb[1], brightness)).copy(alpha = alpha)
+    }
+
+    private fun Color.copy(red: Int? = null, green: Int? = null, blue: Int? = null, alpha: Int? = null): Color {
+        return Color(red ?: this.red, green ?: this.green, blue ?: this.blue, alpha ?: this.alpha)
     }
 }

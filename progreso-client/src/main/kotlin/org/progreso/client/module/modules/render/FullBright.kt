@@ -5,7 +5,7 @@ import org.progreso.client.events.safeEventListener
 import org.progreso.client.module.Category
 import org.progreso.client.module.Module
 
-class FullBright : Module("FullBright", Category.Render) {
+object FullBright : Module("FullBright", Category.Render) {
     init {
         var oldGamma = 0f
 

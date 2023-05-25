@@ -5,8 +5,8 @@ import org.progreso.api.setting.AbstractSetting
 import org.progreso.api.setting.settings.*
 import org.progreso.client.gui.clickgui.component.AbstractComponent
 import org.progreso.client.gui.clickgui.component.ChildComponent
-import org.progreso.client.util.Render2DUtil
 import org.progreso.client.util.Render2DUtil.drawStringRelatively
+import org.progreso.client.util.Render2DUtil.drawVerticalLine
 import java.awt.Color
 
 class ModuleComponent(
@@ -75,14 +75,14 @@ class ModuleComponent(
                 val component = visibleComponents[i]
 
                 if (component is ListComponent) {
-                    Render2DUtil.drawVerticalLine(
+                    drawVerticalLine(
                         x,
-                        component.y - if (i == 1) 1 else 0,
+                        component.y - if (i != 1) 1 else 0,
                         component.y + (component.header?.height ?: component.height),
                         theme
                     )
                 } else {
-                    Render2DUtil.drawVerticalLine(
+                    drawVerticalLine(
                         x,
                         component.y,
                         component.y + component.height + if (i != visibleComponents.lastIndex) 1 else 0,
