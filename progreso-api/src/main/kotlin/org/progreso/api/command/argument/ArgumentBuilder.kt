@@ -4,7 +4,7 @@ import org.progreso.api.command.dispatcher.CommandContext
 
 open class ArgumentBuilder {
     val nodes = mutableListOf<Node>()
-    var executes: (CommandContext) -> Unit = { }
+    private var executes: (CommandContext) -> Unit = { }
 
     fun literal(
         name: String,
@@ -36,6 +36,10 @@ open class ArgumentBuilder {
 
     fun findArgument(predicate: (Node.ArgumentNode) -> Boolean): Node.ArgumentNode? {
         return nodes.filterIsInstance<Node.ArgumentNode>().firstOrNull(predicate)
+    }
+
+    operator fun invoke(context: CommandContext) {
+        executes.invoke(context)
     }
 
     sealed class Node(val name: String, val builder: ArgumentBuilder) {

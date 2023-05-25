@@ -33,3 +33,7 @@ inline fun <reified T : Event> Any.safeEventListener(
         }
     }
 }
+
+enum class PacketEventType {
+    Send, Receive, Any
+}

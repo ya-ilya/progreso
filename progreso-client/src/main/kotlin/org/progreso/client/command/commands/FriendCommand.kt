@@ -1,14 +1,13 @@
 package org.progreso.client.command.commands
 
-import org.progreso.api.command.argument.ArgumentBuilder
 import org.progreso.api.command.argument.arguments.FriendArgumentType
 import org.progreso.api.command.argument.arguments.StringArgumentType.Companion.string
 import org.progreso.api.managers.FriendManager
 import org.progreso.client.command.Command
 
 object FriendCommand : Command("friend") {
-    override fun build(builder: ArgumentBuilder) {
-        builder.literal("add") {
+    init {
+        literal("add") {
             argument("player", string()).executes { context ->
                 val player = context.get<String>("player")
 
@@ -21,7 +20,7 @@ object FriendCommand : Command("friend") {
             }
         }
 
-        builder.literal("remove") {
+        literal("remove") {
             argument("friend", FriendArgumentType.create()).executes { context ->
                 val friend = context.getNullable<FriendManager.Friend>("friend") ?: return@executes
 
@@ -30,7 +29,7 @@ object FriendCommand : Command("friend") {
             }
         }
 
-        builder.literal("list").executes { _ ->
+        literal("list").executes { _ ->
             info("Friends: ${FriendManager.friends.joinToString()}")
         }
     }

@@ -1,7 +1,6 @@
 package org.progreso.client.command.commands
 
 import com.mojang.realmsclient.gui.ChatFormatting
-import org.progreso.api.command.argument.ArgumentBuilder
 import org.progreso.api.command.argument.arguments.PluginArgumentType
 import org.progreso.api.command.argument.arguments.StringArgumentType.Companion.string
 import org.progreso.api.command.dispatcher.CommandContext
@@ -12,8 +11,8 @@ import org.progreso.client.command.Command
 import org.progreso.client.gui.mc.ProgresoGuiPlugins
 
 object PluginCommand : Command("plugin") {
-    override fun build(builder: ArgumentBuilder) {
-        builder.literal("load") {
+    init {
+        literal("load") {
             argument("path", string()).executes { context ->
                 val path = context.get<String>("path")
 
@@ -29,7 +28,7 @@ object PluginCommand : Command("plugin") {
             }
         }
 
-        builder.literal("unload") {
+        literal("unload") {
             argument("plugin", PluginArgumentType.create()).executes { context ->
                 val plugin = context.plugin() ?: return@executes
 
@@ -40,7 +39,7 @@ object PluginCommand : Command("plugin") {
             }
         }
 
-        builder.literal("info") {
+        literal("info") {
             argument("plugin", PluginArgumentType.create()).executes { context ->
                 val plugin = context.plugin() ?: return@executes
 
@@ -55,11 +54,11 @@ object PluginCommand : Command("plugin") {
             }
         }
 
-        builder.literal("list").executes { _ ->
+        literal("list").executes { _ ->
             info("Plugins: ${PluginManager.plugins.joinToString { it.name }}")
         }
 
-        builder.literal("gui").executes { _ ->
+        literal("gui").executes { _ ->
             mc.displayGuiScreen(ProgresoGuiPlugins(PluginManager.plugins.toList()))
         }
     }

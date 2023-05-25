@@ -12,9 +12,7 @@ import org.progreso.api.command.argument.ArgumentBuilder
 abstract class AbstractCommand(
     val name: String,
     val description: String
-) {
-    abstract fun build(builder: ArgumentBuilder)
-
+) : ArgumentBuilder() {
     protected companion object {
         fun send(message: Any) = Api.CHAT.send(message)
         fun info(message: Any) = Api.CHAT.info(message)

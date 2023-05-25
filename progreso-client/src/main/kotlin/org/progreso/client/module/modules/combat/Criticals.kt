@@ -9,7 +9,6 @@ import org.progreso.client.mixins.isInWeb
 import org.progreso.client.module.Category
 import org.progreso.client.module.Module
 
-@Suppress("SpellCheckingInspection")
 object Criticals : Module("Criticals", Category.Combat) {
     private val onlyKillAura by setting("OnlyKillAura", false)
 

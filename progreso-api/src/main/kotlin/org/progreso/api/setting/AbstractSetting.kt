@@ -21,16 +21,11 @@ abstract class AbstractSetting<T : Any>(
 
     open fun valueChanged(oldValue: T, newValue: T) {}
 
-    operator fun getValue(thisRef: Any?, property: KProperty<*>): T {
-        return value
-    }
-
-    operator fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-        this.value = value
-    }
-
     @Suppress("UNCHECKED_CAST")
     open fun setAnyValue(any: Any) {
         this.value = any as T
     }
+
+    operator fun getValue(thisRef: Any?, property: KProperty<*>) = value
+    operator fun setValue(thisRef: Any?, property: KProperty<*>, value: T) { this.value = value }
 }

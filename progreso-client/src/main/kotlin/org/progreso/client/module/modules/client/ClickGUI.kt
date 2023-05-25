@@ -1,7 +1,7 @@
 package org.progreso.client.module.modules.client
 
 import org.lwjgl.input.Keyboard
-import org.progreso.client.Client
+import org.progreso.client.gui.clickgui.ClickGUI
 import org.progreso.client.module.Category
 import org.progreso.client.module.Module
 import java.awt.Color
@@ -16,7 +16,7 @@ object ClickGUI : Module("ClickGUI", Category.Client) {
         bind.value = Keyboard.KEY_RSHIFT
 
         onEnable {
-            mc.displayGuiScreen(Client.CLICK_GUI)
+            mc.displayGuiScreen(ClickGUI)
             toggle()
         }
     }

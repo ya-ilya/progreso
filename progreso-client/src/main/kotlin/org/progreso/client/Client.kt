@@ -27,12 +27,6 @@ class Client {
         @JvmField
         val EVENT_BUS = Api.API_EVENT_BUS
 
-        @JvmField
-        val CLICK_GUI = ClickGUI()
-
-        @JvmField
-        val HUD_EDITOR = HudEditor()
-
         @JvmStatic
         fun initialize() {
             LOGGER.info("Initializing client modules...")
@@ -56,8 +50,8 @@ class Client {
             Api.initialize(EventAccessor, ChatAccessor, LoggerAccessor)
 
             LOGGER.info("Initializing client guis...")
-            CLICK_GUI.initialize()
-            HUD_EDITOR.initialize()
+            ClickGUI.initialize()
+            HudEditor.initialize()
 
             LOGGER.info("Initializing client managers...")
             Managers

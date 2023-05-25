@@ -1,5 +1,6 @@
 package org.progreso.api.irc.packet
 
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import org.progreso.api.irc.gson.RuntimeTypeAdapterFactory
 import org.progreso.api.irc.packet.packets.IRCAuthFailedPacket
@@ -13,7 +14,7 @@ interface IRCPacket {
             .registerSubtype(IRCAuthPacket::class.java)
             .registerSubtype(IRCMessagePacket::class.java)
 
-        val GSON = GsonBuilder()
+        val GSON: Gson = GsonBuilder()
             .registerTypeAdapterFactory(GSON_FACTORY)
             .create()
     }

@@ -1,7 +1,6 @@
 package org.progreso.client.command.commands
 
 import org.java_websocket.handshake.ServerHandshake
-import org.progreso.api.command.argument.ArgumentBuilder
 import org.progreso.api.command.argument.arguments.StringArgumentType.Companion.string
 import org.progreso.api.irc.IRCClient
 import org.progreso.api.irc.packet.IRCPacket
@@ -14,8 +13,8 @@ import java.net.URI
 object IRCCommand : Command("irc") {
     private var client: IRCClient? = null
 
-    override fun build(builder: ArgumentBuilder) {
-        builder.literal("connect") {
+    init {
+        literal("connect") {
             argument("address", string()).executes { context ->
                 val address = context.get<String>("address")
 
@@ -54,7 +53,7 @@ object IRCCommand : Command("irc") {
             }
         }
 
-        builder.literal("disconnect").executes {
+        literal("disconnect").executes {
             if (client == null || client?.isClosed == true || client?.isOpen == false) {
                 return@executes error("[IRC] Client isn't connected to the server")
             }
@@ -63,7 +62,7 @@ object IRCCommand : Command("irc") {
             client = null
         }
 
-        builder.literal("send") {
+        literal("send") {
             argument("message", string()).executes { context ->
                 if (client == null || client?.isClosed == true || client?.isOpen == false) {
                     return@executes error("[IRC] Client isn't connected to the server")

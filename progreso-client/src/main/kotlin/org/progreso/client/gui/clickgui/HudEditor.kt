@@ -5,12 +5,10 @@ import org.progreso.api.module.AbstractHudModule
 import org.progreso.client.gui.clickgui.component.components.CategoryComponent
 import org.progreso.client.module.Category
 
-class HudEditor : ClickGUI() {
-    private companion object {
-        val HUD_MODULES by lazy {
-            ModuleManager.getModulesByCategory(Category.Hud)
-                .filterIsInstance<AbstractHudModule>()
-        }
+object HudEditor : ClickGUI() {
+    private val HUD_MODULES by lazy {
+        ModuleManager.getModulesByCategory(Category.Hud)
+            .filterIsInstance<AbstractHudModule>()
     }
 
     override fun initialize() {

@@ -47,7 +47,7 @@ class CommandDispatcher {
         context: CommandContext
     ) {
         if (!reader.hasNext()) {
-            builder.executes.invoke(context)
+            builder.invoke(context)
             return
         }
 

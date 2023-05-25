@@ -1,6 +1,5 @@
 package org.progreso.client.command.commands
 
-import org.progreso.api.command.argument.ArgumentBuilder
 import org.progreso.api.command.argument.arguments.ConfigHelperArgumentType
 import org.progreso.api.command.argument.arguments.StringArgumentType.Companion.string
 import org.progreso.api.command.dispatcher.CommandContext
@@ -9,8 +8,8 @@ import org.progreso.api.managers.ConfigManager
 import org.progreso.client.command.Command
 
 object ConfigCommand : Command("config") {
-    override fun build(builder: ArgumentBuilder) {
-        builder.argument("helper", ConfigHelperArgumentType.create()) {
+    init {
+        argument("helper", ConfigHelperArgumentType.create()) {
             literal("load") {
                 argument("config", string()).executes { context ->
                     val config = context.get<String>("config")

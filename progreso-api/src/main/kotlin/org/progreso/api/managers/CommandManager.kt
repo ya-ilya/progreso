@@ -14,7 +14,7 @@ object CommandManager : CommandContainer {
     override val commands = mutableSetOf<AbstractCommand>()
 
     override fun addCommand(command: AbstractCommand) {
-        DISPATCHER.register(command.name, ArgumentBuilder().also { command.build(it) })
+        DISPATCHER.register(command.name, command)
         super.addCommand(command)
     }
 

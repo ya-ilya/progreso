@@ -1,6 +1,5 @@
 package org.progreso.client.util
 
-import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.Gui
 import net.minecraft.client.renderer.GlStateManager
 import org.lwjgl.opengl.GL11
@@ -12,8 +11,6 @@ import kotlin.math.sin
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 object Render2DUtil {
-    private val mc: Minecraft = Minecraft.getMinecraft()
-
     val Color.glColors: List<Float>
         get() = listOf(
             (rgb shr 16 and 0xFF) / 255.0f,

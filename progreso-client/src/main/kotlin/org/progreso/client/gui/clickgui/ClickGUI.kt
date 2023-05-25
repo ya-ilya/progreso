@@ -8,7 +8,7 @@ import org.progreso.client.module.Category
 import org.progreso.client.module.modules.client.ClickGUI
 
 open class ClickGUI : GuiScreen() {
-    companion object {
+    companion object : org.progreso.client.gui.clickgui.ClickGUI() {
         const val COMPONENT_HEIGHT = 14
         const val COMPONENT_WIDTH = 90
     }
