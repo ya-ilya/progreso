@@ -12,7 +12,7 @@ object ConfigCommand : Command("config") {
         argument("helper", ConfigHelperArgumentType.create()) {
             literal("load") {
                 argument("config", string()).executes { context ->
-                    val config = context.get<String>("config")
+                    val config: String by context
                     val helper = context.helper() ?: return@executes
 
                     try {
@@ -28,7 +28,7 @@ object ConfigCommand : Command("config") {
 
             literal("save") {
                 argument("config", string()).executes { context ->
-                    val config = context.get<String>("config")
+                    val config: String by context
                     val helper = context.helper() ?: return@executes
 
                     helper.save(config)
@@ -45,7 +45,7 @@ object ConfigCommand : Command("config") {
 
             literal("refresh") {
                 argument("config", string()).executes { context ->
-                    val config = context.get<String>("config")
+                    val config: String by context
                     val helper = context.helper() ?: return@executes
 
                     helper.refresh(config)

@@ -9,7 +9,7 @@ object FriendCommand : Command("friend") {
     init {
         literal("add") {
             argument("player", string()).executes { context ->
-                val player = context.get<String>("player")
+                val player: String by context
 
                 if (FriendManager.isFriend(player)) {
                     error("$player already your friend")

@@ -1,5 +1,7 @@
 package org.progreso.api.command.dispatcher
 
+import kotlin.reflect.KProperty
+
 @Suppress("UNCHECKED_CAST")
 class CommandContext {
     private val arguments = mutableMapOf<String, Any?>()
@@ -14,5 +16,9 @@ class CommandContext {
 
     fun <T> getNullable(name: String): T? {
         return arguments[name] as T?
+    }
+
+    operator fun <T : Any> getValue(thisRef: Any?, property: KProperty<*>): T {
+        return get(property.name)
     }
 }

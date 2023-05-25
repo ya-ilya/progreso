@@ -16,7 +16,7 @@ object IRCCommand : Command("irc") {
     init {
         literal("connect") {
             argument("address", string()).executes { context ->
-                val address = context.get<String>("address")
+                val address: String by context
 
                 if (client?.isOpen == true && client?.isClosed == false) client?.close()
                 client = object : IRCClient(URI.create(address)) {

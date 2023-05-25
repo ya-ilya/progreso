@@ -14,7 +14,7 @@ object PluginCommand : Command("plugin") {
     init {
         literal("load") {
             argument("path", string()).executes { context ->
-                val path = context.get<String>("path")
+                val path: String by context
 
                 try {
                     val plugin = PluginLoader.loadPlugin(path)
