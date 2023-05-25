@@ -146,9 +146,9 @@ tasks {
 
 publishing {
     publications {
-        create<MavenPublication>("maven") {
-            artifact(tasks.getByName("buildApi")) { classifier = null }
-            artifact(tasks.getByName("buildApiSource")) { classifier = "sources" }
+        create<MavenPublication>("api") {
+            artifact("buildApi") { classifier = null }
+            artifact("buildApiSource") { classifier = "sources" }
         }
     }
 }
