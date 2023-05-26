@@ -2,7 +2,6 @@ package org.progreso.api.managers
 
 import org.progreso.api.Api
 import org.progreso.api.command.AbstractCommand
-import org.progreso.api.command.argument.ArgumentBuilder
 import org.progreso.api.command.container.CommandContainer
 import org.progreso.api.command.dispatcher.CommandDispatcher
 import org.progreso.api.command.exceptions.SyntaxException

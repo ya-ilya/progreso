@@ -27,5 +27,7 @@ abstract class AbstractSetting<T : Any>(
     }
 
     operator fun getValue(thisRef: Any?, property: KProperty<*>) = value
-    operator fun setValue(thisRef: Any?, property: KProperty<*>, value: T) { this.value = value }
+    operator fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
+        this.value = value
+    }
 }

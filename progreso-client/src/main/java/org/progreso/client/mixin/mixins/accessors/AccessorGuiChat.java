@@ -13,8 +13,8 @@ public interface AccessorGuiChat {
     void setHistoryBuffer(String historyBuffer);
 
     @Accessor("sentHistoryCursor")
-    void setSentHistoryCursor(int sentHistoryCursor);
+    int getSentHistoryCursor();
 
     @Accessor("sentHistoryCursor")
-    int getSentHistoryCursor();
+    void setSentHistoryCursor(int sentHistoryCursor);
 }

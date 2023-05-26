@@ -11,7 +11,7 @@ class ModuleConfigProvider(private val container: ModuleContainer) : AbstractCon
         return ModuleConfig(
             name,
             container.modules
-                .map { ModuleConfig.ModuleConfigData.fromAbstractModule(it) }
+                .map { ModuleConfig.ModuleConfigData.create(it) }
                 .toMutableList()
         )
     }

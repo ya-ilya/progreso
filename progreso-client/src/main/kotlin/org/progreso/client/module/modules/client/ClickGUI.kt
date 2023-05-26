@@ -13,7 +13,7 @@ object ClickGUI : Module("ClickGUI", Category.Client) {
     val rectColor by setting("RectColor", Color(0, 0, 0, 130))
 
     init {
-        bind.value = Keyboard.KEY_RSHIFT
+        bind = Keyboard.KEY_RSHIFT
 
         onEnable {
             mc.displayGuiScreen(ClickGUI)

@@ -5,7 +5,7 @@ import org.progreso.api.setting.AbstractSetting
 open class EnumSetting<T : Enum<T>>(
     name: String,
     initialValue: T,
-    visibility: () -> Boolean
+    visibility: () -> Boolean = { true }
 ) : AbstractSetting<T>(name, initialValue, visibility) {
     private val values: Array<T> = value.javaClass.enumConstants
 

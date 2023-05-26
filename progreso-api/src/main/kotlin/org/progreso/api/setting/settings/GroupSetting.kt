@@ -5,7 +5,7 @@ import org.progreso.api.setting.container.SettingContainer
 
 open class GroupSetting(
     name: String,
-    visibility: () -> Boolean
+    visibility: () -> Boolean = { true }
 ) : AbstractSetting<Set<AbstractSetting<*>>>(name, emptySet(), visibility), SettingContainer {
     override val settings = mutableSetOf<AbstractSetting<*>>()
 

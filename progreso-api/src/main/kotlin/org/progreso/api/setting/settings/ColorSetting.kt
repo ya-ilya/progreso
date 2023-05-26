@@ -3,10 +3,10 @@ package org.progreso.api.setting.settings
 import org.progreso.api.setting.AbstractSetting
 import java.awt.Color
 
-class ColorSetting(
+open class ColorSetting(
     name: String,
     initialValue: Color,
-    visibility: () -> Boolean
+    visibility: () -> Boolean = { true }
 ) : AbstractSetting<Color>(name, initialValue, visibility) {
     override fun setAnyValue(any: Any) {
         value = when (any) {

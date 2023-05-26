@@ -4,8 +4,8 @@
   "package": "org.progreso.client.mixin.mixins",
   "refmap": "mixins.progreso.refmap.json",
   "mixins": [
-    "MixinMinecraft",
     "MixinGuiChat",
+    "MixinMinecraft",
     "MixinNetworkManager",
     "MixinPlayerControllerMP",
     "accessors.AccessorEntity",

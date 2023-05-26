@@ -10,9 +10,9 @@ open class ArgumentBuilder {
         name: String,
         block: ArgumentBuilder.() -> Unit = { }
     ): ArgumentBuilder {
-        val builder = ArgumentBuilder().apply(block)
-        nodes.add(Node.LiteralNode(name, builder))
-        return builder
+        return ArgumentBuilder().apply(block).also {
+            nodes.add(Node.LiteralNode(name, it))
+        }
     }
 
     fun <T : Any?> argument(
@@ -20,9 +20,9 @@ open class ArgumentBuilder {
         type: ArgumentType<T>,
         block: ArgumentBuilder.() -> Unit = { }
     ): ArgumentBuilder {
-        val builder = ArgumentBuilder().apply(block)
-        nodes.add(Node.ArgumentNode(name, builder, type))
-        return builder
+        return ArgumentBuilder().apply(block).also {
+            nodes.add(Node.ArgumentNode(name, it, type))
+        }
     }
 
     fun executes(block: (CommandContext) -> Unit): ArgumentBuilder {

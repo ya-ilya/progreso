@@ -8,7 +8,7 @@ object ModuleManager : ModuleContainer {
     override val modules = mutableSetOf<AbstractModule>()
 
     fun onKey(key: Int) {
-        (modules + PluginManager.modules).filter { it.bind.value == key }.forEach { it.toggle() }
+        (modules + PluginManager.modules).filter { it.bind == key }.forEach { it.toggle() }
     }
 
     fun getModulesByCategory(category: Category, vararg exclude: AbstractModule): List<AbstractModule> {

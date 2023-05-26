@@ -12,12 +12,12 @@ class ModuleConfig(name: String, val modules: MutableList<ModuleConfigData>) : A
         val settings: MutableList<SettingConfigData>
     ) {
         companion object {
-            fun fromAbstractModule(module: AbstractModule): ModuleConfigData {
+            fun create(module: AbstractModule): ModuleConfigData {
                 return ModuleConfigData(
                     module.name,
                     module.enabled,
                     module.settings
-                        .map { SettingConfigData.fromAbstractSetting(it) }
+                        .map { SettingConfigData.create(it) }
                         .toMutableList()
                 )
             }
@@ -29,15 +29,15 @@ class ModuleConfig(name: String, val modules: MutableList<ModuleConfigData>) : A
         var value: Any
     ) {
         companion object {
-            fun fromAbstractSetting(setting: AbstractSetting<*>): SettingConfigData {
+            fun create(setting: AbstractSetting<*>): SettingConfigData {
                 return when (setting) {
-                    is GroupSetting -> fromGroupSetting(setting)
+                    is GroupSetting -> create(setting)
                     else -> SettingConfigData(setting.name, setting.value)
                 }
             }
 
-            private fun fromGroupSetting(setting: GroupSetting): SettingConfigData {
-                return SettingConfigData(setting.name, setting.settings.map { fromAbstractSetting(it) })
+            private fun create(setting: GroupSetting): SettingConfigData {
+                return SettingConfigData(setting.name, setting.settings.map { create(it) })
             }
         }
     }

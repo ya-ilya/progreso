@@ -21,10 +21,10 @@ class ModuleComponent(
             return when (this) {
                 is BindSetting -> BindComponent(this, height, parent)
                 is BooleanSetting -> BooleanComponent(this, height, parent)
-                is EnumSetting<*> -> EnumComponent(this, height, parent)
-                is NumberSetting<*> -> SliderComponent(this, height, parent)
-                is GroupSetting -> GroupComponent(this, height, parent)
                 is ColorSetting -> ColorComponent(this, height, parent)
+                is EnumSetting<*> -> EnumComponent(this, height, parent)
+                is GroupSetting -> GroupComponent(this, height, parent)
+                is NumberSetting<*> -> SliderComponent(this, height, parent)
                 is StringSetting -> StringComponent(this, height, parent)
                 else -> throw RuntimeException("Unknown setting type")
             }

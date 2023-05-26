@@ -20,10 +20,8 @@ abstract class AbstractModule(
 ) : SettingContainer {
     override val settings = mutableSetOf<AbstractSetting<*>>()
 
-    @Suppress("LeakingThis")
-    val bind = setting("Bind", 0)
-
-    var enabled by object : BooleanSetting("Enabled", false) {
+    var bind by setting("Bind", 0)
+    var enabled by object : BooleanSetting("Enabled", false, { true }) {
         override fun valueChanged(oldValue: Boolean, newValue: Boolean) {
             if (oldValue == newValue) return
             if (newValue) {
