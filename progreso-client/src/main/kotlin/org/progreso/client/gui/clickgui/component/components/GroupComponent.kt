@@ -4,7 +4,7 @@ import org.progreso.api.setting.settings.GroupSetting
 import org.progreso.client.gui.clickgui.component.AbstractComponent
 import org.progreso.client.gui.clickgui.component.ChildComponent
 import org.progreso.client.gui.clickgui.component.components.ModuleComponent.Companion.createComponent
-import org.progreso.client.util.Render2DUtil.drawStringRelatively
+import org.progreso.client.util.render.RenderContext
 import java.awt.Color
 
 class GroupComponent(
@@ -22,14 +22,16 @@ class GroupComponent(
         )
 
         header = object : ChildComponent(height, this@GroupComponent) {
-            override fun drawComponent(mouseX: Int, mouseY: Int, partialTicks: Float) {
-                super.drawComponent(mouseX, mouseY, partialTicks)
+            override fun render(context: RenderContext, mouseX: Int, mouseY: Int) {
+                super.render(context, mouseX, mouseY)
 
-                drawStringRelatively(
-                    setting.name,
-                    this.parent.offsets.textOffset,
-                    Color.WHITE
-                )
+                context.invokeSuper(this) {
+                    drawStringRelatively(
+                        setting.name,
+                        it.parent.offsets.textOffset,
+                        Color.WHITE
+                    )
+                }
             }
         }
     }

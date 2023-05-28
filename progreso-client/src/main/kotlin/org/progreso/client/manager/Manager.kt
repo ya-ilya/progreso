@@ -1,10 +1,13 @@
 package org.progreso.client.manager
 
-import net.minecraft.client.Minecraft
+import net.minecraft.client.MinecraftClient
 import org.progreso.api.Api
+import org.progreso.client.Client
 
 abstract class Manager(events: Boolean = false) {
-    protected val mc: Minecraft = Minecraft.getMinecraft()
+    protected companion object {
+        val mc: MinecraftClient by lazy { Client.mc }
+    }
 
     init {
         if (events) {

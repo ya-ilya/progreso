@@ -5,7 +5,7 @@ import org.progreso.client.gui.clickgui.ClickGUI
 import org.progreso.client.gui.clickgui.component.AbstractComponent
 import org.progreso.client.gui.clickgui.component.ChildComponent
 import org.progreso.client.module.Category
-import org.progreso.client.util.Render2DUtil.drawCenteredString
+import org.progreso.client.util.render.RenderContext
 import java.awt.Color
 
 class CategoryComponent(
@@ -29,13 +29,15 @@ class CategoryComponent(
         )
 
         header = object : ChildComponent(height, this@CategoryComponent) {
-            override fun drawComponent(mouseX: Int, mouseY: Int, partialTicks: Float) {
-                super.drawComponent(mouseX, mouseY, partialTicks)
+            override fun render(context: RenderContext, mouseX: Int, mouseY: Int) {
+                super.render(context, mouseX, mouseY)
 
-                drawCenteredString(
-                    category.name,
-                    Color.WHITE
-                )
+                context {
+                    drawCenteredString(
+                        category.name,
+                        Color.WHITE
+                    )
+                }
             }
         }
 

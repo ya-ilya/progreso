@@ -1,10 +1,9 @@
 package org.progreso.client.module.modules.client
 
-import com.mojang.realmsclient.gui.ChatFormatting
-import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.util.Formatting
 import org.progreso.api.Api
 import org.progreso.api.event.events.ModuleEvent
-import org.progreso.client.events.entity.EntityDeathEvent
+import org.progreso.client.events.entity.PlayerDeathEvent
 import org.progreso.client.events.player.TotemPopEvent
 import org.progreso.client.events.safeEventListener
 import org.progreso.client.manager.managers.minecraft.CombatManager
@@ -20,7 +19,7 @@ object Notifications : Module("Notifications", Category.Client) {
             if (!modules) return@safeEventListener
             if (event.module is ClickGUI || event.module is HudEditor || event.module is Notifications) return@safeEventListener
 
-            Api.CHAT.info("[Notifications] ${if (event.module.enabled) ChatFormatting.GREEN else ChatFormatting.RED}${event.module.name}")
+            Api.CHAT.info("[Notifications] ${if (event.module.enabled) Formatting.GREEN else Formatting.RED}${event.module.name}")
         }
 
         safeEventListener<TotemPopEvent> { event ->
@@ -32,13 +31,11 @@ object Notifications : Module("Notifications", Category.Client) {
             }
         }
 
-        safeEventListener<EntityDeathEvent> { event ->
+        safeEventListener<PlayerDeathEvent> { event ->
             if (!pops) return@safeEventListener
-            if (event.entity is EntityPlayer) {
-                val pops = CombatManager[event.entity] ?: return@safeEventListener
+            val pops = CombatManager[event.player] ?: return@safeEventListener
 
-                Api.CHAT.info("[Notifications] ${event.entity.name} died after popping $pops totems")
-            }
+            Api.CHAT.info("[Notifications] ${event.player.name} died after popping $pops totems")
         }
     }
 }

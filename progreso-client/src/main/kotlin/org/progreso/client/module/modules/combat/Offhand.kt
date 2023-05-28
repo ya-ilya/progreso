@@ -1,13 +1,13 @@
 package org.progreso.client.module.modules.combat
 
-import net.minecraft.client.gui.inventory.GuiContainer
-import net.minecraft.init.Items
+import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen
 import net.minecraft.item.Item
+import net.minecraft.item.Items
 import org.progreso.client.events.misc.TickEvent
 import org.progreso.client.events.safeEventListener
 import org.progreso.client.module.Category
 import org.progreso.client.module.Module
-import org.progreso.client.util.InventoryUtil
+import org.progreso.client.util.player.InventoryUtil
 
 object Offhand : Module("Offhand", Category.Combat) {
     private val mode by setting("Mode", Mode.Totem)
@@ -15,9 +15,9 @@ object Offhand : Module("Offhand", Category.Combat) {
 
     init {
         safeEventListener<TickEvent> { _ ->
-            if (mc.player.isCreative && mc.currentScreen is GuiContainer) return@safeEventListener
+            if (mc.currentScreen is CreativeInventoryScreen) return@safeEventListener
 
-            if (mc.player.health <= totemHealth) {
+            if (mc.player!!.health <= totemHealth) {
                 Mode.Totem.switch()
             } else {
                 mode.switch()
@@ -26,27 +26,17 @@ object Offhand : Module("Offhand", Category.Combat) {
     }
 
     @Suppress("unused")
-    private enum class Mode(val item: Item, val sortByMetadata: Boolean = false) {
+    private enum class Mode(val item: Item) {
         Totem(Items.TOTEM_OF_UNDYING),
         Crystal(Items.END_CRYSTAL),
-        Gapple(Items.GOLDEN_APPLE, true);
+        Gapple(Items.ENCHANTED_GOLDEN_APPLE);
 
         fun switch() {
-            if (mc.player.heldItemOffhand.item == item) return
-            var slots = InventoryUtil.getSlotsByItem(item)
-
-            if (sortByMetadata) {
-                slots = slots.sortedByDescending { it.stack.metadata }
-            }
-
-            val slot = slots.firstOrNull()
+            if (mc.player!!.offHandStack.item == item) return
+            val slot = InventoryUtil.findItem(fromIndex = 9) { _, stack -> stack.item == item }
 
             if (slot != null) {
-                InventoryUtil.task {
-                    click(slot.slotNumber)
-                    click(45)
-                    click(slot.slotNumber)
-                }
+                InventoryUtil.moveItem(slot.index, 45)
             }
         }
     }

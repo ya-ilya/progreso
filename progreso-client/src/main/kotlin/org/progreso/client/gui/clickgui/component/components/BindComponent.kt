@@ -1,11 +1,12 @@
 package org.progreso.client.gui.clickgui.component.components
 
-import org.lwjgl.input.Keyboard
+import net.minecraft.client.util.InputUtil
 import org.progreso.api.setting.settings.BindSetting
 import org.progreso.client.gui.clickgui.component.AbstractComponent
 import org.progreso.client.gui.clickgui.component.ChildComponent
 import org.progreso.client.manager.managers.render.TextRenderManager.getStringWidth
-import org.progreso.client.util.Render2DUtil.drawStringRelatively
+import org.progreso.client.util.client.KeyboardUtil
+import org.progreso.client.util.render.RenderContext
 import java.awt.Color
 
 class BindComponent(
@@ -17,29 +18,40 @@ class BindComponent(
 
     override val visible get() = setting.visibility()
 
-    override fun drawComponent(mouseX: Int, mouseY: Int, partialTicks: Float) {
-        super.drawComponent(mouseX, mouseY, partialTicks)
+    override fun render(context: RenderContext, mouseX: Int, mouseY: Int) {
+        super.render(context, mouseX, mouseY)
 
         val text = if (keyListening) {
             "Listening.."
         } else {
-            Keyboard.getKeyName(setting.value)
+            when (setting.value) {
+                InputUtil.GLFW_KEY_LEFT_SHIFT -> "LSHIFT"
+                InputUtil.GLFW_KEY_RIGHT_SHIFT -> "RSHIFT"
+                InputUtil.GLFW_KEY_LEFT_CONTROL -> "LCTRL"
+                InputUtil.GLFW_KEY_RIGHT_CONTROL -> "RCTRL"
+                InputUtil.GLFW_KEY_LEFT_ALT -> "LALT"
+                InputUtil.GLFW_KEY_RIGHT_ALT -> "RALT"
+                -1, 0, 256 -> "NONE"
+                else -> KeyboardUtil.getKeyName(setting.value, -1)
+            }
         }
 
-        drawStringRelatively(
-            setting.name,
-            offsets.textOffset,
-            Color.WHITE
-        )
-        drawStringRelatively(
-            text,
-            offsets.textOffset + getStringWidth("${setting.name}  "),
-            theme
-        )
+        context {
+            drawStringRelatively(
+                setting.name,
+                offsets.textOffset,
+                Color.WHITE
+            )
+            drawStringRelatively(
+                text,
+                offsets.textOffset + getStringWidth("${setting.name}  "),
+                theme
+            )
+        }
     }
 
-    override fun mouseClicked(mouseX: Int, mouseY: Int, mouseButton: Int) {
-        super.mouseClicked(mouseX, mouseY, mouseButton)
+    override fun mouseClicked(mouseX: Int, mouseY: Int, button: Int) {
+        super.mouseClicked(mouseX, mouseY, button)
 
         keyListening = !keyListening
     }
@@ -50,15 +62,15 @@ class BindComponent(
         keyListening = false
     }
 
-    override fun keyTyped(typedChar: Char, keyCode: Int) {
-        super.keyTyped(typedChar, keyCode)
+    override fun keyPressed(keyCode: Int, scanCode: Int) {
+        super.keyPressed(keyCode, scanCode)
 
-        if (keyCode == Keyboard.KEY_ESCAPE) {
+        if (keyCode == InputUtil.GLFW_KEY_ESCAPE) {
             return
         }
 
         if (keyListening) {
-            setting.value = if (keyCode == Keyboard.KEY_DELETE) Keyboard.KEY_NONE else keyCode
+            setting.value = if (keyCode == InputUtil.GLFW_KEY_DELETE) -1 else keyCode
             keyListening = false
         }
     }

@@ -5,8 +5,7 @@ import org.progreso.api.setting.AbstractSetting
 import org.progreso.api.setting.settings.*
 import org.progreso.client.gui.clickgui.component.AbstractComponent
 import org.progreso.client.gui.clickgui.component.ChildComponent
-import org.progreso.client.util.Render2DUtil.drawStringRelatively
-import org.progreso.client.util.Render2DUtil.drawVerticalLine
+import org.progreso.client.util.render.RenderContext
 import java.awt.Color
 
 class ModuleComponent(
@@ -37,28 +36,30 @@ class ModuleComponent(
         )
 
         header = object : ChildComponent(height, this@ModuleComponent) {
-            override fun drawComponent(mouseX: Int, mouseY: Int, partialTicks: Float) {
-                super.drawComponent(mouseX, mouseY, partialTicks)
+            override fun render(context: RenderContext, mouseX: Int, mouseY: Int) {
+                super.render(context, mouseX, mouseY)
 
-                if (module.enabled) {
-                    drawStringRelatively(
-                        module.name,
-                        4,
-                        Color.WHITE
-                    )
-                } else {
-                    drawStringRelatively(
-                        module.name,
-                        4,
-                        Color(180, 180, 180)
-                    )
+                context {
+                    if (module.enabled) {
+                        drawStringRelatively(
+                            module.name,
+                            4,
+                            Color.WHITE
+                        )
+                    } else {
+                        drawStringRelatively(
+                            module.name,
+                            4,
+                            Color(180, 180, 180)
+                        )
+                    }
                 }
             }
 
-            override fun mouseClicked(mouseX: Int, mouseY: Int, mouseButton: Int) {
-                super.mouseClicked(mouseX, mouseY, mouseButton)
+            override fun mouseClicked(mouseX: Int, mouseY: Int, button: Int) {
+                super.mouseClicked(mouseX, mouseY, button)
 
-                if (mouseButton == 0) {
+                if (button == 0) {
                     module.toggle()
                 }
             }
@@ -67,27 +68,29 @@ class ModuleComponent(
         MODULE_COMPONENTS[module] = this
     }
 
-    override fun drawComponent(mouseX: Int, mouseY: Int, partialTicks: Float) {
-        super.drawComponent(mouseX, mouseY, partialTicks)
+    override fun render(context: RenderContext, mouseX: Int, mouseY: Int) {
+        super.render(context, mouseX, mouseY)
 
         if (opened) {
             for (i in 1..visibleComponents.lastIndex) {
                 val component = visibleComponents[i]
 
-                if (component is ListComponent) {
-                    drawVerticalLine(
-                        x,
-                        component.y - if (i != 1) 1 else 0,
-                        component.y + (component.header?.height ?: component.height),
-                        theme
-                    )
-                } else {
-                    drawVerticalLine(
-                        x,
-                        component.y,
-                        component.y + component.height + if (i != visibleComponents.lastIndex) 1 else 0,
-                        theme
-                    )
+                context {
+                    if (component is ListComponent) {
+                        drawVerticalLine(
+                            x,
+                            component.y - if (i != 1) 1 else 0,
+                            component.y + (component.header?.height ?: component.height),
+                            theme
+                        )
+                    } else {
+                        drawVerticalLine(
+                            x,
+                            component.y,
+                            component.y + component.height + if (i != visibleComponents.lastIndex) 1 else 0,
+                            theme
+                        )
+                    }
                 }
             }
         }

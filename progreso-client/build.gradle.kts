@@ -1,90 +1,65 @@
+@file:Suppress("UnstableApiUsage", "SpellCheckingInspection")
+
 val progresoVersion: String by project
 val mixinVersion: String by project
-val forgeVersion: String by project
-val mappingsChannel: String by project
-val mappingsVersion: String by project
-
-buildscript {
-    repositories {
-        mavenCentral()
-        maven("https://maven.minecraftforge.net/")
-        maven("https://repo.spongepowered.org/maven/")
-    }
-
-    dependencies {
-        classpath("net.minecraftforge.gradle:ForgeGradle:4.+")
-        classpath("org.spongepowered:mixingradle:0.7-SNAPSHOT")
-    }
-}
+val yarnMappings: String by project
+val loaderVersion: String by project
+val fabricVersion: String by project
+val fabricKotlinVersion: String by project
 
 plugins {
     kotlin("jvm")
+    id("fabric-loom")
+    id("com.github.johnrengelman.shadow") version "8.1.1"
     `maven-publish`
 }
-
-apply(plugin = "net.minecraftforge.gradle")
-apply(plugin = "org.spongepowered.mixin")
 
 group = "org.progreso"
 version = progresoVersion
 
-configure<net.minecraftforge.gradle.userdev.UserDevExtension> {
-    mappings(mappingsChannel, mappingsVersion)
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
 
-    runs {
-        create("client") {
-            workingDirectory(project.file("run"))
+base {
+    archivesName.set("progreso")
+}
 
-            property("fml.coreMods.load", "org.progreso.client.mixin.MixinLoader")
-            property("mixin.env.disableRefMap", "true")
-
-            property("forge.logging.markers", "SCAN,REGISTRIES,REGISTRYDUMP")
-            property("forge.logging.console.level", "debug")
-        }
+loom {
+    runConfigs.configureEach {
+        ideConfigGenerated(true)
     }
 }
 
-configure<org.spongepowered.asm.gradle.plugins.MixinExtension> {
-    defaultObfuscationEnv = "searge"
-    add(sourceSets["main"], "mixins.progreso.refmap.json")
-}
+val library: Configuration by configurations.creating
 
-repositories {
-    mavenCentral()
-    maven("https://repo.spongepowered.org/maven/")
+configurations {
+    shadow.get().extendsFrom(library)
+    implementation.get().extendsFrom(library)
 }
-
-configurations.create("library")
 
 dependencies {
-    "minecraft"("net.minecraftforge:forge:${forgeVersion}")
+    "minecraft"("com.mojang:minecraft:1.19.4")
+    "mappings"("net.fabricmc:yarn:$yarnMappings:v2")
 
-    "library"("org.spongepowered:mixin:${mixinVersion}") {
-        exclude(module = "guava")
-        exclude(module = "gson")
-        exclude(module = "commons-io")
-    }
+    modImplementation("net.fabricmc:fabric-loader:$loaderVersion")
+    modImplementation("net.fabricmc.fabric-api:fabric-api:$fabricVersion")
+    modImplementation("net.fabricmc:fabric-language-kotlin:$fabricKotlinVersion")
 
-    annotationProcessor("org.spongepowered:mixin:${mixinVersion}:processor") {
-        exclude(module = "gson")
-    }
-
-    "library"("org.reflections:reflections:0.10.2")
-    "library"(kotlin("stdlib-jdk8"))
-    "library"(project(":progreso-api"))
-
-    implementation(configurations["library"])
+    library("org.reflections:reflections:0.10.2")
+    library(kotlin("stdlib-jdk8"))
+    library(project(":progreso-api"))
 }
 
 tasks {
     processResources {
-        from(sourceSets["main"].resources.srcDirs) {
-            duplicatesStrategy = DuplicatesStrategy.INCLUDE
-            include("mcmod.info")
+        inputs.property("version", version)
+
+        filesMatching("fabric.mod.json") {
             expand(
                 mapOf(
-                    "version" to version,
-                    "mcversion" to "1.12.2"
+                    "version" to version
                 )
             )
         }
@@ -114,39 +89,34 @@ tasks {
         dependsOn("buildApi", "buildApiSource", "build")
     }
 
-    jar {
-        manifest.attributes(
-            mapOf(
-                "Manifest-Version" to 1.0,
-                "MixinConfigs" to "mixins.progreso.json",
-                "TweakClass" to "org.spongepowered.asm.launch.MixinTweaker",
-                "FMLCorePluginContainsFMLMod" to "true",
-                "FMLCorePlugin" to "org.progreso.client.mixin.MixinLoader",
-                "ForceLoadAsMod" to "true"
-            )
-        )
+    withType<JavaCompile>().configureEach {
+        options.release.set(17)
+    }
 
-        exclude(
-            "**/module-info.class",
-            "DebugProbesKt.bin",
-            "META-INF/versions/**",
-            "META-INF/**.RSA",
-            "META-INF/*.kotlin_module",
-            "LICENSE.txt",
-            "kotlin/**/*.kotlin_metadata",
-            "META-INF/*.version"
-        )
+    shadowJar {
+        configurations = listOf(project.configurations.shadow.get())
 
-        from(configurations["library"].map {
-            if (it.isDirectory) it else zipTree(it)
-        })
+        dependencies {
+            exclude {
+                it.moduleGroup == "org.slf4j"
+            }
+        }
+
+        relocate("kotlin", "org.progreso.shadow.kotlin")
+        archiveClassifier.set("shadow")
+    }
+
+    remapJar {
+        inputFile.set(shadowJar.get().archiveFile)
+        archiveClassifier.set("release")
     }
 }
-
 
 publishing {
     publications {
         create<MavenPublication>("api") {
+            artifactId = "progreso"
+
             artifact(tasks["buildApi"]) { classifier = null }
             artifact(tasks["buildApiSource"]) { classifier = "sources" }
         }

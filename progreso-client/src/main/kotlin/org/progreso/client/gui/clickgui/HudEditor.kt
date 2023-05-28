@@ -1,11 +1,12 @@
 package org.progreso.client.gui.clickgui
 
+import net.minecraft.client.util.math.MatrixStack
 import org.progreso.api.managers.ModuleManager
 import org.progreso.api.module.AbstractHudModule
 import org.progreso.client.gui.clickgui.component.components.CategoryComponent
 import org.progreso.client.module.Category
 
-object HudEditor : ClickGUI() {
+object HudEditor : ClickGUI("HudEditor") {
     private val HUD_MODULES by lazy {
         ModuleManager.getModulesByCategory(Category.Hud)
             .filterIsInstance<AbstractHudModule>()
@@ -23,8 +24,8 @@ object HudEditor : ClickGUI() {
         })
     }
 
-    override fun drawScreen(mouseX: Int, mouseY: Int, partialTicks: Float) {
-        super.drawScreen(mouseX, mouseY, partialTicks)
+    override fun render(matrices: MatrixStack, mouseX: Int, mouseY: Int, delta: Float) {
+        super.render(matrices, mouseX, mouseY, delta)
 
         HUD_MODULES.filter { it.dragging }.forEach {
             it.x = mouseX - it.dragX
@@ -32,19 +33,22 @@ object HudEditor : ClickGUI() {
         }
     }
 
-    override fun mouseClicked(mouseX: Int, mouseY: Int, mouseButton: Int) {
-        super.mouseClicked(mouseX, mouseY, mouseButton)
+    override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int): Boolean {
+        val mouseXInt: Int = mouseX.toInt()
+        val mouseYInt: Int = mouseY.toInt()
 
-        HUD_MODULES.filter { it.isHover(mouseX, mouseY) }.forEach {
+        HUD_MODULES.filter { it.isHover(mouseXInt, mouseYInt) }.forEach {
             it.dragging = true
-            it.dragX = mouseX - it.x
-            it.dragY = mouseY - it.y
+            it.dragX = mouseXInt - it.x
+            it.dragY = mouseYInt - it.y
         }
+
+        return super.mouseClicked(mouseX, mouseY, button)
     }
 
-    override fun mouseReleased(mouseX: Int, mouseY: Int, state: Int) {
-        super.mouseReleased(mouseX, mouseY, state)
-
+    override fun mouseReleased(mouseX: Double, mouseY: Double, button: Int): Boolean {
         HUD_MODULES.forEach { it.dragging = false }
+
+        return super.mouseReleased(mouseX, mouseY, button)
     }
 }

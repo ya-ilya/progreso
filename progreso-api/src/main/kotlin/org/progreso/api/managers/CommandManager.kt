@@ -8,6 +8,7 @@ import org.progreso.api.command.exceptions.SyntaxException
 
 object CommandManager : CommandContainer {
     const val PREFIX = '.'
+    const val PREFIX_CODE = 46
     val DISPATCHER = CommandDispatcher()
 
     override val commands = mutableSetOf<AbstractCommand>()

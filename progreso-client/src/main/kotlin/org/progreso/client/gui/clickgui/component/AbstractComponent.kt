@@ -2,7 +2,7 @@ package org.progreso.client.gui.clickgui.component
 
 import org.progreso.client.gui.clickgui.component.data.ComponentOffsets
 import org.progreso.client.module.modules.client.ClickGUI
-import org.progreso.client.util.Render2DUtil
+import org.progreso.client.util.render.RenderContext
 
 abstract class AbstractComponent {
     protected companion object {
@@ -23,20 +23,22 @@ abstract class AbstractComponent {
 
     protected val visibleComponents get() = components.filter { it.visible }
 
-    open fun drawComponent(mouseX: Int, mouseY: Int, partialTicks: Float) {
-        if (renderRect) {
-            Render2DUtil.drawRect(x, y, width, height, rectColor)
+    open fun render(context: RenderContext, mouseX: Int, mouseY: Int) {
+        context {
+            if (renderRect) {
+                drawRect(x, y, width, height, rectColor)
+            }
         }
 
-        visibleComponents.forEach { it.drawComponent(mouseX, mouseY, partialTicks) }
+        visibleComponents.forEach { it.render(context, mouseX, mouseY) }
     }
 
-    open fun mouseClicked(mouseX: Int, mouseY: Int, mouseButton: Int) {
+    open fun mouseClicked(mouseX: Int, mouseY: Int, button: Int) {
         visibleComponents.forEach {
             if (it.isHover(mouseX, mouseY)) {
-                it.mouseClicked(mouseX, mouseY, mouseButton)
+                it.mouseClicked(mouseX, mouseY, button)
             } else {
-                it.mouseClickedOutside(mouseX, mouseY, mouseButton)
+                it.mouseClickedOutside(mouseX, mouseY, button)
             }
         }
     }
@@ -49,8 +51,12 @@ abstract class AbstractComponent {
         visibleComponents.forEach { it.mouseReleased(mouseX, mouseY, state) }
     }
 
-    open fun keyTyped(typedChar: Char, keyCode: Int) {
-        visibleComponents.forEach { it.keyTyped(typedChar, keyCode) }
+    open fun keyPressed(keyCode: Int, scanCode: Int) {
+        visibleComponents.forEach { it.keyPressed(keyCode, scanCode) }
+    }
+
+    open fun charTyped(char: Char) {
+        visibleComponents.forEach { it.charTyped(char) }
     }
 
     fun isHover(x: Int, y: Int) =

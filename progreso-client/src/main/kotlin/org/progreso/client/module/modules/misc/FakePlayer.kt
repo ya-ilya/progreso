@@ -1,15 +1,15 @@
 package org.progreso.client.module.modules.misc
 
 import com.mojang.authlib.GameProfile
-import net.minecraft.client.entity.EntityOtherPlayerMP
-import net.minecraft.world.GameType
+import net.minecraft.client.network.OtherClientPlayerEntity
+import net.minecraft.entity.Entity
 import org.progreso.client.module.Category
 import org.progreso.client.module.Module
 import java.util.*
 
-
 object FakePlayer : Module("FakePlayer", Category.Misc) {
     private val fakePlayerName by setting("Name", "FakePlayer")
+    private var fakePlayer: OtherClientPlayerEntity? = null
 
     init {
         onEnable {
@@ -18,23 +18,15 @@ object FakePlayer : Module("FakePlayer", Category.Misc) {
                 return@onEnable
             }
 
-            val fakePlayer = EntityOtherPlayerMP(
-                mc.world,
-                GameProfile(UUID.fromString("8667ba71-b85a-4004-af54-457a9734eed7"), fakePlayerName)
-            )
-
-            fakePlayer.copyLocationAndAnglesFrom(mc.player)
-            fakePlayer.rotationYawHead = mc.player.rotationYawHead
-            fakePlayer.setGameType(GameType.SURVIVAL)
-            fakePlayer.health = 20f
-            mc.world.addEntityToWorld(-1, fakePlayer)
-            fakePlayer.onLivingUpdate()
+            fakePlayer = OtherClientPlayerEntity(mc.world, GameProfile(UUID.randomUUID(), fakePlayerName))
+            fakePlayer!!.copyFrom(mc.player)
+            mc.world!!.addEntity(-1, fakePlayer)
         }
 
         onDisable {
-            if (mc.player == null || mc.world == null) return@onDisable
+            if (mc.player == null || mc.world == null || fakePlayer == null) return@onDisable
 
-            mc.world.removeEntityFromWorld(-1)
+            mc.world!!.removeEntity(fakePlayer!!.id, Entity.RemovalReason.DISCARDED)
         }
     }
 }

@@ -7,7 +7,7 @@ import org.progreso.client.module.Module
 object HudEditor : Module("HudEditor", Category.Client) {
     init {
         onEnable {
-            mc.displayGuiScreen(HudEditor)
+            mc.setScreen(HudEditor)
             toggle()
         }
     }

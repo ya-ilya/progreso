@@ -7,7 +7,6 @@ group = "org.progreso"
 
 repositories {
     mavenCentral()
-    maven("https://libraries.minecraft.net")
 }
 
 dependencies {

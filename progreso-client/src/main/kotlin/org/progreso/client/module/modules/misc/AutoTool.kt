@@ -1,35 +1,33 @@
 package org.progreso.client.module.modules.misc
 
 import net.minecraft.enchantment.EnchantmentHelper
-import net.minecraft.init.Enchantments
+import net.minecraft.enchantment.Enchantments
 import net.minecraft.item.ItemStack
 import net.minecraft.util.math.BlockPos
 import org.progreso.client.events.block.DamageBlockEvent
 import org.progreso.client.events.safeEventListener
 import org.progreso.client.module.Category
 import org.progreso.client.module.Module
-import org.progreso.client.util.InventoryUtil
+import org.progreso.client.util.player.InventoryUtil
 
 object AutoTool : Module("AutoTool", Category.Misc) {
     init {
         safeEventListener<DamageBlockEvent> { event ->
-            val best = InventoryUtil.hotbar.maxByOrNull { slot -> getDestroySpeedForBlock(slot.stack, event.pos) }
+            val best = InventoryUtil.hotbar
+                .associateWith { getDestroySpeedForBlock(it.stack, event.pos) }
+                .maxByOrNull { it.value }
 
-            if (best != null && getDestroySpeedForBlock(
-                    best.stack,
-                    event.pos
-                ) > getDestroySpeedForBlock(InventoryUtil.currentItemStack, event.pos)
-            ) {
-                InventoryUtil.currentItemIndex = best.slotNumber - 36
+            if (best != null && best.value > getDestroySpeedForBlock(mc.player!!.mainHandStack, event.pos)) {
+                InventoryUtil.updateSelectedSlot(best.key.index)
             }
         }
     }
 
     private fun getDestroySpeedForBlock(stack: ItemStack, pos: BlockPos): Float {
-        var speed = stack.getDestroySpeed(mc.world.getBlockState(pos))
+        var speed = stack.getMiningSpeedMultiplier(mc.world!!.getBlockState(pos))
 
         if (speed > 1.0f) {
-            speed += EnchantmentHelper.getEnchantmentLevel(Enchantments.EFFICIENCY, stack)
+            speed += EnchantmentHelper.getLevel(Enchantments.EFFICIENCY, stack)
         }
 
         return speed

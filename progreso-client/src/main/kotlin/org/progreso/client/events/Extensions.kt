@@ -1,12 +1,10 @@
 package org.progreso.client.events
 
-import net.minecraft.client.Minecraft
 import org.progreso.api.event.Event
 import org.progreso.api.event.EventListener
 import org.progreso.api.event.EventPriority
 import org.progreso.client.Client
-
-val mc: Minecraft = Minecraft.getMinecraft()
+import org.progreso.client.Client.Companion.mc
 
 @Suppress("RedundantSamConstructor")
 inline fun <reified T : Event> Any.eventListener(
@@ -32,8 +30,4 @@ inline fun <reified T : Event> Any.safeEventListener(
             block(it)
         }
     }
-}
-
-enum class PacketEventType {
-    Send, Receive, Any
 }

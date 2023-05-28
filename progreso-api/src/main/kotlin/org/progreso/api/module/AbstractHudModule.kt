@@ -22,8 +22,6 @@ abstract class AbstractHudModule(
     open var width: Int = 0
     open var height: Int = 0
 
-    abstract fun render()
-
     fun isHover(x: Int, y: Int) =
         x > this.x && x < this.x + width && y > this.y && y < this.y + height
 }

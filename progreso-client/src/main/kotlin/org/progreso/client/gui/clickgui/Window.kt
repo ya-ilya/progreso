@@ -2,6 +2,7 @@ package org.progreso.client.gui.clickgui
 
 import org.progreso.client.gui.clickgui.component.AbstractComponent
 import org.progreso.client.gui.clickgui.component.components.ListComponent
+import org.progreso.client.util.render.RenderContext
 
 @Suppress("SuspiciousVarProperty")
 class Window(
@@ -19,19 +20,19 @@ class Window(
         renderRect = false
     }
 
-    override fun drawComponent(mouseX: Int, mouseY: Int, partialTicks: Float) {
+    override fun render(context: RenderContext, mouseX: Int, mouseY: Int) {
         if (dragging) {
             x = mouseX - dragX
             y = mouseY - dragY
         }
 
-        super.drawComponent(mouseX, mouseY, partialTicks)
+        super.render(context, mouseX, mouseY)
     }
 
-    override fun mouseClicked(mouseX: Int, mouseY: Int, mouseButton: Int) {
+    override fun mouseClicked(mouseX: Int, mouseY: Int, button: Int) {
         val firstComponent = visibleComponents.firstOrNull()
 
-        if (mouseButton == 0 && firstComponent is ListComponent
+        if (button == 0 && firstComponent is ListComponent
             && firstComponent.isHover(mouseX, mouseY)
             && firstComponent.header?.isHover(mouseX, mouseY) == true
         ) {
@@ -40,7 +41,7 @@ class Window(
             dragY = mouseY - y
         }
 
-        super.mouseClicked(mouseX, mouseY, mouseButton)
+        super.mouseClicked(mouseX, mouseY, button)
     }
 
     override fun mouseReleased(mouseX: Int, mouseY: Int, state: Int) {

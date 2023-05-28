@@ -1,6 +1,5 @@
 package org.progreso.client.command.commands
 
-import com.mojang.realmsclient.gui.ChatFormatting
 import org.progreso.api.command.argument.arguments.PluginArgumentType
 import org.progreso.api.command.argument.arguments.StringArgumentType.Companion.string
 import org.progreso.api.command.dispatcher.CommandContext
@@ -8,7 +7,7 @@ import org.progreso.api.managers.PluginManager
 import org.progreso.api.plugin.AbstractPlugin
 import org.progreso.api.plugin.loader.PluginLoader
 import org.progreso.client.command.Command
-import org.progreso.client.gui.mc.ProgresoGuiPlugins
+import org.progreso.client.gui.minecraft.ProgresoPluginsScreen
 
 object PluginCommand : Command("plugin") {
     init {
@@ -22,7 +21,7 @@ object PluginCommand : Command("plugin") {
                     plugin.loadPlugin()
                     info("Loaded ${plugin.name} plugin")
                 } catch (ex: Exception) {
-                    error("${ChatFormatting.RED}Error loading plugin (see error in logs)")
+                    error("Error loading plugin (see error in logs)")
                     ex.printStackTrace()
                 }
             }
@@ -59,7 +58,7 @@ object PluginCommand : Command("plugin") {
         }
 
         literal("gui").executes { _ ->
-            mc.displayGuiScreen(ProgresoGuiPlugins(PluginManager.plugins.toList()))
+            mc.setScreen(ProgresoPluginsScreen(PluginManager.plugins.toList()))
         }
     }
 

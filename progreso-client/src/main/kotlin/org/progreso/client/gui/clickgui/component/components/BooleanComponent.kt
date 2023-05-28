@@ -3,8 +3,7 @@ package org.progreso.client.gui.clickgui.component.components
 import org.progreso.api.setting.settings.BooleanSetting
 import org.progreso.client.gui.clickgui.component.AbstractComponent
 import org.progreso.client.gui.clickgui.component.ChildComponent
-import org.progreso.client.util.Render2DUtil.drawRect
-import org.progreso.client.util.Render2DUtil.drawStringRelatively
+import org.progreso.client.util.render.RenderContext
 import java.awt.Color
 
 class BooleanComponent(
@@ -23,45 +22,47 @@ class BooleanComponent(
 
     override val visible get() = setting.visibility()
 
-    override fun drawComponent(mouseX: Int, mouseY: Int, partialTicks: Float) {
-        super.drawComponent(mouseX, mouseY, partialTicks)
+    override fun render(context: RenderContext, mouseX: Int, mouseY: Int) {
+        super.render(context, mouseX, mouseY)
 
-        drawStringRelatively(
-            setting.name,
-            offsets.textOffset,
-            Color.WHITE
-        )
-        drawRect(
-            buttonStartX,
-            buttonStartY,
-            BUTTON_WIDTH,
-            BUTTON_HEIGHT,
-            Color(80, 80, 80, 120)
-        )
-
-        if (setting.value) {
-            drawRect(
-                buttonStartX + BUTTON_WIDTH / 2,
-                buttonStartY,
-                BUTTON_WIDTH / 2,
-                BUTTON_HEIGHT,
-                theme
+        context {
+            drawStringRelatively(
+                setting.name,
+                offsets.textOffset,
+                Color.WHITE
             )
-        } else {
             drawRect(
                 buttonStartX,
                 buttonStartY,
-                BUTTON_WIDTH / 2,
+                BUTTON_WIDTH,
                 BUTTON_HEIGHT,
-                theme
+                Color(80, 80, 80, 120)
             )
+
+            if (setting.value) {
+                drawRect(
+                    buttonStartX + BUTTON_WIDTH / 2,
+                    buttonStartY,
+                    BUTTON_WIDTH / 2,
+                    BUTTON_HEIGHT,
+                    theme
+                )
+            } else {
+                drawRect(
+                    buttonStartX,
+                    buttonStartY,
+                    BUTTON_WIDTH / 2,
+                    BUTTON_HEIGHT,
+                    theme
+                )
+            }
         }
     }
 
-    override fun mouseClicked(mouseX: Int, mouseY: Int, mouseButton: Int) {
-        super.mouseClicked(mouseX, mouseY, mouseButton)
+    override fun mouseClicked(mouseX: Int, mouseY: Int, button: Int) {
+        super.mouseClicked(mouseX, mouseY, button)
 
-        if (mouseButton == 0) {
+        if (button == 0) {
             setting.value = !setting.value
         }
     }

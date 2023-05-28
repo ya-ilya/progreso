@@ -1,30 +1,28 @@
 package org.progreso.client.accessors
 
-import com.mojang.realmsclient.gui.ChatFormatting
-import net.minecraft.client.Minecraft
-import net.minecraft.util.text.TextComponentString
+import net.minecraft.text.Text
+import net.minecraft.util.Formatting
 import org.progreso.api.accessor.ChatAccessor
+import org.progreso.client.Client.Companion.mc
 
 object ChatAccessor : ChatAccessor {
-    private val mc: Minecraft = Minecraft.getMinecraft()
-
     override fun send(message: Any) {
-        mc.player?.sendMessage(TextComponentString(message.toString()))!!
+        mc.player?.sendMessage(Text.of(message.toString()))!!
     }
 
     override fun info(message: Any) {
-        send("${ChatFormatting.GRAY}$message")
+        send("${Formatting.GRAY}$message")
     }
 
     override fun warn(message: Any) {
-        send("${ChatFormatting.YELLOW}$message")
+        send("${Formatting.YELLOW}$message")
     }
 
     override fun error(message: Any) {
-        send("${ChatFormatting.RED}$message")
+        send("${Formatting.RED}$message")
     }
 
     override fun addToSentMessages(message: Any) {
-        mc.ingameGUI?.chatGUI?.addToSentMessages(message.toString())!!
+        mc.inGameHud.chatHud.addToMessageHistory(message.toString())
     }
 }

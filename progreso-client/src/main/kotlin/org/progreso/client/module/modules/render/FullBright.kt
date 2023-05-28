@@ -7,18 +7,18 @@ import org.progreso.client.module.Module
 
 object FullBright : Module("FullBright", Category.Render) {
     init {
-        var oldGamma = 0f
+        var oldGamma = 0.5
 
         onEnable {
-            oldGamma = mc.gameSettings.gammaSetting
+            oldGamma = mc.options?.gamma?.value ?: 0.5
         }
 
         onDisable {
-            mc.gameSettings.gammaSetting = oldGamma
+            mc.options.gamma.value = oldGamma
         }
 
         safeEventListener<TickEvent> { _ ->
-            mc.gameSettings.gammaSetting = 1000.0f
+            mc.options.gamma.value = 1.0
         }
     }
 }

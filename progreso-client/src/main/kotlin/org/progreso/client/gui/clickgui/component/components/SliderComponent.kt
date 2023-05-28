@@ -4,8 +4,7 @@ import org.progreso.api.setting.settings.NumberSetting
 import org.progreso.client.gui.clickgui.component.AbstractComponent
 import org.progreso.client.gui.clickgui.component.ChildComponent
 import org.progreso.client.manager.managers.render.TextRenderManager.getStringWidth
-import org.progreso.client.util.Render2DUtil.drawRect
-import org.progreso.client.util.Render2DUtil.drawStringRelatively
+import org.progreso.client.util.render.RenderContext
 import java.awt.Color
 import kotlin.math.floor
 
@@ -40,8 +39,8 @@ class SliderComponent(
         }
     }
 
-    override fun drawComponent(mouseX: Int, mouseY: Int, partialTicks: Float) {
-        super.drawComponent(mouseX, mouseY, partialTicks)
+    override fun render(context: RenderContext, mouseX: Int, mouseY: Int) {
+        super.render(context, mouseX, mouseY)
 
         if (dragging) {
             sliderWidth = if (mouseX < sliderStartX) {
@@ -52,39 +51,45 @@ class SliderComponent(
                 mouseX - x - SLIDER_START_OFFSET
             }
 
-            setting.setNumberValue(
-                String.format(
-                    "%.1f",
-                    setting.min.toDouble() + (setting.max.toDouble() - setting.min.toDouble()) * (sliderWidth.toFloat() / sliderMaxWidth)
-                ).toDouble()
-            )
+            try {
+                setting.setNumberValue(
+                    String.format(
+                        "%.1f",
+                        setting.min.toDouble() + (setting.max.toDouble() - setting.min.toDouble()) * (sliderWidth.toFloat() / sliderMaxWidth)
+                    ).replace(",", ".").toDouble()
+                )
+            } catch (ex: NumberFormatException) {
+                // Ignored
+            }
 
             if (setting.value == setting.max.toDouble() - 0.1f && sliderWidth == width - 1) {
                 setting.setNumberValue(setting.max)
             }
         }
 
-        drawStringRelatively(
-            setting.name,
-            offsets.textOffset,
-            Color.WHITE
-        )
-        drawStringRelatively(
-            setting.value.toString(),
-            width - 10 - getStringWidth(setting.value.toString()),
-            Color.WHITE
-        )
-        drawRect(
-            sliderStartX,
-            sliderStartY,
-            sliderWidth,
-            SLIDER_HEIGHT,
-            theme
-        )
+        context {
+            drawStringRelatively(
+                setting.name,
+                offsets.textOffset,
+                Color.WHITE
+            )
+            drawStringRelatively(
+                setting.value.toString(),
+                width - 10 - getStringWidth(setting.value.toString()),
+                Color.WHITE
+            )
+            drawRect(
+                sliderStartX,
+                sliderStartY,
+                sliderWidth,
+                SLIDER_HEIGHT,
+                theme
+            )
+        }
     }
 
-    override fun mouseClicked(mouseX: Int, mouseY: Int, mouseButton: Int) {
-        super.mouseClicked(mouseX, mouseY, mouseButton)
+    override fun mouseClicked(mouseX: Int, mouseY: Int, button: Int) {
+        super.mouseClicked(mouseX, mouseY, button)
 
         if (mouseX in sliderStartX..sliderEndX && mouseY in sliderStartY..sliderEndY) {
             dragging = true

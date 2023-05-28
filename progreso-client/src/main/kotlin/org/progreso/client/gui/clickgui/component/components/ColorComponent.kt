@@ -1,13 +1,16 @@
 package org.progreso.client.gui.clickgui.component.components
 
-import org.lwjgl.opengl.GL11
+import com.mojang.blaze3d.platform.GlStateManager
+import com.mojang.blaze3d.systems.RenderSystem
+import net.minecraft.client.render.Tessellator
+import net.minecraft.client.render.VertexFormat
+import net.minecraft.client.render.VertexFormats
 import org.progreso.api.setting.settings.ColorSetting
 import org.progreso.api.setting.settings.NumberSetting
 import org.progreso.client.gui.clickgui.component.AbstractComponent
 import org.progreso.client.gui.clickgui.component.ChildComponent
-import org.progreso.client.util.Render2DUtil.drawRect
-import org.progreso.client.util.Render2DUtil.drawStringRelatively
-import org.progreso.client.util.Render2DUtil.glColors
+import org.progreso.client.util.render.Render2DUtil.glColors
+import org.progreso.client.util.render.RenderContext
 import java.awt.Color
 import kotlin.math.max
 import kotlin.math.min
@@ -54,8 +57,8 @@ class ColorComponent(
                 this.height = PICKER_HEIGHT
             }
 
-            override fun drawComponent(mouseX: Int, mouseY: Int, partialTicks: Float) {
-                super.drawComponent(mouseX, mouseY, partialTicks)
+            override fun render(context: RenderContext, mouseX: Int, mouseY: Int) {
+                super.render(context, mouseX, mouseY)
 
                 if (picking && isHover(mouseX, mouseY)) {
                     val restrictedX = min(max(x, mouseX), x + width).toFloat()
@@ -66,15 +69,17 @@ class ColorComponent(
                     pickerY = mouseY - y
                 }
 
-                drawPicker(x.toFloat(), y.toFloat(), width.toFloat(), this.height.toFloat(), setting.value)
+                drawPicker(context, x.toFloat(), y.toFloat(), width.toFloat(), this.height.toFloat(), setting.value)
 
-                if (pickerX != -1 && pickerY != -1) {
-                    drawRect(x + pickerX - 1, y + pickerY - 1, 2, 2, Color.WHITE)
+                context {
+                    if (pickerX != -1 && pickerY != -1) {
+                        drawRect(x + pickerX - 1, y + pickerY - 1, 2, 2, Color.WHITE)
+                    }
                 }
             }
 
-            override fun mouseClicked(mouseX: Int, mouseY: Int, mouseButton: Int) {
-                super.mouseClicked(mouseX, mouseY, mouseButton)
+            override fun mouseClicked(mouseX: Int, mouseY: Int, button: Int) {
+                super.mouseClicked(mouseX, mouseY, button)
 
                 picking = true
             }
@@ -86,39 +91,77 @@ class ColorComponent(
             }
 
             @Suppress("SameParameterValue")
-            private fun drawPicker(x: Float, y: Float, width: Float, height: Float, color: Color) {
+            private fun drawPicker(
+                context: RenderContext,
+                x: Float,
+                y: Float,
+                width: Float,
+                height: Float,
+                color: Color
+            ) {
                 val (red, green, blue, alpha) = color.glColors
+                val matrix = context.matrices.peek().positionMatrix
 
-                GL11.glPushMatrix()
-                GL11.glPushAttrib(GL11.GL_CURRENT_BIT)
-                GL11.glEnable(GL11.GL_BLEND)
-                GL11.glDisable(GL11.GL_TEXTURE_2D)
-                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
-                GL11.glShadeModel(GL11.GL_SMOOTH)
-                GL11.glBegin(GL11.GL_POLYGON)
-                GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f)
-                GL11.glVertex2f(x, y)
-                GL11.glVertex2f(x, y + height)
-                GL11.glColor4f(red, green, blue, alpha)
-                GL11.glVertex2f(x + width, y + height)
-                GL11.glVertex2f(x + width, y)
-                GL11.glEnd()
-                GL11.glDisable(GL11.GL_ALPHA_TEST)
-                GL11.glBegin(GL11.GL_POLYGON)
-                GL11.glColor4f(0.0f, 0.0f, 0.0f, 0.0f)
-                GL11.glVertex2f(x, y)
-                GL11.glColor4f(0.0f, 0.0f, 0.0f, 1.0f)
-                GL11.glVertex2f(x, y + height)
-                GL11.glVertex2f(x + width, y + height)
-                GL11.glColor4f(0.0f, 0.0f, 0.0f, 0.0f)
-                GL11.glVertex2f(x + width, y)
-                GL11.glEnd()
-                GL11.glEnable(GL11.GL_ALPHA_TEST)
-                GL11.glShadeModel(GL11.GL_FLAT)
-                GL11.glEnable(GL11.GL_TEXTURE_2D)
-                GL11.glDisable(GL11.GL_BLEND)
-                GL11.glPopAttrib()
-                GL11.glPopMatrix()
+                context.matrices.push()
+                // GL11.glPushAttrib(GL11.GL_CURRENT_BIT)
+                RenderSystem.enableBlend()
+                // GL11.glDisable(GL11.GL_TEXTURE_2D)
+                RenderSystem.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA)
+                // GL11.glShadeModel(GL11.GL_SMOOTH)
+
+                val buffer = Tessellator.getInstance().buffer
+                buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR)
+
+                buffer
+                    .vertex(matrix, x, y, 0f)
+                    .color(1f, 1f, 1f, 1f)
+                    .next()
+
+                buffer
+                    .vertex(matrix, x, y + height, 0f)
+                    .color(1f, 1f, 1f, 1f)
+                    .next()
+
+                buffer
+                    .vertex(matrix, x + width, y + height, 0f)
+                    .color(red, green, blue, alpha)
+                    .next()
+
+                buffer
+                    .vertex(matrix, x + width, y, 0f)
+                    .color(red, green, blue, alpha)
+                    .next()
+
+                Tessellator.getInstance().draw()
+                buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR)
+
+                buffer
+                    .vertex(matrix, x, y, 0f)
+                    .color(0f, 0f, 0f, 0f)
+                    .next()
+
+                buffer
+                    .vertex(matrix, x, y + height, 0f)
+                    .color(0f, 0f, 0f, 1f)
+                    .next()
+
+                buffer
+                    .vertex(matrix, x + width, y + height, 0f)
+                    .color(0f, 0f, 0f, 1f)
+                    .next()
+
+                buffer
+                    .vertex(matrix, x + width, y, 0f)
+                    .color(0f, 0f, 0f, 0f)
+                    .next()
+
+                Tessellator.getInstance().draw()
+                // GL11.glEnable(GL11.GL_ALPHA_TEST)
+                // GL11.glShadeModel(GL11.GL_FLAT)
+                // GL11.glEnable(GL11.GL_TEXTURE_2D)
+                // RenderSystem.disableBlend()
+                // GL11.glPopAttrib()
+                context.matrices.pop()
             }
         })
 
@@ -126,20 +169,21 @@ class ColorComponent(
         listComponents.add(SliderComponent(alphaSetting, height, this))
 
         header = object : ChildComponent(height, this@ColorComponent) {
-            override fun drawComponent(mouseX: Int, mouseY: Int, partialTicks: Float) {
-                super.drawComponent(mouseX, mouseY, partialTicks)
+            override fun render(context: RenderContext, mouseX: Int, mouseY: Int) {
+                super.render(context, mouseX, mouseY)
 
-                drawStringRelatively(
-                    setting.name,
-                    offsets.textOffset,
-                    Color.WHITE
-                )
-
-                drawRect(
-                    x + width - 9,
-                    y + height.div(2) - 2,
-                    4, 4, setting.value
-                )
+                context {
+                    drawStringRelatively(
+                        setting.name,
+                        offsets.textOffset,
+                        Color.WHITE
+                    )
+                    drawRect(
+                        x + width - 9,
+                        y + height.div(2) - 2,
+                        4, 4, setting.value
+                    )
+                }
             }
         }
     }

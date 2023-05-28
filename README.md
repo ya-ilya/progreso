@@ -4,7 +4,7 @@
 
 ![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/ya-ilya/progreso?color=royalblue)
 ![Build Status](https://img.shields.io/github/actions/workflow/status/ya-ilya/progreso/build.yml?branch=main&logo=gradle)
-![Forge Version](https://img.shields.io/badge/Forge-1.12.2-informational)
+![Fabric Version](https://img.shields.io/badge/Fabric-1.19.4-informational)
 
 </div>
 
@@ -16,9 +16,10 @@ This utility mod not ready to use. So for now it's just an experiment
 
 ### Installation
 
-- Download stable build from [releases](https://github.com/ya-ilya/progreso/releases) or dev build from [actions](https://github.com/ya-ilya/progreso/actions)
+- Install [fabric 1.19.4](https://fabricmc.net/use/installer/)
+- Download the latest release from [releases](https://github.com/ya-ilya/progreso/releases) or dev build from [actions](https://github.com/ya-ilya/progreso/actions)
 - Put the jar to `.minecraft/mods` folder
-- Run [forge 1.12.2](https://files.minecraftforge.net/net/minecraftforge/forge/index_1.12.2.html) from your launcher
+- Run [fabric 1.19.4]() from your launcher
 
 ### Development
 

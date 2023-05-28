@@ -29,11 +29,11 @@ open class ListComponent(
 
     override var height = 0; get() = visibleComponents.sumOf { it.height }
 
-    override fun mouseClicked(mouseX: Int, mouseY: Int, mouseButton: Int) {
-        super.mouseClicked(mouseX, mouseY, mouseButton)
+    override fun mouseClicked(mouseX: Int, mouseY: Int, button: Int) {
+        super.mouseClicked(mouseX, mouseY, button)
 
         if (header?.isHover(mouseX, mouseY) == true) {
-            if (mouseButton == 1) {
+            if (button == 1) {
                 if (opened) {
                     components.removeIf { listComponents.contains(it) }
                 } else {

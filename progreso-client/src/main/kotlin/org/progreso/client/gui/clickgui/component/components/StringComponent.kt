@@ -1,12 +1,11 @@
 package org.progreso.client.gui.clickgui.component.components
 
-import net.minecraft.util.ChatAllowedCharacters
-import org.lwjgl.input.Keyboard
+import net.minecraft.client.util.InputUtil
 import org.progreso.api.setting.settings.StringSetting
 import org.progreso.client.gui.clickgui.component.AbstractComponent
 import org.progreso.client.gui.clickgui.component.ChildComponent
 import org.progreso.client.manager.managers.render.TextRenderManager
-import org.progreso.client.util.Render2DUtil.drawStringRelatively
+import org.progreso.client.util.render.RenderContext
 import java.awt.Color
 
 class StringComponent(
@@ -17,23 +16,25 @@ class StringComponent(
     private var stringEditing = false
     private var stringEditor = StringEditor()
 
-    override fun drawComponent(mouseX: Int, mouseY: Int, partialTicks: Float) {
-        super.drawComponent(mouseX, mouseY, partialTicks)
+    override fun render(context: RenderContext, mouseX: Int, mouseY: Int) {
+        super.render(context, mouseX, mouseY)
 
-        drawStringRelatively(
-            setting.name,
-            offsets.textOffset,
-            Color.WHITE
-        )
-        drawStringRelatively(
-            if (stringEditing) stringEditor.string else setting.value,
-            offsets.textOffset + TextRenderManager.getStringWidth("${setting.name}  "),
-            if (stringEditing) Color.WHITE else theme
-        )
+        context {
+            drawStringRelatively(
+                setting.name,
+                offsets.textOffset,
+                Color.WHITE
+            )
+            drawStringRelatively(
+                if (stringEditing) stringEditor.string else setting.value,
+                offsets.textOffset + TextRenderManager.getStringWidth("${setting.name}  "),
+                if (stringEditing) Color.WHITE else theme
+            )
+        }
     }
 
-    override fun mouseClicked(mouseX: Int, mouseY: Int, mouseButton: Int) {
-        super.mouseClicked(mouseX, mouseY, mouseButton)
+    override fun mouseClicked(mouseX: Int, mouseY: Int, button: Int) {
+        super.mouseClicked(mouseX, mouseY, button)
 
         stringEditing = !stringEditing
     }
@@ -44,30 +45,30 @@ class StringComponent(
         stringEditing = false
     }
 
-    override fun keyTyped(typedChar: Char, keyCode: Int) {
-        super.keyTyped(typedChar, keyCode)
+    override fun keyPressed(keyCode: Int, scanCode: Int) {
+        super.keyPressed(keyCode, scanCode)
 
         when (keyCode) {
-            Keyboard.KEY_ESCAPE -> {
+            InputUtil.GLFW_KEY_ESCAPE -> {
                 stringEditing = false
             }
 
-            Keyboard.KEY_RETURN -> {
+            InputUtil.GLFW_KEY_ENTER, InputUtil.GLFW_KEY_KP_ENTER -> {
                 setting.value = stringEditor.string
                 stringEditor = StringEditor()
                 stringEditing = false
             }
 
-            Keyboard.KEY_BACK -> {
+            InputUtil.GLFW_KEY_BACKSPACE -> {
                 stringEditor = StringEditor(stringEditor.string.dropLast(1))
             }
-
-            else -> {
-                if (ChatAllowedCharacters.isAllowedCharacter(typedChar)) {
-                    stringEditor = StringEditor(stringEditor.string + typedChar)
-                }
-            }
         }
+    }
+
+    override fun charTyped(char: Char) {
+        super.charTyped(char)
+
+        stringEditor = StringEditor(stringEditor.string + char)
     }
 
     private data class StringEditor(val string: String = "")

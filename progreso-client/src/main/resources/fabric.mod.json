@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "progreso",
+  "name": "Progreso Client",
+  "version": "${version}",
+  "authors": [
+    "ya-ilya"
+  ],
+  "environment": "client",
+  "entrypoints": {
+    "main": [
+      "org.progreso.client.Client"
+    ],
+    "preLaunch": [
+      "org.progreso.client.mixin.MixinLoader"
+    ]
+  },
+  "mixins": [
+    "progreso.mixins.json"
+  ]
+}

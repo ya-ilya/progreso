@@ -1,16 +1,18 @@
 package org.progreso.client.gui.clickgui
 
-import net.minecraft.client.gui.GuiScreen
-import org.lwjgl.input.Mouse
+import net.minecraft.client.gui.screen.Screen
+import net.minecraft.client.util.math.MatrixStack
+import net.minecraft.text.Text
 import org.progreso.client.gui.clickgui.component.AbstractComponent
 import org.progreso.client.gui.clickgui.component.components.CategoryComponent
 import org.progreso.client.module.Category
 import org.progreso.client.module.modules.client.ClickGUI
+import org.progreso.client.util.render.RenderContext
 
-open class ClickGUI : GuiScreen() {
-    companion object : org.progreso.client.gui.clickgui.ClickGUI() {
+open class ClickGUI(text: String) : Screen(Text.of(text)) {
+    companion object : org.progreso.client.gui.clickgui.ClickGUI("ClickGUI") {
         const val COMPONENT_HEIGHT = 14
-        const val COMPONENT_WIDTH = 90
+        const val COMPONENT_WIDTH = 104
     }
 
     protected var components = mutableListOf<AbstractComponent>()
@@ -33,46 +35,62 @@ open class ClickGUI : GuiScreen() {
         }
     }
 
-    override fun drawScreen(mouseX: Int, mouseY: Int, partialTicks: Float) {
-        super.drawScreen(mouseX, mouseY, partialTicks)
+    override fun render(matrices: MatrixStack, mouseX: Int, mouseY: Int, delta: Float) {
+        super.render(matrices, mouseX, mouseY, delta)
 
-        val wheel = Mouse.getDWheel()
+        val context = RenderContext(matrices)
+        components.forEach { it.render(context, mouseX, mouseY) }
+    }
 
-        if (wheel > 0) {
+    override fun mouseScrolled(mouseX: Double, mouseY: Double, amount: Double): Boolean {
+        if (amount > 0) {
             components.forEach { it.y += ClickGUI.scrollSpeed }
-        } else if (wheel < 0) {
+        } else if (amount < 0) {
             components.forEach { it.y -= ClickGUI.scrollSpeed }
         }
 
-        components.forEach { it.drawComponent(mouseX, mouseY, partialTicks) }
+        return super.mouseScrolled(mouseX, mouseY, amount)
     }
 
-    override fun mouseClicked(mouseX: Int, mouseY: Int, mouseButton: Int) {
-        super.mouseClicked(mouseX, mouseY, mouseButton)
-
-        val window = components.lastOrNull { it.isHover(mouseX, mouseY) }
+    override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int): Boolean {
+        val mouseXInt: Int = mouseX.toInt()
+        val mouseYInt: Int = mouseY.toInt()
+        val window = components.lastOrNull { it.isHover(mouseXInt, mouseYInt) }
 
         if (window != null) {
             components.remove(window)
             components.add(window)
 
-            window.mouseClicked(mouseX, mouseY, mouseButton)
+            window.mouseClicked(mouseXInt, mouseYInt, button)
         }
 
-        components.filter { it != window }.forEach { it.mouseClickedOutside(mouseX, mouseY, mouseButton) }
+        components.filter { it != window }.forEach { it.mouseClickedOutside(mouseXInt, mouseYInt, button) }
+
+        return super.mouseClicked(mouseX, mouseY, button)
     }
 
-    override fun mouseReleased(mouseX: Int, mouseY: Int, state: Int) {
-        super.mouseReleased(mouseX, mouseY, state)
+    override fun mouseReleased(mouseX: Double, mouseY: Double, button: Int): Boolean {
+        val mouseXInt: Int = mouseX.toInt()
+        val mouseYInt: Int = mouseY.toInt()
 
-        components.forEach { it.mouseReleased(mouseX, mouseY, state) }
+        components.forEach { it.mouseReleased(mouseXInt, mouseYInt, button) }
+
+        return super.mouseReleased(mouseX, mouseY, button)
     }
 
-    override fun keyTyped(typedChar: Char, keyCode: Int) {
-        super.keyTyped(typedChar, keyCode)
+    override fun keyPressed(keyCode: Int, scanCode: Int, modifiers: Int): Boolean {
+        components.forEach { it.keyPressed(keyCode, scanCode) }
 
-        components.forEach { it.keyTyped(typedChar, keyCode) }
+        return super.keyPressed(keyCode, scanCode, modifiers)
     }
 
-    override fun doesGuiPauseGame(): Boolean = false
+    override fun charTyped(chr: Char, modifiers: Int): Boolean {
+        components.forEach { it.charTyped(chr) }
+
+        return super.charTyped(chr, modifiers)
+    }
+
+    override fun shouldPause(): Boolean {
+        return false
+    }
 }
