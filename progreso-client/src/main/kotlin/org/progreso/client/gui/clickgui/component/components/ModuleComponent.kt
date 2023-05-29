@@ -14,8 +14,6 @@ class ModuleComponent(
     parent: AbstractComponent
 ) : ListComponent(height, parent) {
     companion object {
-        val MODULE_COMPONENTS = mutableMapOf<AbstractModule, ModuleComponent>()
-
         fun AbstractSetting<*>.createComponent(height: Int, parent: AbstractComponent): AbstractComponent {
             return when (this) {
                 is BindSetting -> BindComponent(this, height, parent)
@@ -64,8 +62,6 @@ class ModuleComponent(
                 }
             }
         }
-
-        MODULE_COMPONENTS[module] = this
     }
 
     override fun render(context: RenderContext, mouseX: Int, mouseY: Int) {

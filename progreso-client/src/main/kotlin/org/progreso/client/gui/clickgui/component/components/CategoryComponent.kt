@@ -13,10 +13,6 @@ class CategoryComponent(
     height: Int,
     parent: AbstractComponent
 ) : ListComponent(height, parent) {
-    companion object {
-        val CATEGORY_COMPONENTS = mutableMapOf<Category, CategoryComponent>()
-    }
-
     init {
         listComponents.addAll(
             ModuleManager.getModulesByCategory(category).sortedBy { it.name }.map {
@@ -40,7 +36,5 @@ class CategoryComponent(
                 }
             }
         }
-
-        CATEGORY_COMPONENTS[category] = this
     }
 }

@@ -15,7 +15,7 @@ object Notifications : Module("Notifications", Category.Client) {
     private val pops by setting("Pops", true)
 
     init {
-        safeEventListener<ModuleEvent> { event ->
+        safeEventListener<ModuleEvent.Toggled> { event ->
             if (!modules) return@safeEventListener
             if (event.module is ClickGUI || event.module is HudEditor || event.module is Notifications) return@safeEventListener
 

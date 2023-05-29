@@ -38,24 +38,13 @@ class BooleanComponent(
                 BUTTON_HEIGHT,
                 Color(80, 80, 80, 120)
             )
-
-            if (setting.value) {
-                drawRect(
-                    buttonStartX + BUTTON_WIDTH / 2,
-                    buttonStartY,
-                    BUTTON_WIDTH / 2,
-                    BUTTON_HEIGHT,
-                    theme
-                )
-            } else {
-                drawRect(
-                    buttonStartX,
-                    buttonStartY,
-                    BUTTON_WIDTH / 2,
-                    BUTTON_HEIGHT,
-                    theme
-                )
-            }
+            drawRect(
+                buttonStartX + if (setting.value) BUTTON_WIDTH / 2 else 0,
+                buttonStartY,
+                BUTTON_WIDTH / 2,
+                BUTTON_HEIGHT,
+                theme
+            )
         }
     }
 

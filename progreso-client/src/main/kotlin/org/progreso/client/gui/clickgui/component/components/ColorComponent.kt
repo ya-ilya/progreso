@@ -103,11 +103,8 @@ class ColorComponent(
                 val matrix = context.matrices.peek().positionMatrix
 
                 context.matrices.push()
-                // GL11.glPushAttrib(GL11.GL_CURRENT_BIT)
                 RenderSystem.enableBlend()
-                // GL11.glDisable(GL11.GL_TEXTURE_2D)
                 RenderSystem.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA)
-                // GL11.glShadeModel(GL11.GL_SMOOTH)
 
                 val buffer = Tessellator.getInstance().buffer
                 buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR)
@@ -156,11 +153,6 @@ class ColorComponent(
                     .next()
 
                 Tessellator.getInstance().draw()
-                // GL11.glEnable(GL11.GL_ALPHA_TEST)
-                // GL11.glShadeModel(GL11.GL_FLAT)
-                // GL11.glEnable(GL11.GL_TEXTURE_2D)
-                // RenderSystem.disableBlend()
-                // GL11.glPopAttrib()
                 context.matrices.pop()
             }
         })

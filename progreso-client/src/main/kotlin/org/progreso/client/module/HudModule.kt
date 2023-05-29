@@ -5,6 +5,8 @@ import org.progreso.api.module.AbstractHudModule
 import org.progreso.client.Client
 import org.progreso.client.events.eventListener
 import org.progreso.client.events.render.RenderOverlayEvent
+import org.progreso.client.gui.clickgui.HudEditor
+import org.progreso.client.module.modules.client.ClickGUI
 import org.progreso.client.util.render.RenderContext
 
 abstract class HudModule(
@@ -20,6 +22,10 @@ abstract class HudModule(
 
     init {
         eventListener<RenderOverlayEvent> { event ->
+            if (mc.currentScreen is HudEditor) {
+                event.context.drawRect(x, y, width, height, ClickGUI.rectColor)
+            }
+
             render(event.context)
         }
     }

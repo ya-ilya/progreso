@@ -26,11 +26,11 @@ abstract class AbstractModule(
             if (oldValue == newValue) return
             if (newValue) {
                 Api.EVENT.register(this@AbstractModule)
-                Api.API_EVENT_BUS.post(ModuleEvent(this@AbstractModule))
+                Api.API_EVENT_BUS.post(ModuleEvent.Toggled(this@AbstractModule))
                 onEnable()
             } else {
                 Api.EVENT.unregister(this@AbstractModule)
-                Api.API_EVENT_BUS.post(ModuleEvent(this@AbstractModule))
+                Api.API_EVENT_BUS.post(ModuleEvent.Toggled(this@AbstractModule))
                 onDisable()
             }
         }

@@ -4,7 +4,6 @@ import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket
 import net.minecraft.network.packet.s2c.play.EntityStatusS2CPacket
 import org.progreso.api.accessor.EventAccessor
-import org.progreso.api.event.events.PluginEvent
 import org.progreso.api.managers.CommandManager
 import org.progreso.api.managers.ModuleManager
 import org.progreso.client.Client
@@ -17,9 +16,6 @@ import org.progreso.client.events.misc.TickEvent
 import org.progreso.client.events.network.PacketEvent
 import org.progreso.client.events.player.TotemPopEvent
 import org.progreso.client.events.safeEventListener
-import org.progreso.client.gui.clickgui.ClickGUI
-import org.progreso.client.gui.clickgui.component.components.CategoryComponent
-import org.progreso.client.gui.clickgui.component.components.ModuleComponent
 import org.progreso.client.gui.minecraft.ProgresoChatScreen
 
 object EventAccessor : EventAccessor {
@@ -42,26 +38,6 @@ object EventAccessor : EventAccessor {
             if (!mc.options.sneakKey.isPressed && event.codePoint == CommandManager.PREFIX_CODE) {
                 mc.setScreen(ProgresoChatScreen())
                 event.isCancelled = true
-            }
-        }
-
-        eventListener<PluginEvent> { event ->
-            if (event.loaded) {
-                for (module in event.plugin.modules) {
-                    CategoryComponent.CATEGORY_COMPONENTS[module.category]?.apply {
-                        if (opened) components.removeIf { listComponents.contains(it) }
-                        listComponents.add(ModuleComponent(module, ClickGUI.COMPONENT_HEIGHT, this))
-                        if (opened) components.addAll(listComponents)
-                    }
-                }
-            } else {
-                for (module in event.plugin.modules) {
-                    CategoryComponent.CATEGORY_COMPONENTS[module.category]?.apply {
-                        if (opened) components.removeIf { listComponents.contains(it) }
-                        listComponents.remove(ModuleComponent.MODULE_COMPONENTS.remove(module) ?: return@eventListener)
-                        if (opened) components.addAll(listComponents)
-                    }
-                }
             }
         }
 
