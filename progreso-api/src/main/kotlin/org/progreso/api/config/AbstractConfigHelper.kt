@@ -3,7 +3,7 @@ package org.progreso.api.config
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
 import org.progreso.api.Api
-import org.progreso.api.config.container.AbstractConfigHelperContainer
+import org.progreso.api.config.container.ConfigHelperContainer
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
@@ -24,7 +24,7 @@ abstract class AbstractConfigHelper<T : AbstractConfig>(
     name: String,
     path: String,
     private val provider: AbstractConfigProvider<T>,
-    private val container: AbstractConfigHelperContainer,
+    private val container: ConfigHelperContainer,
     private val defaultConfigName: String? = null
 ) {
     val name = name.trim()

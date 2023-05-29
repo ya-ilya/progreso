@@ -2,7 +2,7 @@ package org.progreso.api.config.container
 
 import org.progreso.api.config.AbstractConfigHelper
 
-interface AbstractConfigHelperContainer {
+interface ConfigHelperContainer {
     val helpers: MutableMap<AbstractConfigHelper<*>, String>
 
     fun getHelperByName(name: String): AbstractConfigHelper<*> {

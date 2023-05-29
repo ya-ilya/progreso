@@ -2,7 +2,7 @@ package org.progreso.api.managers
 
 import org.progreso.api.Api.GSON
 import org.progreso.api.config.AbstractConfigHelper
-import org.progreso.api.config.container.AbstractConfigHelperContainer
+import org.progreso.api.config.container.ConfigHelperContainer
 import org.progreso.api.config.helpers.FriendConfigHelper
 import org.progreso.api.config.helpers.ModuleConfigHelper
 import org.progreso.api.config.providers.ModuleConfigProvider
@@ -11,7 +11,7 @@ import java.nio.file.Path
 import java.nio.file.Paths
 import kotlin.io.path.*
 
-object ConfigManager : AbstractConfigHelperContainer {
+object ConfigManager : ConfigHelperContainer {
     const val DEFAULT_CONFIG_NAME = "default"
 
     override val helpers = mutableMapOf<AbstractConfigHelper<*>, String>(

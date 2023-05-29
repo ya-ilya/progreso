@@ -9,43 +9,36 @@ import org.progreso.api.event.events.PluginEvent
 import org.progreso.api.managers.PluginManager
 import org.progreso.api.module.AbstractModule
 import org.progreso.api.module.container.ModuleContainer
+import kotlin.properties.Delegates
 
 /**
  * Abstract plugin class
- *
- * @param name Plugin Name
- * @param version Plugin Version
- * @param author Plugin Author
- * @param description Plugin Description
- * @param mixinConfigs Plugin Mixin Configs
  */
 @Suppress("MemberVisibilityCanBePrivate")
-abstract class AbstractPlugin(
-    val name: String,
-    val version: String,
-    val author: String,
-    val description: String? = null,
-    val mixinConfigs: Array<String> = arrayOf()
-) : ModuleContainer, CommandContainer {
+abstract class AbstractPlugin : ModuleContainer, CommandContainer {
     override val modules = mutableSetOf<AbstractModule>()
     override val commands = mutableSetOf<AbstractCommand>()
 
-    private val configHelper = ModuleConfigHelper(
-        name = "plugin",
-        path = "plugins",
-        provider = ModuleConfigProvider(this),
-        container = PluginManager.configContainer,
-        defaultConfigName = name
-    )
+    var name: String by Delegates.notNull()
+    var version: String by Delegates.notNull()
+    var author: String by Delegates.notNull()
 
-    init {
-        PluginManager.configContainer.setHelperConfig(configHelper, name)
+    private val configHelper by lazy {
+        ModuleConfigHelper(
+            name = "plugin",
+            path = "plugins",
+            provider = ModuleConfigProvider(this),
+            container = PluginManager.configContainer,
+            defaultConfigName = name
+        )
     }
 
     abstract fun load()
     abstract fun unload()
 
     fun loadPlugin() {
+        PluginManager.configContainer.setHelperConfig(configHelper, name)
+
         load()
 
         configHelper.load(name)

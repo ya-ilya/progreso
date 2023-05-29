@@ -10,9 +10,6 @@
   "entrypoints": {
     "main": [
       "org.progreso.client.Client"
-    ],
-    "preLaunch": [
-      "org.progreso.client.mixin.MixinLoader"
     ]
   },
   "mixins": [

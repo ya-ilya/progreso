@@ -1,12 +1,15 @@
 package org.progreso.client
 
 import net.fabricmc.api.ModInitializer
+import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.MinecraftClient
 import org.progreso.api.Api
 import org.progreso.api.command.AbstractCommand
 import org.progreso.api.managers.CommandManager
 import org.progreso.api.managers.ModuleManager
+import org.progreso.api.managers.PluginManager
 import org.progreso.api.module.AbstractModule
+import org.progreso.api.plugin.AbstractPlugin
 import org.progreso.client.accessors.ChatAccessor
 import org.progreso.client.accessors.EventAccessor
 import org.progreso.client.accessors.LoggerAccessor
@@ -29,6 +32,17 @@ class Client : ModInitializer {
     }
 
     override fun onInitialize() {
+        for (entrypoint in FabricLoader.getInstance().getEntrypointContainers("progreso", AbstractPlugin::class.java)) {
+            val metadata = entrypoint.provider.metadata
+            val plugin = entrypoint.entrypoint
+
+            plugin.name = metadata.name
+            plugin.version = metadata.version.friendlyString
+            plugin.author = metadata.authors.first().name
+
+            PluginManager.addPlugin(plugin)
+        }
+
         LOGGER.info("Initializing client modules...")
         for (clazz in Reflections("org.progreso.client.module.modules").getSubTypesOf(AbstractModule::class.java)) {
             try {
