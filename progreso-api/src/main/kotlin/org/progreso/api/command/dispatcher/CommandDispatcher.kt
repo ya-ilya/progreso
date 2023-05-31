@@ -1,119 +1,92 @@
 package org.progreso.api.command.dispatcher
 
-import org.progreso.api.command.argument.ArgumentBuilder
+import org.progreso.api.command.builder.AbstractBuilder
+import org.progreso.api.command.builder.builders.ArgumentBuilder
+import org.progreso.api.command.builder.builders.LiteralBuilder
 import org.progreso.api.command.exceptions.SyntaxException
 import org.progreso.api.command.reader.StringReader
 
 class CommandDispatcher {
-    private val nodes = mutableListOf<ArgumentBuilder.Node.LiteralNode>()
+    private val builders = mutableListOf<LiteralBuilder>()
 
-    fun register(name: String, builder: ArgumentBuilder) {
-        nodes.add(ArgumentBuilder.Node.LiteralNode(name, builder))
+    fun register(builder: LiteralBuilder) {
+        builders.add(builder)
     }
 
-    fun unregister(name: String) {
-        nodes.removeIf { it.name == name }
+    fun unregister(builder: LiteralBuilder) {
+        builders.remove(builder)
     }
 
     fun dispatch(string: String): Boolean {
-        val (first, reader) = parseArguments(string)
-        val node = nodes.firstOrNull { it.name == first } ?: return false
-        executeBuilder(node.builder, reader, CommandContext())
+        val (first, reader) = parse(string)
+        val builder = builders.firstOrNull { it.name == first } ?: return false
+        dispatch(builder, reader, CommandContext())
         return true
     }
 
-    fun predictNode(string: String): ArgumentBuilder.Node? {
+    fun predict(string: String): LiteralBuilder? {
         if (string.isBlank() || string.endsWith(" ")) return null
-        val (first, reader) = parseArguments(string)
-        val node = nodes.firstOrNull { it.name.startsWith(first) } ?: return null
-        return predictNode(node, reader)
+        val (first, reader) = parse(string)
+        val builder = builders.firstOrNull { it.name.startsWith(first) } ?: return null
+        return predict(builder, reader)
     }
 
-    fun getVariants(string: String): List<String>? {
+    fun variants(string: String): List<AbstractBuilder<*>>? {
         if (string.isBlank() || !string.endsWith(" ")) return null
-        val (first, reader) = parseArguments(string)
-        val node = nodes.firstOrNull { it.name == first } ?: return null
-        return getVariants(node, reader)
+        val (first, reader) = parse(string)
+        val builder = builders.firstOrNull { it.name == first } ?: return null
+        return variants(builder, reader)
     }
 
-    private fun parseArguments(string: String): Pair<String, StringReader> {
-        val arguments = string.split(" ").let { arguments -> arguments.map { it.trim() } }
-        return arguments[0] to StringReader(arguments.drop(1).joinToString(" "))
-    }
-
-    private fun executeBuilder(
-        builder: ArgumentBuilder,
-        reader: StringReader,
-        context: CommandContext
-    ) {
+    private fun dispatch(builder: AbstractBuilder<*>, reader: StringReader, context: CommandContext) {
         if (!reader.hasNext()) {
             builder.invoke(context)
             return
         }
 
         val string = reader.peek()
-        val literal = builder.findLiteral { it.name == string }
+        val nextBuilder = builder.findLiteralBuilder { it.name == string }
+            ?: builder.findArgumentBuilder { it.type.check(reader) }
+            ?: throw SyntaxException("Literal and argument not found for '${string}'")
 
-        if (literal == null) {
-            val argument = builder.findArgument { it.type.checkType(reader) }
-                ?: throw SyntaxException("Literal and argument not found for '${string}'")
-            context.putArgument(argument.name, argument.type.parse(reader))
-            executeBuilder(argument.builder, reader, context)
-        } else {
-            reader.readString() // Skip literal name
-            executeBuilder(literal.builder, reader, context)
+        when (nextBuilder) {
+            is ArgumentBuilder -> context[nextBuilder.name] = nextBuilder.type.parse(reader)
+            else -> reader.readString()
         }
+
+        dispatch(nextBuilder, reader, context)
     }
 
-    private fun predictNode(
-        node: ArgumentBuilder.Node,
-        reader: StringReader
-    ): ArgumentBuilder.Node? {
+    private fun predict(builder: AbstractBuilder<*>, reader: StringReader): LiteralBuilder? {
         if (!reader.hasNext()) {
-            return if (node is ArgumentBuilder.Node.LiteralNode) {
-                node
-            } else {
-                null
-            }
+            return builder as LiteralBuilder?
         }
 
         val string = reader.peek()
-        val literal = node.builder.findLiteral { it.name.startsWith(string) }
+        val nextBuilder = builder.findLiteralBuilder { it.name.startsWith(string) }
+            ?: builder.findArgumentBuilder { it.type.check(reader) }
+            ?: return null
 
-        return if (literal == null) {
-            reader.readString()
-            val argument = node.builder.findArgument { it.type.checkType(reader) } ?: return null
-            predictNode(argument, reader)
-        } else {
-            reader.readString() // Skip literal string
-            predictNode(literal, reader)
-        }
+        reader.readString()
+        return predict(nextBuilder, reader)
     }
 
-    private fun getVariants(
-        node: ArgumentBuilder.Node,
-        reader: StringReader
-    ): List<String>? {
+    private fun variants(builder: AbstractBuilder<*>, reader: StringReader): List<AbstractBuilder<*>>? {
         if (!reader.hasNext()) {
-            return node.builder.nodes.map {
-                if (it is ArgumentBuilder.Node.ArgumentNode) {
-                    "${it.name} (${it.type.name})"
-                } else {
-                    it.name
-                }
-            }
+            return builder.children
         }
 
         val string = reader.peek()
-        val literal = node.builder.findLiteral { it.name.startsWith(string) }
+        val nextBuilder = builder.findLiteralBuilder { it.name.startsWith(string) }
+            ?: builder.findArgumentBuilder { it.type.check(reader) }
+            ?: return null
 
-        return if (literal == null) {
-            reader.readString()
-            val argument = node.builder.findArgument { it.type.checkType(reader) } ?: return null
-            getVariants(argument, reader)
-        } else {
-            reader.readString()
-            getVariants(literal, reader)
-        }
+        reader.readString()
+        return variants(nextBuilder, reader)
+    }
+
+    private fun parse(string: String): Pair<String, StringReader> {
+        val arguments = string.split(" ").let { arguments -> arguments.map { it.trim() } }
+        return arguments[0] to StringReader(arguments.drop(1).joinToString(" "))
     }
 }

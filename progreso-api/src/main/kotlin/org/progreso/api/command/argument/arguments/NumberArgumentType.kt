@@ -27,7 +27,7 @@ class NumberArgumentType<T : Number>(
         } as T
     }
 
-    override fun checkType(reader: StringReader): Boolean {
+    override fun check(reader: StringReader): Boolean {
         val peeked = reader.peek()
 
         return if (type == Float::class || type == Double::class) {

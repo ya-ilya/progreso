@@ -14,7 +14,7 @@ class BooleanArgumentType : ArgumentType<Boolean> {
         return reader.readString().toBooleanStrict()
     }
 
-    override fun checkType(reader: StringReader): Boolean {
+    override fun check(reader: StringReader): Boolean {
         return reader.peek().toBooleanStrictOrNull() != null
     }
 }

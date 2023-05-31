@@ -20,7 +20,7 @@ class ConfigHelperArgumentType : ArgumentType<AbstractConfigHelper<*>?> {
         return helper
     }
 
-    override fun checkType(reader: StringReader): Boolean {
+    override fun check(reader: StringReader): Boolean {
         return true
     }
 }

@@ -6,6 +6,5 @@ interface ArgumentType<T : Any?> {
     val name: String
 
     fun parse(reader: StringReader): T
-
-    fun checkType(reader: StringReader): Boolean
+    fun check(reader: StringReader): Boolean
 }

@@ -27,7 +27,7 @@ class StringArgumentType(
         }
     }
 
-    override fun checkType(reader: StringReader): Boolean {
+    override fun check(reader: StringReader): Boolean {
         return true
     }
 }

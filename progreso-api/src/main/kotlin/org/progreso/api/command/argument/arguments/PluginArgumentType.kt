@@ -20,7 +20,7 @@ class PluginArgumentType : ArgumentType<AbstractPlugin?> {
         return plugin
     }
 
-    override fun checkType(reader: StringReader): Boolean {
+    override fun check(reader: StringReader): Boolean {
         return true
     }
 }

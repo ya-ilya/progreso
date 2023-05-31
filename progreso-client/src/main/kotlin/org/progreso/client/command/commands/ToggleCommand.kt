@@ -14,6 +14,6 @@ object ToggleCommand : Command("toggle") {
     }
 
     private fun CommandContext.module(): AbstractModule? {
-        return getNullable<AbstractModule>("module")
+        return nullable<AbstractModule>("module")
     }
 }

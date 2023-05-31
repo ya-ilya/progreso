@@ -83,12 +83,12 @@ class ProgresoChatScreen : ChatScreen(CommandManager.PREFIX.toString()) {
 
     private fun predict() {
         val message = chatField.text.removePrefix(CommandManager.PREFIX.toString())
-        val predict = CommandManager.DISPATCHER.predictNode(message)
-        val variants = CommandManager.DISPATCHER.getVariants(message)
+        val predict = CommandManager.DISPATCHER.predict(message)
+        val variants = CommandManager.DISPATCHER.variants(message)
 
         this.predict = when {
             predict != null -> listOf(predict.name.removePrefix(message.split(" ").last()))
-            variants != null -> variants
+            variants != null -> variants.map { it.toString() }
             else -> emptyList()
         }
     }

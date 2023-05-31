@@ -22,7 +22,7 @@ object FriendCommand : Command("friend") {
 
         literal("remove") {
             argument("friend", FriendArgumentType.create()).executes { context ->
-                val friend = context.getNullable<FriendManager.Friend>("friend") ?: return@executes
+                val friend = context.nullable<FriendManager.Friend>("friend") ?: return@executes
 
                 FriendManager.removeFriendByName(friend.name)
                 info("${friend.name} now isn't your friend")

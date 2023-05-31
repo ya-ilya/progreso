@@ -41,6 +41,6 @@ object PluginCommand : Command("plugin") {
     }
 
     private fun CommandContext.plugin(): AbstractPlugin? {
-        return getNullable<AbstractPlugin>("plugin")
+        return nullable<AbstractPlugin>("plugin")
     }
 }

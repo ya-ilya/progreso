@@ -63,7 +63,7 @@ object IRCCommand : Command("irc") {
         }
 
         literal("send") {
-            argument("message", string()).executes { context ->
+            argument("message", string(true)).executes { context ->
                 if (client == null || client?.isClosed == true || client?.isOpen == false) {
                     return@executes error("[IRC] Client isn't connected to the server")
                 }

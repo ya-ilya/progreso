@@ -1,7 +1,7 @@
 package org.progreso.api.command
 
 import org.progreso.api.Api
-import org.progreso.api.command.argument.ArgumentBuilder
+import org.progreso.api.command.builder.builders.LiteralBuilder
 
 /**
  * Command abstract class
@@ -10,9 +10,9 @@ import org.progreso.api.command.argument.ArgumentBuilder
  * @param description Command description
  */
 abstract class AbstractCommand(
-    val name: String,
+    name: String,
     val description: String
-) : ArgumentBuilder() {
+) : LiteralBuilder(name) {
     protected companion object {
         fun send(message: Any) = Api.CHAT.send(message)
         fun info(message: Any) = Api.CHAT.info(message)

@@ -19,7 +19,7 @@ class FriendArgumentType : ArgumentType<FriendManager.Friend?> {
         return friend
     }
 
-    override fun checkType(reader: StringReader): Boolean {
+    override fun check(reader: StringReader): Boolean {
         return true
     }
 }

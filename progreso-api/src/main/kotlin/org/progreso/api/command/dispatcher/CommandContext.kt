@@ -6,7 +6,7 @@ import kotlin.reflect.KProperty
 class CommandContext {
     private val arguments = mutableMapOf<String, Any?>()
 
-    fun putArgument(name: String, value: Any?) {
+    operator fun set(name: String, value: Any?) {
         arguments[name] = value
     }
 
@@ -14,7 +14,7 @@ class CommandContext {
         return arguments[name] as T
     }
 
-    fun <T> getNullable(name: String): T? {
+    fun <T> nullable(name: String): T? {
         return arguments[name] as T?
     }
 

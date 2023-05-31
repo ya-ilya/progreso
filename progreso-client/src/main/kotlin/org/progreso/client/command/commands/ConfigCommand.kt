@@ -73,6 +73,6 @@ object ConfigCommand : Command("config") {
     }
 
     private fun CommandContext.helper(): AbstractConfigHelper<*>? {
-        return getNullable("helper")
+        return nullable("helper")
     }
 }
