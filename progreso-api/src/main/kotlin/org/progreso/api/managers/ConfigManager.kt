@@ -3,6 +3,7 @@ package org.progreso.api.managers
 import org.progreso.api.Api.GSON
 import org.progreso.api.config.AbstractConfigHelper
 import org.progreso.api.config.container.ConfigHelperContainer
+import org.progreso.api.config.helpers.AltConfigHelper
 import org.progreso.api.config.helpers.FriendConfigHelper
 import org.progreso.api.config.helpers.ModuleConfigHelper
 import org.progreso.api.config.providers.ModuleConfigProvider
@@ -16,7 +17,8 @@ object ConfigManager : ConfigHelperContainer {
 
     override val helpers = mutableMapOf<AbstractConfigHelper<*>, String>(
         ModuleConfigHelper(provider = ModuleConfigProvider(ModuleManager)) to DEFAULT_CONFIG_NAME,
-        FriendConfigHelper() to DEFAULT_CONFIG_NAME
+        FriendConfigHelper() to DEFAULT_CONFIG_NAME,
+        AltConfigHelper() to DEFAULT_CONFIG_NAME
     )
 
     init {

@@ -14,5 +14,6 @@
   },
   "mixins": [
     "progreso.mixins.json"
-  ]
+  ],
+  "accessWidener": "progreso.accesswidener"
 }

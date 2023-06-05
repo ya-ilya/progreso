@@ -10,7 +10,9 @@
     "MixinClientConnection",
     "MixinClientPlayerEntity",
     "MixinClientPlayerInteractionManager",
+    "MixinInGameHud",
     "MixinKeyboard",
-    "MixinInGameHud"
+    "MixinTitleScreen",
+    "accessors.AccessorScreen"
   ]
 }

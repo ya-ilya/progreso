@@ -27,6 +27,8 @@ base {
 }
 
 loom {
+    accessWidenerPath.set(file("src/main/resources/progreso.accesswidener"))
+
     runConfigs.configureEach {
         ideConfigGenerated(true)
     }
@@ -48,7 +50,6 @@ dependencies {
     modImplementation("net.fabricmc:fabric-language-kotlin:$fabricKotlinVersion")
 
     library("org.reflections:reflections:0.10.2")
-    library(kotlin("stdlib-jdk8"))
     library(project(":progreso-api"))
 }
 
