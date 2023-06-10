@@ -1,13 +1,12 @@
 package org.progreso.client.gui.clickgui
 
+import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.Screen
-import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.text.Text
 import org.progreso.client.gui.clickgui.component.AbstractComponent
 import org.progreso.client.gui.clickgui.component.components.CategoryComponent
 import org.progreso.client.module.Category
 import org.progreso.client.module.modules.client.ClickGUI
-import org.progreso.client.util.render.RenderContext
 
 open class ClickGUI(text: String) : Screen(Text.of(text)) {
     companion object : org.progreso.client.gui.clickgui.ClickGUI("ClickGUI") {
@@ -35,10 +34,9 @@ open class ClickGUI(text: String) : Screen(Text.of(text)) {
         }
     }
 
-    override fun render(matrices: MatrixStack, mouseX: Int, mouseY: Int, delta: Float) {
-        super.render(matrices, mouseX, mouseY, delta)
+    override fun render(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
+        super.render(context, mouseX, mouseY, delta)
 
-        val context = RenderContext(matrices)
         components.forEach { it.render(context, mouseX, mouseY) }
     }
 

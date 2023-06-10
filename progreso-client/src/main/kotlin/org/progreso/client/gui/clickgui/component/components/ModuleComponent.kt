@@ -1,11 +1,12 @@
 package org.progreso.client.gui.clickgui.component.components
 
+import net.minecraft.client.gui.DrawContext
 import org.progreso.api.module.AbstractModule
 import org.progreso.api.setting.AbstractSetting
 import org.progreso.api.setting.settings.*
 import org.progreso.client.gui.clickgui.component.AbstractComponent
 import org.progreso.client.gui.clickgui.component.ChildComponent
-import org.progreso.client.util.render.RenderContext
+import org.progreso.client.gui.use
 import java.awt.Color
 
 class ModuleComponent(
@@ -34,10 +35,10 @@ class ModuleComponent(
         )
 
         header = object : ChildComponent(height, this@ModuleComponent) {
-            override fun render(context: RenderContext, mouseX: Int, mouseY: Int) {
+            override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
                 super.render(context, mouseX, mouseY)
 
-                context {
+                context.use {
                     if (module.enabled) {
                         drawStringRelatively(
                             module.name,
@@ -64,14 +65,14 @@ class ModuleComponent(
         }
     }
 
-    override fun render(context: RenderContext, mouseX: Int, mouseY: Int) {
+    override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
         super.render(context, mouseX, mouseY)
 
         if (opened) {
             for (i in 1..visibleComponents.lastIndex) {
                 val component = visibleComponents[i]
 
-                context {
+                context.use {
                     if (component is ListComponent) {
                         drawVerticalLine(
                             x,

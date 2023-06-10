@@ -1,10 +1,9 @@
 package org.progreso.client.gui.clickgui
 
+import net.minecraft.client.gui.DrawContext
 import org.progreso.client.gui.clickgui.component.AbstractComponent
 import org.progreso.client.gui.clickgui.component.components.ListComponent
-import org.progreso.client.util.render.RenderContext
 
-@Suppress("SuspiciousVarProperty")
 class Window(
     override var x: Int,
     override var y: Int,
@@ -20,7 +19,7 @@ class Window(
         renderRect = false
     }
 
-    override fun render(context: RenderContext, mouseX: Int, mouseY: Int) {
+    override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
         if (dragging) {
             x = mouseX - dragX
             y = mouseY - dragY

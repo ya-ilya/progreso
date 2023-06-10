@@ -1,14 +1,14 @@
 package org.progreso.client.gui.builders
 
+import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.gui.widget.ElementListWidget
-import net.minecraft.client.util.math.MatrixStack
 import org.progreso.api.gui.builders.AbstractElementListBuilder
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.mixins.accessors.AccessorScreen
-import org.progreso.client.util.render.RenderContext
 
-class ElementListBuilder<E : ElementListWidget.Entry<E>> : AbstractElementListBuilder<ElementListWidget<E>, E>() {
+class ElementListBuilder<E : ElementListWidget.Entry<E>>
+    : AbstractElementListBuilder<DrawContext, ElementListWidget<E>, E>() {
     companion object {
         fun <E : ElementListWidget.Entry<E>> Screen.elementList(block: (ElementListBuilder<E>) -> Unit): ElementListWidget<E> {
             return (this as AccessorScreen).addDrawableChildInvoker(
@@ -49,16 +49,16 @@ class ElementListBuilder<E : ElementListWidget.Entry<E>> : AbstractElementListBu
                 elementListListeners.select(this, entry)
             }
 
-            override fun renderHeader(matrices: MatrixStack, x: Int, y: Int) {
-                elementListListeners.renderHeader(this, RenderContext(matrices), x, y)
+            override fun renderHeader(context: DrawContext, x: Int, y: Int) {
+                elementListListeners.renderHeader(this, context, x, y)
 
-                super.renderHeader(matrices, x, y)
+                super.renderHeader(context, x, y)
             }
 
-            override fun render(matrices: MatrixStack, mouseX: Int, mouseY: Int, delta: Float) {
-                listeners.render(this, RenderContext(matrices), mouseX, mouseY)
+            override fun render(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
+                listeners.render(this, context, mouseX, mouseY)
 
-                super.render(matrices, mouseX, mouseY, delta)
+                super.render(context, mouseX, mouseY, delta)
             }
 
             override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int): Boolean {

@@ -3,7 +3,8 @@ package org.progreso.api.gui.builders
 import org.progreso.api.gui.AbstractWidgetBuilder
 import org.progreso.api.gui.data.ButtonListeners
 
-abstract class AbstractButtonBuilder<ButtonWidget> : AbstractWidgetBuilder<ButtonWidget>() {
+abstract class AbstractButtonBuilder<Context, ButtonWidget>
+    : AbstractWidgetBuilder<Context, ButtonWidget>() {
     protected val buttonListeners = ButtonListeners<ButtonWidget>()
 
     var text = ""

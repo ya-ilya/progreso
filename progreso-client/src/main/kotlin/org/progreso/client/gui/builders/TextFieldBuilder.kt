@@ -1,15 +1,14 @@
 package org.progreso.client.gui.builders
 
+import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.gui.widget.TextFieldWidget
-import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.text.Text
 import org.progreso.api.gui.builders.AbstractTextFieldBuilder
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.mixins.accessors.AccessorScreen
-import org.progreso.client.util.render.RenderContext
 
-class TextFieldBuilder : AbstractTextFieldBuilder<TextFieldWidget>() {
+class TextFieldBuilder : AbstractTextFieldBuilder<DrawContext, TextFieldWidget>() {
     companion object {
         fun Screen.textField(text: String, block: (TextFieldBuilder) -> Unit): TextFieldWidget {
             return (this as AccessorScreen).addDrawableChildInvoker(
@@ -42,10 +41,10 @@ class TextFieldBuilder : AbstractTextFieldBuilder<TextFieldWidget>() {
                 }
             }
 
-            override fun render(matrices: MatrixStack, mouseX: Int, mouseY: Int, delta: Float) {
-                listeners.render(this, RenderContext(matrices), mouseX, mouseY)
+            override fun render(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
+                listeners.render(this, context, mouseX, mouseY)
 
-                super.render(matrices, mouseX, mouseY, delta)
+                super.render(context, mouseX, mouseY, delta)
             }
 
             override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int): Boolean {

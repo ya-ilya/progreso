@@ -53,8 +53,5 @@ interface SettingContainer {
     ) = setting(StringSetting(name, initialValue, visibility))
 
     fun <T : AbstractSetting<V>, V> setting(setting: T): T =
-        setting.also {
-            settings.add(it)
-            it.valueChanged(setting.initialValue, setting.initialValue)
-        }
+        setting.also { settings.add(it) }
 }

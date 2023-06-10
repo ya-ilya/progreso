@@ -3,7 +3,7 @@ package org.progreso.api.config.helpers
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
 import org.progreso.api.alt.AbstractAltAccount
-import org.progreso.api.alt.accounts.CrackedAccount
+import org.progreso.api.alt.accounts.CrackedAltAccount
 import org.progreso.api.config.AbstractConfigHelper
 import org.progreso.api.config.configs.AltConfig
 import org.progreso.api.config.providers.AltConfigProvider
@@ -21,15 +21,20 @@ class AltConfigHelper : AbstractConfigHelper<AltConfig>(
         reader.beginArray()
         while (reader.hasNext()) {
             reader.beginObject()
+
             reader.nextName()
-            val altName = reader.nextString()
+            val type = reader.nextString()
+
             reader.nextName()
+            val username = reader.nextString()
+
             alts.add(
-                when (reader.nextString()) {
-                    "Cracked" -> CrackedAccount(altName)
+                when (type) {
+                    "Cracked" -> CrackedAltAccount(username)
                     else -> throw RuntimeException()
                 }
             )
+
             reader.endObject()
         }
         reader.endArray()
@@ -40,8 +45,8 @@ class AltConfigHelper : AbstractConfigHelper<AltConfig>(
         writer.beginArray()
         for (alt in config.alts) {
             writer.beginObject()
-            writer.name("Name").value(alt.name)
             writer.name("Type").value(alt.type)
+            writer.name("Name").value(alt.username)
             writer.endObject()
         }
         writer.endArray()

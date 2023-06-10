@@ -1,8 +1,9 @@
 package org.progreso.client.gui.clickgui.component
 
+import net.minecraft.client.gui.DrawContext
 import org.progreso.client.gui.clickgui.component.data.ComponentOffsets
+import org.progreso.client.gui.use
 import org.progreso.client.module.modules.client.ClickGUI
-import org.progreso.client.util.render.RenderContext
 
 abstract class AbstractComponent {
     protected companion object {
@@ -23,8 +24,8 @@ abstract class AbstractComponent {
 
     protected val visibleComponents get() = components.filter { it.visible }
 
-    open fun render(context: RenderContext, mouseX: Int, mouseY: Int) {
-        context {
+    open fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
+        context.use {
             if (renderRect) {
                 drawRect(x, y, width, height, rectColor)
             }

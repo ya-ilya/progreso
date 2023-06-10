@@ -2,6 +2,7 @@ package org.progreso.client.gui.clickgui.component.components
 
 import com.mojang.blaze3d.platform.GlStateManager
 import com.mojang.blaze3d.systems.RenderSystem
+import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.render.Tessellator
 import net.minecraft.client.render.VertexFormat
 import net.minecraft.client.render.VertexFormats
@@ -9,8 +10,8 @@ import org.progreso.api.setting.settings.ColorSetting
 import org.progreso.api.setting.settings.NumberSetting
 import org.progreso.client.gui.clickgui.component.AbstractComponent
 import org.progreso.client.gui.clickgui.component.ChildComponent
+import org.progreso.client.gui.use
 import org.progreso.client.util.render.Render2DUtil.glColors
-import org.progreso.client.util.render.RenderContext
 import java.awt.Color
 import kotlin.math.max
 import kotlin.math.min
@@ -57,7 +58,7 @@ class ColorComponent(
                 this.height = PICKER_HEIGHT
             }
 
-            override fun render(context: RenderContext, mouseX: Int, mouseY: Int) {
+            override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
                 super.render(context, mouseX, mouseY)
 
                 if (picking && isHover(mouseX, mouseY)) {
@@ -71,7 +72,7 @@ class ColorComponent(
 
                 drawPicker(context, x.toFloat(), y.toFloat(), width.toFloat(), this.height.toFloat(), setting.value)
 
-                context {
+                context.use {
                     if (pickerX != -1 && pickerY != -1) {
                         drawRect(x + pickerX - 1, y + pickerY - 1, 2, 2, Color.WHITE)
                     }
@@ -92,7 +93,7 @@ class ColorComponent(
 
             @Suppress("SameParameterValue")
             private fun drawPicker(
-                context: RenderContext,
+                context: DrawContext,
                 x: Float,
                 y: Float,
                 width: Float,
@@ -161,10 +162,10 @@ class ColorComponent(
         listComponents.add(SliderComponent(alphaSetting, height, this))
 
         header = object : ChildComponent(height, this@ColorComponent) {
-            override fun render(context: RenderContext, mouseX: Int, mouseY: Int) {
+            override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
                 super.render(context, mouseX, mouseY)
 
-                context {
+                context.use {
                     drawStringRelatively(
                         setting.name,
                         offsets.textOffset,

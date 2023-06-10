@@ -1,10 +1,11 @@
 package org.progreso.client.gui.clickgui.component.components
 
+import net.minecraft.client.gui.DrawContext
 import org.progreso.api.setting.settings.NumberSetting
 import org.progreso.client.gui.clickgui.component.AbstractComponent
 import org.progreso.client.gui.clickgui.component.ChildComponent
+import org.progreso.client.gui.use
 import org.progreso.client.manager.managers.render.TextRenderManager.getStringWidth
-import org.progreso.client.util.render.RenderContext
 import java.awt.Color
 import kotlin.math.floor
 
@@ -39,7 +40,7 @@ class SliderComponent(
         }
     }
 
-    override fun render(context: RenderContext, mouseX: Int, mouseY: Int) {
+    override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
         super.render(context, mouseX, mouseY)
 
         if (dragging) {
@@ -67,7 +68,7 @@ class SliderComponent(
             }
         }
 
-        context {
+        context.use {
             drawStringRelatively(
                 setting.name,
                 offsets.textOffset,

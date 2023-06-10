@@ -19,7 +19,6 @@ import kotlin.io.path.*
  * @param container Helper container
  * @param defaultConfigName Default config name
  */
-@Suppress("MemberVisibilityCanBePrivate")
 abstract class AbstractConfigHelper<T : AbstractConfig>(
     name: String,
     path: String,
@@ -28,8 +27,9 @@ abstract class AbstractConfigHelper<T : AbstractConfig>(
     private val defaultConfigName: String? = null
 ) {
     val name = name.trim()
-    val path: Path = Paths.get("progreso${File.separator}$path")
     val configs = mutableListOf<T>()
+
+    private val path: Path = Paths.get("progreso${File.separator}$path")
 
     init {
         refresh()

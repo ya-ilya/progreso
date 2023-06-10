@@ -25,7 +25,6 @@ object Offhand : Module("Offhand", Category.Combat) {
         }
     }
 
-    @Suppress("unused")
     private enum class Mode(val item: Item) {
         Totem(Items.TOTEM_OF_UNDYING),
         Crystal(Items.END_CRYSTAL),

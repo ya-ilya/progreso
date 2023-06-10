@@ -1,13 +1,14 @@
 package org.progreso.client.module
 
 import net.minecraft.client.MinecraftClient
+import net.minecraft.client.gui.DrawContext
 import org.progreso.api.module.AbstractHudModule
 import org.progreso.client.Client
 import org.progreso.client.events.eventListener
 import org.progreso.client.events.render.RenderOverlayEvent
 import org.progreso.client.gui.clickgui.HudEditor
+import org.progreso.client.gui.drawRect
 import org.progreso.client.module.modules.client.ClickGUI
-import org.progreso.client.util.render.RenderContext
 
 abstract class HudModule(
     name: String,
@@ -30,5 +31,5 @@ abstract class HudModule(
         }
     }
 
-    abstract fun render(context: RenderContext)
+    abstract fun render(context: DrawContext)
 }

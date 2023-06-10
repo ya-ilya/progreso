@@ -1,10 +1,9 @@
 package org.progreso.api.gui
 
 import org.progreso.api.gui.data.BuilderListeners
-import org.progreso.api.gui.render.IRenderContext
 
-abstract class AbstractWidgetBuilder<Widget> {
-    protected val listeners = BuilderListeners<Widget>()
+abstract class AbstractWidgetBuilder<Context, Widget> {
+    protected val listeners = BuilderListeners<Context, Widget>()
 
     open var x: Int = 0
     open var y: Int = 0
@@ -22,7 +21,7 @@ abstract class AbstractWidgetBuilder<Widget> {
         listeners.init = block
     }
 
-    fun render(block: Widget.(IRenderContext, Int, Int) -> Unit) {
+    fun render(block: Widget.(Context, Int, Int) -> Unit) {
         listeners.render = block
     }
 

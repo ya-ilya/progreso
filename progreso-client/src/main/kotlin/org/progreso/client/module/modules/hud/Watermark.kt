@@ -1,11 +1,11 @@
 package org.progreso.client.module.modules.hud
 
+import net.minecraft.client.gui.DrawContext
+import org.progreso.client.gui.use
 import org.progreso.client.manager.managers.render.TextRenderManager
 import org.progreso.client.manager.managers.render.TextRenderManager.getStringWidth
 import org.progreso.client.module.Category
 import org.progreso.client.module.HudModule
-import org.progreso.client.util.render.Render2DUtil.drawString
-import org.progreso.client.util.render.RenderContext
 import java.awt.Color
 
 object Watermark : HudModule("Watermark", Category.Hud) {
@@ -19,7 +19,7 @@ object Watermark : HudModule("Watermark", Category.Hud) {
         y = 10
     }
 
-    override fun render(context: RenderContext) = context {
-        drawString(matrices, "Progreso Client", x + 1, y + 2, color)
+    override fun render(context: DrawContext) = context.use {
+        drawText("Progreso Client", x + 1, y + 2, color)
     }
 }

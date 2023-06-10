@@ -3,10 +3,10 @@ package org.progreso.api.gui.builders
 import org.progreso.api.common.MutableLazy.Companion.mutableLazy
 import org.progreso.api.gui.AbstractWidgetBuilder
 import org.progreso.api.gui.data.ElementListListeners
-import org.progreso.api.gui.render.IRenderContext
 
-abstract class AbstractElementListBuilder<ElementListWidget, Entry> : AbstractWidgetBuilder<ElementListWidget>() {
-    protected val elementListListeners = ElementListListeners<ElementListWidget, Entry>()
+abstract class AbstractElementListBuilder<Context, ElementListWidget, Entry>
+    : AbstractWidgetBuilder<Context, ElementListWidget>() {
+    protected val elementListListeners = ElementListListeners<Context, ElementListWidget, Entry>()
 
     var headerHeight = 16
 
@@ -34,7 +34,7 @@ abstract class AbstractElementListBuilder<ElementListWidget, Entry> : AbstractWi
         children.add(entry)
     }
 
-    fun renderHeader(block: ElementListWidget.(IRenderContext, Int, Int) -> Unit) {
+    fun renderHeader(block: ElementListWidget.(Context, Int, Int) -> Unit) {
         renderHeader = true
         elementListListeners.renderHeader = block
     }

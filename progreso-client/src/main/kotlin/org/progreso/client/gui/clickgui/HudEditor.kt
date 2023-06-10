@@ -1,6 +1,6 @@
 package org.progreso.client.gui.clickgui
 
-import net.minecraft.client.util.math.MatrixStack
+import net.minecraft.client.gui.DrawContext
 import org.progreso.api.managers.ModuleManager
 import org.progreso.api.module.AbstractHudModule
 import org.progreso.client.gui.clickgui.component.components.CategoryComponent
@@ -24,8 +24,8 @@ object HudEditor : ClickGUI("HudEditor") {
         })
     }
 
-    override fun render(matrices: MatrixStack, mouseX: Int, mouseY: Int, delta: Float) {
-        super.render(matrices, mouseX, mouseY, delta)
+    override fun render(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
+        super.render(context, mouseX, mouseY, delta)
 
         HUD_MODULES.filter { it.dragging }.forEach {
             it.x = mouseX - it.dragX

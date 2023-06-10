@@ -1,12 +1,11 @@
 package org.progreso.client.gui.builders
 
+import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.Screen
-import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.text.Text
 import org.progreso.api.gui.builders.AbstractScreenBuilder
-import org.progreso.client.util.render.RenderContext
 
-class ScreenBuilder : AbstractScreenBuilder<Screen>() {
+class ScreenBuilder : AbstractScreenBuilder<DrawContext, Screen>() {
     companion object {
         fun screen(title: String, block: ScreenBuilder.() -> Unit): Screen {
             return ScreenBuilder().apply { this.title = title }.apply(block).build()
@@ -19,10 +18,10 @@ class ScreenBuilder : AbstractScreenBuilder<Screen>() {
                 listeners.init(this)
             }
 
-            override fun render(matrices: MatrixStack, mouseX: Int, mouseY: Int, delta: Float) {
-                listeners.render(this, RenderContext(matrices), mouseX, mouseY)
+            override fun render(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
+                listeners.render(this, context, mouseX, mouseY)
 
-                super.render(matrices, mouseX, mouseY, delta)
+                super.render(context, mouseX, mouseY, delta)
             }
 
             override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int): Boolean {

@@ -12,7 +12,6 @@ import kotlin.properties.Delegates
 /**
  * Abstract plugin class
  */
-@Suppress("MemberVisibilityCanBePrivate")
 abstract class AbstractPlugin : ModuleContainer, CommandContainer {
     override val modules = mutableSetOf<AbstractModule>()
     override val commands = mutableSetOf<AbstractCommand>()

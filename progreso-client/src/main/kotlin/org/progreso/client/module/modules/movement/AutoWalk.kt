@@ -1,12 +1,21 @@
 package org.progreso.client.module.modules.movement
 
+import org.progreso.api.setting.settings.EnumSetting
 import org.progreso.client.events.misc.TickEvent
 import org.progreso.client.events.safeEventListener
 import org.progreso.client.module.Category
 import org.progreso.client.module.Module
 
 object AutoWalk : Module("AutoWalk", Category.Movement) {
-    private val direction by setting("Direction", Direction.Forward)
+    private val direction by setting(
+        object : EnumSetting<Direction>("Direction", Direction.Forward) {
+            override fun valueChanged(oldValue: Direction, newValue: Direction) {
+                if (mc.options != null) {
+                    oldValue.setPressed(false)
+                }
+            }
+        }
+    )
 
     init {
         onDisable {

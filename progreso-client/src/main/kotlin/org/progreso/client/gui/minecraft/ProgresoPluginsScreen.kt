@@ -1,11 +1,12 @@
 package org.progreso.client.gui.minecraft
 
-import net.minecraft.client.util.math.MatrixStack
+import net.minecraft.client.gui.DrawContext
 import net.minecraft.util.Util
 import org.progreso.api.plugin.AbstractPlugin
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.gui.builders.ButtonBuilder.Companion.button
 import org.progreso.client.gui.builders.ElementListBuilder.Companion.elementList
+import org.progreso.client.gui.drawText
 import org.progreso.client.gui.minecraft.common.SimpleElementListEntry
 import org.progreso.client.gui.minecraft.common.TitledScreen
 import java.awt.Color
@@ -56,21 +57,20 @@ class ProgresoPluginsScreen(private val plugins: List<AbstractPlugin>) : TitledS
     }
 
     private class PluginEntry(val plugin: AbstractPlugin) : SimpleElementListEntry<PluginEntry>() {
-        override fun render(matrices: MatrixStack, index: Int, x: Int, y: Int) {
-            mc.textRenderer.draw(matrices, plugin.name, x + 3f, y + 3f, Color.WHITE.rgb)
-            mc.textRenderer.draw(
-                matrices,
+        override fun render(context: DrawContext, index: Int, x: Int, y: Int) {
+            context.drawText(plugin.name, x + 3, y + 3, Color.WHITE)
+            context.drawText(
                 plugin.author,
-                x + 3f,
-                y + 3f + mc.textRenderer.fontHeight,
-                Color.GRAY.rgb
+                x + 3,
+                y + 3 + mc.textRenderer.fontHeight,
+                Color.GRAY
             )
         }
     }
 
     private class InfoEntry(val text: String) : SimpleElementListEntry<InfoEntry>() {
-        override fun render(matrices: MatrixStack, index: Int, x: Int, y: Int) {
-            mc.textRenderer.draw(matrices, text, x.toFloat() + 3f, y.toFloat(), Color.WHITE.rgb)
+        override fun render(context: DrawContext, index: Int, x: Int, y: Int) {
+            context.drawText(text, x + 3, y, Color.WHITE)
         }
     }
 }

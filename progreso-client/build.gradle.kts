@@ -1,5 +1,6 @@
 @file:Suppress("UnstableApiUsage", "SpellCheckingInspection")
 
+val minecraftVersion: String by project
 val progresoVersion: String by project
 val mixinVersion: String by project
 val yarnMappings: String by project
@@ -42,7 +43,7 @@ configurations {
 }
 
 dependencies {
-    "minecraft"("com.mojang:minecraft:1.19.4")
+    "minecraft"("com.mojang:minecraft:$minecraftVersion")
     "mappings"("net.fabricmc:yarn:$yarnMappings:v2")
 
     modImplementation("net.fabricmc:fabric-loader:$loaderVersion")

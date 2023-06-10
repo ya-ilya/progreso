@@ -1,25 +1,19 @@
 package org.progreso.client.gui.minecraft
 
-import com.google.gson.JsonElement
+import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.widget.ButtonWidget
-import net.minecraft.client.util.Session
-import net.minecraft.client.util.math.MatrixStack
-import net.minecraft.text.Text
-import org.progreso.api.Api
 import org.progreso.api.alt.AbstractAltAccount
-import org.progreso.api.alt.accounts.CrackedAccount
 import org.progreso.api.managers.AltManager
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.gui.builders.ButtonBuilder.Companion.button
 import org.progreso.client.gui.builders.ElementListBuilder.Companion.elementList
 import org.progreso.client.gui.builders.ScreenBuilder.Companion.screen
 import org.progreso.client.gui.builders.TextFieldBuilder.Companion.textField
+import org.progreso.client.gui.drawText
 import org.progreso.client.gui.minecraft.common.SimpleElementListEntry
 import org.progreso.client.gui.minecraft.common.TitledScreen
-import org.progreso.client.util.render.RenderContext.Companion.matrices
+import org.progreso.client.util.session.SessionUtil
 import java.awt.Color
-import java.net.URL
-import java.util.*
 import kotlin.properties.Delegates
 
 class ProgresoAltsScreen(private val alts: List<AbstractAltAccount>) : TitledScreen("Alts") {
@@ -44,14 +38,13 @@ class ProgresoAltsScreen(private val alts: List<AbstractAltAccount>) : TitledScr
             }
 
             list.renderHeader { context, x, y ->
-                val text = Text.of("Current name: ${mc.session.username}")
+                val text = "Current name: ${mc.session.username}"
 
-                client!!.textRenderer.draw(
-                    context.matrices,
+                context.drawText(
                     text,
-                    (x + list.width / 2 - client!!.textRenderer.getWidth(text) / 2).toFloat(),
-                    27.coerceAtMost(y).toFloat(),
-                    Color.WHITE.rgb
+                    x + list.width / 2 - client!!.textRenderer.getWidth(text) / 2,
+                    27.coerceAtMost(y),
+                    Color.WHITE
                 )
             }
         }
@@ -76,7 +69,9 @@ class ProgresoAltsScreen(private val alts: List<AbstractAltAccount>) : TitledScr
             button.active = false
             button.dimensions(width / 2 - 100, height - 24, 96, 20)
             button.onPress {
-                login()
+                if (SessionUtil.login(selectedAlt!!) == SessionUtil.LoginResult.Successful) {
+                    close()
+                }
             }
         }
 
@@ -86,38 +81,6 @@ class ProgresoAltsScreen(private val alts: List<AbstractAltAccount>) : TitledScr
                 close()
             }
         }
-    }
-
-    private fun login() {
-        when (selectedAlt) {
-            is CrackedAccount -> {
-                client!!.session = Session(
-                    selectedAlt!!.name,
-                    getUUID(selectedAlt!!.name),
-                    "-",
-                    Optional.empty(),
-                    Optional.empty(),
-                    Session.AccountType.LEGACY
-                )
-                close()
-            }
-
-            else -> {}
-        }
-    }
-
-    private fun getUUID(username: String): String {
-        try {
-            val connection = URL("https://api.mojang.com/users/profiles/minecraft/$username").openConnection()
-            val jsonElement = Api.GSON.fromJson(connection.getInputStream().reader(), JsonElement::class.java)
-
-            if (jsonElement.isJsonObject) {
-                return jsonElement.asJsonObject.get("id").asString
-            }
-        } catch (e: Exception) {
-            return ""
-        }
-        return ""
     }
 
     private fun showCreateAltScreen() {
@@ -131,7 +94,7 @@ class ProgresoAltsScreen(private val alts: List<AbstractAltAccount>) : TitledScr
                     button.dimensions(width / 2 - 66, height / 2 + 8, 132, 20)
                     button.onPress {
                         if (name.text.length >= 3) {
-                            AltManager.addAlt(CrackedAccount(name.text))
+                            SessionUtil.login(selectedAlt!!)
                             close()
                         }
                     }
@@ -139,21 +102,25 @@ class ProgresoAltsScreen(private val alts: List<AbstractAltAccount>) : TitledScr
             }
 
             render { context, _, _ ->
-                renderBackgroundTexture(context.matrices)
-                textRenderer.draw(context.matrices, "Name", width / 2 - 65f, height / 2 - 14f, Color.WHITE.rgb)
+                renderBackgroundTexture(context)
+                context.drawText("Name", width / 2 - 65, height / 2 - 14, Color.WHITE)
             }
         })
     }
 
     private class AltEntry(val alt: AbstractAltAccount) : SimpleElementListEntry<AltEntry>() {
-        override fun render(matrices: MatrixStack, index: Int, x: Int, y: Int) {
-            mc.textRenderer.draw(matrices, "Name: ${alt.name}", x.toFloat() + 3f, y.toFloat() + 6, Color.WHITE.rgb)
-            mc.textRenderer.draw(
-                matrices,
+        override fun render(context: DrawContext, index: Int, x: Int, y: Int) {
+            context.drawText(
+                "Name: ${alt.username}",
+                x + 3,
+                y + 6,
+                Color.WHITE
+            )
+            context.drawText(
                 "Type: ${alt.type}",
-                x.toFloat() + 3f,
-                y.toFloat() + 26 - mc.textRenderer.fontHeight,
-                Color.WHITE.rgb
+                x + 3,
+                y + 26 - mc.textRenderer.fontHeight,
+                Color.WHITE
             )
         }
     }

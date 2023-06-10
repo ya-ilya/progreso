@@ -1,11 +1,12 @@
 package org.progreso.client.gui.minecraft
 
+import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.ChatScreen
 import net.minecraft.client.util.InputUtil
-import net.minecraft.client.util.math.MatrixStack
 import org.progreso.api.managers.CommandManager
+import org.progreso.client.gui.drawBorderedRect
+import org.progreso.client.gui.drawText
 import org.progreso.client.module.modules.client.ClickGUI
-import org.progreso.client.util.render.Render2DUtil
 import java.awt.Color
 
 class ProgresoChatScreen : ChatScreen(CommandManager.PREFIX.toString()) {
@@ -65,20 +66,19 @@ class ProgresoChatScreen : ChatScreen(CommandManager.PREFIX.toString()) {
         return true
     }
 
-    override fun render(matrices: MatrixStack, mouseX: Int, mouseY: Int, delta: Float) {
-        Render2DUtil.drawBorderedRect(matrices, 2, height - 14, width - 4, 12, Color(Int.MIN_VALUE), ClickGUI.theme)
+    override fun render(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
+        context.drawBorderedRect(2, height - 14, width - 4, 12, Color(Int.MIN_VALUE), ClickGUI.theme)
 
         if (predict.isNotEmpty()) {
-            textRenderer.drawWithShadow(
-                matrices,
+            context.drawText(
                 predict.joinToString("/"),
-                (textRenderer.getWidth(chatField.text) + chatField.x).toFloat(),
-                chatField.y.toFloat(),
-                ClickGUI.theme.rgb
+                textRenderer.getWidth(chatField.text) + chatField.x,
+                chatField.y,
+                ClickGUI.theme
             )
         }
 
-        chatField.render(matrices, mouseX, mouseY, delta)
+        chatField.render(context, mouseX, mouseY, delta)
     }
 
     private fun predict() {
