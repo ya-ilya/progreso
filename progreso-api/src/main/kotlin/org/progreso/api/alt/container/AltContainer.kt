@@ -6,7 +6,7 @@ import org.progreso.api.alt.AbstractAltAccount
  * Interface for alt containers
  */
 interface AltContainer {
-    val alts: MutableList<AbstractAltAccount>
+    val alts: MutableSet<AbstractAltAccount>
 
     fun addAlt(alt: AbstractAltAccount) {
         alts.add(alt)

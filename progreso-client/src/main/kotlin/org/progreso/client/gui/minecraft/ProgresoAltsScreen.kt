@@ -3,6 +3,7 @@ package org.progreso.client.gui.minecraft
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.widget.ButtonWidget
 import org.progreso.api.alt.AbstractAltAccount
+import org.progreso.api.alt.accounts.CrackedAltAccount
 import org.progreso.api.managers.AltManager
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.gui.builders.ButtonBuilder.Companion.button
@@ -94,7 +95,7 @@ class ProgresoAltsScreen(private val alts: List<AbstractAltAccount>) : TitledScr
                     button.dimensions(width / 2 - 66, height / 2 + 8, 132, 20)
                     button.onPress {
                         if (name.text.length >= 3) {
-                            SessionUtil.login(selectedAlt!!)
+                            AltManager.addAlt(CrackedAltAccount(name.text))
                             close()
                         }
                     }
