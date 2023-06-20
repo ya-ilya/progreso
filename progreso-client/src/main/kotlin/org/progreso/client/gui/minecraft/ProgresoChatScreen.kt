@@ -11,16 +11,15 @@ import java.awt.Color
 
 class ProgresoChatScreen : ChatScreen(CommandManager.PREFIX.toString()) {
     private var predict = emptyList<String>()
-    private val mc get() = client!!
 
     override fun keyPressed(keyCode: Int, scanCode: Int, modifiers: Int): Boolean {
-        val chatHud = mc.inGameHud.chatHud
+        val chatHud = client!!.inGameHud.chatHud
 
         when (keyCode) {
-            InputUtil.GLFW_KEY_ESCAPE -> mc.setScreen(null)
+            InputUtil.GLFW_KEY_ESCAPE -> client!!.setScreen(null)
 
             InputUtil.GLFW_KEY_ENTER, InputUtil.GLFW_KEY_KP_ENTER -> {
-                mc.setScreen(null)
+                client!!.setScreen(null)
                 val message = this.chatField.text
                 if (message.isNotEmpty()) sendMessage(message, true)
             }
@@ -40,7 +39,7 @@ class ProgresoChatScreen : ChatScreen(CommandManager.PREFIX.toString()) {
                 chatField.keyPressed(keyCode, scanCode, modifiers)
 
                 if (chatField.text.isEmpty()) {
-                    ChatScreen(chatField.text).also { mc.setScreen(it) }
+                    ChatScreen(chatField.text).also { client!!.setScreen(it) }
                     return true
                 }
 
@@ -57,7 +56,7 @@ class ProgresoChatScreen : ChatScreen(CommandManager.PREFIX.toString()) {
         chatField.charTyped(chr, modifiers)
 
         if (chatField.text.isEmpty()) {
-            ChatScreen(chatField.text).also { mc.setScreen(it) }
+            ChatScreen(chatField.text).also { client!!.setScreen(it) }
             return true
         }
 

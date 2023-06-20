@@ -17,14 +17,14 @@ object AutoTool : Module("AutoTool", Category.Misc) {
                 .associateWith { getDestroySpeedForBlock(it.stack, event.pos) }
                 .maxByOrNull { it.value }
 
-            if (best != null && best.value > getDestroySpeedForBlock(mc.player!!.mainHandStack, event.pos)) {
+            if (best != null && best.value > getDestroySpeedForBlock(mc.player.mainHandStack, event.pos)) {
                 InventoryUtil.updateSelectedSlot(best.key.index)
             }
         }
     }
 
     private fun getDestroySpeedForBlock(stack: ItemStack, pos: BlockPos): Float {
-        var speed = stack.getMiningSpeedMultiplier(mc.world!!.getBlockState(pos))
+        var speed = stack.getMiningSpeedMultiplier(mc.world.getBlockState(pos))
 
         if (speed > 1.0f) {
             speed += EnchantmentHelper.getLevel(Enchantments.EFFICIENCY, stack)

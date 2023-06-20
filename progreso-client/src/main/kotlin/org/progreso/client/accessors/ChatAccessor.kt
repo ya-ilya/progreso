@@ -7,7 +7,7 @@ import org.progreso.client.Client.Companion.mc
 
 object ChatAccessor : ChatAccessor {
     override fun send(message: Any) {
-        mc.player?.sendMessage(Text.of(message.toString()))!!
+        mc.player.sendMessage(Text.of(message.toString()))
     }
 
     override fun info(message: Any) {

@@ -35,7 +35,7 @@ object EventAccessor : EventAccessor {
         }
 
         safeEventListener<CharEvent> { event ->
-            if (!mc.options.sneakKey.isPressed && event.codePoint == CommandManager.PREFIX_CODE) {
+            if (!mc.options!!.sneakKey.isPressed && event.codePoint == CommandManager.PREFIX_CODE) {
                 mc.setScreen(ProgresoChatScreen())
                 event.isCancelled = true
             }
@@ -60,7 +60,7 @@ object EventAccessor : EventAccessor {
         }
 
         safeEventListener<TickEvent> { _ ->
-            for (player in mc.world!!.players) {
+            for (player in mc.world.players) {
                 if (player.deathTime > 0 || player.health <= 0) {
                     Client.EVENT_BUS.post(PlayerDeathEvent(player))
                 }

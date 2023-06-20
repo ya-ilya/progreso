@@ -26,7 +26,7 @@ inline fun <reified T : Event> Any.safeEventListener(
     crossinline block: (T) -> Unit
 ) {
     eventListener<T>(priority) {
-        if (mc.player != null && mc.world != null) {
+        if (!mc.isNotSafe()) {
             block(it)
         }
     }

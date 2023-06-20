@@ -31,8 +31,8 @@ object InventoryUtil {
     ): List<Slot> {
         val result = mutableListOf<Slot>()
 
-        for (i in (fromIndex ?: 0) until (toIndex ?: mc.player!!.inventory.size())) {
-            val itemStack = mc.player!!.inventory.getStack(i)
+        for (i in (fromIndex ?: 0) until (toIndex ?: mc.player.inventory.size())) {
+            val itemStack = mc.player.inventory.getStack(i)
 
             if (predicate(i, itemStack)) {
                 result.add(Slot(i, itemStack))
@@ -43,15 +43,15 @@ object InventoryUtil {
     }
 
     fun moveItem(fromIndex: Int, toIndex: Int) {
-        val syncId = mc.player?.currentScreenHandler?.syncId ?: 0
+        val syncId = mc.player.currentScreenHandler?.syncId ?: 0
 
-        mc.interactionManager!!.clickSlot(syncId, fromIndex, 0, SlotActionType.PICKUP, mc.player)
-        mc.interactionManager!!.clickSlot(syncId, toIndex, 0, SlotActionType.PICKUP, mc.player)
-        mc.interactionManager!!.clickSlot(syncId, fromIndex, 0, SlotActionType.PICKUP, mc.player)
+        mc.interactionManager.clickSlot(syncId, fromIndex, 0, SlotActionType.PICKUP, mc.player)
+        mc.interactionManager.clickSlot(syncId, toIndex, 0, SlotActionType.PICKUP, mc.player)
+        mc.interactionManager.clickSlot(syncId, fromIndex, 0, SlotActionType.PICKUP, mc.player)
     }
 
     fun updateSelectedSlot(index: Int) {
-        mc.networkHandler!!.sendPacket(UpdateSelectedSlotC2SPacket(index))
-        mc.player!!.inventory.selectedSlot = index
+        mc.networkHandler.sendPacket(UpdateSelectedSlotC2SPacket(index))
+        mc.player.inventory.selectedSlot = index
     }
 }

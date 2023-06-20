@@ -13,20 +13,20 @@ object FakePlayer : Module("FakePlayer", Category.Misc) {
 
     init {
         onEnable {
-            if (mc.player == null || mc.world == null) {
+            if (mc.isNotSafe()) {
                 toggle()
                 return@onEnable
             }
 
             fakePlayer = OtherClientPlayerEntity(mc.world, GameProfile(UUID.randomUUID(), fakePlayerName))
             fakePlayer!!.copyFrom(mc.player)
-            mc.world!!.addEntity(-1, fakePlayer)
+            mc.world.addEntity(-1, fakePlayer)
         }
 
         onDisable {
-            if (mc.player == null || mc.world == null || fakePlayer == null) return@onDisable
+            if (mc.isNotSafe() || fakePlayer == null) return@onDisable
 
-            mc.world!!.removeEntity(fakePlayer!!.id, Entity.RemovalReason.DISCARDED)
+            mc.world.removeEntity(fakePlayer!!.id, Entity.RemovalReason.DISCARDED)
         }
     }
 }

@@ -27,15 +27,15 @@ object KillAura : Module("KillAura", Category.Combat) {
 
     init {
         safeEventListener<TickEvent> { _ ->
-            if (onlySword && mc.player!!.mainHandStack.item !is SwordItem) {
+            if (onlySword && mc.player.mainHandStack.item !is SwordItem) {
                 return@safeEventListener
             }
 
-            val entity = mc.world!!.entities
+            val entity = mc.world.entities
                 .asSequence()
                 .filterIsInstance<LivingEntity>()
                 .filter { it.canBeAttacked }
-                .filter { mc.player!!.distanceTo(it) <= distance }
+                .filter { mc.player.distanceTo(it) <= distance }
                 .filter {
                     when (it) {
                         is PlayerEntity -> players
@@ -46,7 +46,7 @@ object KillAura : Module("KillAura", Category.Combat) {
                 }
                 .minByOrNull {
                     when (target) {
-                        Target.Distance -> mc.player!!.distanceTo(it)
+                        Target.Distance -> mc.player.distanceTo(it)
                         Target.Health -> it.health
                     }
                 }

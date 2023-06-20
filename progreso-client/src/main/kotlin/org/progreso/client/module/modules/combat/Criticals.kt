@@ -15,16 +15,16 @@ object Criticals : Module("Criticals", Category.Combat) {
         eventListener<PacketEvent.Send<*>> { event ->
             if (event.packet !is PlayerInteractEntityC2SPacket) return@eventListener
             if (onlyKillAura && !KillAura.enabled) return@eventListener
-            if (mc.world!!.getBlockState(mc.player!!.blockPos).block == Blocks.COBWEB) return@eventListener
+            if (mc.world.getBlockState(mc.player.blockPos).block == Blocks.COBWEB) return@eventListener
 
-            val x = mc.player!!.x
-            val y = mc.player!!.y
-            val z = mc.player!!.z
+            val x = mc.player.x
+            val y = mc.player.y
+            val z = mc.player.z
 
-            mc.networkHandler!!.sendPacket(PlayerMoveC2SPacket.PositionAndOnGround(x, y + 0.05, z, false))
-            mc.networkHandler!!.sendPacket(PlayerMoveC2SPacket.PositionAndOnGround(x, y, z, false))
-            mc.networkHandler!!.sendPacket(PlayerMoveC2SPacket.PositionAndOnGround(x, y + 0.012, z, false))
-            mc.networkHandler!!.sendPacket(PlayerMoveC2SPacket.PositionAndOnGround(x, y, z, false))
+            mc.networkHandler.sendPacket(PlayerMoveC2SPacket.PositionAndOnGround(x, y + 0.05, z, false))
+            mc.networkHandler.sendPacket(PlayerMoveC2SPacket.PositionAndOnGround(x, y, z, false))
+            mc.networkHandler.sendPacket(PlayerMoveC2SPacket.PositionAndOnGround(x, y + 0.012, z, false))
+            mc.networkHandler.sendPacket(PlayerMoveC2SPacket.PositionAndOnGround(x, y, z, false))
         }
     }
 }

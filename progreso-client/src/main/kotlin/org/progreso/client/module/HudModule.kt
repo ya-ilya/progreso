@@ -1,6 +1,5 @@
 package org.progreso.client.module
 
-import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.DrawContext
 import org.progreso.api.module.AbstractHudModule
 import org.progreso.client.Client
@@ -18,7 +17,7 @@ abstract class HudModule(
     constructor(name: String, category: Category) : this(name, "", category)
 
     protected companion object {
-        val mc: MinecraftClient by lazy { Client.mc }
+        val mc by lazy { Client.mc }
     }
 
     init {

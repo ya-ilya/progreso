@@ -3,6 +3,8 @@ package org.progreso.client
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.MinecraftClient
+import net.minecraft.client.gui.screen.Screen
+import net.minecraft.client.option.GameOptions
 import org.progreso.api.Api
 import org.progreso.api.command.AbstractCommand
 import org.progreso.api.managers.CommandManager
@@ -22,7 +24,7 @@ import org.slf4j.LoggerFactory
 class Client : ModInitializer {
     companion object {
         @JvmStatic
-        val mc: MinecraftClient by lazy { MinecraftClient.getInstance() }
+        val mc by lazy { MinecraftClientWrapper(MinecraftClient.getInstance()) }
 
         @JvmField
         val LOGGER = LoggerFactory.getLogger("progreso")!!
@@ -69,5 +71,32 @@ class Client : ModInitializer {
 
         LOGGER.info("Initializing client managers...")
         Managers
+    }
+
+    class MinecraftClientWrapper(val client: MinecraftClient) {
+        val tickDelta get() = client.tickDelta
+
+        val world get() = client.world!!
+        val player get() = client.player!!
+        val textRenderer get() = client.textRenderer!!
+        val inGameHud get() = client.inGameHud!!
+        val interactionManager get() = client.interactionManager!!
+        val networkHandler get() = client.networkHandler!!
+        val options: GameOptions? get() = client.options
+        val currentScreen: Screen? get() = client.currentScreen
+
+        var session
+            get() = client.session!!
+            set(value) {
+                client.session = value
+            }
+
+        fun setScreen(screen: Screen?) {
+            client.setScreen(screen)
+        }
+
+        fun isNotSafe(): Boolean {
+            return client.player == null || client.world == null
+        }
     }
 }

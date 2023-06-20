@@ -8,8 +8,8 @@ import org.progreso.client.module.Module
 object Sprint : Module("Sprint", Category.Movement) {
     init {
         safeEventListener<TickEvent> { _ ->
-            if (mc.options.forwardKey.isPressed) {
-                mc.player!!.isSprinting = true
+            if (mc.options!!.forwardKey.isPressed) {
+                mc.player.isSprinting = true
             }
         }
     }

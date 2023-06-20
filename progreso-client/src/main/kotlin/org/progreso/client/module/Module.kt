@@ -1,6 +1,5 @@
 package org.progreso.client.module
 
-import net.minecraft.client.MinecraftClient
 import org.progreso.api.module.AbstractModule
 import org.progreso.client.Client
 
@@ -15,7 +14,7 @@ abstract class Module(
     constructor(name: String, category: Category) : this(name, "", category)
 
     protected companion object {
-        val mc: MinecraftClient by lazy { Client.mc }
+        val mc by lazy { Client.mc }
     }
 
     override fun onEnable() {

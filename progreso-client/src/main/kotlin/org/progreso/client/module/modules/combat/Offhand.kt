@@ -17,7 +17,7 @@ object Offhand : Module("Offhand", Category.Combat) {
         safeEventListener<TickEvent> { _ ->
             if (mc.currentScreen is CreativeInventoryScreen) return@safeEventListener
 
-            if (mc.player!!.health <= totemHealth) {
+            if (mc.player.health <= totemHealth) {
                 Mode.Totem.switch()
             } else {
                 mode.switch()
@@ -31,7 +31,7 @@ object Offhand : Module("Offhand", Category.Combat) {
         Gapple(Items.ENCHANTED_GOLDEN_APPLE);
 
         fun switch() {
-            if (mc.player!!.offHandStack.item == item) return
+            if (mc.player.offHandStack.item == item) return
             val slot = InventoryUtil.findItem(fromIndex = 9) { _, stack -> stack.item == item }
 
             if (slot != null) {
