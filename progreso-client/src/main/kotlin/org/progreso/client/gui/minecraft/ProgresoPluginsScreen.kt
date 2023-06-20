@@ -13,7 +13,7 @@ import java.awt.Color
 import java.io.File
 import java.nio.file.Paths
 
-class ProgresoPluginsScreen(private val plugins: List<AbstractPlugin>) : TitledScreen("Plugins") {
+class ProgresoPluginsScreen(private val plugins: Set<AbstractPlugin>) : TitledScreen("Plugins") {
     private var selectedPlugin: AbstractPlugin? = null
 
     override fun init() {

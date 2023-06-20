@@ -3,15 +3,15 @@ package org.progreso.client.gui.clickgui.component.components
 import net.minecraft.client.gui.DrawContext
 import org.progreso.api.setting.settings.BooleanSetting
 import org.progreso.client.gui.clickgui.component.AbstractComponent
-import org.progreso.client.gui.clickgui.component.ChildComponent
-import org.progreso.client.gui.use
+import org.progreso.client.gui.clickgui.component.SettingComponent
+import org.progreso.client.gui.invoke
 import java.awt.Color
 
 class BooleanComponent(
-    private val setting: BooleanSetting,
+    setting: BooleanSetting,
     height: Int,
     parent: AbstractComponent
-) : ChildComponent(height, parent) {
+) : SettingComponent<BooleanSetting>(setting, height, parent) {
     private companion object {
         const val BUTTON_WIDTH = 8
         const val BUTTON_HEIGHT = 4
@@ -21,12 +21,10 @@ class BooleanComponent(
     private val buttonStartX get() = x + width - BUTTON_END_OFFSET - BUTTON_WIDTH
     private val buttonStartY get() = y + height.div(2) - BUTTON_HEIGHT.div(2)
 
-    override val visible get() = setting.visibility()
-
     override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
         super.render(context, mouseX, mouseY)
 
-        context.use {
+        context {
             drawStringRelatively(
                 setting.name,
                 offsets.textOffset,

@@ -6,7 +6,7 @@ import org.progreso.api.setting.AbstractSetting
 import org.progreso.api.setting.settings.*
 import org.progreso.client.gui.clickgui.component.AbstractComponent
 import org.progreso.client.gui.clickgui.component.ChildComponent
-import org.progreso.client.gui.use
+import org.progreso.client.gui.invoke
 import java.awt.Color
 
 class ModuleComponent(
@@ -38,7 +38,7 @@ class ModuleComponent(
             override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
                 super.render(context, mouseX, mouseY)
 
-                context.use {
+                context {
                     if (module.enabled) {
                         drawStringRelatively(
                             module.name,
@@ -72,7 +72,7 @@ class ModuleComponent(
             for (i in 1..visibleComponents.lastIndex) {
                 val component = visibleComponents[i]
 
-                context.use {
+                context {
                     if (component is ListComponent) {
                         drawVerticalLine(
                             x,

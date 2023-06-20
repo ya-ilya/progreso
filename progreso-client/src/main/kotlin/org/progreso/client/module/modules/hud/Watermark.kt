@@ -1,7 +1,7 @@
 package org.progreso.client.module.modules.hud
 
 import net.minecraft.client.gui.DrawContext
-import org.progreso.client.gui.use
+import org.progreso.client.gui.invoke
 import org.progreso.client.manager.managers.render.TextRenderManager
 import org.progreso.client.manager.managers.render.TextRenderManager.getStringWidth
 import org.progreso.client.module.Category
@@ -19,7 +19,7 @@ object Watermark : HudModule("Watermark", Category.Hud) {
         y = 10
     }
 
-    override fun render(context: DrawContext) = context.use {
+    override fun render(context: DrawContext) = context {
         drawText("Progreso Client", x + 1, y + 2, color)
     }
 }

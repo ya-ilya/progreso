@@ -7,11 +7,11 @@ import org.progreso.client.gui.clickgui.component.AbstractComponent
 import org.progreso.client.manager.managers.render.TextRenderManager
 import java.awt.Color
 
-fun DrawContext.use(block: ContextWrapper.() -> Unit) {
+operator fun DrawContext.invoke(block: ContextWrapper.() -> Unit) {
     ContextWrapper(this).apply(block)
 }
 
-fun <S> DrawContext.useSuper(superRef: S, block: ContextWrapper.(S) -> Unit) {
+fun <S> DrawContext.invokeSuper(superRef: S, block: ContextWrapper.(S) -> Unit) {
     ContextWrapper(this).also { block(it, superRef) }
 }
 

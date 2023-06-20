@@ -42,7 +42,7 @@ object IRCCommand : Command("irc") {
                     }
 
                     override fun onOpen(handshakedata: ServerHandshake) {
-                        send(IRCAuthPacket(mc.player!!.name.string))
+                        send(IRCAuthPacket(mc.player.name.string))
                         info("[IRC] Connected to $address")
                     }
 
@@ -68,7 +68,7 @@ object IRCCommand : Command("irc") {
                     return@executes error("[IRC] Client isn't connected to the server")
                 }
 
-                client?.send(IRCMessagePacket(mc.player!!.name.string, context.get("message")))
+                client?.send(IRCMessagePacket(mc.player.name.string, context.get("message")))
             }
         }
     }

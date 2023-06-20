@@ -4,20 +4,18 @@ import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.util.InputUtil
 import org.progreso.api.setting.settings.BindSetting
 import org.progreso.client.gui.clickgui.component.AbstractComponent
-import org.progreso.client.gui.clickgui.component.ChildComponent
-import org.progreso.client.gui.use
+import org.progreso.client.gui.clickgui.component.SettingComponent
+import org.progreso.client.gui.invoke
 import org.progreso.client.manager.managers.render.TextRenderManager.getStringWidth
 import org.progreso.client.util.client.KeyboardUtil
 import java.awt.Color
 
 class BindComponent(
-    private val setting: BindSetting,
+    setting: BindSetting,
     height: Int,
     parent: AbstractComponent
-) : ChildComponent(height, parent) {
+) : SettingComponent<BindSetting>(setting, height, parent) {
     private var keyListening = false
-
-    override val visible get() = setting.visibility()
 
     override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
         super.render(context, mouseX, mouseY)
@@ -37,7 +35,7 @@ class BindComponent(
             }
         }
 
-        context.use {
+        context {
             drawStringRelatively(
                 setting.name,
                 offsets.textOffset,

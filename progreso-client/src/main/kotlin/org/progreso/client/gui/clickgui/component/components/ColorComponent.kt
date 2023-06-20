@@ -10,7 +10,7 @@ import org.progreso.api.setting.settings.ColorSetting
 import org.progreso.api.setting.settings.NumberSetting
 import org.progreso.client.gui.clickgui.component.AbstractComponent
 import org.progreso.client.gui.clickgui.component.ChildComponent
-import org.progreso.client.gui.use
+import org.progreso.client.gui.invoke
 import org.progreso.client.util.render.Render2DUtil.glColors
 import java.awt.Color
 import kotlin.math.max
@@ -72,7 +72,7 @@ class ColorComponent(
 
                 drawPicker(context, x.toFloat(), y.toFloat(), width.toFloat(), this.height.toFloat(), setting.value)
 
-                context.use {
+                context {
                     if (pickerX != -1 && pickerY != -1) {
                         drawRect(x + pickerX - 1, y + pickerY - 1, 2, 2, Color.WHITE)
                     }
@@ -165,7 +165,7 @@ class ColorComponent(
             override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
                 super.render(context, mouseX, mouseY)
 
-                context.use {
+                context {
                     drawStringRelatively(
                         setting.name,
                         offsets.textOffset,

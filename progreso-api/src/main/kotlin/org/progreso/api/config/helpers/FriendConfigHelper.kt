@@ -6,6 +6,7 @@ import org.progreso.api.config.AbstractConfigHelper
 import org.progreso.api.config.configs.FriendConfig
 import org.progreso.api.config.providers.FriendConfigProvider
 import org.progreso.api.managers.ConfigManager
+import org.progreso.api.managers.FriendManager
 
 class FriendConfigHelper : AbstractConfigHelper<FriendConfig>(
     name = "friend",
@@ -21,13 +22,13 @@ class FriendConfigHelper : AbstractConfigHelper<FriendConfig>(
             friends.add(reader.nextString())
         }
         reader.endArray()
-        return FriendConfig(name, friends)
+        return FriendConfig(name, friends.map { FriendManager.Friend(it) })
     }
 
     override fun write(config: FriendConfig, writer: JsonWriter) {
         writer.beginArray()
         for (friend in config.friends) {
-            writer.value(friend)
+            writer.value(friend.name)
         }
         writer.endArray()
     }

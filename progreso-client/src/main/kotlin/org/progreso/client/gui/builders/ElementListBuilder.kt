@@ -18,7 +18,7 @@ class ElementListBuilder<E : ElementListWidget.Entry<E>>
     }
 
     override fun build(): ElementListWidget<E> {
-        return object : ElementListWidget<E>(mc, width, height, top, bottom, itemHeight) {
+        return object : ElementListWidget<E>(mc.client, width, height, top, bottom, itemHeight) {
             init {
                 setLeftPos(this@ElementListBuilder.left)
 

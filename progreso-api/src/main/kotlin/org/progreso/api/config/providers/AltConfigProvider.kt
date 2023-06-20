@@ -6,7 +6,7 @@ import org.progreso.api.managers.AltManager
 
 object AltConfigProvider : AbstractConfigProvider<AltConfig>() {
     override fun create(name: String): AltConfig {
-        return AltConfig(name, AltManager.alts)
+        return AltConfig(name, AltManager.alts.toList())
     }
 
     override fun apply(config: AltConfig) {

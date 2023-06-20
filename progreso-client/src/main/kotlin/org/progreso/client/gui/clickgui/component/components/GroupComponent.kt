@@ -5,7 +5,7 @@ import org.progreso.api.setting.settings.GroupSetting
 import org.progreso.client.gui.clickgui.component.AbstractComponent
 import org.progreso.client.gui.clickgui.component.ChildComponent
 import org.progreso.client.gui.clickgui.component.components.ModuleComponent.Companion.createComponent
-import org.progreso.client.gui.useSuper
+import org.progreso.client.gui.invokeSuper
 import java.awt.Color
 
 class GroupComponent(
@@ -26,7 +26,7 @@ class GroupComponent(
             override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
                 super.render(context, mouseX, mouseY)
 
-                context.useSuper(this) {
+                context.invokeSuper(this) {
                     drawStringRelatively(
                         setting.name,
                         it.parent.offsets.textOffset,

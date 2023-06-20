@@ -6,14 +6,11 @@ import org.progreso.api.managers.FriendManager
 
 object FriendConfigProvider : AbstractConfigProvider<FriendConfig>() {
     override fun create(name: String): FriendConfig {
-        return FriendConfig(
-            name,
-            FriendManager.friends.map { it.name }
-        )
+        return FriendConfig(name, FriendManager.friends.toList())
     }
 
     override fun apply(config: FriendConfig) {
         FriendManager.friends.clear()
-        FriendManager.friends.addAll(config.friends.map { FriendManager.Friend(it) })
+        FriendManager.friends.addAll(config.friends)
     }
 }

@@ -3,17 +3,17 @@ package org.progreso.client.gui.clickgui.component.components
 import net.minecraft.client.gui.DrawContext
 import org.progreso.api.setting.settings.NumberSetting
 import org.progreso.client.gui.clickgui.component.AbstractComponent
-import org.progreso.client.gui.clickgui.component.ChildComponent
-import org.progreso.client.gui.use
+import org.progreso.client.gui.clickgui.component.SettingComponent
+import org.progreso.client.gui.invoke
 import org.progreso.client.manager.managers.render.TextRenderManager.getStringWidth
 import java.awt.Color
 import kotlin.math.floor
 
 class SliderComponent(
-    private val setting: NumberSetting<*>,
+    setting: NumberSetting<*>,
     height: Int,
     parent: AbstractComponent
-) : ChildComponent(height, parent) {
+) : SettingComponent<NumberSetting<*>>(setting, height, parent) {
     private companion object {
         const val SLIDER_START_OFFSET = 5
         const val SLIDER_END_OFFSET = 5
@@ -28,8 +28,6 @@ class SliderComponent(
     private val sliderEndX get() = x + width - SLIDER_END_OFFSET
     private val sliderStartY get() = y + height - 2 * SLIDER_HEIGHT
     private val sliderEndY get() = sliderStartY + SLIDER_HEIGHT
-
-    override val visible get() = setting.visibility()
 
     init {
         sliderWidth =
@@ -68,7 +66,7 @@ class SliderComponent(
             }
         }
 
-        context.use {
+        context {
             drawStringRelatively(
                 setting.name,
                 offsets.textOffset,

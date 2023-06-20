@@ -36,7 +36,7 @@ object PluginCommand : Command("plugin") {
         }
 
         literal("gui").executes { _ ->
-            mc.setScreen(ProgresoPluginsScreen(PluginManager.plugins.toList()))
+            mc.setScreen(ProgresoPluginsScreen(PluginManager.plugins))
         }
     }
 

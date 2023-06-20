@@ -17,7 +17,7 @@ import org.progreso.client.util.session.SessionUtil
 import java.awt.Color
 import kotlin.properties.Delegates
 
-class ProgresoAltsScreen(private val alts: List<AbstractAltAccount>) : TitledScreen("Alts") {
+class ProgresoAltsScreen(private val alts: Set<AbstractAltAccount>) : TitledScreen("Alts") {
     private var selectedAlt: AbstractAltAccount? = null
 
     override fun init() {

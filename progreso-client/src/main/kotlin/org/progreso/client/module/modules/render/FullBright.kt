@@ -14,11 +14,11 @@ object FullBright : Module("FullBright", Category.Render) {
         }
 
         onDisable {
-            mc.options.gamma.value = oldGamma
+            mc.options!!.gamma.value = oldGamma
         }
 
         safeEventListener<TickEvent> { _ ->
-            mc.options.gamma.value = 1.0
+            mc.options!!.gamma.value = 1.0
         }
     }
 }

@@ -4,23 +4,23 @@ import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.util.InputUtil
 import org.progreso.api.setting.settings.StringSetting
 import org.progreso.client.gui.clickgui.component.AbstractComponent
-import org.progreso.client.gui.clickgui.component.ChildComponent
-import org.progreso.client.gui.use
+import org.progreso.client.gui.clickgui.component.SettingComponent
+import org.progreso.client.gui.invoke
 import org.progreso.client.manager.managers.render.TextRenderManager
 import java.awt.Color
 
 class StringComponent(
-    private val setting: StringSetting,
+    setting: StringSetting,
     height: Int,
     parent: AbstractComponent
-) : ChildComponent(height, parent) {
+) : SettingComponent<StringSetting>(setting, height, parent) {
     private var stringEditing = false
     private var stringEditor = StringEditor()
 
     override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
         super.render(context, mouseX, mouseY)
 
-        context.use {
+        context {
             drawStringRelatively(
                 setting.name,
                 offsets.textOffset,
