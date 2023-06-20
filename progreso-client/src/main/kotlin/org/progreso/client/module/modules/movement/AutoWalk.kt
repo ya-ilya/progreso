@@ -37,9 +37,9 @@ object AutoWalk : Module("AutoWalk", Category.Movement) {
         val setPressed: (Boolean) -> Unit,
         val isOppositePressed: () -> Boolean
     ) {
-        Forward({ mc.options.forwardKey.isPressed = it }, { mc.options.backKey.isPressed }),
-        Backward({ mc.options.backKey.isPressed = it }, { mc.options.forwardKey.isPressed }),
-        Left({ mc.options.leftKey.isPressed = it }, { mc.options.rightKey.isPressed }),
-        Right({ mc.options.rightKey.isPressed = it }, { mc.options.leftKey.isPressed });
+        Forward({ mc.options!!.forwardKey.isPressed = it }, { mc.options!!.backKey.isPressed }),
+        Backward({ mc.options!!.backKey.isPressed = it }, { mc.options!!.forwardKey.isPressed }),
+        Left({ mc.options!!.leftKey.isPressed = it }, { mc.options!!.rightKey.isPressed }),
+        Right({ mc.options!!.rightKey.isPressed = it }, { mc.options!!.leftKey.isPressed });
     }
 }

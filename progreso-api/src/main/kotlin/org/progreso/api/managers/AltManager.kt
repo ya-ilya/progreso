@@ -4,5 +4,5 @@ import org.progreso.api.alt.AbstractAltAccount
 import org.progreso.api.alt.container.AltContainer
 
 object AltManager : AltContainer {
-    override val alts = mutableListOf<AbstractAltAccount>()
+    override val alts = mutableSetOf<AbstractAltAccount>()
 }
