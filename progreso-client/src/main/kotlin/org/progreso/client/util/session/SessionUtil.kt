@@ -22,15 +22,19 @@ object SessionUtil {
     }
 
     private fun loginCracked(username: String): LoginResult {
-        mc.session = Session(
-            username,
-            getUUID(username),
-            "-",
-            Optional.empty(),
-            Optional.empty(),
-            Session.AccountType.LEGACY
-        )
-        return LoginResult.Successful
+        return try {
+            mc.session = Session(
+                username,
+                getUUID(username),
+                "-",
+                Optional.empty(),
+                Optional.empty(),
+                Session.AccountType.LEGACY
+            )
+            LoginResult.Successful
+        } catch (ex: Exception) {
+            LoginResult.Error
+        }
     }
 
     private fun getUUID(username: String): String {

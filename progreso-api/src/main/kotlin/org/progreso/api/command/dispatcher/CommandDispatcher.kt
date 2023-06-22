@@ -59,7 +59,11 @@ class CommandDispatcher {
 
     private fun predict(builder: AbstractBuilder<*>, reader: StringReader): LiteralBuilder? {
         if (!reader.hasNext()) {
-            return builder as LiteralBuilder?
+            return try {
+                builder as LiteralBuilder?
+            } catch (ex: ClassCastException) {
+                null
+            }
         }
 
         val string = reader.peek()

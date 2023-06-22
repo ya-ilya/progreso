@@ -1,0 +1,63 @@
+{
+  "argument.config_helper.error": "Конфиг-хелпер '{{helper}}' не найден",
+  "argument.friend.error": "У вас нету друга с именем {{friend}}",
+  "argument.module.error": "Модуль '{{module}}' не найден",
+  "argument.locale.error": "Перевод '{{locale}}' не найден",
+  "argument.plugin.error": "Плагин '{{plugin}}' не найден",
+
+  "command.command_not_found": "Команда не найдена",
+  "command.invalid_syntax": "Неправильный синтаксис. Сообщение об ошибке: {{message}}",
+  "command.failed_to_execute": "Ошибка при выполнении команды",
+
+  "command.config.load": "Конфиг '{{config}}' загружен",
+  "command.config.load_error": "Конфиг '{{config}}' не найден",
+  "command.config.save": "Конфиг '{{config}}' сохранен",
+  "command.config.save_many": "Конфиги в хелпере '{{helper}}' сохранены",
+  "command.config.refresh": "Конфиг '{{config}}' обновлен",
+  "command.config.refresh_many": "Конфиги в хелпере '{{helper}}' обновлены",
+  "command.config.list": "Конфиги в хелпере '{{helper}}': {{configs}}",
+  "command.config.current": "Текущий '{{helper}}' конфиг: {{config}}",
+
+  "command.friend.add": "{{player}} теперь ваш друг",
+  "command.friend.add_error": "{{player}} уже является вашим другом",
+  "command.friend.remove": "{{player}} теперь не является вашим другом",
+  "command.friend.list": "Ваши друзья: {{friends}}",
+
+  "command.irc.connect": "[IRC] Подключен к {{address}}",
+  "command.irc.connect_error": "[IRC] Не удалось подключится к серверу",
+  "command.irc.disconnect": "[IRC] Отключен",
+  "command.irc.disconnect_error": "[IRC] Клиент не подключен к серверу",
+  "command.irc.auth_error": "[IRC] Не удалось пройти аутентификацию. Причина: {{reason}}",
+  "command.irc.message": "[IRC] {{author}}: {{message}}",
+
+  "command.locale.set": "Перевод установлен с {{oldLocale}} на {{locale}}",
+  "command.locale.list": "Переводы: {{locales}}",
+  "command.locale.current": "Текущий перевод: {{locale}}",
+
+  "command.plugin.name_entry": "Название: {{name}}",
+  "command.plugin.author_entry": "Автор: {{author}}",
+  "command.plugin.version_entry": "Версия: {{version}}",
+  "command.plugin.list": "Плагины: {{plugins}}",
+
+  "module.notifications.module_message": "[Notifications] {{color}}{{module}}",
+  "module.notifications.pop_message": "[Notifications] {{player}} потреял {{count}} тотемов",
+  "module.notifications.death_message": "[Notifications] {{player}} умер после {{count}} тотемов",
+
+  "gui.alts.title": "Альты",
+  "gui.alts.title.create_alt": "Создать альт",
+  "gui.alts.label.alt_name": "Имя: {{name}}",
+  "gui.alts.label.alt_type": "Тип: {{type}}",
+  "gui.alts.label.current_name": "Текущее имя: {{name}}",
+  "gui.alts.label.name_text_field": "Имя",
+  "gui.alts.button.add_account": "Добавить аккаунт",
+  "gui.alts.button.remove_account": "Удалить аккаунт",
+  "gui.alts.button.login": "Войти",
+  "gui.alts.button.done": "Готово",
+
+  "gui.plugins.title": "Плагины",
+  "gui.plugins.label.plugin_name": "Название: {{name}}",
+  "gui.plugins.label.plugin_version": "Версия: {{version}}",
+  "gui.plugins.label.plugin_author": "Автор: {{author}}",
+  "gui.plugins.button.open_folder": "Открыть папку",
+  "gui.plugins.button.done": "Готово"
+}

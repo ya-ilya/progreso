@@ -6,7 +6,6 @@ import org.progreso.api.setting.settings.BindSetting
 import org.progreso.client.gui.clickgui.component.AbstractComponent
 import org.progreso.client.gui.clickgui.component.SettingComponent
 import org.progreso.client.gui.invoke
-import org.progreso.client.manager.managers.render.TextRenderManager.getStringWidth
 import org.progreso.client.util.client.KeyboardUtil
 import java.awt.Color
 

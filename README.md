@@ -4,7 +4,7 @@
 
 ![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/ya-ilya/progreso?color=royalblue)
 ![Build Status](https://img.shields.io/github/actions/workflow/status/ya-ilya/progreso/build.yml?branch=main&logo=gradle)
-![Fabric Version](https://img.shields.io/badge/Fabric-1.20-informational)
+![Fabric Version](https://img.shields.io/badge/Fabric-1.20.1-informational)
 
 </div>
 
@@ -16,10 +16,10 @@ This utility mod not ready to use. So for now it's just an experiment
 
 ### Installation
 
-- Install [fabric 1.20](https://fabricmc.net/use/installer/)
+- Install [fabric 1.20.1](https://fabricmc.net/use/installer/)
 - Download the latest release from [releases](https://github.com/ya-ilya/progreso/releases) or dev build from [actions](https://github.com/ya-ilya/progreso/actions)
 - Put the jar to `.minecraft/mods` folder
-- Run [fabric 1.20]() from your launcher
+- Run [fabric 1.20.1]() from your launcher
 
 ### Development
 

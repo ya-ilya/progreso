@@ -12,10 +12,16 @@ object FriendCommand : Command("friend") {
                 val player: String by context
 
                 if (FriendManager.isFriend(player)) {
-                    error("$player already your friend")
+                    errorLocalized(
+                        "command.friend.add_error",
+                        "player" to player
+                    )
                 } else {
                     FriendManager.addFriendByName(player)
-                    info("$player now is your friend")
+                    infoLocalized(
+                        "command.friend.add",
+                        "player" to player
+                    )
                 }
             }
         }
@@ -25,12 +31,18 @@ object FriendCommand : Command("friend") {
                 val friend = context.nullable<FriendManager.Friend>("friend") ?: return@executes
 
                 FriendManager.removeFriendByName(friend.name)
-                info("${friend.name} now isn't your friend")
+                infoLocalized(
+                    "command.friend.remove",
+                    "player" to friend.name
+                )
             }
         }
 
         literal("list").executes { _ ->
-            info("Friends: ${FriendManager.friends.joinToString()}")
+            infoLocalized(
+                "command.friend.list",
+                "friends" to FriendManager.friends.joinToString()
+            )
         }
     }
 }

@@ -24,30 +24,40 @@ object IRCCommand : Command("irc") {
                         try {
                             connect()
                         } catch (ex: Exception) {
-                            error("[IRC] Failed to connect to the server")
+                            errorLocalized("command.irc.connect_error")
                         }
                     }
 
                     override fun onPacket(packet: IRCPacket) {
                         when (packet) {
                             is IRCAuthFailedPacket -> {
-                                error("[IRC] Authentication failed. Reason: ${packet.reason}")
+                                errorLocalized(
+                                    "command.irc.auth_error",
+                                    "reason" to packet.reason
+                                )
                                 close()
                             }
 
                             is IRCMessagePacket -> {
-                                info("[IRC] ${packet.author}: ${packet.message}")
+                                infoLocalized(
+                                    "command.irc.message",
+                                    "author" to packet.author,
+                                    "message" to packet.message
+                                )
                             }
                         }
                     }
 
                     override fun onOpen(handshakedata: ServerHandshake) {
                         send(IRCAuthPacket(mc.player.name.string))
-                        info("[IRC] Connected to $address")
+                        infoLocalized(
+                            "command.irc.connect",
+                            "address" to address
+                        )
                     }
 
                     override fun onClose(code: Int, reason: String, remote: Boolean) {
-                        info("[IRC] Disconnected")
+                        infoLocalized("command.irc.disconnect")
                     }
                 }
             }
@@ -55,7 +65,7 @@ object IRCCommand : Command("irc") {
 
         literal("disconnect").executes {
             if (client == null || client?.isClosed == true || client?.isOpen == false) {
-                return@executes error("[IRC] Client isn't connected to the server")
+                return@executes errorLocalized("command.irc.disconnect_error")
             }
 
             client?.close()
@@ -65,7 +75,7 @@ object IRCCommand : Command("irc") {
         literal("send") {
             argument("message", string(true)).executes { context ->
                 if (client == null || client?.isClosed == true || client?.isOpen == false) {
-                    return@executes error("[IRC] Client isn't connected to the server")
+                    return@executes errorLocalized("command.irc.disconnect_error")
                 }
 
                 client?.send(IRCMessagePacket(mc.player.name.string, context.get("message")))

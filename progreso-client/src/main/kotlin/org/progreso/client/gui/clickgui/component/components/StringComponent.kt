@@ -6,7 +6,6 @@ import org.progreso.api.setting.settings.StringSetting
 import org.progreso.client.gui.clickgui.component.AbstractComponent
 import org.progreso.client.gui.clickgui.component.SettingComponent
 import org.progreso.client.gui.invoke
-import org.progreso.client.manager.managers.render.TextRenderManager
 import java.awt.Color
 
 class StringComponent(
@@ -28,7 +27,7 @@ class StringComponent(
             )
             drawStringRelatively(
                 if (stringEditing) stringEditor.string else setting.value,
-                offsets.textOffset + TextRenderManager.getStringWidth("${setting.name}  "),
+                offsets.textOffset + getStringWidth("${setting.name}  "),
                 if (stringEditing) Color.WHITE else theme
             )
         }

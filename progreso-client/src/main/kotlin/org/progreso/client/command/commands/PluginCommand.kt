@@ -9,30 +9,22 @@ import org.progreso.client.gui.minecraft.ProgresoPluginsScreen
 
 object PluginCommand : Command("plugin") {
     init {
-        literal("unload") {
-            argument("plugin", PluginArgumentType.create()).executes { context ->
-                val plugin = context.plugin() ?: return@executes
-
-                plugin.unloadPlugin()
-                PluginManager.plugins.remove(plugin)
-
-                info("Unloaded ${plugin.name} plugin")
-            }
-        }
-
         literal("info") {
             argument("plugin", PluginArgumentType.create()).executes { context ->
                 val plugin = context.plugin() ?: return@executes
 
                 info("--------")
-                info("Name: ${plugin.name}")
-                info("Version: ${plugin.version}")
-                info("Author: ${plugin.author}")
+                infoLocalized("command.plugin.name_entry", "name" to plugin.name)
+                infoLocalized("command.plugin.version_entry", "version" to plugin.version)
+                infoLocalized("command.plugin.author_entry", "author" to plugin.author)
             }
         }
 
         literal("list").executes { _ ->
-            info("Plugins: ${PluginManager.plugins.joinToString { it.name }}")
+            infoLocalized(
+                "command.plugin.list",
+                "plugins" to PluginManager.plugins.joinToString { it.name }
+            )
         }
 
         literal("gui").executes { _ ->

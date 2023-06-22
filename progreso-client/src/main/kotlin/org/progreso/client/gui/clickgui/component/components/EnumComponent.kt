@@ -5,7 +5,6 @@ import org.progreso.api.setting.settings.EnumSetting
 import org.progreso.client.gui.clickgui.component.AbstractComponent
 import org.progreso.client.gui.clickgui.component.SettingComponent
 import org.progreso.client.gui.invoke
-import org.progreso.client.manager.managers.render.TextRenderManager.getStringWidth
 import java.awt.Color
 
 class EnumComponent(

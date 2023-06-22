@@ -1,10 +1,11 @@
+@file:Suppress("MemberVisibilityCanBePrivate", "UnusedReceiverParameter", "unused")
+
 package org.progreso.client.gui
 
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Text
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.gui.clickgui.component.AbstractComponent
-import org.progreso.client.manager.managers.render.TextRenderManager
 import java.awt.Color
 
 operator fun DrawContext.invoke(block: ContextWrapper.() -> Unit) {
@@ -14,6 +15,8 @@ operator fun DrawContext.invoke(block: ContextWrapper.() -> Unit) {
 fun <S> DrawContext.invokeSuper(superRef: S, block: ContextWrapper.(S) -> Unit) {
     ContextWrapper(this).also { block(it, superRef) }
 }
+
+val DrawContext.fontHeight get() = mc.textRenderer.fontHeight
 
 fun DrawContext.drawText(text: String, x: Int, y: Int, color: Color, shadow: Boolean = false) {
     drawText(mc.textRenderer, text, x, y, color.rgb, shadow)
@@ -51,7 +54,13 @@ fun DrawContext.drawHorizontalLine(startX: Int, endX: Int, y: Int, color: Color)
     fill(startX, y, endX + 1, y + 1, color.rgb)
 }
 
+fun DrawContext.getStringWidth(string: String): Int {
+    return mc.textRenderer.getWidth(string)
+}
+
 class ContextWrapper(private val context: DrawContext) {
+    val fontHeight get() = context.fontHeight
+
     fun drawText(text: String, x: Int, y: Int, color: Color, shadow: Boolean = false) {
         context.drawText(text, x, y, color, shadow)
     }
@@ -91,7 +100,7 @@ class ContextWrapper(private val context: DrawContext) {
         drawStringRelatively(
             text,
             xOffset,
-            height.div(2) - TextRenderManager.height.div(2),
+            height.div(2) - fontHeight.div(2),
             color
         )
     }
@@ -99,9 +108,13 @@ class ContextWrapper(private val context: DrawContext) {
     fun AbstractComponent.drawCenteredString(text: String, color: Color) {
         context.drawText(
             text,
-            x + width.div(2) - TextRenderManager.getStringWidth(text).div(2),
-            y + height.div(2) - TextRenderManager.height.div(2),
+            x + width.div(2) - context.getStringWidth(text).div(2),
+            y + height.div(2) - context.fontHeight.div(2),
             color
         )
+    }
+
+    fun getStringWidth(string: String): Int {
+        return context.getStringWidth(string)
     }
 }

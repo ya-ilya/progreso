@@ -16,7 +16,10 @@ class ConfigHelperArgumentType : ArgumentType<AbstractConfigHelper<*>?> {
     override fun parse(reader: StringReader): AbstractConfigHelper<*>? {
         val helperName = reader.readString()
         val helper = ConfigManager.getHelperByNameOrNull(helperName)
-        if (helper == null) Api.CHAT.error("Helper $helperName not found")
+        if (helper == null) Api.CHAT.errorLocalized(
+            "argument.config_helper.error",
+            "helper" to helperName
+        )
         return helper
     }
 

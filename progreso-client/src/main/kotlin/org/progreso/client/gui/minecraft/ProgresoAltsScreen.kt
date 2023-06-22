@@ -4,6 +4,7 @@ import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.widget.ButtonWidget
 import org.progreso.api.alt.AbstractAltAccount
 import org.progreso.api.alt.accounts.CrackedAltAccount
+import org.progreso.api.i18n.I18n.i18n
 import org.progreso.api.managers.AltManager
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.gui.builders.ButtonBuilder.Companion.button
@@ -17,7 +18,7 @@ import org.progreso.client.util.session.SessionUtil
 import java.awt.Color
 import kotlin.properties.Delegates
 
-class ProgresoAltsScreen(private val alts: Set<AbstractAltAccount>) : TitledScreen("Alts") {
+class ProgresoAltsScreen(private val alts: Set<AbstractAltAccount>) : TitledScreen(i18n("gui.alts.title")) {
     private var selectedAlt: AbstractAltAccount? = null
 
     override fun init() {
@@ -39,7 +40,7 @@ class ProgresoAltsScreen(private val alts: Set<AbstractAltAccount>) : TitledScre
             }
 
             list.renderHeader { context, x, y ->
-                val text = "Current name: ${mc.session.username}"
+                val text = i18n("gui.alts.label.current_name", "name" to mc.session.username)
 
                 context.drawText(
                     text,
@@ -50,14 +51,14 @@ class ProgresoAltsScreen(private val alts: Set<AbstractAltAccount>) : TitledScre
             }
         }
 
-        button("Add account") { button ->
+        button(i18n("gui.alts.button.add_account")) { button ->
             button.dimensions(width / 2 - 100, height - 48, 96, 20)
             button.onPress {
                 showCreateAltScreen()
             }
         }
 
-        removeButtonWidget = button("Remove account") { button ->
+        removeButtonWidget = button(i18n("gui.alts.button.remove_account")) { button ->
             button.active = false
             button.dimensions(width / 2 + 4, height - 48, 96, 20)
             button.onPress {
@@ -66,7 +67,7 @@ class ProgresoAltsScreen(private val alts: Set<AbstractAltAccount>) : TitledScre
             }
         }
 
-        loginButtonWidget = button("Login") { button ->
+        loginButtonWidget = button(i18n("gui.alts.button.login")) { button ->
             button.active = false
             button.dimensions(width / 2 - 100, height - 24, 96, 20)
             button.onPress {
@@ -76,7 +77,7 @@ class ProgresoAltsScreen(private val alts: Set<AbstractAltAccount>) : TitledScre
             }
         }
 
-        button("Done") { button ->
+        button(i18n("gui.alts.button.done")) { button ->
             button.dimensions(width / 2 + 4, height - 24, 96, 20)
             button.onPress {
                 close()
@@ -85,13 +86,13 @@ class ProgresoAltsScreen(private val alts: Set<AbstractAltAccount>) : TitledScre
     }
 
     private fun showCreateAltScreen() {
-        client!!.setScreen(screen("Create Alt") {
+        client!!.setScreen(screen(i18n("gui.alts.title.create_alt")) {
             init {
                 val name = textField { textField ->
                     textField.dimensions(width / 2 - 36, height / 2 - 20, 100, 20)
                 }
 
-                button("Add account") { button ->
+                button(i18n("gui.alts.button.add_account")) { button ->
                     button.dimensions(width / 2 - 66, height / 2 + 8, 132, 20)
                     button.onPress {
                         if (name.text.length >= 3) {
@@ -104,7 +105,10 @@ class ProgresoAltsScreen(private val alts: Set<AbstractAltAccount>) : TitledScre
 
             render { context, _, _ ->
                 renderBackgroundTexture(context)
-                context.drawText("Name", width / 2 - 65, height / 2 - 14, Color.WHITE)
+                context.drawText(
+                    i18n("gui.alts.label.name_text_field"),
+                    width / 2 - 65, height / 2 - 14, Color.WHITE
+                )
             }
         })
     }
@@ -112,13 +116,13 @@ class ProgresoAltsScreen(private val alts: Set<AbstractAltAccount>) : TitledScre
     private class AltEntry(val alt: AbstractAltAccount) : SimpleElementListEntry<AltEntry>() {
         override fun render(context: DrawContext, index: Int, x: Int, y: Int) {
             context.drawText(
-                "Name: ${alt.username}",
+                i18n("gui.alts.label.alt_name", "name" to alt.username),
                 x + 3,
                 y + 6,
                 Color.WHITE
             )
             context.drawText(
-                "Type: ${alt.type}",
+                i18n("gui.alts.label.alt_type", "type" to alt.type),
                 x + 3,
                 y + 26 - mc.textRenderer.fontHeight,
                 Color.WHITE

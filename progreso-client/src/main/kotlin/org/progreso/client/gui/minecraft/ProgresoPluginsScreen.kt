@@ -2,6 +2,7 @@ package org.progreso.client.gui.minecraft
 
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.util.Util
+import org.progreso.api.i18n.I18n.i18n
 import org.progreso.api.plugin.AbstractPlugin
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.gui.builders.ButtonBuilder.Companion.button
@@ -13,7 +14,7 @@ import java.awt.Color
 import java.io.File
 import java.nio.file.Paths
 
-class ProgresoPluginsScreen(private val plugins: Set<AbstractPlugin>) : TitledScreen("Plugins") {
+class ProgresoPluginsScreen(private val plugins: Set<AbstractPlugin>) : TitledScreen(i18n("gui.plugins.title")) {
     private var selectedPlugin: AbstractPlugin? = null
 
     override fun init() {
@@ -37,20 +38,32 @@ class ProgresoPluginsScreen(private val plugins: Set<AbstractPlugin>) : TitledSc
                     children().clear()
                     scrollAmount = -Double.MAX_VALUE
                     if (lastSelected != null) {
-                        children().add(InfoEntry("Name: ${lastSelected!!.name}"))
-                        children().add(InfoEntry("Version: ${lastSelected!!.version}"))
-                        children().add(InfoEntry("Author: ${lastSelected!!.author}"))
+                        children().add(
+                            InfoEntry(
+                                i18n("gui.plugins.label.plugin_name", "name" to lastSelected!!.name)
+                            )
+                        )
+                        children().add(
+                            InfoEntry(
+                                i18n("gui.plugins.label.plugin_version", "version" to lastSelected!!.version)
+                            )
+                        )
+                        children().add(
+                            InfoEntry(
+                                i18n("gui.plugins.label.plugin_author", "author" to lastSelected!!.author)
+                            )
+                        )
                     }
                 }
             }
         }
 
-        button("Open Folder") { button ->
+        button(i18n("gui.plugins.button.open_folder")) { button ->
             button.dimensions(width / 2 - 154, height - 24, 150, 20)
             button.onPress { Util.getOperatingSystem().open(Paths.get("progreso${File.separator}plugins").toFile()) }
         }
 
-        button("Done") { button ->
+        button(i18n("gui.plugins.button.done")) { button ->
             button.dimensions(width / 2 + 4, height - 24, 150, 20)
             button.onPress { close() }
         }

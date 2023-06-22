@@ -18,11 +18,17 @@ object ConfigCommand : Command("config") {
                     try {
                         helper.load(config)
                     } catch (ex: Exception) {
-                        error("Config $config not found")
+                        errorLocalized(
+                            "command.config.load_error",
+                            "config" to config
+                        )
                         return@executes
                     }
 
-                    info("Loaded ${ConfigManager.getHelperConfig(helper)} config")
+                    infoLocalized(
+                        "command.config.load",
+                        "config" to config
+                    )
                 }
             }
 
@@ -32,14 +38,20 @@ object ConfigCommand : Command("config") {
                     val helper = context.helper() ?: return@executes
 
                     helper.save(config)
-                    info("Saved ${ConfigManager.getHelperConfig(helper)} config")
+                    infoLocalized(
+                        "command.config.save",
+                        "config" to config
+                    )
                 }
 
                 executes { context ->
                     val helper = context.helper() ?: return@executes
                     helper.save()
 
-                    info("Saved ${helper.name} configs")
+                    infoLocalized(
+                        "command.config.save_many",
+                        "helper" to helper.name
+                    )
                 }
             }
 
@@ -49,26 +61,40 @@ object ConfigCommand : Command("config") {
                     val helper = context.helper() ?: return@executes
 
                     helper.refresh(config)
-                    info("Refreshed $config ${helper.name} config")
+                    infoLocalized(
+                        "command.config.refresh",
+                        "config" to config
+                    )
                 }
 
                 executes { context ->
                     val helper = context.helper() ?: return@executes
-                    helper.refresh()
 
-                    info("Refreshed ${helper.name} configs")
+                    helper.refresh()
+                    infoLocalized(
+                        "command.config.refresh_many",
+                        "helper" to helper.name
+                    )
                 }
             }
 
             literal("list").executes { context ->
                 val helper = context.helper() ?: return@executes
 
-                info("Configs in ${helper.name}: ${helper.configs.joinToString { it.name }}")
+                infoLocalized(
+                    "command.config.list",
+                    "helper" to helper.name,
+                    "configs" to helper.configs.joinToString { it.name }
+                )
             }
         }.executes { context ->
             val helper = context.helper() ?: return@executes
 
-            info("Current ${helper.name} config: ${ConfigManager.getHelperConfig(helper)}")
+            infoLocalized(
+                "command.config.current",
+                "helper" to helper.name,
+                "config" to ConfigManager.getHelperConfig(helper)!!
+            )
         }
     }
 

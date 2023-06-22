@@ -6,9 +6,7 @@ import net.minecraft.screen.slot.SlotActionType
 import org.progreso.client.Client.Companion.mc
 
 object InventoryUtil {
-    data class Slot(val index: Int, val stack: ItemStack) {
-        val item get() = stack.item
-    }
+    data class Slot(val index: Int, val stack: ItemStack)
 
     val hotbar get() = findItems(0, 9) { _, _ -> true }
 
