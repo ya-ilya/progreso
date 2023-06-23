@@ -3,10 +3,10 @@ package org.progreso.client.gui.clickgui
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.text.Text
+import org.progreso.api.module.Category
 import org.progreso.client.gui.clickgui.component.AbstractComponent
 import org.progreso.client.gui.clickgui.component.components.CategoryComponent
-import org.progreso.client.module.Category
-import org.progreso.client.module.modules.client.ClickGUI
+import org.progreso.client.modules.client.ClickGUI
 
 open class ClickGUI(text: String) : Screen(Text.of(text)) {
     companion object : org.progreso.client.gui.clickgui.ClickGUI("ClickGUI") {

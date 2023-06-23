@@ -3,7 +3,7 @@ package org.progreso.api.setting.settings
 import org.progreso.api.setting.AbstractSetting
 import java.awt.Color
 
-open class ColorSetting(
+class ColorSetting(
     name: String,
     initialValue: Color,
     visibility: () -> Boolean = { true }

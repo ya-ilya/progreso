@@ -2,7 +2,7 @@ package org.progreso.api.setting.settings
 
 import org.progreso.api.setting.AbstractSetting
 
-open class EnumSetting<T : Enum<T>>(
+class EnumSetting<T : Enum<T>>(
     name: String,
     initialValue: T,
     visibility: () -> Boolean = { true }

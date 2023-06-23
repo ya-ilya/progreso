@@ -2,7 +2,7 @@ package org.progreso.api.setting.settings
 
 import org.progreso.api.setting.AbstractSetting
 
-open class NumberSetting<T>(
+class NumberSetting<T>(
     name: String,
     initialValue: T,
     private val range: ClosedRange<T>,

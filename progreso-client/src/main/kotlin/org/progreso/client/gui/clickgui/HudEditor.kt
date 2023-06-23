@@ -3,8 +3,8 @@ package org.progreso.client.gui.clickgui
 import net.minecraft.client.gui.DrawContext
 import org.progreso.api.managers.ModuleManager
 import org.progreso.api.module.AbstractHudModule
+import org.progreso.api.module.Category
 import org.progreso.client.gui.clickgui.component.components.CategoryComponent
-import org.progreso.client.module.Category
 
 object HudEditor : ClickGUI("HudEditor") {
     private val HUD_MODULES by lazy {

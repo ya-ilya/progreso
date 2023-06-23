@@ -2,7 +2,7 @@ package org.progreso.api.setting.settings
 
 import org.progreso.api.setting.AbstractSetting
 
-open class BindSetting(
+class BindSetting(
     name: String,
     initialValue: Int,
     visibility: () -> Boolean = { true }

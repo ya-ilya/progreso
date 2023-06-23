@@ -2,16 +2,8 @@ package org.progreso.api.module
 
 /**
  * Hud module abstract class
- *
- * @param name Hud module name
- * @param description Hud module description
- * @param category Hud module category
  */
-abstract class AbstractHudModule(
-    name: String,
-    description: String,
-    category: Category
-) : AbstractModule(name, description, category) {
+abstract class AbstractHudModule : AbstractModule() {
     var dragging = false
     var dragX = 0
     var dragY = 0

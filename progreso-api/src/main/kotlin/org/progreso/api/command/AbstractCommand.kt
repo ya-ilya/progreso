@@ -5,14 +5,18 @@ import org.progreso.api.command.builder.builders.LiteralBuilder
 
 /**
  * Command abstract class
- *
- * @param name Command name
- * @param description Command description
  */
-abstract class AbstractCommand(
-    name: String,
-    val description: String
-) : LiteralBuilder(name) {
+abstract class AbstractCommand : LiteralBuilder("") {
+    private val annotation = javaClass.getAnnotation(Register::class.java)
+
+    override val name = annotation.name
+    val description = annotation.description
+
+    annotation class Register(
+        val name: String,
+        val description: String = ""
+    )
+
     protected companion object {
         fun send(message: Any) = Api.CHAT.send(message)
 

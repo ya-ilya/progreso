@@ -18,7 +18,7 @@ import org.progreso.client.accessors.EventAccessor
 import org.progreso.client.accessors.LoggerAccessor
 import org.progreso.client.gui.clickgui.ClickGUI
 import org.progreso.client.gui.clickgui.HudEditor
-import org.progreso.client.manager.Managers
+import org.progreso.client.managers.CombatManager
 import org.reflections.Reflections
 import org.reflections.scanners.Scanners
 import org.slf4j.LoggerFactory
@@ -57,7 +57,7 @@ class Client : ModInitializer {
             }
 
         LOGGER.info("Initializing client modules...")
-        for (clazz in Reflections("org.progreso.client.module.modules").getSubTypesOf(AbstractModule::class.java)) {
+        for (clazz in Reflections("org.progreso.client.modules").getSubTypesOf(AbstractModule::class.java)) {
             try {
                 ModuleManager.addModule(clazz.getField("INSTANCE").get(null) as AbstractModule)
             } catch (ex: Exception) {
@@ -66,7 +66,7 @@ class Client : ModInitializer {
         }
 
         LOGGER.info("Initializing client commands...")
-        for (clazz in Reflections("org.progreso.client.command.commands").getSubTypesOf(AbstractCommand::class.java)) {
+        for (clazz in Reflections("org.progreso.client.commands").getSubTypesOf(AbstractCommand::class.java)) {
             try {
                 CommandManager.addCommand(clazz.getField("INSTANCE").get(null) as AbstractCommand)
             } catch (ex: Exception) {
@@ -81,7 +81,7 @@ class Client : ModInitializer {
         HudEditor.initialize()
 
         LOGGER.info("Initializing client managers...")
-        Managers
+        CombatManager
     }
 
     class MinecraftClientWrapper(val client: MinecraftClient) {

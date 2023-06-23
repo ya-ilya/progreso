@@ -2,11 +2,11 @@ package org.progreso.client.gui.clickgui.component.components
 
 import net.minecraft.client.gui.DrawContext
 import org.progreso.api.managers.ModuleManager
+import org.progreso.api.module.Category
 import org.progreso.client.gui.clickgui.ClickGUI
 import org.progreso.client.gui.clickgui.component.AbstractComponent
 import org.progreso.client.gui.clickgui.component.ChildComponent
 import org.progreso.client.gui.invoke
-import org.progreso.client.module.Category
 import java.awt.Color
 
 class CategoryComponent(

@@ -15,11 +15,16 @@ abstract class AbstractSetting<T : Any>(
     val initialValue: T,
     val visibility: () -> Boolean = { true }
 ) {
+    protected var valueListeners = mutableSetOf<(T, T) -> Unit>()
+
     open var value: T by Delegates.observable(initialValue) { _, oldValue, newValue ->
-        valueChanged(oldValue, newValue)
+        if (oldValue == newValue) return@observable
+        valueListeners.forEach { it.invoke(oldValue, newValue) }
     }
 
-    open fun valueChanged(oldValue: T, newValue: T) {}
+    fun valueChanged(block: (T, T) -> Unit) {
+        valueListeners.add(block)
+    }
 
     @Suppress("UNCHECKED_CAST")
     open fun setAnyValue(any: Any) {

@@ -5,7 +5,7 @@ import org.progreso.api.command.builder.builders.ArgumentBuilder
 import org.progreso.api.command.builder.builders.LiteralBuilder
 import org.progreso.api.command.dispatcher.CommandContext
 
-abstract class AbstractBuilder<S : AbstractBuilder<S>>(val name: String) {
+abstract class AbstractBuilder<S : AbstractBuilder<S>>(open val name: String) {
     val children = mutableListOf<AbstractBuilder<*>>()
     private var executes = { _: CommandContext -> }
 

@@ -3,7 +3,7 @@ package org.progreso.client.gui.clickgui.component
 import net.minecraft.client.gui.DrawContext
 import org.progreso.client.gui.clickgui.component.data.ComponentOffsets
 import org.progreso.client.gui.invoke
-import org.progreso.client.module.modules.client.ClickGUI
+import org.progreso.client.modules.client.ClickGUI
 
 abstract class AbstractComponent {
     protected companion object {

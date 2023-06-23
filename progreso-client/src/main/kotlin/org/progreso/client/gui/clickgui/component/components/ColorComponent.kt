@@ -36,14 +36,14 @@ class ColorComponent(
             null
         )
 
-    private val hueSetting = object : NumberSetting<Float>("Hue", hsbValue[0] * 255f, 0f..255f) {
-        override fun valueChanged(oldValue: Float, newValue: Float) {
+    private val hueSetting = NumberSetting("Hue", hsbValue[0] * 255f, 0f..255f).apply {
+        valueChanged { _, newValue ->
             setHue(newValue / 255f)
         }
     }
 
-    private val alphaSetting = object : NumberSetting<Int>("Alpha", setting.value.alpha, 0..255) {
-        override fun valueChanged(oldValue: Int, newValue: Int) {
+    private val alphaSetting = NumberSetting("Alpha", setting.value.alpha, 0..255).apply {
+        valueChanged { _, newValue ->
             setting.value = setting.value.copy(newValue)
         }
     }

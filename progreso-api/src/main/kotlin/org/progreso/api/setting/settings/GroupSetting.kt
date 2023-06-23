@@ -3,7 +3,7 @@ package org.progreso.api.setting.settings
 import org.progreso.api.setting.AbstractSetting
 import org.progreso.api.setting.container.SettingContainer
 
-open class GroupSetting(
+class GroupSetting(
     name: String,
     visibility: () -> Boolean = { true }
 ) : AbstractSetting<Set<AbstractSetting<*>>>(name, emptySet(), visibility), SettingContainer {
@@ -15,7 +15,7 @@ open class GroupSetting(
             val oldValue = settings.toSet()
             settings.clear()
             settings.addAll(value)
-            valueChanged(oldValue, settings)
+            valueListeners.forEach { it.invoke(oldValue, settings) }
         }
 
     override fun setting(name: String, visibility: () -> Boolean): GroupSetting {

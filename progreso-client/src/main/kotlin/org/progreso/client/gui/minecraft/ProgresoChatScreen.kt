@@ -6,7 +6,7 @@ import net.minecraft.client.util.InputUtil
 import org.progreso.api.managers.CommandManager
 import org.progreso.client.gui.drawBorderedRect
 import org.progreso.client.gui.drawText
-import org.progreso.client.module.modules.client.ClickGUI
+import org.progreso.client.modules.client.ClickGUI
 import java.awt.Color
 
 class ProgresoChatScreen : ChatScreen(CommandManager.PREFIX.toString()) {
