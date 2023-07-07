@@ -16,10 +16,7 @@ class ModuleArgumentType : ArgumentType<AbstractModule?> {
     override fun parse(reader: StringReader): AbstractModule? {
         val moduleName = reader.readString()
         val module = ModuleManager.getModuleByNameOrNull(moduleName)
-        if (module == null) Api.CHAT.errorLocalized(
-            "argument.module.error",
-            "module" to moduleName
-        )
+        if (module == null) Api.CHAT.errorLocalized("argument.module.error", moduleName)
         return module
     }
 

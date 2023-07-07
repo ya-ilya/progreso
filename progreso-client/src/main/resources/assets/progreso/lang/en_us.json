@@ -1,0 +1,59 @@
+{
+  "argument.config_helper.error": "Config helper '%s' not found",
+  "argument.friend.error": "Friend '%s' not found",
+  "argument.module.error": "Module '%s' not found",
+  "argument.locale.error": "Locale '%s' not found",
+  "argument.plugin.error": "Plugin '%s' not found",
+
+  "command.command_not_found": "Command not found",
+  "command.invalid_syntax": "Invalid syntax: %s",
+  "command.failed_to_execute": "Failed to execute command",
+
+  "command.config.load": "Loaded %s config",
+  "command.config.load_error": "Config %s not found",
+  "command.config.save": "Saved %s config",
+  "command.config.save_many": "Saved %s configs",
+  "command.config.refresh": "Refreshed %s config",
+  "command.config.refresh_many": "Refreshed %s configs",
+  "command.config.list": "Configs in %s: %s",
+  "command.config.current": "Current %s config: %s",
+
+  "command.friend.add": "%s now is your friend",
+  "command.friend.add_error": "%s already your friend",
+  "command.friend.remove": "%s now isn't your friend",
+  "command.friend.list": "Friends: %s",
+
+  "command.irc.connect": "[IRC] Connected to %s",
+  "command.irc.connect_error": "[IRC] Failed to connect to the server",
+  "command.irc.disconnect": "[IRC] Disconnected",
+  "command.irc.disconnect_error": "[IRC] Client isn't connected to the server",
+  "command.irc.auth_error": "[IRC] Authentication failed. Reason: %s",
+  "command.irc.message": "[IRC] %s: %s",
+
+  "command.plugin.name_entry": "Name: %s",
+  "command.plugin.author_entry": "Author: %s",
+  "command.plugin.version_entry": "Version: %s",
+  "command.plugin.list": "Plugins: %s",
+
+  "module.notifications.module_message": "[Notifications] %s%s",
+  "module.notifications.pop_message": "[Notifications] %s has popped %d totems",
+  "module.notifications.death_message": "[Notifications] %s died after popping %d totems",
+
+  "gui.alts.title": "Alts",
+  "gui.alts.title.create_alt": "Create Alt",
+  "gui.alts.label.alt_name": "Name: %s",
+  "gui.alts.label.alt_type": "Type: %s",
+  "gui.alts.label.current_name": "Current name: %s",
+  "gui.alts.label.name_text_field": "Name",
+  "gui.alts.button.add_account": "Add account",
+  "gui.alts.button.remove_account": "Remove account",
+  "gui.alts.button.login": "Login",
+  "gui.alts.button.done": "Done",
+
+  "gui.plugins.title": "Plugins",
+  "gui.plugins.label.plugin_name": "Name: %s",
+  "gui.plugins.label.plugin_version": "Version: %s",
+  "gui.plugins.label.plugin_author": "Author: %s",
+  "gui.plugins.button.open_folder": "Open folder",
+  "gui.plugins.button.done": "Done"
+}

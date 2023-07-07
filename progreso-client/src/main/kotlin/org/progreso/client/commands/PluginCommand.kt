@@ -16,16 +16,16 @@ object PluginCommand : AbstractCommand() {
                 val plugin = context.plugin() ?: return@executes
 
                 info("--------")
-                infoLocalized("command.plugin.name_entry", "name" to plugin.name)
-                infoLocalized("command.plugin.version_entry", "version" to plugin.version)
-                infoLocalized("command.plugin.author_entry", "author" to plugin.author)
+                infoLocalized("command.plugin.name_entry", plugin.name)
+                infoLocalized("command.plugin.version_entry", plugin.version)
+                infoLocalized("command.plugin.author_entry", plugin.author)
             }
         }
 
         literal("list").executes { _ ->
             infoLocalized(
                 "command.plugin.list",
-                "plugins" to PluginManager.plugins.joinToString { it.name }
+                PluginManager.plugins.joinToString { it.name }
             )
         }
 

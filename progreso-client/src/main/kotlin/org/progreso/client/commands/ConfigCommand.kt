@@ -21,14 +21,14 @@ object ConfigCommand : AbstractCommand() {
                     } catch (ex: Exception) {
                         errorLocalized(
                             "command.config.load_error",
-                            "config" to config
+                            config
                         )
                         return@executes
                     }
 
                     infoLocalized(
                         "command.config.load",
-                        "config" to config
+                        config
                     )
                 }
             }
@@ -41,7 +41,7 @@ object ConfigCommand : AbstractCommand() {
                     helper.save(config)
                     infoLocalized(
                         "command.config.save",
-                        "config" to config
+                        config
                     )
                 }
 
@@ -51,7 +51,7 @@ object ConfigCommand : AbstractCommand() {
 
                     infoLocalized(
                         "command.config.save_many",
-                        "helper" to helper.name
+                        helper.name
                     )
                 }
             }
@@ -64,7 +64,7 @@ object ConfigCommand : AbstractCommand() {
                     helper.refresh(config)
                     infoLocalized(
                         "command.config.refresh",
-                        "config" to config
+                        config
                     )
                 }
 
@@ -74,7 +74,7 @@ object ConfigCommand : AbstractCommand() {
                     helper.refresh()
                     infoLocalized(
                         "command.config.refresh_many",
-                        "helper" to helper.name
+                        helper.name
                     )
                 }
             }
@@ -84,8 +84,8 @@ object ConfigCommand : AbstractCommand() {
 
                 infoLocalized(
                     "command.config.list",
-                    "helper" to helper.name,
-                    "configs" to helper.configs.joinToString { it.name }
+                    helper.name,
+                    helper.configs.joinToString { it.name }
                 )
             }
         }.executes { context ->
@@ -93,8 +93,8 @@ object ConfigCommand : AbstractCommand() {
 
             infoLocalized(
                 "command.config.current",
-                "helper" to helper.name,
-                "config" to ConfigManager.getHelperConfig(helper)!!
+                helper.name,
+                ConfigManager.getHelperConfig(helper)!!
             )
         }
     }

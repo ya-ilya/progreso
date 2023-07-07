@@ -15,10 +15,7 @@ class FriendArgumentType : ArgumentType<FriendManager.Friend?> {
     override fun parse(reader: StringReader): FriendManager.Friend? {
         val friendName = reader.readString()
         val friend = FriendManager.getFriendByNameOrNull(friendName)
-        if (friend == null) Api.CHAT.errorLocalized(
-            "argument.friend.error",
-            "friend" to friendName
-        )
+        if (friend == null) Api.CHAT.errorLocalized("argument.friend.error", friendName)
         return friend
     }
 

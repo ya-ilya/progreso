@@ -1,6 +1,6 @@
 package org.progreso.api.accessor
 
-import org.progreso.api.i18n.I18n.i18n
+import org.progreso.api.Api
 
 /**
  * Provides access to the minecraft client chat
@@ -44,8 +44,8 @@ interface ChatAccessor {
     /**
      * Send localized message to the chat
      */
-    fun sendLocalized(key: String, vararg replacements: Pair<String, Any>) {
-        send(i18n(key, *replacements))
+    fun sendLocalized(key: String, vararg args: Any) {
+        send(Api.TEXT.i18n(key, *args))
     }
 
     /**
@@ -56,8 +56,8 @@ interface ChatAccessor {
     /**
      * Send localized info message to the chat
      */
-    fun infoLocalized(key: String, vararg replacements: Pair<String, Any>) {
-        info(i18n(key, *replacements))
+    fun infoLocalized(key: String, vararg args: Any) {
+        info(Api.TEXT.i18n(key, *args))
     }
 
     /**
@@ -68,8 +68,8 @@ interface ChatAccessor {
     /**
      * Send localized warn message to the chat
      */
-    fun warnLocalized(key: String, vararg replacements: Pair<String, Any>) {
-        warn(i18n(key, *replacements))
+    fun warnLocalized(key: String, vararg args: Any) {
+        warn(Api.TEXT.i18n(key, *args))
     }
 
     /**
@@ -80,8 +80,8 @@ interface ChatAccessor {
     /**
      * Send localized error message to the chat
      */
-    fun errorLocalized(key: String, vararg replacements: Pair<String, Any>) {
-        error(i18n(key, *replacements))
+    fun errorLocalized(key: String, vararg args: Any) {
+        error(Api.TEXT.i18n(key, *args))
     }
 
     /**

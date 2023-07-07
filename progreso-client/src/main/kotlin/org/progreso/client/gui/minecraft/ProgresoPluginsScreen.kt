@@ -2,9 +2,9 @@ package org.progreso.client.gui.minecraft
 
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.util.Util
-import org.progreso.api.i18n.I18n.i18n
 import org.progreso.api.plugin.AbstractPlugin
 import org.progreso.client.Client.Companion.mc
+import org.progreso.client.accessors.TextAccessor.i18n
 import org.progreso.client.gui.builders.ButtonBuilder.Companion.button
 import org.progreso.client.gui.builders.ElementListBuilder.Companion.elementList
 import org.progreso.client.gui.drawText
@@ -40,17 +40,17 @@ class ProgresoPluginsScreen(private val plugins: Set<AbstractPlugin>) : TitledSc
                     if (lastSelected != null) {
                         children().add(
                             InfoEntry(
-                                i18n("gui.plugins.label.plugin_name", "name" to lastSelected!!.name)
+                                i18n("gui.plugins.label.plugin_name", lastSelected!!.name)
                             )
                         )
                         children().add(
                             InfoEntry(
-                                i18n("gui.plugins.label.plugin_version", "version" to lastSelected!!.version)
+                                i18n("gui.plugins.label.plugin_version", lastSelected!!.version)
                             )
                         )
                         children().add(
                             InfoEntry(
-                                i18n("gui.plugins.label.plugin_author", "author" to lastSelected!!.author)
+                                i18n("gui.plugins.label.plugin_author", lastSelected!!.author)
                             )
                         )
                     }

@@ -35,7 +35,7 @@ object IRCCommand : AbstractCommand() {
                             is IRCAuthFailedPacket -> {
                                 errorLocalized(
                                     "command.irc.auth_error",
-                                    "reason" to packet.reason
+                                    packet.reason
                                 )
                                 close()
                             }
@@ -43,8 +43,8 @@ object IRCCommand : AbstractCommand() {
                             is IRCMessagePacket -> {
                                 infoLocalized(
                                     "command.irc.message",
-                                    "author" to packet.author,
-                                    "message" to packet.message
+                                    packet.author,
+                                    packet.message
                                 )
                             }
                         }
@@ -54,7 +54,7 @@ object IRCCommand : AbstractCommand() {
                         send(IRCAuthPacket(mc.player.name.string))
                         infoLocalized(
                             "command.irc.connect",
-                            "address" to address
+                            address
                         )
                     }
 

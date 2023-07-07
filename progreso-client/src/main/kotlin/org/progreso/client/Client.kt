@@ -7,7 +7,6 @@ import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.option.GameOptions
 import org.progreso.api.Api
 import org.progreso.api.command.AbstractCommand
-import org.progreso.api.i18n.I18n
 import org.progreso.api.managers.CommandManager
 import org.progreso.api.managers.ModuleManager
 import org.progreso.api.managers.PluginManager
@@ -16,11 +15,11 @@ import org.progreso.api.plugin.AbstractPlugin
 import org.progreso.client.accessors.ChatAccessor
 import org.progreso.client.accessors.EventAccessor
 import org.progreso.client.accessors.LoggerAccessor
+import org.progreso.client.accessors.TextAccessor
 import org.progreso.client.gui.clickgui.ClickGUI
 import org.progreso.client.gui.clickgui.HudEditor
 import org.progreso.client.managers.CombatManager
 import org.reflections.Reflections
-import org.reflections.scanners.Scanners
 import org.slf4j.LoggerFactory
 
 class Client : ModInitializer {
@@ -47,15 +46,6 @@ class Client : ModInitializer {
             PluginManager.addPlugin(plugin)
         }
 
-        val locales = Reflections("locales", Scanners.Resources)
-            .getResources(".*\\.json")
-            .map {
-                I18n.Locale.fromStream(
-                    it.removeSuffix(".json").split("/").last(),
-                    javaClass.classLoader.getResourceAsStream(it)!!
-                )
-            }
-
         LOGGER.info("Initializing client modules...")
         for (clazz in Reflections("org.progreso.client.modules").getSubTypesOf(AbstractModule::class.java)) {
             try {
@@ -74,7 +64,7 @@ class Client : ModInitializer {
             }
         }
 
-        Api.initialize(EventAccessor, ChatAccessor, LoggerAccessor, Api.Configuration(locales, "en"))
+        Api.initialize(EventAccessor, ChatAccessor, TextAccessor, LoggerAccessor)
 
         LOGGER.info("Initializing client guis...")
         ClickGUI.initialize()

@@ -23,8 +23,8 @@ object Notifications : AbstractModule() {
 
             Api.CHAT.infoLocalized(
                 "module.notifications.module_message",
-                "color" to if (event.module.enabled) Formatting.GREEN else Formatting.RED,
-                "module" to event.module.name
+                if (event.module.enabled) Formatting.GREEN else Formatting.RED,
+                event.module.name
             )
         }
 
@@ -35,8 +35,8 @@ object Notifications : AbstractModule() {
             if (event.count != null) {
                 Api.CHAT.infoLocalized(
                     "module.notifications.pop_message",
-                    "player" to event.player.name.string,
-                    "count" to event.count!!
+                    event.player.name.string,
+                    event.count!!
                 )
             }
         }
@@ -46,8 +46,8 @@ object Notifications : AbstractModule() {
 
             Api.CHAT.infoLocalized(
                 "module.notifications.death_message",
-                "player" to event.player.name.string,
-                "count" to (CombatManager[event.player] ?: return@safeEventListener)
+                event.player.name.string,
+                (CombatManager[event.player] ?: return@safeEventListener)
             )
         }
     }

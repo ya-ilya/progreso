@@ -20,22 +20,22 @@ abstract class AbstractCommand : LiteralBuilder("") {
     protected companion object {
         fun send(message: Any) = Api.CHAT.send(message)
 
-        fun sendLocalized(key: String, vararg replacements: Pair<String, Any>) =
-            Api.CHAT.sendLocalized(key, *replacements)
+        fun sendLocalized(key: String, vararg args: Any) =
+            Api.CHAT.sendLocalized(key, *args)
 
         fun info(message: Any) = Api.CHAT.info(message)
 
-        fun infoLocalized(key: String, vararg replacements: Pair<String, Any>) =
-            Api.CHAT.infoLocalized(key, *replacements)
+        fun infoLocalized(key: String, vararg args: Any) =
+            Api.CHAT.infoLocalized(key, *args)
 
         fun warn(message: Any) = Api.CHAT.warn(message)
 
-        fun warnLocalized(key: String, vararg replacements: Pair<String, Any>) =
-            Api.CHAT.warnLocalized(key, *replacements)
+        fun warnLocalized(key: String, vararg args: Any) =
+            Api.CHAT.warnLocalized(key, *args)
 
         fun error(message: Any) = Api.CHAT.error(message)
 
-        fun errorLocalized(key: String, vararg replacements: Pair<String, Any>) =
-            Api.CHAT.errorLocalized(key, *replacements)
+        fun errorLocalized(key: String, vararg args: Any) =
+            Api.CHAT.errorLocalized(key, *args)
     }
 }

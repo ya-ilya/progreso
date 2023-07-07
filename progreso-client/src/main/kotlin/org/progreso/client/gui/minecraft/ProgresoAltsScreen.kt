@@ -4,9 +4,9 @@ import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.widget.ButtonWidget
 import org.progreso.api.alt.AbstractAltAccount
 import org.progreso.api.alt.accounts.CrackedAltAccount
-import org.progreso.api.i18n.I18n.i18n
 import org.progreso.api.managers.AltManager
 import org.progreso.client.Client.Companion.mc
+import org.progreso.client.accessors.TextAccessor.i18n
 import org.progreso.client.gui.builders.ButtonBuilder.Companion.button
 import org.progreso.client.gui.builders.ElementListBuilder.Companion.elementList
 import org.progreso.client.gui.builders.ScreenBuilder.Companion.screen
@@ -40,7 +40,7 @@ class ProgresoAltsScreen(private val alts: Set<AbstractAltAccount>) : TitledScre
             }
 
             list.renderHeader { context, x, y ->
-                val text = i18n("gui.alts.label.current_name", "name" to mc.session.username)
+                val text = i18n("gui.alts.label.current_name", mc.session.username)
 
                 context.drawText(
                     text,
@@ -116,13 +116,13 @@ class ProgresoAltsScreen(private val alts: Set<AbstractAltAccount>) : TitledScre
     private class AltEntry(val alt: AbstractAltAccount) : SimpleElementListEntry<AltEntry>() {
         override fun render(context: DrawContext, index: Int, x: Int, y: Int) {
             context.drawText(
-                i18n("gui.alts.label.alt_name", "name" to alt.username),
+                i18n("gui.alts.label.alt_name", alt.username),
                 x + 3,
                 y + 6,
                 Color.WHITE
             )
             context.drawText(
-                i18n("gui.alts.label.alt_type", "type" to alt.type),
+                i18n("gui.alts.label.alt_type", alt.type),
                 x + 3,
                 y + 26 - mc.textRenderer.fontHeight,
                 Color.WHITE

@@ -15,13 +15,13 @@ object FriendCommand : AbstractCommand() {
                 if (FriendManager.isFriend(player)) {
                     errorLocalized(
                         "command.friend.add_error",
-                        "player" to player
+                        player
                     )
                 } else {
                     FriendManager.addFriendByName(player)
                     infoLocalized(
                         "command.friend.add",
-                        "player" to player
+                        player
                     )
                 }
             }
@@ -34,7 +34,7 @@ object FriendCommand : AbstractCommand() {
                 FriendManager.removeFriendByName(friend.name)
                 infoLocalized(
                     "command.friend.remove",
-                    "player" to friend.name
+                    friend.name
                 )
             }
         }
@@ -42,7 +42,7 @@ object FriendCommand : AbstractCommand() {
         literal("list").executes { _ ->
             infoLocalized(
                 "command.friend.list",
-                "friends" to FriendManager.friends.joinToString()
+                FriendManager.friends.joinToString()
             )
         }
     }
