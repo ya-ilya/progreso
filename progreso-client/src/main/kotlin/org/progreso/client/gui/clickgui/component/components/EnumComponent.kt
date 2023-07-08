@@ -16,14 +16,14 @@ class EnumComponent(
         super.render(context, mouseX, mouseY)
 
         context {
-            drawStringRelatively(
+            drawTextRelatively(
                 setting.name,
                 offsets.textOffset,
                 Color.WHITE
             )
-            drawStringRelatively(
+            drawTextRelatively(
                 setting.value.name,
-                offsets.textOffset + getStringWidth("${setting.name}  "),
+                offsets.textOffset + getTextWidth("${setting.name}  "),
                 theme
             )
         }

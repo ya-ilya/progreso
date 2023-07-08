@@ -166,7 +166,7 @@ class ColorComponent(
                 super.render(context, mouseX, mouseY)
 
                 context {
-                    drawStringRelatively(
+                    drawTextRelatively(
                         setting.name,
                         offsets.textOffset,
                         Color.WHITE

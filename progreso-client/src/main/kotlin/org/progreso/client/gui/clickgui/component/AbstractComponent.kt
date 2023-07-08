@@ -9,6 +9,7 @@ abstract class AbstractComponent {
     protected companion object {
         val theme get() = ClickGUI.theme
         val rectColor get() = ClickGUI.rectColor
+        val descriptions get() = ClickGUI.descriptions
     }
 
     var components = mutableListOf<AbstractComponent>()
@@ -32,6 +33,10 @@ abstract class AbstractComponent {
         }
 
         visibleComponents.forEach { it.render(context, mouseX, mouseY) }
+    }
+
+    open fun postRender(context: DrawContext, mouseX: Int, mouseY: Int) {
+        visibleComponents.forEach { it.postRender(context, mouseX, mouseY) }
     }
 
     open fun mouseClicked(mouseX: Int, mouseY: Int, button: Int) {

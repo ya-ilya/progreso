@@ -38,6 +38,7 @@ open class ClickGUI(text: String) : Screen(Text.of(text)) {
         super.render(context, mouseX, mouseY, delta)
 
         components.forEach { it.render(context, mouseX, mouseY) }
+        components.forEach { it.postRender(context, mouseX, mouseY) }
     }
 
     override fun mouseScrolled(mouseX: Double, mouseY: Double, amount: Double): Boolean {

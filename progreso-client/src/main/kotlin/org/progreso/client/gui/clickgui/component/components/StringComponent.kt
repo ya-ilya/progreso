@@ -20,14 +20,14 @@ class StringComponent(
         super.render(context, mouseX, mouseY)
 
         context {
-            drawStringRelatively(
+            drawTextRelatively(
                 setting.name,
                 offsets.textOffset,
                 Color.WHITE
             )
-            drawStringRelatively(
+            drawTextRelatively(
                 if (stringEditing) stringEditor.string else setting.value,
-                offsets.textOffset + getStringWidth("${setting.name}  "),
+                offsets.textOffset + getTextWidth("${setting.name}  "),
                 if (stringEditing) Color.WHITE else theme
             )
         }

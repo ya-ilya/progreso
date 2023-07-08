@@ -35,14 +35,14 @@ class BindComponent(
         }
 
         context {
-            drawStringRelatively(
+            drawTextRelatively(
                 setting.name,
                 offsets.textOffset,
                 Color.WHITE
             )
-            drawStringRelatively(
+            drawTextRelatively(
                 text,
-                offsets.textOffset + getStringWidth("${setting.name}  "),
+                offsets.textOffset + getTextWidth("${setting.name}  "),
                 theme
             )
         }

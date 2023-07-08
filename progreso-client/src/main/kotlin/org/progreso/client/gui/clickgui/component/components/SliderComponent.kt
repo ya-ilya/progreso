@@ -66,14 +66,14 @@ class SliderComponent(
         }
 
         context {
-            drawStringRelatively(
+            drawTextRelatively(
                 setting.name,
                 offsets.textOffset,
                 Color.WHITE
             )
-            drawStringRelatively(
+            drawTextRelatively(
                 setting.value.toString(),
-                width - 10 - getStringWidth(setting.value.toString()),
+                width - 10 - getTextWidth(setting.value.toString()),
                 Color.WHITE
             )
             drawRect(

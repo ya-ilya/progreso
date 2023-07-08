@@ -54,7 +54,7 @@ fun DrawContext.drawHorizontalLine(startX: Int, endX: Int, y: Int, color: Color)
     fill(startX, y, endX + 1, y + 1, color.rgb)
 }
 
-fun DrawContext.getStringWidth(string: String): Int {
+fun DrawContext.getTextWidth(string: String): Int {
     return mc.textRenderer.getWidth(string)
 }
 
@@ -92,12 +92,12 @@ class ContextWrapper(private val context: DrawContext) {
         context.drawHorizontalLine(startX, endX, y, color)
     }
 
-    fun AbstractComponent.drawStringRelatively(text: String, xOffset: Int, yOffset: Int, color: Color) {
+    fun AbstractComponent.drawTextRelatively(text: String, xOffset: Int, yOffset: Int, color: Color) {
         context.drawText(text, x + xOffset, y + yOffset, color)
     }
 
-    fun AbstractComponent.drawStringRelatively(text: String, xOffset: Int, color: Color) {
-        drawStringRelatively(
+    fun AbstractComponent.drawTextRelatively(text: String, xOffset: Int, color: Color) {
+        drawTextRelatively(
             text,
             xOffset,
             height.div(2) - fontHeight.div(2),
@@ -108,13 +108,13 @@ class ContextWrapper(private val context: DrawContext) {
     fun AbstractComponent.drawCenteredString(text: String, color: Color) {
         context.drawText(
             text,
-            x + width.div(2) - context.getStringWidth(text).div(2),
+            x + width.div(2) - context.getTextWidth(text).div(2),
             y + height.div(2) - context.fontHeight.div(2),
             color
         )
     }
 
-    fun getStringWidth(string: String): Int {
-        return context.getStringWidth(string)
+    fun getTextWidth(string: String): Int {
+        return context.getTextWidth(string)
     }
 }

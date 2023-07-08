@@ -55,5 +55,18 @@
   "gui.plugins.label.plugin_version": "Версия: %s",
   "gui.plugins.label.plugin_author": "Автор: %s",
   "gui.plugins.button.open_folder": "Открыть папку",
-  "gui.plugins.button.done": "Готово"
+  "gui.plugins.button.done": "Готово",
+
+  "module.clickgui.description": "Открывает ClickGUI",
+  "module.hudeditor.description": "Открывает HudEditor",
+  "module.notifications.description": "Уведомляет, когда модули включаются и выключаются, а также когда враг теряет тотем",
+  "module.criticals.description": "Критические атаки проходят с каждым ударом",
+  "module.killaura.description": "Бьет цели рядом с вами",
+  "module.offhand.description": "AutoTotem + OffhandGapple + OffhandCrystal",
+  "module.watermark.description": "Водяной знак Progreso Client",
+  "module.autotool.description": "Автоматически выбирает лучший инструмент для блока",
+  "module.fakeplayer.description": "Спавнит фейкплеера",
+  "module.autowalk.description": "Автоматически ходит в заданом направлении",
+  "module.sprint.description": "Автоматически зажимает кнопку спринта",
+  "module.fullbright.description": "Изменяет гамму игры на максимум"
 }

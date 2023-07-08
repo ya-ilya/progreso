@@ -1,9 +1,11 @@
 package org.progreso.client.gui.clickgui.component.components
 
 import net.minecraft.client.gui.DrawContext
+import net.minecraft.text.Text
 import org.progreso.api.module.AbstractModule
 import org.progreso.api.setting.AbstractSetting
 import org.progreso.api.setting.settings.*
+import org.progreso.client.Client.Companion.mc
 import org.progreso.client.gui.clickgui.component.AbstractComponent
 import org.progreso.client.gui.clickgui.component.ChildComponent
 import org.progreso.client.gui.invoke
@@ -40,17 +42,47 @@ class ModuleComponent(
 
                 context {
                     if (module.enabled) {
-                        drawStringRelatively(
+                        drawTextRelatively(
                             module.name,
                             4,
                             Color.WHITE
                         )
                     } else {
-                        drawStringRelatively(
+                        drawTextRelatively(
                             module.name,
                             4,
                             Color(180, 180, 180)
                         )
+                    }
+                }
+            }
+
+            override fun postRender(context: DrawContext, mouseX: Int, mouseY: Int) {
+                super.postRender(context, mouseX, mouseY)
+
+                context {
+                    if (descriptions && isHover(mouseX, mouseY) && module.description.isNotBlank()) {
+                        val lines = mc.textRenderer.wrapLines(Text.of(module.description), 200)
+
+                        drawBorderedRect(
+                            mouseX + 6,
+                            mouseY,
+                            lines.maxOf { mc.textRenderer.getWidth(it) } + 4,
+                            (fontHeight + 3) * lines.size,
+                            rectColor,
+                            theme
+                        )
+
+                        for ((index, line) in lines.withIndex()) {
+                            context.drawText(
+                                mc.textRenderer,
+                                line,
+                                mouseX + 8,
+                                mouseY + index * (fontHeight + 3) + 2,
+                                theme.rgb,
+                                false
+                            )
+                        }
                     }
                 }
             }

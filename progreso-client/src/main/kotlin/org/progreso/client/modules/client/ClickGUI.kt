@@ -12,6 +12,7 @@ object ClickGUI : AbstractModule() {
     val scrollSpeed by setting("ScrollSpeed", 15, 0..30)
     val theme by setting("Theme", Color.RED)
     val rectColor by setting("RectColor", Color(0, 0, 0, 130))
+    val descriptions by setting("Descriptions", true)
 
     init {
         bind = InputUtil.GLFW_KEY_RIGHT_SHIFT

@@ -27,7 +27,7 @@ class GroupComponent(
                 super.render(context, mouseX, mouseY)
 
                 context.invokeSuper(this) {
-                    drawStringRelatively(
+                    drawTextRelatively(
                         setting.name,
                         it.parent.offsets.textOffset,
                         Color.WHITE

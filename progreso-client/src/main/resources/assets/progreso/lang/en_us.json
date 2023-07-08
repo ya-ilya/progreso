@@ -55,5 +55,18 @@
   "gui.plugins.label.plugin_version": "Version: %s",
   "gui.plugins.label.plugin_author": "Author: %s",
   "gui.plugins.button.open_folder": "Open folder",
-  "gui.plugins.button.done": "Done"
+  "gui.plugins.button.done": "Done",
+
+  "module.clickgui.description": "Opens the ClickGUI",
+  "module.hudeditor.description": "Opens the HudEditor",
+  "module.notifications.description": "Announces when modules get toggled and totem pops",
+  "module.criticals.description": "Always do critical attacks",
+  "module.killaura.description": "Hits targets near you",
+  "module.offhand.description": "AutoTotem + OffhandGapple + OffhandCrystal",
+  "module.watermark.description": "Progreso Client watermark",
+  "module.autotool.description": "Automatically selects the best tool for block",
+  "module.fakeplayer.description": "Spawns in a FakePlayer",
+  "module.autowalk.description": "Automatically walks in the specified direction",
+  "module.sprint.description": "Automatically makes the player sprint",
+  "module.fullbright.description": "Changes game gamma to maximum"
 }

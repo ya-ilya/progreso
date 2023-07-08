@@ -32,8 +32,9 @@ abstract class AbstractModule : SettingContainer {
     private val annotation = javaClass.getAnnotation(Register::class.java)
 
     val name = annotation.name
-    val description = annotation.description
     val category = annotation.category
+
+    val description get() = Api.TEXT.i18n("module.${name.lowercase()}.description")
 
     protected fun onEnable(block: () -> Unit) {
         enableBlock = block
@@ -50,7 +51,6 @@ abstract class AbstractModule : SettingContainer {
     @Target(AnnotationTarget.CLASS)
     annotation class Register(
         val name: String,
-        val category: Category,
-        val description: String = ""
+        val category: Category
     )
 }
