@@ -10,7 +10,7 @@ class StringReader(string: String) {
     fun peek() = peek(1)[0]
 
     fun peek(count: Int = 1): List<String> {
-        return arguments.slice(0 until count)
+        return arguments.slice(0..<count)
     }
 
     fun readString(): String {

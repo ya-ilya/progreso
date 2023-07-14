@@ -66,14 +66,14 @@ class ProgresoChatScreen : ChatScreen(CommandManager.PREFIX.toString()) {
     }
 
     override fun render(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
-        context.drawBorderedRect(2, height - 14, width - 4, 12, Color(Int.MIN_VALUE), ClickGUI.theme)
+        context.drawBorderedRect(2, height - 14, width - 4, 12, Color(Int.MIN_VALUE), ClickGUI.mainColor)
 
         if (predict.isNotEmpty()) {
             context.drawText(
                 predict.joinToString("/"),
                 textRenderer.getWidth(chatField.text) + chatField.x,
                 chatField.y,
-                ClickGUI.theme
+                ClickGUI.mainColor
             )
         }
 

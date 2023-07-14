@@ -14,6 +14,10 @@ interface CommandContainer {
         commands.add(command)
     }
 
+    fun removeCommand(command: AbstractCommand) {
+        commands.remove(command)
+    }
+
     fun getCommandByName(name: String): AbstractCommand {
         return commands.first { it.name == name }
     }

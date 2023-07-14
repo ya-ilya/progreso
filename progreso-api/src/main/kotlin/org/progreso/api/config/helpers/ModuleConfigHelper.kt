@@ -31,8 +31,6 @@ class ModuleConfigHelper(
             )
 
             reader.beginObject()
-            reader.nextName()
-            module.enabled = reader.nextBoolean()
             module.settings.addAll(readSettings(reader))
             reader.endObject()
 
@@ -49,7 +47,6 @@ class ModuleConfigHelper(
         for (module in config.modules) {
             writer.name(module.name)
             writer.beginObject()
-            writer.name("Enabled").value(module.enabled)
             writeSettings(writer, module.settings)
             writer.endObject()
         }

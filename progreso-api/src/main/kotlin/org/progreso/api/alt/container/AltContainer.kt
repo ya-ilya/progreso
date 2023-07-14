@@ -1,18 +1,18 @@
 package org.progreso.api.alt.container
 
-import org.progreso.api.alt.AbstractAltAccount
+import org.progreso.api.alt.AltAccount
 
 /**
  * Interface for alt containers
  */
 interface AltContainer {
-    val alts: MutableSet<AbstractAltAccount>
+    val alts: MutableSet<AltAccount>
 
-    fun addAlt(alt: AbstractAltAccount) {
+    fun addAlt(alt: AltAccount) {
         alts.add(alt)
     }
 
-    fun removeAlt(alt: AbstractAltAccount) {
+    fun removeAlt(alt: AltAccount) {
         alts.remove(alt)
     }
 }

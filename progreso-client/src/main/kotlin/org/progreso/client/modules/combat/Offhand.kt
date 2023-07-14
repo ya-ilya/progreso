@@ -4,13 +4,12 @@ import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen
 import net.minecraft.item.Item
 import net.minecraft.item.Items
 import org.progreso.api.module.AbstractModule
-import org.progreso.api.module.Category
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.events.misc.TickEvent
 import org.progreso.client.events.safeEventListener
 import org.progreso.client.util.player.InventoryUtil
 
-@AbstractModule.Register("Offhand", Category.Combat)
+@AbstractModule.AutoRegister
 object Offhand : AbstractModule() {
     private val mode by setting("Mode", Mode.Totem)
     private val totemHealth by setting("TotemHealth", 10, 1..20)

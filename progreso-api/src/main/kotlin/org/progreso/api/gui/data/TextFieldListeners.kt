@@ -1,5 +1,5 @@
 package org.progreso.api.gui.data
 
-data class TextFieldListeners<TextFieldWidget>(
-    var textChanged: TextFieldWidget.() -> Unit = { }
+data class TextFieldListeners<Widget>(
+    var textChanged: Widget.() -> Unit = { }
 )

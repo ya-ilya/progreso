@@ -51,17 +51,21 @@ class SliderComponent(
 
             try {
                 setting.setNumberValue(
-                    String.format(
-                        "%.1f",
-                        setting.min.toDouble() + (setting.max.toDouble() - setting.min.toDouble()) * (sliderWidth.toFloat() / sliderMaxWidth)
-                    ).replace(",", ".").toDouble()
+                    when {
+                        setting.value == setting.max.toDouble() - 0.1f && sliderWidth == width - 1 -> {
+                            setting.max
+                        }
+
+                        else -> {
+                            String.format(
+                                "%.1f",
+                                setting.min.toDouble() + (setting.max.toDouble() - setting.min.toDouble()) * (sliderWidth.toFloat() / sliderMaxWidth)
+                            ).replace(",", ".").toDouble()
+                        }
+                    }
                 )
             } catch (ex: NumberFormatException) {
                 // Ignored
-            }
-
-            if (setting.value == setting.max.toDouble() - 0.1f && sliderWidth == width - 1) {
-                setting.setNumberValue(setting.max)
             }
         }
 
@@ -81,7 +85,7 @@ class SliderComponent(
                 sliderStartY,
                 sliderWidth,
                 SLIDER_HEIGHT,
-                theme
+                mainColor
             )
         }
     }

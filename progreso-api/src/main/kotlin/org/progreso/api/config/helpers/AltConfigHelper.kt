@@ -2,8 +2,7 @@ package org.progreso.api.config.helpers
 
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
-import org.progreso.api.alt.AbstractAltAccount
-import org.progreso.api.alt.accounts.CrackedAltAccount
+import org.progreso.api.alt.AltAccount
 import org.progreso.api.config.AbstractConfigHelper
 import org.progreso.api.config.configs.AltConfig
 import org.progreso.api.config.providers.AltConfigProvider
@@ -17,7 +16,7 @@ class AltConfigHelper : AbstractConfigHelper<AltConfig>(
     defaultConfigName = ConfigManager.DEFAULT_CONFIG_NAME
 ) {
     override fun read(name: String, reader: JsonReader): AltConfig {
-        val alts = mutableListOf<AbstractAltAccount>()
+        val alts = mutableListOf<AltAccount>()
         reader.beginArray()
         while (reader.hasNext()) {
             reader.beginObject()
@@ -30,7 +29,7 @@ class AltConfigHelper : AbstractConfigHelper<AltConfig>(
 
             alts.add(
                 when (type) {
-                    "Cracked" -> CrackedAltAccount(username)
+                    "Cracked" -> AltAccount.Cracked(username)
                     else -> throw RuntimeException()
                 }
             )

@@ -54,7 +54,7 @@ object Api {
             LOGGER.info("Unloading plugins...")
             for (plugin in PluginManager.plugins.toList()) {
                 plugin.unloadPlugin()
-                PluginManager.plugins.remove(plugin)
+                PluginManager.removePlugin(plugin)
             }
 
             LOGGER.info("Unloading managers...")

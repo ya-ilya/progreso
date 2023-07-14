@@ -4,11 +4,10 @@ import com.mojang.authlib.GameProfile
 import net.minecraft.client.network.OtherClientPlayerEntity
 import net.minecraft.entity.Entity
 import org.progreso.api.module.AbstractModule
-import org.progreso.api.module.Category
 import org.progreso.client.Client.Companion.mc
 import java.util.*
 
-@AbstractModule.Register("FakePlayer", Category.Misc)
+@AbstractModule.AutoRegister
 object FakePlayer : AbstractModule() {
     private val fakePlayerName by setting("Name", "FakePlayer")
     private var fakePlayer: OtherClientPlayerEntity? = null

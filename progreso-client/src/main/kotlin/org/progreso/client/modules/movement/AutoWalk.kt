@@ -1,12 +1,11 @@
 package org.progreso.client.modules.movement
 
 import org.progreso.api.module.AbstractModule
-import org.progreso.api.module.Category
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.events.misc.TickEvent
 import org.progreso.client.events.safeEventListener
 
-@AbstractModule.Register("AutoWalk", Category.Movement)
+@AbstractModule.AutoRegister
 object AutoWalk : AbstractModule() {
     private val direction by setting("Direction", Direction.Forward).apply {
         valueChanged { oldValue, _ ->
@@ -18,7 +17,7 @@ object AutoWalk : AbstractModule() {
 
     init {
         onDisable {
-            for (direction in Direction.values()) {
+            for (direction in Direction.entries) {
                 direction.setPressed(false)
             }
         }

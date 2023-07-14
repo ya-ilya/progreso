@@ -7,7 +7,7 @@ import org.progreso.client.Client.Companion.mc
 import org.progreso.client.accessors.TextAccessor.i18n
 import org.progreso.client.gui.builders.ButtonBuilder.Companion.button
 import org.progreso.client.gui.builders.ElementListBuilder.Companion.elementList
-import org.progreso.client.gui.drawText
+import org.progreso.client.gui.invoke
 import org.progreso.client.gui.minecraft.common.SimpleElementListEntry
 import org.progreso.client.gui.minecraft.common.TitledScreen
 import java.awt.Color
@@ -19,8 +19,14 @@ class ProgresoPluginsScreen(private val plugins: Set<AbstractPlugin>) : TitledSc
 
     override fun init() {
         elementList<PluginEntry> { list ->
-            list.left = width / 2 - 4 - 200
-            list.listDimension(200, height, 24, height - 28, 36)
+            list.listDimension(
+                left = width / 2 - 4 - 200,
+                width = 200,
+                height = height,
+                top = 24,
+                bottom = height - 28,
+                itemHeight = 36
+            )
 
             for (plugin in plugins) {
                 list.addEntry(PluginEntry(plugin))
@@ -28,8 +34,14 @@ class ProgresoPluginsScreen(private val plugins: Set<AbstractPlugin>) : TitledSc
         }
 
         elementList<InfoEntry> { list ->
-            list.left = width / 2 + 4
-            list.listDimension(200, height, 24, height - 28, textRenderer.fontHeight + 1)
+            list.listDimension(
+                left = width / 2 + 4,
+                width = 200,
+                height = height,
+                top = 24,
+                bottom = height - 28,
+                itemHeight = textRenderer.fontHeight + 1
+            )
 
             var lastSelected: AbstractPlugin? = null
             list.render { _, _, _ ->
@@ -70,9 +82,9 @@ class ProgresoPluginsScreen(private val plugins: Set<AbstractPlugin>) : TitledSc
     }
 
     private class PluginEntry(val plugin: AbstractPlugin) : SimpleElementListEntry<PluginEntry>() {
-        override fun render(context: DrawContext, index: Int, x: Int, y: Int) {
-            context.drawText(plugin.name, x + 3, y + 3, Color.WHITE)
-            context.drawText(
+        override fun render(context: DrawContext, index: Int, x: Int, y: Int) = context {
+            drawText(plugin.name, x + 3, y + 3, Color.WHITE)
+            drawText(
                 plugin.author,
                 x + 3,
                 y + 3 + mc.textRenderer.fontHeight,
@@ -82,8 +94,8 @@ class ProgresoPluginsScreen(private val plugins: Set<AbstractPlugin>) : TitledSc
     }
 
     private class InfoEntry(val text: String) : SimpleElementListEntry<InfoEntry>() {
-        override fun render(context: DrawContext, index: Int, x: Int, y: Int) {
-            context.drawText(text, x + 3, y, Color.WHITE)
+        override fun render(context: DrawContext, index: Int, x: Int, y: Int) = context {
+            drawText(text, x + 3, y, Color.WHITE)
         }
     }
 }

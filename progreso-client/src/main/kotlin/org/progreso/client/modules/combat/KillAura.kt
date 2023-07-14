@@ -9,14 +9,13 @@ import net.minecraft.entity.passive.SnowGolemEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.SwordItem
 import org.progreso.api.module.AbstractModule
-import org.progreso.api.module.Category
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.events.misc.TickEvent
 import org.progreso.client.events.safeEventListener
 import org.progreso.client.util.entity.EntityUtil.canBeAttacked
 import org.progreso.client.util.player.PlayerUtil
 
-@AbstractModule.Register("KillAura", Category.Combat)
+@AbstractModule.AutoRegister
 object KillAura : AbstractModule() {
     private val distance by setting("Distance", 4, 1..6)
     private val onlySword by setting("OnlySword", true)

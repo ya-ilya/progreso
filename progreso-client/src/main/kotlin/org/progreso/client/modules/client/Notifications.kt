@@ -4,20 +4,19 @@ import net.minecraft.util.Formatting
 import org.progreso.api.Api
 import org.progreso.api.event.events.ModuleEvent
 import org.progreso.api.module.AbstractModule
-import org.progreso.api.module.Category
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.events.entity.PlayerDeathEvent
 import org.progreso.client.events.player.TotemPopEvent
 import org.progreso.client.events.safeEventListener
 import org.progreso.client.managers.CombatManager
 
-@AbstractModule.Register("Notifications", Category.Client)
+@AbstractModule.AutoRegister
 object Notifications : AbstractModule() {
     private val modules by setting("Modules", true)
     private val pops by setting("Pops", true)
 
     init {
-        safeEventListener<ModuleEvent.Toggled> { event ->
+        safeEventListener<ModuleEvent.Toggle> { event ->
             if (!modules) return@safeEventListener
             if (event.module is ClickGUI || event.module is HudEditor || event.module is Notifications) return@safeEventListener
 
@@ -47,7 +46,7 @@ object Notifications : AbstractModule() {
             Api.CHAT.infoLocalized(
                 "module.notifications.death_message",
                 event.player.name.string,
-                (CombatManager[event.player] ?: return@safeEventListener)
+                CombatManager[event.player] ?: return@safeEventListener
             )
         }
     }

@@ -24,7 +24,7 @@ class EnumComponent(
             drawTextRelatively(
                 setting.value.name,
                 offsets.textOffset + getTextWidth("${setting.name}  "),
-                theme
+                mainColor
             )
         }
     }

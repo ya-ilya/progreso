@@ -7,14 +7,14 @@ class EnumSetting<T : Enum<T>>(
     initialValue: T,
     visibility: () -> Boolean = { true }
 ) : AbstractSetting<T>(name, initialValue, visibility) {
-    private val values: Array<T> = value.javaClass.enumConstants
+    private val entries: Array<T> = value.javaClass.enumConstants
 
     fun next() {
-        value = values.getOrElse(values.indexOf(value) + 1) { values[0] }
+        value = entries.getOrElse(entries.indexOf(value) + 1) { entries[0] }
     }
 
     fun prev() {
-        value = values.getOrElse(values.indexOf(value) - 1) { values.last() }
+        value = entries.getOrElse(entries.indexOf(value) - 1) { entries.last() }
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -24,6 +24,6 @@ class EnumSetting<T : Enum<T>>(
             return
         }
 
-        value = values.first { it.name == any.toString() }
+        value = entries.first { it.name == any.toString() }
     }
 }

@@ -88,14 +88,17 @@ object ConfigCommand : AbstractCommand() {
                     helper.configs.joinToString { it.name }
                 )
             }
-        }.executes { context ->
-            val helper = context.helper() ?: return@executes
 
-            infoLocalized(
-                "command.config.current",
-                helper.name,
-                ConfigManager.getHelperConfig(helper)!!
-            )
+
+            executes { context ->
+                val helper = context.helper() ?: return@executes
+
+                infoLocalized(
+                    "command.config.current",
+                    helper.name,
+                    ConfigManager.getHelperConfig(helper)!!
+                )
+            }
         }
     }
 

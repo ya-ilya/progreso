@@ -13,6 +13,10 @@ interface ModuleContainer {
         modules.add(module)
     }
 
+    fun removeModule(module: AbstractModule) {
+        modules.remove(module)
+    }
+
     fun getModuleByName(name: String): AbstractModule {
         return getModuleByNameOrNull(name)!!
     }

@@ -1,6 +1,5 @@
 package org.progreso.api.gui.builders
 
-import org.progreso.api.common.MutableLazy.Companion.mutableLazy
 import org.progreso.api.gui.AbstractWidgetBuilder
 import org.progreso.api.gui.data.ElementListListeners
 
@@ -10,11 +9,11 @@ abstract class AbstractElementListBuilder<Context, ElementListWidget, Entry>
 
     var headerHeight = 16
 
-    var itemWidth by mutableLazy { width }
+    var itemWidth = 0
     var itemHeight = 32
 
-    var top = 24
-    var bottom by mutableLazy { height - 55 + 4 }
+    var top = 0
+    var bottom = 0
     var left = 0
 
     var renderSelection = true
@@ -22,12 +21,14 @@ abstract class AbstractElementListBuilder<Context, ElementListWidget, Entry>
 
     protected var children = mutableListOf<Entry>()
 
-    fun listDimension(width: Int, height: Int, top: Int, bottom: Int, itemHeight: Int) {
+    fun listDimension(left: Int, width: Int, height: Int, top: Int, bottom: Int, itemHeight: Int) {
+        this.left = left
         this.width = width
         this.height = height
         this.top = top
         this.bottom = bottom
         this.itemHeight = itemHeight
+        this.itemWidth = width
     }
 
     fun addEntry(entry: Entry) {

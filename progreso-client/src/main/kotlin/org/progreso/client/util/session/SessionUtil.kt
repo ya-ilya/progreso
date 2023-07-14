@@ -3,8 +3,7 @@ package org.progreso.client.util.session
 import com.google.gson.JsonElement
 import net.minecraft.client.util.Session
 import org.progreso.api.Api
-import org.progreso.api.alt.AbstractAltAccount
-import org.progreso.api.alt.accounts.CrackedAltAccount
+import org.progreso.api.alt.AltAccount
 import org.progreso.client.Client.Companion.mc
 import java.net.URL
 import java.util.*
@@ -14,9 +13,9 @@ object SessionUtil {
         Successful, Error
     }
 
-    fun login(alt: AbstractAltAccount): LoginResult {
+    fun login(alt: AltAccount): LoginResult {
         return when (alt) {
-            is CrackedAltAccount -> loginCracked(alt.username)
+            is AltAccount.Cracked -> loginCracked(alt.username)
             else -> LoginResult.Error
         }
     }

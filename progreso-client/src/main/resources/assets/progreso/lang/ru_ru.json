@@ -60,6 +60,7 @@
   "module.clickgui.description": "Открывает ClickGUI",
   "module.hudeditor.description": "Открывает HudEditor",
   "module.notifications.description": "Уведомляет, когда модули включаются и выключаются, а также когда враг теряет тотем",
+  "module.autolog.description": "Автоматически выходит с сервера",
   "module.criticals.description": "Критические атаки проходят с каждым ударом",
   "module.killaura.description": "Бьет цели рядом с вами",
   "module.offhand.description": "AutoTotem + OffhandGapple + OffhandCrystal",

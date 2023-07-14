@@ -10,6 +10,7 @@ import org.progreso.client.accessors.TextAccessor;
 import org.progreso.client.gui.minecraft.ProgresoAltsScreen;
 import org.progreso.client.gui.minecraft.ProgresoPluginsScreen;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -38,11 +39,13 @@ public abstract class MixinTitleScreen extends Screen {
         );
     }
 
+    @Unique
     private void showAltsScreen() {
         if (client == null) return;
         client.setScreen(new ProgresoAltsScreen(AltManager.INSTANCE.getAlts()));
     }
 
+    @Unique
     private void showPluginsScreen() {
         if (client == null) return;
         client.setScreen(new ProgresoPluginsScreen(PluginManager.INSTANCE.getPlugins()));

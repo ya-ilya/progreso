@@ -17,6 +17,10 @@ interface PluginContainer {
         plugins.add(plugin)
     }
 
+    fun removePlugin(plugin: AbstractPlugin) {
+        plugins.remove(plugin)
+    }
+
     fun getPluginByName(name: String): AbstractPlugin {
         return getPluginByNameOrNull(name)!!
     }

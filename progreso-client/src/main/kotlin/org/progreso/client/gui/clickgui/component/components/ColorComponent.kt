@@ -10,8 +10,8 @@ import org.progreso.api.setting.settings.ColorSetting
 import org.progreso.api.setting.settings.NumberSetting
 import org.progreso.client.gui.clickgui.component.AbstractComponent
 import org.progreso.client.gui.clickgui.component.ChildComponent
+import org.progreso.client.gui.glColors
 import org.progreso.client.gui.invoke
-import org.progreso.client.util.render.Render2DUtil.glColors
 import java.awt.Color
 import kotlin.math.max
 import kotlin.math.min

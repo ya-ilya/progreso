@@ -7,7 +7,7 @@ import org.progreso.client.modules.client.ClickGUI
 
 abstract class AbstractComponent {
     protected companion object {
-        val theme get() = ClickGUI.theme
+        val mainColor get() = ClickGUI.mainColor
         val rectColor get() = ClickGUI.rectColor
         val descriptions get() = ClickGUI.descriptions
     }

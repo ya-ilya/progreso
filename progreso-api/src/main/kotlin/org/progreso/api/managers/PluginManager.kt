@@ -7,7 +7,6 @@ import org.progreso.api.config.container.ConfigHelperContainer
 import org.progreso.api.module.AbstractModule
 import org.progreso.api.plugin.AbstractPlugin
 import org.progreso.api.plugin.container.PluginContainer
-import javax.naming.OperationNotSupportedException
 
 object PluginManager : PluginContainer {
     override val plugins = mutableSetOf<AbstractPlugin>()
@@ -27,7 +26,7 @@ object PluginManager : PluginContainer {
         override val helpers = mutableMapOf<AbstractConfigHelper<*>, String>()
 
         override fun getHelperByName(name: String): AbstractConfigHelper<*> {
-            throw OperationNotSupportedException()
+            throw UnsupportedOperationException()
         }
     }
 }

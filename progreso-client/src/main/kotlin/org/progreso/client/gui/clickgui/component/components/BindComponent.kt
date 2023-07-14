@@ -43,7 +43,7 @@ class BindComponent(
             drawTextRelatively(
                 text,
                 offsets.textOffset + getTextWidth("${setting.name}  "),
-                theme
+                mainColor
             )
         }
     }

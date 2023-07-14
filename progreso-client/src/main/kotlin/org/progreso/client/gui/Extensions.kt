@@ -8,6 +8,14 @@ import org.progreso.client.Client.Companion.mc
 import org.progreso.client.gui.clickgui.component.AbstractComponent
 import java.awt.Color
 
+val Color.glColors: List<Float>
+    get() = listOf(
+        (rgb shr 16 and 0xFF) / 255.0f,
+        (rgb shr 8 and 0xFF) / 255.0f,
+        (rgb and 0xFF) / 255.0f,
+        (rgb shr 24 and 0xFF) / 255.0f,
+    )
+
 operator fun DrawContext.invoke(block: ContextWrapper.() -> Unit) {
     ContextWrapper(this).apply(block)
 }
@@ -47,11 +55,11 @@ fun DrawContext.drawBorderedRect(
 }
 
 fun DrawContext.drawVerticalLine(x: Int, startY: Int, endY: Int, color: Color) {
-    fill(x, startY + 1, x + 1, endY, color.rgb)
+    fill(x, startY, x + 1, endY, color.rgb)
 }
 
 fun DrawContext.drawHorizontalLine(startX: Int, endX: Int, y: Int, color: Color) {
-    fill(startX, y, endX + 1, y + 1, color.rgb)
+    fill(startX, y, endX, y + 1, color.rgb)
 }
 
 fun DrawContext.getTextWidth(string: String): Int {

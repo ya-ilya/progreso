@@ -7,13 +7,13 @@ import org.progreso.api.module.container.ModuleContainer
 object ModuleManager : ModuleContainer {
     override val modules = mutableSetOf<AbstractModule>()
 
-    fun onKey(key: Int) {
-        (modules + PluginManager.modules).filter { it.bind == key }.forEach { it.toggle() }
-    }
-
     fun getModulesByCategory(category: Category, vararg exclude: AbstractModule): List<AbstractModule> {
         return (modules + PluginManager.modules)
             .filter { it.category == category }
             .filter { it !in exclude }
+    }
+
+    fun onKey(key: Int) {
+        (modules + PluginManager.modules).filter { it.bind == key }.forEach { it.toggle() }
     }
 }

@@ -2,8 +2,7 @@ package org.progreso.client.gui.minecraft
 
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.widget.ButtonWidget
-import org.progreso.api.alt.AbstractAltAccount
-import org.progreso.api.alt.accounts.CrackedAltAccount
+import org.progreso.api.alt.AltAccount
 import org.progreso.api.managers.AltManager
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.accessors.TextAccessor.i18n
@@ -12,22 +11,29 @@ import org.progreso.client.gui.builders.ElementListBuilder.Companion.elementList
 import org.progreso.client.gui.builders.ScreenBuilder.Companion.screen
 import org.progreso.client.gui.builders.TextFieldBuilder.Companion.textField
 import org.progreso.client.gui.drawText
+import org.progreso.client.gui.invoke
 import org.progreso.client.gui.minecraft.common.SimpleElementListEntry
 import org.progreso.client.gui.minecraft.common.TitledScreen
 import org.progreso.client.util.session.SessionUtil
 import java.awt.Color
-import kotlin.properties.Delegates
 
-class ProgresoAltsScreen(private val alts: Set<AbstractAltAccount>) : TitledScreen(i18n("gui.alts.title")) {
-    private var selectedAlt: AbstractAltAccount? = null
+class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n("gui.alts.title")) {
+    private var selectedAlt: AltAccount? = null
 
+    @Suppress("JoinDeclarationAndAssignment")
     override fun init() {
-        var loginButtonWidget by Delegates.notNull<ButtonWidget>()
-        var removeButtonWidget by Delegates.notNull<ButtonWidget>()
+        lateinit var removeButtonWidget: ButtonWidget
+        lateinit var loginButtonWidget: ButtonWidget
 
         elementList<AltEntry> { list ->
-            list.left = width / 2 - 100
-            list.listDimension(200, height, 24, height - 55 + 4, 36)
+            list.listDimension(
+                left = width / 2 - 100,
+                width = 200,
+                height = height,
+                top = 24,
+                bottom = height - 55 + 4,
+                itemHeight = 36
+            )
 
             for (alt in alts) {
                 list.addEntry(AltEntry(alt))
@@ -53,9 +59,7 @@ class ProgresoAltsScreen(private val alts: Set<AbstractAltAccount>) : TitledScre
 
         button(i18n("gui.alts.button.add_account")) { button ->
             button.dimensions(width / 2 - 100, height - 48, 96, 20)
-            button.onPress {
-                showCreateAltScreen()
-            }
+            button.onPress { showCreateAltScreen() }
         }
 
         removeButtonWidget = button(i18n("gui.alts.button.remove_account")) { button ->
@@ -79,9 +83,7 @@ class ProgresoAltsScreen(private val alts: Set<AbstractAltAccount>) : TitledScre
 
         button(i18n("gui.alts.button.done")) { button ->
             button.dimensions(width / 2 + 4, height - 24, 96, 20)
-            button.onPress {
-                close()
-            }
+            button.onPress { close() }
         }
     }
 
@@ -96,7 +98,7 @@ class ProgresoAltsScreen(private val alts: Set<AbstractAltAccount>) : TitledScre
                     button.dimensions(width / 2 - 66, height / 2 + 8, 132, 20)
                     button.onPress {
                         if (name.text.length >= 3) {
-                            AltManager.addAlt(CrackedAltAccount(name.text))
+                            AltManager.addAlt(AltAccount.Cracked(name.text))
                             close()
                         }
                     }
@@ -113,15 +115,15 @@ class ProgresoAltsScreen(private val alts: Set<AbstractAltAccount>) : TitledScre
         })
     }
 
-    private class AltEntry(val alt: AbstractAltAccount) : SimpleElementListEntry<AltEntry>() {
-        override fun render(context: DrawContext, index: Int, x: Int, y: Int) {
-            context.drawText(
+    private class AltEntry(val alt: AltAccount) : SimpleElementListEntry<AltEntry>() {
+        override fun render(context: DrawContext, index: Int, x: Int, y: Int) = context {
+            drawText(
                 i18n("gui.alts.label.alt_name", alt.username),
                 x + 3,
                 y + 6,
                 Color.WHITE
             )
-            context.drawText(
+            drawText(
                 i18n("gui.alts.label.alt_type", alt.type),
                 x + 3,
                 y + 26 - mc.textRenderer.fontHeight,

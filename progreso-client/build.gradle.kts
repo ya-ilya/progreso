@@ -1,5 +1,3 @@
-@file:Suppress("UnstableApiUsage", "SpellCheckingInspection")
-
 val minecraftVersion: String by project
 val progresoVersion: String by project
 val mixinVersion: String by project

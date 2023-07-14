@@ -1,12 +1,11 @@
 package org.progreso.client.modules.movement
 
 import org.progreso.api.module.AbstractModule
-import org.progreso.api.module.Category
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.events.misc.TickEvent
 import org.progreso.client.events.safeEventListener
 
-@AbstractModule.Register("Sprint", Category.Movement)
+@AbstractModule.AutoRegister
 object Sprint : AbstractModule() {
     init {
         safeEventListener<TickEvent> { _ ->

@@ -6,5 +6,13 @@ enum class Category {
     Render,
     Misc,
     Client,
-    Hud
+    Hud;
+
+    companion object {
+        fun byPackage(packageName: String): Category {
+            return entries.first {
+                it.name.equals(packageName.split(".").last(), true)
+            }
+        }
+    }
 }

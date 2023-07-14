@@ -1,6 +1,6 @@
 package org.progreso.api.gui.data
 
-data class ElementListListeners<Context, ElementListWidget, Entry>(
-    var renderHeader: ElementListWidget.(Context, Int, Int) -> Unit = { _, _, _ -> },
-    var select: ElementListWidget.(Entry?) -> Unit = { _ -> }
+data class ElementListListeners<Context, Widget, Entry>(
+    var renderHeader: Widget.(Context, Int, Int) -> Unit = { _, _, _ -> },
+    var select: Widget.(Entry?) -> Unit = { _ -> }
 )

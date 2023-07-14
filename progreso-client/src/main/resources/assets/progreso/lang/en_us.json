@@ -60,6 +60,7 @@
   "module.clickgui.description": "Opens the ClickGUI",
   "module.hudeditor.description": "Opens the HudEditor",
   "module.notifications.description": "Announces when modules get toggled and totem pops",
+  "module.autolog.description": "Automatically logs out of the server",
   "module.criticals.description": "Always do critical attacks",
   "module.killaura.description": "Hits targets near you",
   "module.offhand.description": "AutoTotem + OffhandGapple + OffhandCrystal",

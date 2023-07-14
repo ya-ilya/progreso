@@ -28,7 +28,7 @@ class StringComponent(
             drawTextRelatively(
                 if (stringEditing) stringEditor.string else setting.value,
                 offsets.textOffset + getTextWidth("${setting.name}  "),
-                if (stringEditing) Color.WHITE else theme
+                if (stringEditing) Color.WHITE else mainColor
             )
         }
     }

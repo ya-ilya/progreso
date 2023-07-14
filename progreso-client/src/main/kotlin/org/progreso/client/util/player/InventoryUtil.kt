@@ -29,7 +29,7 @@ object InventoryUtil {
     ): List<Slot> {
         val result = mutableListOf<Slot>()
 
-        for (i in (fromIndex ?: 0) until (toIndex ?: mc.player.inventory.size())) {
+        for (i in (fromIndex ?: 0)..<(toIndex ?: mc.player.inventory.size())) {
             val itemStack = mc.player.inventory.getStack(i)
 
             if (predicate(i, itemStack)) {

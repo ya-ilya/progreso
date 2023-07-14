@@ -12,16 +12,18 @@ open class ClickGUI(text: String) : Screen(Text.of(text)) {
     companion object : org.progreso.client.gui.clickgui.ClickGUI("ClickGUI") {
         const val COMPONENT_HEIGHT = 14
         const val COMPONENT_WIDTH = 104
+        const val X_INDENT = 10
+        const val Y_INDENT = 10
     }
 
     protected var components = mutableListOf<AbstractComponent>()
 
     open fun initialize() {
-        var x = 10
+        var x = X_INDENT
 
-        for (category in Category.values().filter { it != Category.Hud }) {
-            components.add(Window(x, 10, COMPONENT_WIDTH).apply {
-                x += COMPONENT_WIDTH + 10
+        for (category in Category.entries.filter { it != Category.Hud }) {
+            components.add(Window(x, Y_INDENT, COMPONENT_WIDTH).apply {
+                x += COMPONENT_WIDTH + X_INDENT
 
                 this.components.add(
                     CategoryComponent(

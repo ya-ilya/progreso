@@ -42,7 +42,7 @@ class BooleanComponent(
                 buttonStartY,
                 BUTTON_WIDTH / 2,
                 BUTTON_HEIGHT,
-                theme
+                mainColor
             )
         }
     }

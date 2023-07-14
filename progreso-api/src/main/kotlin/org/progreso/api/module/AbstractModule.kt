@@ -19,20 +19,21 @@ abstract class AbstractModule : SettingContainer {
         valueChanged { _, newValue ->
             if (newValue) {
                 Api.EVENT.register(this@AbstractModule)
-                Api.API_EVENT_BUS.post(ModuleEvent.Toggled(this@AbstractModule))
+                Api.API_EVENT_BUS.post(ModuleEvent.Toggle(this@AbstractModule))
                 enableBlock()
             } else {
                 Api.EVENT.unregister(this@AbstractModule)
-                Api.API_EVENT_BUS.post(ModuleEvent.Toggled(this@AbstractModule))
+                Api.API_EVENT_BUS.post(ModuleEvent.Toggle(this@AbstractModule))
                 disableBlock()
             }
         }
     }
 
-    private val annotation = javaClass.getAnnotation(Register::class.java)
+    private var isAutoRegister = javaClass.getAnnotation(AutoRegister::class.java) != null
+    private val annotation: Register? = javaClass.getAnnotation(Register::class.java)
 
-    val name = annotation.name
-    val category = annotation.category
+    val name: String = if (isAutoRegister) javaClass.simpleName else annotation!!.name
+    val category: Category = if (isAutoRegister) Category.byPackage(javaClass.packageName) else annotation!!.category
 
     val description get() = Api.TEXT.i18n("module.${name.lowercase()}.description")
 
@@ -53,4 +54,7 @@ abstract class AbstractModule : SettingContainer {
         val name: String,
         val category: Category
     )
+
+    @Target(AnnotationTarget.CLASS)
+    annotation class AutoRegister
 }

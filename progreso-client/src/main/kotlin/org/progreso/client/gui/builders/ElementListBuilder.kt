@@ -21,21 +21,18 @@ class ElementListBuilder<E : ElementListWidget.Entry<E>>
         return object : ElementListWidget<E>(mc.client, width, height, top, bottom, itemHeight) {
             init {
                 setLeftPos(this@ElementListBuilder.left)
-
-                for (entry in this@ElementListBuilder.children) {
-                    addEntry(entry)
-                }
-
-                if (this@ElementListBuilder.renderHeader) {
-                    setRenderHeader(true, this@ElementListBuilder.headerHeight)
-                }
-
+                children().addAll(this@ElementListBuilder.children)
+                setRenderHeader(this@ElementListBuilder.renderHeader, this@ElementListBuilder.headerHeight)
                 setRenderSelection(this@ElementListBuilder.renderSelection)
                 listeners.init(this)
             }
 
             override fun getRowWidth(): Int {
                 return this@ElementListBuilder.itemWidth
+            }
+
+            override fun getScrollbarPositionX(): Int {
+                return left + width - 6
             }
 
             override fun isSelectedEntry(index: Int): Boolean {

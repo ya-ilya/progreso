@@ -5,13 +5,12 @@ import net.minecraft.enchantment.Enchantments
 import net.minecraft.item.ItemStack
 import net.minecraft.util.math.BlockPos
 import org.progreso.api.module.AbstractModule
-import org.progreso.api.module.Category
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.events.block.DamageBlockEvent
 import org.progreso.client.events.safeEventListener
 import org.progreso.client.util.player.InventoryUtil
 
-@AbstractModule.Register("AutoTool", Category.Misc)
+@AbstractModule.AutoRegister
 object AutoTool : AbstractModule() {
     init {
         safeEventListener<DamageBlockEvent> { event ->

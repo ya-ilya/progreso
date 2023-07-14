@@ -7,7 +7,6 @@ import org.progreso.api.config.providers.ModuleConfigProvider
 import org.progreso.api.managers.PluginManager
 import org.progreso.api.module.AbstractModule
 import org.progreso.api.module.container.ModuleContainer
-import kotlin.properties.Delegates
 
 /**
  * Abstract plugin class
@@ -16,9 +15,9 @@ abstract class AbstractPlugin : ModuleContainer, CommandContainer {
     override val modules = mutableSetOf<AbstractModule>()
     override val commands = mutableSetOf<AbstractCommand>()
 
-    var name: String by Delegates.notNull()
-    var version: String by Delegates.notNull()
-    var author: String by Delegates.notNull()
+    lateinit var name: String
+    lateinit var version: String
+    lateinit var author: String
 
     private val configHelper by lazy {
         ModuleConfigHelper(

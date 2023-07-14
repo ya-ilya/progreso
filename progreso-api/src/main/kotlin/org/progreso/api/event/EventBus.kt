@@ -9,7 +9,7 @@ class EventBus {
         private val CACHE = ConcurrentHashMap<Class<*>, MutableList<ListenerInvoker>>()
     }
 
-    private val instances = ConcurrentHashMap<Class<*>, Any>()
+    private val instances = ConcurrentHashMap<Class<*>, MutableSet<Any>>()
 
     fun register(instance: Any) {
         val instanceClass = instance.javaClass
@@ -61,7 +61,11 @@ class EventBus {
             CACHE[instanceClass] = listeners
         }
 
-        instances[instanceClass] = instance
+        if (instances.containsKey(instanceClass)) {
+            instances[instanceClass]!!.add(instanceClass)
+        } else {
+            instances[instanceClass] = mutableSetOf(instance)
+        }
     }
 
     fun registerListener(
@@ -88,17 +92,19 @@ class EventBus {
     }
 
     fun unregister(instance: Any) {
-        instances.remove(instance.javaClass, instance)
+        instances[instance.javaClass]?.remove(instance)
     }
 
     fun post(event: Event): Boolean {
-        for ((instanceClass, instance) in instances) {
+        for ((instanceClass, instances) in instances) {
             for (listener in CACHE[instanceClass]!!) {
                 if (listener.eventClass.isAssignableFrom(event.javaClass)) {
-                    listener.invoke(instance, event)
+                    for (instance in instances) {
+                        listener.invoke(instance, event)
 
-                    if (event.isCancelled) {
-                        return true
+                        if (event.isCancelled) {
+                            return true
+                        }
                     }
                 }
             }

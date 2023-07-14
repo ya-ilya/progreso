@@ -18,9 +18,9 @@ object CommandManager : CommandContainer {
         super.addCommand(command)
     }
 
-    fun removeCommand(command: AbstractCommand) {
+    override fun removeCommand(command: AbstractCommand) {
         DISPATCHER.unregister(command)
-        commands.remove(command)
+        super.removeCommand(command)
     }
 
     fun onChat(message: String): Boolean {

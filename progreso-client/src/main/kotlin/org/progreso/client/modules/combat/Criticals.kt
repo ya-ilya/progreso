@@ -4,12 +4,11 @@ import net.minecraft.block.Blocks
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket
 import org.progreso.api.module.AbstractModule
-import org.progreso.api.module.Category
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.events.eventListener
 import org.progreso.client.events.network.PacketEvent
 
-@AbstractModule.Register("Criticals", Category.Combat)
+@AbstractModule.AutoRegister
 object Criticals : AbstractModule() {
     private val onlyKillAura by setting("OnlyKillAura", false)
 

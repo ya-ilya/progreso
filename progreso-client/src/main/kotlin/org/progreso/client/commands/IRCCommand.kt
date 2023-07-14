@@ -16,51 +16,49 @@ object IRCCommand : AbstractCommand() {
     private var client: IRCClient? = null
 
     init {
-        literal("connect") {
-            argument("address", string()).executes { context ->
-                val address: String by context
+        literal("connect").argument("address", string()).executes { context ->
+            val address: String by context
 
-                if (client?.isOpen == true && client?.isClosed == false) client?.close()
-                client = object : IRCClient(URI.create(address)) {
-                    init {
-                        try {
-                            connect()
-                        } catch (ex: Exception) {
-                            errorLocalized("command.irc.connect_error")
+            if (client?.isOpen == true && client?.isClosed == false) client?.close()
+            client = object : IRCClient(URI.create(address)) {
+                init {
+                    try {
+                        connect()
+                    } catch (ex: Exception) {
+                        errorLocalized("command.irc.connect_error")
+                    }
+                }
+
+                override fun onPacket(packet: IRCPacket) {
+                    when (packet) {
+                        is IRCAuthFailedPacket -> {
+                            errorLocalized(
+                                "command.irc.auth_error",
+                                packet.reason
+                            )
+                            close()
+                        }
+
+                        is IRCMessagePacket -> {
+                            infoLocalized(
+                                "command.irc.message",
+                                packet.author,
+                                packet.message
+                            )
                         }
                     }
+                }
 
-                    override fun onPacket(packet: IRCPacket) {
-                        when (packet) {
-                            is IRCAuthFailedPacket -> {
-                                errorLocalized(
-                                    "command.irc.auth_error",
-                                    packet.reason
-                                )
-                                close()
-                            }
+                override fun onOpen(handshakedata: ServerHandshake) {
+                    send(IRCAuthPacket(mc.player.name.string))
+                    infoLocalized(
+                        "command.irc.connect",
+                        address
+                    )
+                }
 
-                            is IRCMessagePacket -> {
-                                infoLocalized(
-                                    "command.irc.message",
-                                    packet.author,
-                                    packet.message
-                                )
-                            }
-                        }
-                    }
-
-                    override fun onOpen(handshakedata: ServerHandshake) {
-                        send(IRCAuthPacket(mc.player.name.string))
-                        infoLocalized(
-                            "command.irc.connect",
-                            address
-                        )
-                    }
-
-                    override fun onClose(code: Int, reason: String, remote: Boolean) {
-                        infoLocalized("command.irc.disconnect")
-                    }
+                override fun onClose(code: Int, reason: String, remote: Boolean) {
+                    infoLocalized("command.irc.disconnect")
                 }
             }
         }
@@ -74,14 +72,12 @@ object IRCCommand : AbstractCommand() {
             client = null
         }
 
-        literal("send") {
-            argument("message", string(true)).executes { context ->
-                if (client == null || client?.isClosed == true || client?.isOpen == false) {
-                    return@executes errorLocalized("command.irc.disconnect_error")
-                }
-
-                client?.send(IRCMessagePacket(mc.player.name.string, context.get("message")))
+        literal("send").argument("message", string(true)).executes { context ->
+            if (client == null || client?.isClosed == true || client?.isOpen == false) {
+                return@executes errorLocalized("command.irc.disconnect_error")
             }
+
+            client?.send(IRCMessagePacket(mc.player.name.string, context.get("message")))
         }
     }
 }

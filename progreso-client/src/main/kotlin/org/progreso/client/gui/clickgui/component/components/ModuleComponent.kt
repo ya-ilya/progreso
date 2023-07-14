@@ -69,8 +69,8 @@ class ModuleComponent(
                             mouseY,
                             lines.maxOf { mc.textRenderer.getWidth(it) } + 4,
                             (fontHeight + 3) * lines.size,
-                            rectColor,
-                            theme
+                            Color(rectColor.red, rectColor.green, rectColor.blue, 255),
+                            mainColor
                         )
 
                         for ((index, line) in lines.withIndex()) {
@@ -79,7 +79,7 @@ class ModuleComponent(
                                 line,
                                 mouseX + 8,
                                 mouseY + index * (fontHeight + 3) + 2,
-                                theme.rgb,
+                                mainColor.rgb,
                                 false
                             )
                         }
@@ -101,23 +101,21 @@ class ModuleComponent(
         super.render(context, mouseX, mouseY)
 
         if (opened) {
-            for (i in 1..visibleComponents.lastIndex) {
-                val component = visibleComponents[i]
-
+            for (component in visibleComponents.drop(1)) {
                 context {
                     if (component is ListComponent) {
                         drawVerticalLine(
                             x,
-                            component.y - if (i != 1) 1 else 0,
+                            component.y,
                             component.y + (component.header?.height ?: component.height),
-                            theme
+                            mainColor
                         )
                     } else {
                         drawVerticalLine(
                             x,
                             component.y,
-                            component.y + component.height + if (i != visibleComponents.lastIndex) 1 else 0,
-                            theme
+                            component.y + component.height,
+                            mainColor
                         )
                     }
                 }

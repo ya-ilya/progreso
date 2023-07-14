@@ -2,13 +2,12 @@ package org.progreso.client.modules.hud
 
 import org.progreso.api.module.AbstractHudModule
 import org.progreso.api.module.AbstractModule
-import org.progreso.api.module.Category
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.gui.drawText
 import org.progreso.client.modules.render
 import java.awt.Color
 
-@AbstractModule.Register("Watermark", Category.Hud)
+@AbstractModule.AutoRegister
 object Watermark : AbstractHudModule() {
     private val color by setting("Color", Color.RED)
 

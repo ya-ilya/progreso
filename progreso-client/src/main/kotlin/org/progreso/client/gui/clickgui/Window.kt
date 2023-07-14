@@ -31,10 +31,7 @@ class Window(
     override fun mouseClicked(mouseX: Int, mouseY: Int, button: Int) {
         val firstComponent = visibleComponents.firstOrNull()
 
-        if (button == 0 && firstComponent is ListComponent
-            && firstComponent.isHover(mouseX, mouseY)
-            && firstComponent.header?.isHover(mouseX, mouseY) == true
-        ) {
+        if (button == 0 && firstComponent is ListComponent && firstComponent.header?.isHover(mouseX, mouseY) == true) {
             dragging = true
             dragX = mouseX - x
             dragY = mouseY - y
