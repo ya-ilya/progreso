@@ -1,4 +1,4 @@
-package org.progreso.client.gui.clickgui.component.components
+package org.progreso.client.gui.clickgui.element.elements
 
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Text
@@ -6,37 +6,38 @@ import org.progreso.api.module.AbstractModule
 import org.progreso.api.setting.AbstractSetting
 import org.progreso.api.setting.settings.*
 import org.progreso.client.Client.Companion.mc
-import org.progreso.client.gui.clickgui.component.AbstractComponent
-import org.progreso.client.gui.clickgui.component.ChildComponent
+import org.progreso.client.gui.clickgui.element.AbstractChildElement
+import org.progreso.client.gui.clickgui.element.AbstractChildListElement
+import org.progreso.client.gui.clickgui.element.ParentElement
 import org.progreso.client.gui.invoke
 import java.awt.Color
 
-class ModuleComponent(
+class ModuleElement(
     module: AbstractModule,
     height: Int,
-    parent: AbstractComponent
-) : ListComponent(height, parent) {
+    parent: ParentElement
+) : AbstractChildListElement(height, parent) {
     companion object {
-        fun AbstractSetting<*>.createComponent(height: Int, parent: AbstractComponent): AbstractComponent {
+        fun AbstractSetting<*>.createElement(height: Int, parent: ParentElement): AbstractChildElement {
             return when (this) {
-                is BindSetting -> BindComponent(this, height, parent)
-                is BooleanSetting -> BooleanComponent(this, height, parent)
-                is ColorSetting -> ColorComponent(this, height, parent)
-                is EnumSetting<*> -> EnumComponent(this, height, parent)
-                is GroupSetting -> GroupComponent(this, height, parent)
-                is NumberSetting<*> -> SliderComponent(this, height, parent)
-                is StringSetting -> StringComponent(this, height, parent)
+                is BindSetting -> BindElement(this, height, parent)
+                is BooleanSetting -> BooleanElement(this, height, parent)
+                is ColorSetting -> ColorElement(this, height, parent)
+                is EnumSetting<*> -> EnumElement(this, height, parent)
+                is GroupSetting -> GroupElement(this, height, parent)
+                is NumberSetting<*> -> SliderElement(this, height, parent)
+                is StringSetting -> StringElement(this, height, parent)
                 else -> throw RuntimeException("Unknown setting type")
             }
         }
     }
 
     init {
-        listComponents.addAll(
-            module.settings.map { it.createComponent(height, this) }
+        listElements.addAll(
+            module.settings.map { it.createElement(height, this) }
         )
 
-        header = object : ChildComponent(height, this@ModuleComponent) {
+        header = object : AbstractChildElement(height, this@ModuleElement) {
             override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
                 super.render(context, mouseX, mouseY)
 
@@ -101,20 +102,20 @@ class ModuleComponent(
         super.render(context, mouseX, mouseY)
 
         if (opened) {
-            for (component in visibleComponents.drop(1)) {
+            for (element in visibleElements.drop(1)) {
                 context {
-                    if (component is ListComponent) {
+                    if (element is AbstractChildListElement) {
                         drawVerticalLine(
                             x,
-                            component.y,
-                            component.y + (component.header?.height ?: component.height),
+                            element.y,
+                            element.y + (element.header?.height ?: element.height),
                             mainColor
                         )
                     } else {
                         drawVerticalLine(
                             x,
-                            component.y,
-                            component.y + component.height,
+                            element.y,
+                            element.y + element.height,
                             mainColor
                         )
                     }

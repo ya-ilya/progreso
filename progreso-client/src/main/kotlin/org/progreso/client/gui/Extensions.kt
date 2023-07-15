@@ -5,7 +5,7 @@ package org.progreso.client.gui
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Text
 import org.progreso.client.Client.Companion.mc
-import org.progreso.client.gui.clickgui.component.AbstractComponent
+import org.progreso.client.gui.clickgui.element.Element
 import java.awt.Color
 
 val Color.glColors: List<Float>
@@ -100,11 +100,11 @@ class ContextWrapper(private val context: DrawContext) {
         context.drawHorizontalLine(startX, endX, y, color)
     }
 
-    fun AbstractComponent.drawTextRelatively(text: String, xOffset: Int, yOffset: Int, color: Color) {
+    fun Element.drawTextRelatively(text: String, xOffset: Int, yOffset: Int, color: Color) {
         context.drawText(text, x + xOffset, y + yOffset, color)
     }
 
-    fun AbstractComponent.drawTextRelatively(text: String, xOffset: Int, color: Color) {
+    fun Element.drawTextRelatively(text: String, xOffset: Int, color: Color) {
         drawTextRelatively(
             text,
             xOffset,
@@ -113,7 +113,7 @@ class ContextWrapper(private val context: DrawContext) {
         )
     }
 
-    fun AbstractComponent.drawCenteredString(text: String, color: Color) {
+    fun Element.drawCenteredString(text: String, color: Color) {
         context.drawText(
             text,
             x + width.div(2) - context.getTextWidth(text).div(2),

@@ -21,7 +21,7 @@ object AutoLog : AbstractModule() {
                 val playersInRange = mc.world.players
                     .filter { mc.player.distanceTo(it) <= rangeValue }
                     .filter { mc.player != it }
-                    .map { it.name }
+                    .map { it.name.string }
 
                 if (playersInRange.isNotEmpty()) {
                     mc.player.networkHandler.onDisconnect(

@@ -1,4 +1,4 @@
-package org.progreso.client.gui.clickgui.component.components
+package org.progreso.client.gui.clickgui.element.elements
 
 import com.mojang.blaze3d.platform.GlStateManager
 import com.mojang.blaze3d.systems.RenderSystem
@@ -8,19 +8,20 @@ import net.minecraft.client.render.VertexFormat
 import net.minecraft.client.render.VertexFormats
 import org.progreso.api.setting.settings.ColorSetting
 import org.progreso.api.setting.settings.NumberSetting
-import org.progreso.client.gui.clickgui.component.AbstractComponent
-import org.progreso.client.gui.clickgui.component.ChildComponent
+import org.progreso.client.gui.clickgui.element.AbstractChildElement
+import org.progreso.client.gui.clickgui.element.AbstractChildListElement
+import org.progreso.client.gui.clickgui.element.ParentElement
 import org.progreso.client.gui.glColors
 import org.progreso.client.gui.invoke
 import java.awt.Color
 import kotlin.math.max
 import kotlin.math.min
 
-class ColorComponent(
+class ColorElement(
     private val setting: ColorSetting,
     height: Int,
-    parent: AbstractComponent
-) : ListComponent(height, parent) {
+    parent: ParentElement
+) : AbstractChildListElement(height, parent) {
     private companion object {
         const val PICKER_HEIGHT = 40
     }
@@ -51,7 +52,7 @@ class ColorComponent(
     override val visible get() = setting.visibility()
 
     init {
-        listComponents.add(object : ChildComponent(height, this@ColorComponent) {
+        listElements.add(object : AbstractChildElement(height, this@ColorElement) {
             private var picking = false
 
             init {
@@ -158,10 +159,10 @@ class ColorComponent(
             }
         })
 
-        listComponents.add(SliderComponent(hueSetting, height, this))
-        listComponents.add(SliderComponent(alphaSetting, height, this))
+        listElements.add(SliderElement(hueSetting, height, this))
+        listElements.add(SliderElement(alphaSetting, height, this))
 
-        header = object : ChildComponent(height, this@ColorComponent) {
+        header = object : AbstractChildElement(height, this@ColorElement) {
             override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
                 super.render(context, mouseX, mouseY)
 

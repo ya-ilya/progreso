@@ -1,17 +1,16 @@
-package org.progreso.client.gui.clickgui.component.components
+package org.progreso.client.gui.clickgui.element.elements
 
 import net.minecraft.client.gui.DrawContext
 import org.progreso.api.setting.settings.EnumSetting
-import org.progreso.client.gui.clickgui.component.AbstractComponent
-import org.progreso.client.gui.clickgui.component.SettingComponent
+import org.progreso.client.gui.clickgui.element.ParentElement
 import org.progreso.client.gui.invoke
 import java.awt.Color
 
-class EnumComponent(
+class EnumElement(
     setting: EnumSetting<*>,
     height: Int,
-    parent: AbstractComponent
-) : SettingComponent<EnumSetting<*>>(setting, height, parent) {
+    parent: ParentElement
+) : SettingElement<EnumSetting<*>>(setting, height, parent) {
     override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
         super.render(context, mouseX, mouseY)
 

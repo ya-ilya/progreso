@@ -1,18 +1,17 @@
-package org.progreso.client.gui.clickgui.component.components
+package org.progreso.client.gui.clickgui.element.elements
 
 import net.minecraft.client.gui.DrawContext
 import org.progreso.api.setting.settings.NumberSetting
-import org.progreso.client.gui.clickgui.component.AbstractComponent
-import org.progreso.client.gui.clickgui.component.SettingComponent
+import org.progreso.client.gui.clickgui.element.ParentElement
 import org.progreso.client.gui.invoke
 import java.awt.Color
 import kotlin.math.floor
 
-class SliderComponent(
+class SliderElement(
     setting: NumberSetting<*>,
     height: Int,
-    parent: AbstractComponent
-) : SettingComponent<NumberSetting<*>>(setting, height, parent) {
+    parent: ParentElement
+) : SettingElement<NumberSetting<*>>(setting, height, parent) {
     private companion object {
         const val SLIDER_START_OFFSET = 5
         const val SLIDER_END_OFFSET = 5

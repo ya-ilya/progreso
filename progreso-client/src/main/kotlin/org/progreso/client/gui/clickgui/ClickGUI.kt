@@ -4,50 +4,41 @@ import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.text.Text
 import org.progreso.api.module.Category
-import org.progreso.client.gui.clickgui.component.AbstractComponent
-import org.progreso.client.gui.clickgui.component.components.CategoryComponent
+import org.progreso.client.gui.clickgui.window.AbstractWindow
+import org.progreso.client.gui.clickgui.window.windows.CategoryWindow
 import org.progreso.client.modules.client.ClickGUI
 
 open class ClickGUI(text: String) : Screen(Text.of(text)) {
     companion object : org.progreso.client.gui.clickgui.ClickGUI("ClickGUI") {
-        const val COMPONENT_HEIGHT = 14
-        const val COMPONENT_WIDTH = 104
+        const val ELEMENT_HEIGHT = 14
+        const val ELEMENT_WIDTH = 104
         const val X_INDENT = 10
         const val Y_INDENT = 10
     }
 
-    protected var components = mutableListOf<AbstractComponent>()
+    protected var windows = mutableListOf<AbstractWindow>()
 
     open fun initialize() {
         var x = X_INDENT
 
         for (category in Category.entries.filter { it != Category.Hud }) {
-            components.add(Window(x, Y_INDENT, COMPONENT_WIDTH).apply {
-                x += COMPONENT_WIDTH + X_INDENT
-
-                this.components.add(
-                    CategoryComponent(
-                        category,
-                        COMPONENT_HEIGHT,
-                        this
-                    )
-                )
-            })
+            windows.add(CategoryWindow(category, x, Y_INDENT, ELEMENT_WIDTH))
+            x += ELEMENT_WIDTH + X_INDENT
         }
     }
 
     override fun render(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
         super.render(context, mouseX, mouseY, delta)
 
-        components.forEach { it.render(context, mouseX, mouseY) }
-        components.forEach { it.postRender(context, mouseX, mouseY) }
+        windows.forEach { it.render(context, mouseX, mouseY) }
+        windows.forEach { it.postRender(context, mouseX, mouseY) }
     }
 
     override fun mouseScrolled(mouseX: Double, mouseY: Double, amount: Double): Boolean {
         if (amount > 0) {
-            components.forEach { it.y += ClickGUI.scrollSpeed }
+            windows.forEach { it.y += ClickGUI.scrollSpeed }
         } else if (amount < 0) {
-            components.forEach { it.y -= ClickGUI.scrollSpeed }
+            windows.forEach { it.y -= ClickGUI.scrollSpeed }
         }
 
         return super.mouseScrolled(mouseX, mouseY, amount)
@@ -56,16 +47,16 @@ open class ClickGUI(text: String) : Screen(Text.of(text)) {
     override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int): Boolean {
         val mouseXInt: Int = mouseX.toInt()
         val mouseYInt: Int = mouseY.toInt()
-        val window = components.lastOrNull { it.isHover(mouseXInt, mouseYInt) }
+        val window = windows.lastOrNull { it.isHover(mouseXInt, mouseYInt) }
 
         if (window != null) {
-            components.remove(window)
-            components.add(window)
+            windows.remove(window)
+            windows.add(window)
 
             window.mouseClicked(mouseXInt, mouseYInt, button)
         }
 
-        components.filter { it != window }.forEach { it.mouseClickedOutside(mouseXInt, mouseYInt, button) }
+        windows.filter { it != window }.forEach { it.mouseClickedOutside(mouseXInt, mouseYInt, button) }
 
         return super.mouseClicked(mouseX, mouseY, button)
     }
@@ -74,19 +65,19 @@ open class ClickGUI(text: String) : Screen(Text.of(text)) {
         val mouseXInt: Int = mouseX.toInt()
         val mouseYInt: Int = mouseY.toInt()
 
-        components.forEach { it.mouseReleased(mouseXInt, mouseYInt, button) }
+        windows.forEach { it.mouseReleased(mouseXInt, mouseYInt, button) }
 
         return super.mouseReleased(mouseX, mouseY, button)
     }
 
     override fun keyPressed(keyCode: Int, scanCode: Int, modifiers: Int): Boolean {
-        components.forEach { it.keyPressed(keyCode, scanCode) }
+        windows.forEach { it.keyPressed(keyCode, scanCode) }
 
         return super.keyPressed(keyCode, scanCode, modifiers)
     }
 
     override fun charTyped(chr: Char, modifiers: Int): Boolean {
-        components.forEach { it.charTyped(chr) }
+        windows.forEach { it.charTyped(chr) }
 
         return super.charTyped(chr, modifiers)
     }

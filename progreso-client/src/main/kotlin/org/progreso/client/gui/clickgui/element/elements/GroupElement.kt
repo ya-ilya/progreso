@@ -1,28 +1,29 @@
-package org.progreso.client.gui.clickgui.component.components
+package org.progreso.client.gui.clickgui.element.elements
 
 import net.minecraft.client.gui.DrawContext
 import org.progreso.api.setting.settings.GroupSetting
-import org.progreso.client.gui.clickgui.component.AbstractComponent
-import org.progreso.client.gui.clickgui.component.ChildComponent
-import org.progreso.client.gui.clickgui.component.components.ModuleComponent.Companion.createComponent
+import org.progreso.client.gui.clickgui.element.AbstractChildElement
+import org.progreso.client.gui.clickgui.element.AbstractChildListElement
+import org.progreso.client.gui.clickgui.element.ParentElement
+import org.progreso.client.gui.clickgui.element.elements.ModuleElement.Companion.createElement
 import org.progreso.client.gui.invokeSuper
 import java.awt.Color
 
-class GroupComponent(
+class GroupElement(
     private val setting: GroupSetting,
     height: Int,
-    parent: AbstractComponent
-) : ListComponent(height, parent) {
+    parent: ParentElement
+) : AbstractChildListElement(height, parent) {
     override val visible get() = setting.visibility()
 
     init {
         offsets.childTextOffset += 3
 
-        listComponents.addAll(
-            setting.value.map { it.createComponent(height, this) }
+        listElements.addAll(
+            setting.value.map { it.createElement(height, this) }
         )
 
-        header = object : ChildComponent(height, this@GroupComponent) {
+        header = object : AbstractChildElement(height, this@GroupElement) {
             override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
                 super.render(context, mouseX, mouseY)
 

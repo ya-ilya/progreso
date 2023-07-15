@@ -1,19 +1,18 @@
-package org.progreso.client.gui.clickgui.component.components
+package org.progreso.client.gui.clickgui.element.elements
 
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.util.InputUtil
 import org.progreso.api.setting.settings.BindSetting
-import org.progreso.client.gui.clickgui.component.AbstractComponent
-import org.progreso.client.gui.clickgui.component.SettingComponent
+import org.progreso.client.gui.clickgui.element.ParentElement
 import org.progreso.client.gui.invoke
 import org.progreso.client.util.client.KeyboardUtil
 import java.awt.Color
 
-class BindComponent(
+class BindElement(
     setting: BindSetting,
     height: Int,
-    parent: AbstractComponent
-) : SettingComponent<BindSetting>(setting, height, parent) {
+    parent: ParentElement
+) : SettingElement<BindSetting>(setting, height, parent) {
     private var keyListening = false
 
     override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {

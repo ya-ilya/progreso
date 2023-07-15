@@ -1,17 +1,16 @@
-package org.progreso.client.gui.clickgui.component.components
+package org.progreso.client.gui.clickgui.element.elements
 
 import net.minecraft.client.gui.DrawContext
 import org.progreso.api.setting.settings.BooleanSetting
-import org.progreso.client.gui.clickgui.component.AbstractComponent
-import org.progreso.client.gui.clickgui.component.SettingComponent
+import org.progreso.client.gui.clickgui.element.ParentElement
 import org.progreso.client.gui.invoke
 import java.awt.Color
 
-class BooleanComponent(
+class BooleanElement(
     setting: BooleanSetting,
     height: Int,
-    parent: AbstractComponent
-) : SettingComponent<BooleanSetting>(setting, height, parent) {
+    parent: ParentElement
+) : SettingElement<BooleanSetting>(setting, height, parent) {
     private companion object {
         const val BUTTON_WIDTH = 8
         const val BUTTON_HEIGHT = 4
