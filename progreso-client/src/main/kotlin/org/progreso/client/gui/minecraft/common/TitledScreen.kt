@@ -10,6 +10,12 @@ open class TitledScreen(title: String) : Screen(Text.of(title)) {
     override fun render(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
         renderBackgroundTexture(context)
         super.render(context, mouseX, mouseY, delta)
-        context.drawText(title, width / 2 - client!!.textRenderer.getWidth(title) / 2, 8, Color.WHITE, true)
+        context.drawText(
+            textRenderer,
+            title.string,
+            width / 2 - client!!.textRenderer.getWidth(title) / 2,
+            8,
+            Color.WHITE
+        )
     }
 }

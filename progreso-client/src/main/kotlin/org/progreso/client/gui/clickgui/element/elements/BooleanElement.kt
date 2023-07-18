@@ -36,11 +36,11 @@ class BooleanElement(
                 BUTTON_HEIGHT,
                 Color(80, 80, 80, 120)
             )
-            drawRect(
-                buttonStartX + if (setting.value) BUTTON_WIDTH / 2 else 0,
-                buttonStartY,
-                BUTTON_WIDTH / 2,
-                BUTTON_HEIGHT,
+            drawCircle(
+                buttonStartX + if (setting.value) BUTTON_WIDTH else 0,
+                buttonStartY + 2,
+                0.0, 360.0,
+                40, 3.0,
                 mainColor
             )
         }

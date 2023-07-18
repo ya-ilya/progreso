@@ -13,7 +13,7 @@ object AutoLog : AbstractModule() {
     private val rangeValue by setting("RangeValue", 5, 1..128) { range }
 
     private val health by setting("Health", false)
-    private val healthValue by setting("HealthValue", 5, 1..20) { health }
+    private val healthValue by setting("HealthValue", 5, 1..18) { health }
 
     init {
         safeEventListener<TickEvent> {

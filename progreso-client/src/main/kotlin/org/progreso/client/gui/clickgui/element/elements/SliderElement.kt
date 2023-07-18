@@ -15,7 +15,7 @@ class SliderElement(
     private companion object {
         const val SLIDER_START_OFFSET = 5
         const val SLIDER_END_OFFSET = 5
-        const val SLIDER_HEIGHT = 1
+        const val SLIDER_HEIGHT = 2
     }
 
     private var dragging = false
@@ -24,7 +24,7 @@ class SliderElement(
     private val sliderMaxWidth get() = width - SLIDER_START_OFFSET - SLIDER_END_OFFSET
     private val sliderStartX get() = x + SLIDER_START_OFFSET
     private val sliderEndX get() = x + width - SLIDER_END_OFFSET
-    private val sliderStartY get() = y + height - 2 * SLIDER_HEIGHT
+    private val sliderStartY get() = y + height - 2 * SLIDER_HEIGHT + 1
     private val sliderEndY get() = sliderStartY + SLIDER_HEIGHT
 
     init {
@@ -84,6 +84,13 @@ class SliderElement(
                 sliderStartY,
                 sliderWidth,
                 SLIDER_HEIGHT,
+                mainColor
+            )
+            drawCircle(
+                sliderStartX + sliderWidth,
+                sliderStartY + SLIDER_HEIGHT / 2,
+                0.0, 360.0,
+                40, 2.6,
                 mainColor
             )
         }

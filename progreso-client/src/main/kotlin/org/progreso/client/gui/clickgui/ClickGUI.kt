@@ -6,12 +6,11 @@ import net.minecraft.text.Text
 import org.progreso.api.module.Category
 import org.progreso.client.gui.clickgui.window.AbstractWindow
 import org.progreso.client.gui.clickgui.window.windows.CategoryWindow
-import org.progreso.client.modules.client.ClickGUI
 
-open class ClickGUI(text: String) : Screen(Text.of(text)) {
-    companion object : org.progreso.client.gui.clickgui.ClickGUI("ClickGUI") {
-        const val ELEMENT_HEIGHT = 14
+open class ClickGUI(title: String) : Screen(Text.of(title)) {
+    companion object : ClickGUI("ClickGUI") {
         const val ELEMENT_WIDTH = 104
+        const val ELEMENT_HEIGHT = 16
         const val X_INDENT = 10
         const val Y_INDENT = 10
     }
@@ -35,10 +34,12 @@ open class ClickGUI(text: String) : Screen(Text.of(text)) {
     }
 
     override fun mouseScrolled(mouseX: Double, mouseY: Double, amount: Double): Boolean {
+        val scrollSpeed = org.progreso.client.modules.client.ClickGUI.scrollSpeed
+
         if (amount > 0) {
-            windows.forEach { it.y += ClickGUI.scrollSpeed }
+            windows.forEach { it.y += scrollSpeed }
         } else if (amount < 0) {
-            windows.forEach { it.y -= ClickGUI.scrollSpeed }
+            windows.forEach { it.y -= scrollSpeed }
         }
 
         return super.mouseScrolled(mouseX, mouseY, amount)

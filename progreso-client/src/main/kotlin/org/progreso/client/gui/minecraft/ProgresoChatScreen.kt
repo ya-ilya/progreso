@@ -70,6 +70,7 @@ class ProgresoChatScreen : ChatScreen(CommandManager.PREFIX.toString()) {
 
         if (predict.isNotEmpty()) {
             context.drawText(
+                textRenderer,
                 predict.joinToString("/"),
                 textRenderer.getWidth(chatField.text) + chatField.x,
                 chatField.y,

@@ -49,8 +49,9 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n(
                 val text = i18n("gui.alts.label.current_name", mc.session.username)
 
                 context.drawText(
+                    textRenderer,
                     text,
-                    x + list.width / 2 - client!!.textRenderer.getWidth(text) / 2,
+                    x + list.width / 2 - textRenderer.getWidth(text) / 2,
                     27.coerceAtMost(y),
                     Color.WHITE
                 )
@@ -108,6 +109,7 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n(
             render { context, _, _ ->
                 renderBackgroundTexture(context)
                 context.drawText(
+                    textRenderer,
                     i18n("gui.alts.label.name_text_field"),
                     width / 2 - 65, height / 2 - 14, Color.WHITE
                 )
@@ -118,12 +120,14 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n(
     private class AltEntry(val alt: AltAccount) : SimpleElementListEntry<AltEntry>() {
         override fun render(context: DrawContext, index: Int, x: Int, y: Int) = context {
             drawText(
+                mc.textRenderer,
                 i18n("gui.alts.label.alt_name", alt.username),
                 x + 3,
                 y + 6,
                 Color.WHITE
             )
             drawText(
+                mc.textRenderer,
                 i18n("gui.alts.label.alt_type", alt.type),
                 x + 3,
                 y + 26 - mc.textRenderer.fontHeight,

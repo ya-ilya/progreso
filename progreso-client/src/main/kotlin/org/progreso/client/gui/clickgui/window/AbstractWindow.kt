@@ -4,6 +4,7 @@ import net.minecraft.client.gui.DrawContext
 import org.progreso.client.gui.clickgui.element.AbstractChildElement
 import org.progreso.client.gui.clickgui.element.ParentElement
 import org.progreso.client.gui.clickgui.element.data.ElementOffsets
+import org.progreso.client.gui.drawRect
 
 @Suppress("SuspiciousVarProperty")
 abstract class AbstractWindow(
@@ -43,6 +44,8 @@ abstract class AbstractWindow(
             y = mouseY - dragY
         }
 
+        drawRect(context)
+
         super.render(context, mouseX, mouseY)
     }
 
@@ -70,5 +73,15 @@ abstract class AbstractWindow(
         dragging = false
 
         super.mouseReleased(mouseX, mouseY, state)
+    }
+
+    private fun ParentElement.drawRect(context: DrawContext) {
+        for (element in this.elements.filter { it.visible }) {
+            if (element is ParentElement) {
+                element.drawRect(context)
+            } else if (element.renderRect) {
+                context.drawRect(element.x, element.y, element.width, element.height, AbstractChildElement.rectColor)
+            }
+        }
     }
 }

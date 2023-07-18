@@ -83,8 +83,15 @@ class ProgresoPluginsScreen(private val plugins: Set<AbstractPlugin>) : TitledSc
 
     private class PluginEntry(val plugin: AbstractPlugin) : SimpleElementListEntry<PluginEntry>() {
         override fun render(context: DrawContext, index: Int, x: Int, y: Int) = context {
-            drawText(plugin.name, x + 3, y + 3, Color.WHITE)
             drawText(
+                mc.textRenderer,
+                plugin.name,
+                x + 3,
+                y + 3,
+                Color.WHITE
+            )
+            drawText(
+                mc.textRenderer,
                 plugin.author,
                 x + 3,
                 y + 3 + mc.textRenderer.fontHeight,
@@ -95,7 +102,7 @@ class ProgresoPluginsScreen(private val plugins: Set<AbstractPlugin>) : TitledSc
 
     private class InfoEntry(val text: String) : SimpleElementListEntry<InfoEntry>() {
         override fun render(context: DrawContext, index: Int, x: Int, y: Int) = context {
-            drawText(text, x + 3, y, Color.WHITE)
+            drawText(mc.textRenderer, text, x + 3, y, Color.WHITE)
         }
     }
 }

@@ -5,11 +5,11 @@ import net.minecraft.text.Text
 import org.progreso.api.module.AbstractModule
 import org.progreso.api.setting.AbstractSetting
 import org.progreso.api.setting.settings.*
-import org.progreso.client.Client.Companion.mc
 import org.progreso.client.gui.clickgui.element.AbstractChildElement
 import org.progreso.client.gui.clickgui.element.AbstractChildListElement
 import org.progreso.client.gui.clickgui.element.ParentElement
 import org.progreso.client.gui.invoke
+import org.progreso.client.gui.textRenderer
 import java.awt.Color
 
 class ModuleElement(
@@ -45,13 +45,13 @@ class ModuleElement(
                     if (module.enabled) {
                         drawTextRelatively(
                             module.name,
-                            4,
+                            5,
                             Color.WHITE
                         )
                     } else {
                         drawTextRelatively(
                             module.name,
-                            4,
+                            5,
                             Color(180, 180, 180)
                         )
                     }
@@ -63,12 +63,12 @@ class ModuleElement(
 
                 context {
                     if (descriptions && isHover(mouseX, mouseY) && module.description.isNotBlank()) {
-                        val lines = mc.textRenderer.wrapLines(Text.of(module.description), 200)
+                        val lines = textRenderer.wrapLines(Text.of(module.description), 200)
 
                         drawBorderedRect(
                             mouseX + 6,
                             mouseY,
-                            lines.maxOf { mc.textRenderer.getWidth(it) } + 4,
+                            lines.maxOf { textRenderer.getWidth(it) } + 4,
                             (fontHeight + 3) * lines.size,
                             Color(rectColor.red, rectColor.green, rectColor.blue, 255),
                             mainColor
@@ -76,7 +76,7 @@ class ModuleElement(
 
                         for ((index, line) in lines.withIndex()) {
                             context.drawText(
-                                mc.textRenderer,
+                                textRenderer,
                                 line,
                                 mouseX + 8,
                                 mouseY + index * (fontHeight + 3) + 2,

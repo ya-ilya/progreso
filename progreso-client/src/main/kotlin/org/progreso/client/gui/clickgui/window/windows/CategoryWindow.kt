@@ -7,7 +7,7 @@ import org.progreso.client.gui.clickgui.ClickGUI
 import org.progreso.client.gui.clickgui.element.AbstractChildElement
 import org.progreso.client.gui.clickgui.element.elements.ModuleElement
 import org.progreso.client.gui.clickgui.window.AbstractWindow
-import org.progreso.client.gui.invoke
+import org.progreso.client.gui.invokeSuper
 import java.awt.Color
 
 class CategoryWindow(category: Category, x: Int, y: Int, width: Int) : AbstractWindow(x, y, width) {
@@ -22,7 +22,8 @@ class CategoryWindow(category: Category, x: Int, y: Int, width: Int) : AbstractW
             override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
                 super.render(context, mouseX, mouseY)
 
-                context {
+                context.invokeSuper(this) {
+                    drawHorizontalLine(it.x, it.x + it.width, it.y + it.height - 1, mainColor)
                     drawCenteredString(
                         category.name,
                         Color.WHITE

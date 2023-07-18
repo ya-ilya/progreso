@@ -9,7 +9,7 @@ import org.progreso.client.events.safeEventListener
 object AutoWalk : AbstractModule() {
     private val direction by setting("Direction", Direction.Forward).apply {
         valueChanged { oldValue, _ ->
-            if (mc.options != null) {
+            if (mc.options != null && enabled) {
                 oldValue.setPressed(false)
             }
         }

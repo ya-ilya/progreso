@@ -172,10 +172,12 @@ class ColorElement(
                         offsets.textOffset,
                         Color.WHITE
                     )
-                    drawRect(
+                    drawCircle(
                         x + width - 9,
-                        y + height.div(2) - 2,
-                        4, 4, setting.value
+                        y + height.div(2),
+                        0.0, 360.0,
+                        40, 2.6,
+                        setting.value
                     )
                 }
             }
