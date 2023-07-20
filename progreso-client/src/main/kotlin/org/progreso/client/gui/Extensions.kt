@@ -15,7 +15,7 @@ import java.awt.Color
 import kotlin.math.cos
 import kotlin.math.sin
 
-val textRenderer = TextRendererUtil.createTextRenderer("barlow", 11f)!!
+val textRenderer = TextRendererUtil.createTextRenderer("vitala", 11f)!!
 
 val Color.glColors: List<Float>
     get() = listOf(
