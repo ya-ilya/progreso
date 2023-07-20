@@ -2,8 +2,8 @@ package org.progreso.client.modules.hud
 
 import org.progreso.api.module.AbstractHudModule
 import org.progreso.api.module.AbstractModule
-import org.progreso.client.Client.Companion.mc
 import org.progreso.client.gui.drawText
+import org.progreso.client.gui.textRenderer
 import org.progreso.client.modules.render
 import java.awt.Color
 
@@ -11,8 +11,8 @@ import java.awt.Color
 object Watermark : AbstractHudModule() {
     private val color by setting("Color", Color.RED)
 
-    override var width = 0; get() = mc.textRenderer.getWidth("Progreso Client") + 2
-    override var height = 0; get() = mc.textRenderer.fontHeight + 6
+    override var width = 0; get() = textRenderer.getWidth("Progreso Client") + 2
+    override var height = 0; get() = textRenderer.fontHeight + 4
 
     init {
         x = 10
