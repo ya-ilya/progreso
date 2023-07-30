@@ -45,8 +45,8 @@ class CommandDispatcher {
         }
 
         val string = reader.peek()
-        val nextBuilder = builder.findLiteralBuilder { it.name == string }
-            ?: builder.findArgumentBuilder { it.type.check(reader) }
+        val nextBuilder = builder.findBuilder<LiteralBuilder> { it.name == string }
+            ?: builder.findBuilder<ArgumentBuilder> { it.type.check(reader) }
             ?: throw SyntaxException("Literal and argument not found for '${string}'")
 
         when (nextBuilder) {
@@ -67,8 +67,8 @@ class CommandDispatcher {
         }
 
         val string = reader.peek()
-        val nextBuilder = builder.findLiteralBuilder { it.name.startsWith(string) }
-            ?: builder.findArgumentBuilder { it.type.check(reader) }
+        val nextBuilder = builder.findBuilder<LiteralBuilder> { it.name.startsWith(string) }
+            ?: builder.findBuilder<ArgumentBuilder> { it.type.check(reader) }
             ?: return null
 
         reader.readString()
@@ -81,8 +81,8 @@ class CommandDispatcher {
         }
 
         val string = reader.peek()
-        val nextBuilder = builder.findLiteralBuilder { it.name.startsWith(string) }
-            ?: builder.findArgumentBuilder { it.type.check(reader) }
+        val nextBuilder = builder.findBuilder<LiteralBuilder> { it.name.startsWith(string) }
+            ?: builder.findBuilder<ArgumentBuilder> { it.type.check(reader) }
             ?: return null
 
         reader.readString()

@@ -70,12 +70,12 @@ class ProgresoPluginsScreen(private val plugins: Set<AbstractPlugin>) : TitledSc
             }
         }
 
-        button(i18n("gui.plugins.button.open_folder")) { button ->
+        button(i18n = "gui.plugins.button.open_folder") { button ->
             button.dimensions(width / 2 - 154, height - 24, 150, 20)
             button.onPress { Util.getOperatingSystem().open(Paths.get("progreso${File.separator}plugins").toFile()) }
         }
 
-        button(i18n("gui.plugins.button.done")) { button ->
+        button(i18n = "gui.plugins.button.done") { button ->
             button.dimensions(width / 2 + 4, height - 24, 150, 20)
             button.onPress { close() }
         }

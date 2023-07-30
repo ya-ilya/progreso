@@ -5,6 +5,7 @@ import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.gui.widget.ButtonWidget
 import net.minecraft.text.Text
 import org.progreso.api.gui.builders.AbstractButtonBuilder
+import org.progreso.client.accessors.TextAccessor.i18n
 import org.progreso.client.mixins.accessors.AccessorScreen
 
 class ButtonBuilder : AbstractButtonBuilder<DrawContext, ButtonWidget>() {
@@ -19,6 +20,11 @@ class ButtonBuilder : AbstractButtonBuilder<DrawContext, ButtonWidget>() {
             return (this as AccessorScreen).addDrawableChildInvoker(
                 ButtonBuilder().apply { this.text = text }.apply(block).build()
             )
+        }
+
+        @Suppress("UNUSED_PARAMETER")
+        fun Screen.button(text: String = "", i18n: String, block: (ButtonBuilder) -> Unit): ButtonWidget {
+            return button(i18n(i18n), block)
         }
     }
 

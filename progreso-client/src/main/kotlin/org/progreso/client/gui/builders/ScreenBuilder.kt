@@ -4,11 +4,17 @@ import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.text.Text
 import org.progreso.api.gui.builders.AbstractScreenBuilder
+import org.progreso.client.accessors.TextAccessor.i18n
 
 class ScreenBuilder : AbstractScreenBuilder<DrawContext, Screen>() {
     companion object {
         fun screen(title: String, block: ScreenBuilder.() -> Unit): Screen {
             return ScreenBuilder().apply { this.title = title }.apply(block).build()
+        }
+
+        @Suppress("UNUSED_PARAMETER")
+        fun screen(title: String = "", i18n: String, block: ScreenBuilder.() -> Unit): Screen {
+            return screen(i18n(i18n), block)
         }
     }
 

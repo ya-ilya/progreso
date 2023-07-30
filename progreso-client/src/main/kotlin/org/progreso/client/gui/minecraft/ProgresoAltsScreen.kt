@@ -58,12 +58,12 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n(
             }
         }
 
-        button(i18n("gui.alts.button.add_account")) { button ->
+        button(i18n = "gui.alts.button.add_account") { button ->
             button.dimensions(width / 2 - 100, height - 48, 96, 20)
             button.onPress { showCreateAltScreen() }
         }
 
-        removeButtonWidget = button(i18n("gui.alts.button.remove_account")) { button ->
+        removeButtonWidget = button(i18n = "gui.alts.button.remove_account") { button ->
             button.active = false
             button.dimensions(width / 2 + 4, height - 48, 96, 20)
             button.onPress {
@@ -72,7 +72,7 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n(
             }
         }
 
-        loginButtonWidget = button(i18n("gui.alts.button.login")) { button ->
+        loginButtonWidget = button(i18n = "gui.alts.button.login") { button ->
             button.active = false
             button.dimensions(width / 2 - 100, height - 24, 96, 20)
             button.onPress {
@@ -82,20 +82,20 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n(
             }
         }
 
-        button(i18n("gui.alts.button.done")) { button ->
+        button(i18n = "gui.alts.button.done") { button ->
             button.dimensions(width / 2 + 4, height - 24, 96, 20)
             button.onPress { close() }
         }
     }
 
     private fun showCreateAltScreen() {
-        client!!.setScreen(screen(i18n("gui.alts.title.create_alt")) {
+        client!!.setScreen(screen(i18n = "gui.alts.title.create_alt") {
             init {
                 val name = textField { textField ->
                     textField.dimensions(width / 2 - 36, height / 2 - 20, 100, 20)
                 }
 
-                button(i18n("gui.alts.button.add_account")) { button ->
+                button(i18n = "gui.alts.button.add_account") { button ->
                     button.dimensions(width / 2 - 66, height / 2 + 8, 132, 20)
                     button.onPress {
                         if (name.text.length >= 3) {

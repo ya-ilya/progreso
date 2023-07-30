@@ -29,12 +29,8 @@ abstract class AbstractBuilder<S : AbstractBuilder<S>>(open val name: String) {
         return this
     }
 
-    fun findLiteralBuilder(predicate: (LiteralBuilder) -> Boolean): LiteralBuilder? {
-        return children.filterIsInstance<LiteralBuilder>().firstOrNull(predicate)
-    }
-
-    fun findArgumentBuilder(predicate: (ArgumentBuilder) -> Boolean): ArgumentBuilder? {
-        return children.filterIsInstance<ArgumentBuilder>().firstOrNull(predicate)
+    inline fun <reified T : AbstractBuilder<*>> findBuilder(predicate: (T) -> Boolean): T? {
+        return children.filterIsInstance<T>().firstOrNull(predicate)
     }
 
     operator fun invoke(context: CommandContext) {

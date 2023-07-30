@@ -14,6 +14,8 @@ object ModuleManager : ModuleContainer {
     }
 
     fun onKey(key: Int) {
-        (modules + PluginManager.modules).filter { it.bind == key }.forEach { it.toggle() }
+        (modules + PluginManager.modules)
+            .filter { it.bind == key }
+            .forEach { it.toggle() }
     }
 }
