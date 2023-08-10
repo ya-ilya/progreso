@@ -1,6 +1,5 @@
 val minecraftVersion: String by project
 val progresoVersion: String by project
-val mixinVersion: String by project
 val yarnMappings: String by project
 val loaderVersion: String by project
 val fabricVersion: String by project
