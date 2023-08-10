@@ -31,6 +31,10 @@ class ProgresoPluginsScreen(private val plugins: Set<AbstractPlugin>) : TitledSc
             for (plugin in plugins) {
                 list.addEntry(PluginEntry(plugin))
             }
+
+            list.select {
+                selectedPlugin = it?.plugin
+            }
         }
 
         elementList<InfoEntry> { list ->
