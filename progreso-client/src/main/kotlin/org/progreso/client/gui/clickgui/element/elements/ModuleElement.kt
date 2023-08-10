@@ -3,11 +3,10 @@ package org.progreso.client.gui.clickgui.element.elements
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Text
 import org.progreso.api.module.AbstractModule
-import org.progreso.api.setting.AbstractSetting
-import org.progreso.api.setting.settings.*
 import org.progreso.client.gui.clickgui.element.AbstractChildElement
 import org.progreso.client.gui.clickgui.element.AbstractChildListElement
 import org.progreso.client.gui.clickgui.element.ParentElement
+import org.progreso.client.gui.clickgui.element.elements.SettingElement.Companion.createSettingElement
 import org.progreso.client.gui.invoke
 import org.progreso.client.gui.textRenderer
 import java.awt.Color
@@ -17,24 +16,9 @@ class ModuleElement(
     height: Int,
     parent: ParentElement
 ) : AbstractChildListElement(height, parent) {
-    companion object {
-        fun AbstractSetting<*>.createElement(height: Int, parent: ParentElement): AbstractChildElement {
-            return when (this) {
-                is BindSetting -> BindElement(this, height, parent)
-                is BooleanSetting -> BooleanElement(this, height, parent)
-                is ColorSetting -> ColorElement(this, height, parent)
-                is EnumSetting<*> -> EnumElement(this, height, parent)
-                is GroupSetting -> GroupElement(this, height, parent)
-                is NumberSetting<*> -> SliderElement(this, height, parent)
-                is StringSetting -> StringElement(this, height, parent)
-                else -> throw RuntimeException("Unknown setting type")
-            }
-        }
-    }
-
     init {
         listElements.addAll(
-            module.settings.map { it.createElement(height, this) }
+            module.settings.map { it.createSettingElement(height, this) }
         )
 
         header = object : AbstractChildElement(height, this@ModuleElement) {

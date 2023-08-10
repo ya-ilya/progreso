@@ -5,7 +5,7 @@ import org.progreso.api.setting.settings.GroupSetting
 import org.progreso.client.gui.clickgui.element.AbstractChildElement
 import org.progreso.client.gui.clickgui.element.AbstractChildListElement
 import org.progreso.client.gui.clickgui.element.ParentElement
-import org.progreso.client.gui.clickgui.element.elements.ModuleElement.Companion.createElement
+import org.progreso.client.gui.clickgui.element.elements.SettingElement.Companion.createSettingElement
 import org.progreso.client.gui.invokeSuper
 import java.awt.Color
 
@@ -20,7 +20,7 @@ class GroupElement(
         offsets.childTextOffset += 3
 
         listElements.addAll(
-            setting.value.map { it.createElement(height, this) }
+            setting.value.map { it.createSettingElement(height, this) }
         )
 
         header = object : AbstractChildElement(height, this@GroupElement) {
