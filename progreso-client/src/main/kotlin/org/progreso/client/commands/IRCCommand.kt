@@ -3,11 +3,11 @@ package org.progreso.client.commands
 import org.java_websocket.handshake.ServerHandshake
 import org.progreso.api.command.AbstractCommand
 import org.progreso.api.command.argument.arguments.StringArgumentType.Companion.string
-import org.progreso.api.irc.IRCClient
-import org.progreso.api.irc.packet.IRCPacket
-import org.progreso.api.irc.packet.packets.IRCAuthFailedPacket
-import org.progreso.api.irc.packet.packets.IRCAuthPacket
-import org.progreso.api.irc.packet.packets.IRCMessagePacket
+import org.progreso.irc.client.IRCClient
+import org.progreso.irc.packet.IRCPacket
+import org.progreso.irc.packet.packets.IRCAuthFailedPacket
+import org.progreso.irc.packet.packets.IRCAuthPacket
+import org.progreso.irc.packet.packets.IRCMessagePacket
 import org.progreso.client.Client.Companion.mc
 import java.net.URI
 

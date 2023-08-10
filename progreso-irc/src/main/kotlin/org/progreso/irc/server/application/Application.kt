@@ -1,11 +1,11 @@
-package org.progreso.irc.server
+package org.progreso.irc.server.application
 
 import org.java_websocket.WebSocket
-import org.progreso.api.irc.IRCServer
-import org.progreso.api.irc.packet.IRCPacket
-import org.progreso.api.irc.packet.packets.IRCAuthFailedPacket
-import org.progreso.api.irc.packet.packets.IRCAuthPacket
-import org.progreso.api.irc.packet.packets.IRCMessagePacket
+import org.progreso.irc.packet.IRCPacket
+import org.progreso.irc.packet.packets.IRCAuthFailedPacket
+import org.progreso.irc.packet.packets.IRCAuthPacket
+import org.progreso.irc.packet.packets.IRCMessagePacket
+import org.progreso.irc.server.IRCServer
 import java.net.InetSocketAddress
 
 fun main(args: Array<String>) {
@@ -19,6 +19,11 @@ fun main(args: Array<String>) {
         override fun onPacket(socket: WebSocket, packet: IRCPacket) {
             when (packet) {
                 is IRCAuthPacket -> {
+                    if (authorized.containsKey(socket)) {
+                        socket.send(IRCAuthFailedPacket("Socket already connected to this IRC server"))
+                        return
+                    }
+
                     if (packet.username.length < 3) {
                         socket.send(IRCAuthFailedPacket("Username length must be >= 3"))
                         socket.close()

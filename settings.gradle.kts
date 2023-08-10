@@ -19,5 +19,5 @@ pluginManagement {
 include(
     "progreso-api",
     "progreso-client",
-    "progreso-irc-server"
+    "progreso-irc"
 )

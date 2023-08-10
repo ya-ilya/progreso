@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.progreso.api.irc.gson
+package org.progreso.irc.gson
 
 import com.google.gson.*
 import com.google.gson.reflect.TypeToken

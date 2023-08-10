@@ -50,6 +50,7 @@ dependencies {
 
     library("org.reflections:reflections:0.10.2")
     library(project(":progreso-api"))
+    library(project(":progreso-irc"))
 }
 
 tasks {

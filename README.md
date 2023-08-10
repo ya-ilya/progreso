@@ -25,4 +25,4 @@ This utility mod not ready to use. So for now it's just an experiment
 
 - `progreso-api` ([source](https://github.com/ya-ilya/progreso/tree/main/progreso-api)) - Api for `progreso-client`. Shouldn't interact with **minecraft**/**modding api** classes.
 - `progreso-client` ([source](https://github.com/ya-ilya/progreso/tree/main/progreso-client)) - Client. Uses `progreso-api` as base.
-- `progreso-irc-server` ([source](https://github.com/ya-ilya/progreso/tree/main/progreso-irc-server)) - Implementation of IRCServer.
+- `progreso-irc` ([source](https://github.com/ya-ilya/progreso/tree/main/progreso-irc)) - IRC server and client.

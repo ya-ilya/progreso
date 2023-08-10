@@ -1,9 +1,9 @@
-package org.progreso.api.irc
+package org.progreso.irc.server
 
 import org.java_websocket.WebSocket
 import org.java_websocket.handshake.ClientHandshake
 import org.java_websocket.server.WebSocketServer
-import org.progreso.api.irc.packet.IRCPacket
+import org.progreso.irc.packet.IRCPacket
 import java.net.InetSocketAddress
 
 open class IRCServer(address: InetSocketAddress) : WebSocketServer(address) {
