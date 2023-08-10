@@ -37,8 +37,6 @@ class SliderElement(
     }
 
     override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
-        super.render(context, mouseX, mouseY)
-
         if (dragging) {
             sliderWidth = if (mouseX < sliderStartX) {
                 0
@@ -97,16 +95,12 @@ class SliderElement(
     }
 
     override fun mouseClicked(mouseX: Int, mouseY: Int, button: Int) {
-        super.mouseClicked(mouseX, mouseY, button)
-
         if (mouseX in sliderStartX..sliderEndX && mouseY in sliderStartY..sliderEndY) {
             dragging = true
         }
     }
 
     override fun mouseReleased(mouseX: Int, mouseY: Int, state: Int) {
-        super.mouseReleased(mouseX, mouseY, state)
-
         dragging = false
     }
 }

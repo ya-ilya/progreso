@@ -163,23 +163,19 @@ class ColorElement(
         listElements.add(SliderElement(alphaSetting, height, this))
 
         header = object : AbstractChildElement(height, this@ColorElement) {
-            override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
-                super.render(context, mouseX, mouseY)
-
-                context {
-                    drawTextRelatively(
-                        setting.name,
-                        offsets.textOffset,
-                        Color.WHITE
-                    )
-                    drawCircle(
-                        x + width - 9,
-                        y + height.div(2),
-                        0.0, 360.0,
-                        40, 2.6,
-                        setting.value
-                    )
-                }
+            override fun render(context: DrawContext, mouseX: Int, mouseY: Int) = context {
+                drawTextRelatively(
+                    setting.name,
+                    offsets.textOffset,
+                    Color.WHITE
+                )
+                drawCircle(
+                    x + width - 9,
+                    y + height.div(2),
+                    0.0, 360.0,
+                    40, 2.6,
+                    setting.value
+                )
             }
         }
     }

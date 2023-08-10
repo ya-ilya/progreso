@@ -38,52 +38,44 @@ class ModuleElement(
         )
 
         header = object : AbstractChildElement(height, this@ModuleElement) {
-            override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
-                super.render(context, mouseX, mouseY)
-
-                context {
-                    if (module.enabled) {
-                        drawTextRelatively(
-                            module.name,
-                            5,
-                            Color.WHITE
-                        )
-                    } else {
-                        drawTextRelatively(
-                            module.name,
-                            5,
-                            Color(180, 180, 180)
-                        )
-                    }
+            override fun render(context: DrawContext, mouseX: Int, mouseY: Int) = context {
+                if (module.enabled) {
+                    drawTextRelatively(
+                        module.name,
+                        5,
+                        Color.WHITE
+                    )
+                } else {
+                    drawTextRelatively(
+                        module.name,
+                        5,
+                        Color(180, 180, 180)
+                    )
                 }
             }
 
-            override fun postRender(context: DrawContext, mouseX: Int, mouseY: Int) {
-                super.postRender(context, mouseX, mouseY)
+            override fun postRender(context: DrawContext, mouseX: Int, mouseY: Int) = context {
+                if (descriptions && isHover(mouseX, mouseY) && module.description.isNotBlank()) {
+                    val lines = textRenderer.wrapLines(Text.of(module.description), 200)
 
-                context {
-                    if (descriptions && isHover(mouseX, mouseY) && module.description.isNotBlank()) {
-                        val lines = textRenderer.wrapLines(Text.of(module.description), 200)
+                    drawBorderedRect(
+                        mouseX + 6,
+                        mouseY,
+                        lines.maxOf { textRenderer.getWidth(it) } + 4,
+                        (fontHeight + 3) * lines.size,
+                        Color(rectColor.red, rectColor.green, rectColor.blue, 255),
+                        mainColor
+                    )
 
-                        drawBorderedRect(
-                            mouseX + 6,
-                            mouseY,
-                            lines.maxOf { textRenderer.getWidth(it) } + 4,
-                            (fontHeight + 3) * lines.size,
-                            Color(rectColor.red, rectColor.green, rectColor.blue, 255),
-                            mainColor
+                    for ((index, line) in lines.withIndex()) {
+                        context.drawText(
+                            textRenderer,
+                            line,
+                            mouseX + 8,
+                            mouseY + index * (fontHeight + 3) + 2,
+                            mainColor.rgb,
+                            false
                         )
-
-                        for ((index, line) in lines.withIndex()) {
-                            context.drawText(
-                                textRenderer,
-                                line,
-                                mouseX + 8,
-                                mouseY + index * (fontHeight + 3) + 2,
-                                mainColor.rgb,
-                                false
-                            )
-                        }
                     }
                 }
             }

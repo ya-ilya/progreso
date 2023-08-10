@@ -24,16 +24,12 @@ class GroupElement(
         )
 
         header = object : AbstractChildElement(height, this@GroupElement) {
-            override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
-                super.render(context, mouseX, mouseY)
-
-                context.invokeSuper(this) {
-                    drawTextRelatively(
-                        setting.name,
-                        it.parent.offsets.textOffset,
-                        Color.WHITE
-                    )
-                }
+            override fun render(context: DrawContext, mouseX: Int, mouseY: Int) = context.invokeSuper(this) {
+                drawTextRelatively(
+                    setting.name,
+                    it.parent.offsets.textOffset,
+                    Color.WHITE
+                )
             }
         }
     }

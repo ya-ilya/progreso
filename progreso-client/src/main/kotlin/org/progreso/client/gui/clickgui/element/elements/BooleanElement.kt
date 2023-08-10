@@ -20,35 +20,29 @@ class BooleanElement(
     private val buttonStartX get() = x + width - BUTTON_END_OFFSET - BUTTON_WIDTH
     private val buttonStartY get() = y + height.div(2) - BUTTON_HEIGHT.div(2)
 
-    override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
-        super.render(context, mouseX, mouseY)
-
-        context {
-            drawTextRelatively(
-                setting.name,
-                offsets.textOffset,
-                Color.WHITE
-            )
-            drawRect(
-                buttonStartX,
-                buttonStartY,
-                BUTTON_WIDTH,
-                BUTTON_HEIGHT,
-                Color(80, 80, 80, 120)
-            )
-            drawCircle(
-                buttonStartX + if (setting.value) BUTTON_WIDTH else 0,
-                buttonStartY + 2,
-                0.0, 360.0,
-                40, 3.0,
-                mainColor
-            )
-        }
+    override fun render(context: DrawContext, mouseX: Int, mouseY: Int) = context {
+        drawTextRelatively(
+            setting.name,
+            offsets.textOffset,
+            Color.WHITE
+        )
+        drawRect(
+            buttonStartX,
+            buttonStartY,
+            BUTTON_WIDTH,
+            BUTTON_HEIGHT,
+            Color(80, 80, 80, 120)
+        )
+        drawCircle(
+            buttonStartX + if (setting.value) BUTTON_WIDTH else 0,
+            buttonStartY + 2,
+            0.0, 360.0,
+            40, 3.0,
+            mainColor
+        )
     }
 
     override fun mouseClicked(mouseX: Int, mouseY: Int, button: Int) {
-        super.mouseClicked(mouseX, mouseY, button)
-
         if (button == 0) {
             setting.value = !setting.value
         }

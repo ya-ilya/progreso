@@ -16,8 +16,6 @@ class BindElement(
     private var keyListening = false
 
     override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
-        super.render(context, mouseX, mouseY)
-
         val text = if (keyListening) {
             "Listening.."
         } else {
@@ -48,20 +46,14 @@ class BindElement(
     }
 
     override fun mouseClicked(mouseX: Int, mouseY: Int, button: Int) {
-        super.mouseClicked(mouseX, mouseY, button)
-
         keyListening = !keyListening
     }
 
     override fun mouseClickedOutside(mouseX: Int, mouseY: Int, mouseButton: Int) {
-        super.mouseClickedOutside(mouseX, mouseY, mouseButton)
-
         keyListening = false
     }
 
     override fun keyPressed(keyCode: Int, scanCode: Int) {
-        super.keyPressed(keyCode, scanCode)
-
         if (keyCode == InputUtil.GLFW_KEY_ESCAPE) {
             return
         }
