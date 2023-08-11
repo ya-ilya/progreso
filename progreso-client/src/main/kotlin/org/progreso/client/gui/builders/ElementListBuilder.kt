@@ -5,13 +5,12 @@ import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.gui.widget.ElementListWidget
 import org.progreso.api.gui.builders.AbstractElementListBuilder
 import org.progreso.client.Client.Companion.mc
-import org.progreso.client.mixins.accessors.AccessorScreen
 
 class ElementListBuilder<E : ElementListWidget.Entry<E>>
     : AbstractElementListBuilder<DrawContext, ElementListWidget<E>, E>() {
     companion object {
         fun <E : ElementListWidget.Entry<E>> Screen.elementList(block: (ElementListBuilder<E>) -> Unit): ElementListWidget<E> {
-            return (this as AccessorScreen).addDrawableChildInvoker(
+            return addDrawableChild(
                 ElementListBuilder<E>().apply(block).build()
             )
         }

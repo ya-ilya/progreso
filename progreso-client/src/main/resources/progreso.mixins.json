@@ -12,7 +12,7 @@
     "MixinClientPlayerInteractionManager",
     "MixinInGameHud",
     "MixinKeyboard",
-    "MixinTitleScreen",
-    "accessors.AccessorScreen"
+    "MixinMinecraftClient",
+    "MixinTitleScreen"
   ]
 }

@@ -6,18 +6,17 @@ import net.minecraft.client.gui.widget.TextFieldWidget
 import net.minecraft.text.Text
 import org.progreso.api.gui.builders.AbstractTextFieldBuilder
 import org.progreso.client.Client.Companion.mc
-import org.progreso.client.mixins.accessors.AccessorScreen
 
 class TextFieldBuilder : AbstractTextFieldBuilder<DrawContext, TextFieldWidget>() {
     companion object {
         fun Screen.textField(text: String, block: (TextFieldBuilder) -> Unit): TextFieldWidget {
-            return (this as AccessorScreen).addDrawableChildInvoker(
+            return addDrawableChild(
                 TextFieldBuilder().apply { this.text = text }.apply(block).build()
             )
         }
 
         fun Screen.textField(block: (TextFieldBuilder) -> Unit): TextFieldWidget {
-            return (this as AccessorScreen).addDrawableChildInvoker(
+            return addDrawableChild(
                 TextFieldBuilder().apply(block).build()
             )
         }

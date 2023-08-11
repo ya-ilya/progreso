@@ -6,18 +6,17 @@ import net.minecraft.client.gui.widget.ButtonWidget
 import net.minecraft.text.Text
 import org.progreso.api.gui.builders.AbstractButtonBuilder
 import org.progreso.client.accessors.TextAccessor.i18n
-import org.progreso.client.mixins.accessors.AccessorScreen
 
 class ButtonBuilder : AbstractButtonBuilder<DrawContext, ButtonWidget>() {
     companion object {
         fun Screen.button(block: (ButtonBuilder) -> Unit): ButtonWidget {
-            return (this as AccessorScreen).addDrawableChildInvoker(
+            return addDrawableChild(
                 ButtonBuilder().apply(block).build()
             )
         }
 
         fun Screen.button(text: String, block: (ButtonBuilder) -> Unit): ButtonWidget {
-            return (this as AccessorScreen).addDrawableChildInvoker(
+            return addDrawableChild(
                 ButtonBuilder().apply { this.text = text }.apply(block).build()
             )
         }
