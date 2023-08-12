@@ -13,7 +13,7 @@ class StringElement(
     parent: ParentElement
 ) : SettingElement<StringSetting>(setting, height, parent) {
     private var stringEditing = false
-    private var stringEditor = StringEditor()
+    private var stringEditor = ""
 
     override fun render(context: DrawContext, mouseX: Int, mouseY: Int) = context {
         drawTextRelatively(
@@ -22,7 +22,7 @@ class StringElement(
             Color.WHITE
         )
         drawTextRelatively(
-            if (stringEditing) stringEditor.string else setting.value,
+            if (stringEditing) stringEditor else setting.value,
             offsets.textOffset + getTextWidth("${setting.name}  "),
             if (stringEditing) Color.WHITE else mainColor
         )
@@ -43,20 +43,18 @@ class StringElement(
             }
 
             InputUtil.GLFW_KEY_ENTER, InputUtil.GLFW_KEY_KP_ENTER -> {
-                setting.value = stringEditor.string
-                stringEditor = StringEditor()
+                setting.value = stringEditor
+                stringEditor = ""
                 stringEditing = false
             }
 
             InputUtil.GLFW_KEY_BACKSPACE -> {
-                stringEditor = StringEditor(stringEditor.string.dropLast(1))
+                stringEditor = stringEditor.dropLast(1)
             }
         }
     }
 
     override fun charTyped(char: Char) {
-        stringEditor = StringEditor(stringEditor.string + char)
+        stringEditor += char
     }
-
-    private data class StringEditor(val string: String = "")
 }

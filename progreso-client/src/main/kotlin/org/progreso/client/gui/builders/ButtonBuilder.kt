@@ -9,21 +9,14 @@ import org.progreso.client.accessors.TextAccessor.i18n
 
 class ButtonBuilder : AbstractButtonBuilder<DrawContext, ButtonWidget>() {
     companion object {
-        fun Screen.button(block: (ButtonBuilder) -> Unit): ButtonWidget {
+        fun Screen.button(text: String = "", i18n: String = "", block: (ButtonBuilder) -> Unit): ButtonWidget {
             return addDrawableChild(
-                ButtonBuilder().apply(block).build()
+                ButtonBuilder().apply {
+                    if (text.isNotEmpty() || i18n.isNotEmpty()) {
+                        this.text = text.ifEmpty { i18n(i18n) }
+                    }
+                }.apply(block).build()
             )
-        }
-
-        fun Screen.button(text: String, block: (ButtonBuilder) -> Unit): ButtonWidget {
-            return addDrawableChild(
-                ButtonBuilder().apply { this.text = text }.apply(block).build()
-            )
-        }
-
-        @Suppress("UNUSED_PARAMETER")
-        fun Screen.button(text: String = "", i18n: String, block: (ButtonBuilder) -> Unit): ButtonWidget {
-            return button(i18n(i18n), block)
         }
     }
 

@@ -15,12 +15,14 @@ class BooleanElement(
         const val BUTTON_WIDTH = 8
         const val BUTTON_HEIGHT = 4
         const val BUTTON_END_OFFSET = 5
+
+        val BUTTON_BACK_RECT_COLOR = Color(80, 80, 80, 120)
     }
 
-    private val buttonStartX get() = x + width - BUTTON_END_OFFSET - BUTTON_WIDTH
-    private val buttonStartY get() = y + height.div(2) - BUTTON_HEIGHT.div(2)
-
     override fun render(context: DrawContext, mouseX: Int, mouseY: Int) = context {
+        val buttonStartX = x + width - BUTTON_END_OFFSET - BUTTON_WIDTH
+        val buttonStartY = y + height.div(2) - BUTTON_HEIGHT.div(2)
+
         drawTextRelatively(
             setting.name,
             offsets.textOffset,
@@ -31,7 +33,7 @@ class BooleanElement(
             buttonStartY,
             BUTTON_WIDTH,
             BUTTON_HEIGHT,
-            Color(80, 80, 80, 120)
+            BUTTON_BACK_RECT_COLOR
         )
         drawCircle(
             buttonStartX + if (setting.value) BUTTON_WIDTH else 0,

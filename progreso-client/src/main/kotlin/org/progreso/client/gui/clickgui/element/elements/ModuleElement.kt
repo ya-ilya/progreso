@@ -6,6 +6,7 @@ import org.progreso.api.module.AbstractModule
 import org.progreso.client.gui.clickgui.element.AbstractChildElement
 import org.progreso.client.gui.clickgui.element.AbstractChildListElement
 import org.progreso.client.gui.clickgui.element.ParentElement
+import org.progreso.client.gui.clickgui.element.elements.ColorElement.Companion.copy
 import org.progreso.client.gui.clickgui.element.elements.SettingElement.Companion.createSettingElement
 import org.progreso.client.gui.invoke
 import org.progreso.client.gui.textRenderer
@@ -16,6 +17,10 @@ class ModuleElement(
     height: Int,
     parent: ParentElement
 ) : AbstractChildListElement(height, parent) {
+    private companion object {
+        val DISABLED_MODULE_COLOR = Color(180, 180, 180)
+    }
+
     init {
         listElements.addAll(
             module.settings.map { it.createSettingElement(height, this) }
@@ -23,53 +28,40 @@ class ModuleElement(
 
         header = object : AbstractChildElement(height, this@ModuleElement) {
             override fun render(context: DrawContext, mouseX: Int, mouseY: Int) = context {
-                if (module.enabled) {
-                    drawTextRelatively(
-                        module.name,
-                        5,
-                        Color.WHITE
-                    )
-                } else {
-                    drawTextRelatively(
-                        module.name,
-                        5,
-                        Color(180, 180, 180)
-                    )
-                }
+                drawTextRelatively(
+                    module.name,
+                    5,
+                    if (module.enabled) Color.WHITE else DISABLED_MODULE_COLOR
+                )
             }
 
             override fun postRender(context: DrawContext, mouseX: Int, mouseY: Int) = context {
-                if (descriptions && isHover(mouseX, mouseY) && module.description.isNotBlank()) {
-                    val lines = textRenderer.wrapLines(Text.of(module.description), 200)
+                if (!descriptions || !isHover(mouseX, mouseY) || module.description.isBlank()) return@context
+                val lines = textRenderer.wrapLines(Text.of(module.description), 200)
 
-                    drawBorderedRect(
-                        mouseX + 6,
-                        mouseY,
-                        lines.maxOf { textRenderer.getWidth(it) } + 4,
-                        (fontHeight + 3) * lines.size,
-                        Color(rectColor.red, rectColor.green, rectColor.blue, 255),
-                        mainColor
+                drawBorderedRect(
+                    mouseX + 6,
+                    mouseY,
+                    lines.maxOf { textRenderer.getWidth(it) } + 4,
+                    (fontHeight + 3) * lines.size,
+                    rectColor.copy(255),
+                    mainColor
+                )
+
+                for ((index, line) in lines.withIndex()) {
+                    context.drawText(
+                        textRenderer,
+                        line,
+                        mouseX + 8,
+                        mouseY + index * (fontHeight + 3) + 2,
+                        mainColor.rgb,
+                        false
                     )
-
-                    for ((index, line) in lines.withIndex()) {
-                        context.drawText(
-                            textRenderer,
-                            line,
-                            mouseX + 8,
-                            mouseY + index * (fontHeight + 3) + 2,
-                            mainColor.rgb,
-                            false
-                        )
-                    }
                 }
             }
 
             override fun mouseClicked(mouseX: Int, mouseY: Int, button: Int) {
-                super.mouseClicked(mouseX, mouseY, button)
-
-                if (button == 0) {
-                    module.toggle()
-                }
+                if (button == 0) module.toggle()
             }
         }
     }

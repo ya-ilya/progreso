@@ -9,15 +9,13 @@ import org.progreso.client.Client.Companion.mc
 
 class TextFieldBuilder : AbstractTextFieldBuilder<DrawContext, TextFieldWidget>() {
     companion object {
-        fun Screen.textField(text: String, block: (TextFieldBuilder) -> Unit): TextFieldWidget {
+        fun Screen.textField(text: String = "", block: (TextFieldBuilder) -> Unit): TextFieldWidget {
             return addDrawableChild(
-                TextFieldBuilder().apply { this.text = text }.apply(block).build()
-            )
-        }
-
-        fun Screen.textField(block: (TextFieldBuilder) -> Unit): TextFieldWidget {
-            return addDrawableChild(
-                TextFieldBuilder().apply(block).build()
+                TextFieldBuilder().apply {
+                    if (text.isNotEmpty()) {
+                        this.text = text
+                    }
+                }.apply(block).build()
             )
         }
     }

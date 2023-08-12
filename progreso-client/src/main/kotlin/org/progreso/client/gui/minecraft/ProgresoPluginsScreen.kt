@@ -14,7 +14,7 @@ import java.awt.Color
 import java.io.File
 import java.nio.file.Paths
 
-class ProgresoPluginsScreen(private val plugins: Set<AbstractPlugin>) : TitledScreen(i18n("gui.plugins.title")) {
+class ProgresoPluginsScreen(private val plugins: Set<AbstractPlugin>) : TitledScreen(i18n = "gui.plugins.title") {
     private var selectedPlugin: AbstractPlugin? = null
 
     override fun init() {

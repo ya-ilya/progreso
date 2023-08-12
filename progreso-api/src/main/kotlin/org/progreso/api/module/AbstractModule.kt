@@ -35,10 +35,11 @@ abstract class AbstractModule : SettingContainer {
     val name: String = if (isAutoRegister) javaClass.simpleName else annotation!!.name
     val category: Category = if (isAutoRegister) Category.byPackage(javaClass.packageName) else annotation!!.category
 
-    val description get() = Api.TEXT.i18n(
-        if (annotation != null && annotation.descriptionKey != "") annotation.descriptionKey
-        else "module.${name.lowercase()}.description"
-    )
+    val description
+        get() = Api.TEXT.i18n(
+            if (annotation != null && annotation.descriptionKey != "") annotation.descriptionKey
+            else "module.${name.lowercase()}.description"
+        )
 
     protected fun onEnable(block: () -> Unit) {
         enableBlock = block

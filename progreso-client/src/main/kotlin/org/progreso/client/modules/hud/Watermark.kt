@@ -19,7 +19,7 @@ object Watermark : AbstractHudModule() {
         y = 10
 
         render {
-            drawText("Progreso Client", x + 1, y + 2, color)
+            drawText("Progreso Client", x + 1, y + 2, color, true)
         }
     }
 }

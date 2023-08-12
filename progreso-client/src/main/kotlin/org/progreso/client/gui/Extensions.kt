@@ -9,13 +9,16 @@ import net.minecraft.client.render.GameRenderer
 import net.minecraft.client.render.Tessellator
 import net.minecraft.client.render.VertexFormat
 import net.minecraft.client.render.VertexFormats
+import org.progreso.client.Client.Companion.mc
 import org.progreso.client.gui.clickgui.element.Element
+import org.progreso.client.modules.client.ClickGUI
 import org.progreso.client.util.render.TextRendererUtil
 import java.awt.Color
 import kotlin.math.cos
 import kotlin.math.sin
 
-val textRenderer = TextRendererUtil.createTextRenderer("vitala", 11f)!!
+private val customTextRenderer = TextRendererUtil.createTextRenderer("vitala", 11f)!!
+val textRenderer get() = if (ClickGUI.customFont) customTextRenderer else mc.textRenderer
 
 val Color.glColors: List<Float>
     get() = listOf(

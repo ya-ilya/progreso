@@ -17,7 +17,7 @@ import org.progreso.client.gui.minecraft.common.TitledScreen
 import org.progreso.client.util.session.SessionUtil
 import java.awt.Color
 
-class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n("gui.alts.title")) {
+class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n = "gui.alts.title") {
     private var selectedAlt: AltAccount? = null
 
     @Suppress("JoinDeclarationAndAssignment")

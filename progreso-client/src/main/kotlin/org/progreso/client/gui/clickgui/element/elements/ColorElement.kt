@@ -22,8 +22,12 @@ class ColorElement(
     height: Int,
     parent: ParentElement
 ) : AbstractChildListElement(height, parent) {
-    private companion object {
-        const val PICKER_HEIGHT = 40
+    companion object {
+        private const val PICKER_HEIGHT = 40
+
+        fun Color.copy(alpha: Int): Color {
+            return Color(red, green, blue, alpha)
+        }
     }
 
     private var pickerX = -1
@@ -196,9 +200,5 @@ class ColorElement(
         val hsb = hsbValue
         val alpha = setting.value.alpha
         setting.value = Color(Color.HSBtoRGB(hsb[0], hsb[1], brightness)).copy(alpha)
-    }
-
-    private fun Color.copy(alpha: Int): Color {
-        return Color(red, green, blue, alpha)
     }
 }
