@@ -36,6 +36,14 @@ import org.progreso.api.Api
  * ```
  */
 interface ChatAccessor {
+    open class Default : ChatAccessor {
+        override fun send(message: Any) {}
+        override fun info(message: Any) {}
+        override fun warn(message: Any) {}
+        override fun error(message: Any) {}
+        override fun addToSentMessages(message: Any) {}
+    }
+
     /**
      * Send message to the chat
      */

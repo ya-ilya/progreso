@@ -19,6 +19,11 @@ package org.progreso.api.accessor
  * ```
  */
 interface EventAccessor {
+    open class Default : EventAccessor {
+        override fun register(instance: Any) {}
+        override fun unregister(instance: Any) {}
+    }
+
     /**
      * Register an object in event system
      *

@@ -37,6 +37,13 @@ package org.progreso.api.accessor
  * ```
  */
 interface LoggerAccessor {
+    open class Default : LoggerAccessor {
+        override fun debug(message: String) {}
+        override fun info(message: String) {}
+        override fun warn(message: String, throwable: Throwable?) {}
+        override fun error(message: String, throwable: Throwable?) {}
+    }
+
     /**
      * Log message with DEBUG log-level
      *

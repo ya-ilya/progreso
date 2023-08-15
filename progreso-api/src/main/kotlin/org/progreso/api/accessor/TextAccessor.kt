@@ -14,6 +14,10 @@ package org.progreso.api.accessor
  * ```
  */
 interface TextAccessor {
+    open class Default : TextAccessor {
+        override fun i18n(key: String, vararg args: Any) = key
+    }
+
     /**
      * Get internationalization by [key]
      *
