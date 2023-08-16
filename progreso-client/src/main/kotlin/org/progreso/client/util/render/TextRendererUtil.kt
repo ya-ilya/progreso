@@ -9,7 +9,7 @@ import org.progreso.client.Client.Companion.mc
 object TextRendererUtil {
     fun createTextRenderer(fontName: String, size: Float): TextRenderer? {
         val font =
-            TrueTypeFontLoader(Identifier("progreso", "$fontName.ttf"), size, 4f, TrueTypeFontLoader.Shift.NONE, "")
+            TrueTypeFontLoader(Identifier("progreso", "$fontName.ttf"), size, 2f, TrueTypeFontLoader.Shift.NONE, "")
                 .build()
                 .left()
 

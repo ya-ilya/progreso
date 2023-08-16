@@ -5,7 +5,7 @@ data class ElementOffsets(
     var childTextOffset: Int = 0
 ) {
     companion object {
-        val DEFAULT = ElementOffsets(10)
+        val DEFAULT = ElementOffsets(8)
     }
 
     constructor(textOffset: Int) : this(textOffset, textOffset)

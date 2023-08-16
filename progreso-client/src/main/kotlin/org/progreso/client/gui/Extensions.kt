@@ -43,7 +43,7 @@ fun DrawContext.drawText(
     x: Int,
     y: Int,
     color: Color,
-    shadow: Boolean = false
+    shadow: Boolean = true
 ) {
     drawText(textRenderer, text, x, y, color.rgb, shadow)
 }
