@@ -35,7 +35,7 @@ object EventAccessor : EventAccessor {
         }
 
         safeEventListener<CharEvent> { event ->
-            if (!mc.options!!.sneakKey.isPressed && event.codePoint == CommandManager.PREFIX_CODE) {
+            if (!mc.options!!.sneakKey.isPressed && event.codePoint == CommandManager.PREFIX_CODE && mc.currentScreen !is ProgresoChatScreen) {
                 mc.setScreen(ProgresoChatScreen())
                 event.isCancelled = true
             }

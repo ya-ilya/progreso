@@ -30,8 +30,16 @@ class ProgresoChatScreen : ChatScreen(CommandManager.PREFIX.toString()) {
                 predict = emptyList()
             }
 
-            InputUtil.GLFW_KEY_UP -> setChatFromHistory(-1)
-            InputUtil.GLFW_KEY_DOWN -> setChatFromHistory(1)
+            InputUtil.GLFW_KEY_UP -> {
+                setChatFromHistory(-1)
+                predict()
+            }
+
+            InputUtil.GLFW_KEY_DOWN -> {
+                setChatFromHistory(1)
+                predict()
+            }
+
             InputUtil.GLFW_KEY_PAGE_UP -> chatHud.scroll(chatHud.visibleLineCount - 1)
             InputUtil.GLFW_KEY_PAGE_DOWN -> chatHud.scroll(-chatHud.visibleLineCount + 1)
 
