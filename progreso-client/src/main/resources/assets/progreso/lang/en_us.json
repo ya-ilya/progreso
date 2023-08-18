@@ -65,6 +65,7 @@
   "module.killaura.description": "Hits targets near you",
   "module.offhand.description": "AutoTotem + OffhandGapple + OffhandCrystal",
   "module.watermark.description": "Progreso Client watermark",
+  "module.autorespawn.description": "Automatically respawn after dying",
   "module.autotool.description": "Automatically selects the best tool for block",
   "module.fakeplayer.description": "Spawns in a FakePlayer",
   "module.autowalk.description": "Automatically walks in the specified direction",

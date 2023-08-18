@@ -65,6 +65,7 @@
   "module.killaura.description": "Бьет цели рядом с вами",
   "module.offhand.description": "AutoTotem + OffhandGapple + OffhandCrystal",
   "module.watermark.description": "Водяной знак Progreso Client",
+  "module.autorespawn.description": "Автоматический респавн после смерти",
   "module.autotool.description": "Автоматически выбирает лучший инструмент для блока",
   "module.fakeplayer.description": "Спавнит фейкплеера",
   "module.autowalk.description": "Автоматически ходит в заданом направлении",
