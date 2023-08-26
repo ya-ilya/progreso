@@ -38,6 +38,8 @@
   "module.notifications.module_message": "[Notifications] %s%s",
   "module.notifications.pop_message": "[Notifications] %s has popped %d totems",
   "module.notifications.death_message": "[Notifications] %s died after popping %d totems",
+  "module.notifications.visualrange_enter_message": "[Notifications] %s entered to visual range",
+  "module.notifications.visualrange_leave_message": "[Notifications] %s left visual range",
 
   "gui.alts.title": "Alts",
   "gui.alts.title.create_alt": "Create Alt",

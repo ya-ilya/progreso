@@ -1,5 +1,6 @@
 package org.progreso.client.accessors
 
+import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket
 import net.minecraft.network.packet.s2c.play.EntityStatusS2CPacket
@@ -8,7 +9,7 @@ import org.progreso.api.managers.CommandManager
 import org.progreso.api.managers.ModuleManager
 import org.progreso.client.Client
 import org.progreso.client.Client.Companion.mc
-import org.progreso.client.events.entity.PlayerDeathEvent
+import org.progreso.client.events.entity.EntityDeathEvent
 import org.progreso.client.events.eventListener
 import org.progreso.client.events.input.CharEvent
 import org.progreso.client.events.input.KeyEvent
@@ -60,9 +61,9 @@ object EventAccessor : EventAccessor {
         }
 
         safeEventListener<TickEvent> { _ ->
-            for (player in mc.world.players) {
-                if (player.deathTime > 0 || player.health <= 0) {
-                    Client.EVENT_BUS.post(PlayerDeathEvent(player))
+            for (entity in mc.world.entities.filterIsInstance<LivingEntity>()) {
+                if (entity.deathTime > 0 || entity.health <= 0) {
+                    Client.EVENT_BUS.post(EntityDeathEvent(entity))
                 }
             }
         }

@@ -16,7 +16,7 @@ object Criticals : AbstractModule() {
         eventListener<PacketEvent.Send<*>> { event ->
             if (event.packet !is PlayerInteractEntityC2SPacket) return@eventListener
             if (onlyKillAura && !KillAura.enabled) return@eventListener
-            if (mc.world.getBlockState(mc.player.blockPos).block == Blocks.COBWEB) return@eventListener
+            if (!mc.player.isOnGround || mc.world.getBlockState(mc.player.blockPos).block == Blocks.COBWEB) return@eventListener
 
             val x = mc.player.x
             val y = mc.player.y

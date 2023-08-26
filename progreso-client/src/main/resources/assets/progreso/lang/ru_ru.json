@@ -38,6 +38,8 @@
   "module.notifications.module_message": "[Notifications] %s%s",
   "module.notifications.pop_message": "[Notifications] %s потреял %d тотемов",
   "module.notifications.death_message": "[Notifications] %s умер после %d тотемов",
+  "module.notifications.visualrange_enter_message": "[Notifications] %s вошел в зону видимости",
+  "module.notifications.visualrange_leave_message": "[Notifications] %s покинул зону видимости",
 
   "gui.alts.title": "Альты",
   "gui.alts.title.create_alt": "Создать альт",

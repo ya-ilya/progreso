@@ -2,7 +2,7 @@ package org.progreso.client.managers
 
 import net.minecraft.entity.player.PlayerEntity
 import org.progreso.api.Api
-import org.progreso.client.events.entity.PlayerDeathEvent
+import org.progreso.client.events.entity.EntityDeathEvent
 import org.progreso.client.events.eventListener
 import org.progreso.client.events.player.TotemPopEvent
 import java.util.concurrent.ConcurrentHashMap
@@ -21,8 +21,10 @@ object CombatManager {
             }
         }
 
-        eventListener<PlayerDeathEvent> {
-            pops.remove(it.player)
+        eventListener<EntityDeathEvent> { event ->
+            if (event.entity is PlayerEntity) {
+                pops.remove(event.entity)
+            }
         }
     }
 
