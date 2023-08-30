@@ -15,9 +15,6 @@ object Watermark : AbstractHudModule() {
     override var height = 0; get() = textRenderer.fontHeight + 4
 
     init {
-        x = 10
-        y = 10
-
         render {
             drawText("Progreso Client", x + 1, y + 2, color, true)
         }

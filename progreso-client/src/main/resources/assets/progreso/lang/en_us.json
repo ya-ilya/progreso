@@ -71,6 +71,7 @@
   "module.autotool.description": "Automatically selects the best tool for block",
   "module.fakeplayer.description": "Spawns in a FakePlayer",
   "module.autowalk.description": "Automatically walks in the specified direction",
+  "module.safewalk.description": "Prevents you from walking off edges",
   "module.sprint.description": "Automatically makes the player sprint",
   "module.fullbright.description": "Changes game gamma to maximum"
 }

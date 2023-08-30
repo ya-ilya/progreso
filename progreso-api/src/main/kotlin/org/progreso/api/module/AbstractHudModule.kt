@@ -8,8 +8,8 @@ abstract class AbstractHudModule : AbstractModule() {
     var dragX = 0
     var dragY = 0
 
-    var x by setting("X", 0, 0..Int.MAX_VALUE) { false }
-    var y by setting("Y", 0, 0..Int.MAX_VALUE) { false }
+    var x by setting("X", 5, 0..Int.MAX_VALUE) { false }
+    var y by setting("Y", 5, 0..Int.MAX_VALUE) { false }
 
     open var width: Int = 0
     open var height: Int = 0
