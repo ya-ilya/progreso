@@ -62,7 +62,7 @@ class EventBus {
         }
 
         if (instances.containsKey(instanceClass)) {
-            instances[instanceClass]!!.add(instanceClass)
+            instances[instanceClass]!!.add(instance)
         } else {
             instances[instanceClass] = mutableSetOf(instance)
         }
