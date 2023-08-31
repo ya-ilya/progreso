@@ -2,7 +2,7 @@ package org.progreso.api.plugin
 
 import org.progreso.api.command.AbstractCommand
 import org.progreso.api.command.container.CommandContainer
-import org.progreso.api.config.helpers.ModuleConfigHelper
+import org.progreso.api.config.categories.ModuleConfigCategory
 import org.progreso.api.config.providers.ModuleConfigProvider
 import org.progreso.api.managers.PluginManager
 import org.progreso.api.module.AbstractModule
@@ -19,8 +19,8 @@ abstract class AbstractPlugin : ModuleContainer, CommandContainer {
     lateinit var version: String
     lateinit var author: String
 
-    private val configHelper by lazy {
-        ModuleConfigHelper(
+    private val configCategory by lazy {
+        ModuleConfigCategory(
             name = "plugin",
             path = "plugins",
             provider = ModuleConfigProvider(this),
@@ -33,11 +33,11 @@ abstract class AbstractPlugin : ModuleContainer, CommandContainer {
     abstract fun unload()
 
     fun loadPlugin() {
-        PluginManager.configContainer.setHelperConfig(configHelper, name)
+        PluginManager.configContainer.setCategoryConfig(configCategory, name)
 
         load()
 
-        configHelper.load(name)
+        configCategory.load(name)
 
         PluginManager.modules.addAll(modules)
         PluginManager.commands.addAll(commands)
@@ -46,7 +46,7 @@ abstract class AbstractPlugin : ModuleContainer, CommandContainer {
     fun unloadPlugin() {
         unload()
 
-        configHelper.save(name)
+        configCategory.save(name)
 
         modules.forEach { it.enabled = false }
         PluginManager.modules.removeAll(modules)

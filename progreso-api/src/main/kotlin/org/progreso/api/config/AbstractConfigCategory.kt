@@ -3,7 +3,7 @@ package org.progreso.api.config
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
 import org.progreso.api.Api
-import org.progreso.api.config.container.ConfigHelperContainer
+import org.progreso.api.config.container.ConfigCategoryContainer
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
@@ -11,19 +11,19 @@ import java.nio.file.Paths
 import kotlin.io.path.*
 
 /**
- * Config helper abstract class
+ * Config category abstract class
  *
- * @param name Helper name
- * @param path Helper path
+ * @param name Category name
+ * @param path Category path
  * @param provider Config provider
- * @param container Helper container
+ * @param container Category container
  * @param defaultConfigName Default config name
  */
-abstract class AbstractConfigHelper<T : AbstractConfig>(
+abstract class AbstractConfigCategory<T : AbstractConfig>(
     name: String,
     path: String,
     private val provider: AbstractConfigProvider<T>,
-    private val container: ConfigHelperContainer,
+    private val container: ConfigCategoryContainer,
     private val defaultConfigName: String? = null
 ) {
     val name = name.trim()
@@ -52,7 +52,7 @@ abstract class AbstractConfigHelper<T : AbstractConfig>(
         configs.firstOrNull { it.name == name }.also { config ->
             var currentConfig = config ?: provider.create(name)
 
-            if (currentConfig.name.equals(container.getHelperConfig(this), true)) {
+            if (currentConfig.name.equals(container.getCategoryConfig(this), true)) {
                 configs.remove(currentConfig)
 
                 provider.create(name).also {
@@ -64,7 +64,7 @@ abstract class AbstractConfigHelper<T : AbstractConfig>(
             writeConfig(name, currentConfig)
 
             if (setCurrent) {
-                container.setHelperConfig(this, currentConfig.name)
+                container.setCategoryConfig(this, currentConfig.name)
             }
         }
     }
@@ -78,7 +78,7 @@ abstract class AbstractConfigHelper<T : AbstractConfig>(
 
         configs.first { it.name == name }.also { config ->
             provider.apply(config)
-            container.setHelperConfig(this, name)
+            container.setCategoryConfig(this, name)
         }
     }
 
@@ -109,7 +109,7 @@ abstract class AbstractConfigHelper<T : AbstractConfig>(
     }
 
     private fun checkCurrent() {
-        val current = container.getHelperConfig(this)!!
+        val current = container.getCategoryConfig(this)!!
         if (!configs.any { it.name == current }) {
             configs.add(provider.create(current))
         }

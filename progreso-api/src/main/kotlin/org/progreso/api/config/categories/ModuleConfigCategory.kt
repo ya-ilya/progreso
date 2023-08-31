@@ -1,24 +1,24 @@
-package org.progreso.api.config.helpers
+package org.progreso.api.config.categories
 
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonToken
 import com.google.gson.stream.JsonWriter
-import org.progreso.api.config.AbstractConfigHelper
+import org.progreso.api.config.AbstractConfigCategory
 import org.progreso.api.config.AbstractConfigProvider
 import org.progreso.api.config.configs.ModuleConfig
-import org.progreso.api.config.container.ConfigHelperContainer
+import org.progreso.api.config.container.ConfigCategoryContainer
 import org.progreso.api.config.providers.ModuleConfigProvider
 import org.progreso.api.managers.ConfigManager
 import org.progreso.api.managers.ModuleManager
 import java.awt.Color
 
-class ModuleConfigHelper(
+class ModuleConfigCategory(
     name: String = "module",
     path: String = "modules",
     provider: AbstractConfigProvider<ModuleConfig> = ModuleConfigProvider(ModuleManager),
-    container: ConfigHelperContainer = ConfigManager,
+    container: ConfigCategoryContainer = ConfigManager,
     defaultConfigName: String? = ConfigManager.DEFAULT_CONFIG_NAME
-) : AbstractConfigHelper<ModuleConfig>(name, path, provider, container, defaultConfigName) {
+) : AbstractConfigCategory<ModuleConfig>(name, path, provider, container, defaultConfigName) {
     override fun read(name: String, reader: JsonReader): ModuleConfig {
         val config = ModuleConfig(name, mutableListOf())
         reader.beginObject()

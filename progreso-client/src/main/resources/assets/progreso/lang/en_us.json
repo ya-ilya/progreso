@@ -1,5 +1,5 @@
 {
-  "argument.config_helper.error": "Config helper '%s' not found",
+  "argument.config_category.error": "Config category '%s' not found",
   "argument.friend.error": "Friend '%s' not found",
   "argument.module.error": "Module '%s' not found",
   "argument.locale.error": "Locale '%s' not found",

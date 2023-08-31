@@ -1,24 +1,24 @@
 package org.progreso.api.managers
 
 import org.progreso.api.Api.GSON
-import org.progreso.api.config.AbstractConfigHelper
-import org.progreso.api.config.container.ConfigHelperContainer
-import org.progreso.api.config.helpers.AltConfigHelper
-import org.progreso.api.config.helpers.FriendConfigHelper
-import org.progreso.api.config.helpers.ModuleConfigHelper
+import org.progreso.api.config.AbstractConfigCategory
+import org.progreso.api.config.categories.AltConfigCategory
+import org.progreso.api.config.categories.FriendConfigCategory
+import org.progreso.api.config.categories.ModuleConfigCategory
+import org.progreso.api.config.container.ConfigCategoryContainer
 import org.progreso.api.config.providers.ModuleConfigProvider
 import java.io.File
 import java.nio.file.Path
 import java.nio.file.Paths
 import kotlin.io.path.*
 
-object ConfigManager : ConfigHelperContainer {
+object ConfigManager : ConfigCategoryContainer {
     const val DEFAULT_CONFIG_NAME = "default"
 
-    override val helpers = mutableMapOf<AbstractConfigHelper<*>, String>(
-        ModuleConfigHelper(provider = ModuleConfigProvider(ModuleManager)) to DEFAULT_CONFIG_NAME,
-        FriendConfigHelper() to DEFAULT_CONFIG_NAME,
-        AltConfigHelper() to DEFAULT_CONFIG_NAME
+    override val categories = mutableMapOf<AbstractConfigCategory<*>, String>(
+        ModuleConfigCategory(provider = ModuleConfigProvider(ModuleManager)) to DEFAULT_CONFIG_NAME,
+        FriendConfigCategory() to DEFAULT_CONFIG_NAME,
+        AltConfigCategory() to DEFAULT_CONFIG_NAME
     )
 
     init {
@@ -27,16 +27,16 @@ object ConfigManager : ConfigHelperContainer {
 
     fun load() {
         for ((key, value) in GSON.fromJson<Map<String, String>>(checkConfigs().readText(), Map::class.java)) {
-            getHelperByName(key).load(value, true)
+            getCategoryByName(key).load(value, true)
         }
     }
 
     fun save() {
-        for (helper in helpers.keys) {
-            helper.save()
+        for (category in categories.keys) {
+            category.save()
         }
 
-        checkConfigs().writeText(GSON.toJson(helpers.mapKeys { it.key.name }))
+        checkConfigs().writeText(GSON.toJson(categories.mapKeys { it.key.name }))
     }
 
     private fun checkConfigs(): Path {

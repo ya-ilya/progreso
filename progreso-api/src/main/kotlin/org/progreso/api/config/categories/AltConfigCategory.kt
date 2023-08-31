@@ -1,14 +1,14 @@
-package org.progreso.api.config.helpers
+package org.progreso.api.config.categories
 
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
 import org.progreso.api.alt.AltAccount
-import org.progreso.api.config.AbstractConfigHelper
+import org.progreso.api.config.AbstractConfigCategory
 import org.progreso.api.config.configs.AltConfig
 import org.progreso.api.config.providers.AltConfigProvider
 import org.progreso.api.managers.ConfigManager
 
-class AltConfigHelper : AbstractConfigHelper<AltConfig>(
+class AltConfigCategory : AbstractConfigCategory<AltConfig>(
     name = "alt",
     path = "alts",
     provider = AltConfigProvider,

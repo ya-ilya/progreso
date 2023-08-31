@@ -1,14 +1,14 @@
-package org.progreso.api.config.helpers
+package org.progreso.api.config.categories
 
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
-import org.progreso.api.config.AbstractConfigHelper
+import org.progreso.api.config.AbstractConfigCategory
 import org.progreso.api.config.configs.FriendConfig
 import org.progreso.api.config.providers.FriendConfigProvider
 import org.progreso.api.managers.ConfigManager
 import org.progreso.api.managers.FriendManager
 
-class FriendConfigHelper : AbstractConfigHelper<FriendConfig>(
+class FriendConfigCategory : AbstractConfigCategory<FriendConfig>(
     name = "friend",
     path = "friends",
     provider = FriendConfigProvider,

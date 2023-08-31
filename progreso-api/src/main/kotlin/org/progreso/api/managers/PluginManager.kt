@@ -2,8 +2,8 @@ package org.progreso.api.managers
 
 import org.progreso.api.command.AbstractCommand
 import org.progreso.api.common.ObservableSet
-import org.progreso.api.config.AbstractConfigHelper
-import org.progreso.api.config.container.ConfigHelperContainer
+import org.progreso.api.config.AbstractConfigCategory
+import org.progreso.api.config.container.ConfigCategoryContainer
 import org.progreso.api.module.AbstractModule
 import org.progreso.api.plugin.AbstractPlugin
 import org.progreso.api.plugin.container.PluginContainer
@@ -22,10 +22,10 @@ object PluginManager : PluginContainer {
         }
     }
 
-    val configContainer = object : ConfigHelperContainer {
-        override val helpers = mutableMapOf<AbstractConfigHelper<*>, String>()
+    val configContainer = object : ConfigCategoryContainer {
+        override val categories = mutableMapOf<AbstractConfigCategory<*>, String>()
 
-        override fun getHelperByName(name: String): AbstractConfigHelper<*> {
+        override fun getCategoryByName(name: String): AbstractConfigCategory<*> {
             throw UnsupportedOperationException()
         }
     }

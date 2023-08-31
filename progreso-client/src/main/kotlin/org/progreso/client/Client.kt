@@ -35,6 +35,8 @@ class Client : ModInitializer {
     }
 
     override fun onInitialize() {
+        Api.accessors(EventAccessor, ChatAccessor, TextAccessor, LoggerAccessor)
+
         for (entrypoint in FabricLoader.getInstance().getEntrypointContainers("progreso", AbstractPlugin::class.java)) {
             val metadata = entrypoint.provider.metadata
             val plugin = entrypoint.entrypoint
@@ -64,7 +66,7 @@ class Client : ModInitializer {
             }
         }
 
-        Api.initialize(EventAccessor, ChatAccessor, TextAccessor, LoggerAccessor)
+        Api.initialize()
 
         LOGGER.info("Initializing client guis...")
         ClickGUI.initialize()

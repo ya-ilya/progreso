@@ -1,5 +1,5 @@
 {
-  "argument.config_helper.error": "Конфиг-хелпер '%s' не найден",
+  "argument.config_category.error": "Категория конфигов '%s' не найдена",
   "argument.friend.error": "У вас нету друга с именем %s",
   "argument.module.error": "Модуль '%s' не найден",
   "argument.locale.error": "Перевод '%s' не найден",
