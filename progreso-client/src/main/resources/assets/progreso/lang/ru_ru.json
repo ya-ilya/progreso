@@ -70,6 +70,7 @@
   "module.autorespawn.description": "Автоматический респавн после смерти",
   "module.autotool.description": "Автоматически выбирает лучший инструмент для блока",
   "module.fakeplayer.description": "Спавнит фейкплеера",
+  "module.middleclickpearl": "Автоматически бросает эндер-жемчуг при нажатии средней кнопки мыши",
   "module.autowalk.description": "Автоматически ходит в заданом направлении",
   "module.safewalk.description": "Предотвращает схождение с краев блоков",
   "module.sprint.description": "Автоматически зажимает кнопку спринта",

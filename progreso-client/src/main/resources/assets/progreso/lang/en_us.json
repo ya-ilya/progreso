@@ -70,6 +70,7 @@
   "module.autorespawn.description": "Automatically respawn after dying",
   "module.autotool.description": "Automatically selects the best tool for block",
   "module.fakeplayer.description": "Spawns in a FakePlayer",
+  "module.middleclickpearl": "Automatically throws pearl when pressing the middle mouse button",
   "module.autowalk.description": "Automatically walks in the specified direction",
   "module.safewalk.description": "Prevents you from walking off edges",
   "module.sprint.description": "Automatically makes the player sprint",

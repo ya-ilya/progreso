@@ -13,6 +13,7 @@
     "MixinInGameHud",
     "MixinKeyboard",
     "MixinMinecraftClient",
+    "MixinMouse",
     "MixinPlayerEntity",
     "MixinTitleScreen"
   ]
