@@ -5,6 +5,7 @@ import org.progreso.api.managers.ModuleManager
 import org.progreso.api.module.AbstractHudModule
 import org.progreso.api.module.Category
 import org.progreso.client.gui.clickgui.window.windows.CategoryWindow
+import org.progreso.client.gui.clickgui.window.windows.DescriptionWindow
 
 object HudEditor : ClickGUI("HudEditor") {
     private val HUD_MODULES by lazy {
@@ -14,6 +15,9 @@ object HudEditor : ClickGUI("HudEditor") {
 
     override fun initialize() {
         windows.add(CategoryWindow(Category.Hud, 10, 10, ELEMENT_WIDTH))
+        windows.add(DescriptionWindow(10 + ELEMENT_WIDTH + X_INDENT, Y_INDENT, DESCRIPTION_WINDOW_WIDTH).also {
+            descriptionWindow = it
+        })
     }
 
     override fun render(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {

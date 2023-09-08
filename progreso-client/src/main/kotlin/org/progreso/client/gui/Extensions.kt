@@ -9,6 +9,7 @@ import net.minecraft.client.render.GameRenderer
 import net.minecraft.client.render.Tessellator
 import net.minecraft.client.render.VertexFormat
 import net.minecraft.client.render.VertexFormats
+import org.progreso.client.Client.Companion.config
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.gui.clickgui.element.Element
 import org.progreso.client.modules.client.ClickGUI
@@ -17,7 +18,27 @@ import java.awt.Color
 import kotlin.math.cos
 import kotlin.math.sin
 
-private val customTextRenderer = TextRendererUtil.createTextRenderer("vitala", 11f)!!
+fun createDefaultTextRenderer(): TextRenderer {
+    return TextRendererUtil.createTextRenderer("vitala", 11f)!!
+}
+
+var customTextRenderer = run {
+    if (config.customFont != null) {
+        try {
+            return@run TextRendererUtil.createTextRendererFromProgresoResource(
+                config.customFont!!.name!!,
+                config.customFont!!.size!!
+            )!!
+        } catch (ex: IllegalArgumentException) {
+            config.customFont = null
+
+            ex.printStackTrace()
+        }
+    }
+
+    createDefaultTextRenderer()
+}
+
 val textRenderer get() = if (ClickGUI.customFont) customTextRenderer else mc.textRenderer
 
 val Color.glColors: List<Float>

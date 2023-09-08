@@ -35,7 +35,7 @@ object Api {
         LOGGER = logger
     }
 
-    fun initialize() {
+    fun initialize(globalConfigAccessor: ConfigManager.GlobalConfigAccessor = ConfigManager.GlobalConfigAccessor.Default) {
         if (initialized) {
             throw RuntimeException("Api already initialized")
         }
@@ -44,7 +44,7 @@ object Api {
         ModuleManager
         CommandManager
         FriendManager
-        ConfigManager
+        ConfigManager.load(globalConfigAccessor)
 
         LOGGER.info("Loading plugins...")
         for (plugin in PluginManager.plugins) {

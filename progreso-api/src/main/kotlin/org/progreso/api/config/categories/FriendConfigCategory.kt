@@ -12,7 +12,6 @@ class FriendConfigCategory : AbstractConfigCategory<FriendConfig>(
     name = "friend",
     path = "friends",
     provider = FriendConfigProvider,
-    container = ConfigManager,
     defaultConfigName = ConfigManager.DEFAULT_CONFIG_NAME
 ) {
     override fun read(name: String, reader: JsonReader): FriendConfig {

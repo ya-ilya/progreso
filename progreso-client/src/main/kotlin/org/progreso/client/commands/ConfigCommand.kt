@@ -7,7 +7,7 @@ import org.progreso.api.managers.ConfigManager
 @AbstractCommand.Register("config")
 object ConfigCommand : AbstractCommand() {
     init {
-        for ((category) in ConfigManager.categories) {
+        for (category in ConfigManager.categories) {
             literal(category.name) {
                 literal("load") {
                     argument("config", StringArgumentType.string()).executes { context ->
@@ -41,7 +41,7 @@ object ConfigCommand : AbstractCommand() {
                         )
                     }
 
-                    executes { context ->
+                    executes { _ ->
                         category.save()
 
                         infoLocalized(
@@ -62,7 +62,7 @@ object ConfigCommand : AbstractCommand() {
                         )
                     }
 
-                    executes { context ->
+                    executes { _ ->
                         category.refresh()
                         infoLocalized(
                             "command.config.refresh_many",
@@ -71,7 +71,7 @@ object ConfigCommand : AbstractCommand() {
                     }
                 }
 
-                literal("list").executes { context ->
+                literal("list").executes { _ ->
                     infoLocalized(
                         "command.config.list",
                         category.name,
@@ -80,11 +80,11 @@ object ConfigCommand : AbstractCommand() {
                 }
 
 
-                executes { context ->
+                executes { _ ->
                     infoLocalized(
                         "command.config.current",
                         category.name,
-                        ConfigManager.getCategoryConfig(category)!!
+                        category.config
                     )
                 }
             }

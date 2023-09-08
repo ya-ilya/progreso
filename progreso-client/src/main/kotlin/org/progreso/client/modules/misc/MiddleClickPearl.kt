@@ -13,7 +13,7 @@ import org.progreso.client.util.player.InventoryUtil
 object MiddleClickPearl : AbstractModule() {
     init {
         safeEventListener<MouseEvent> { event ->
-            if (event.action != GLFW.GLFW_PRESS  || event.button != GLFW.GLFW_MOUSE_BUTTON_MIDDLE|| mc.currentScreen != null)
+            if (event.action != GLFW.GLFW_PRESS || event.button != GLFW.GLFW_MOUSE_BUTTON_MIDDLE || mc.currentScreen != null)
                 return@safeEventListener
 
             val previousSelectedSlot = mc.player.inventory.selectedSlot

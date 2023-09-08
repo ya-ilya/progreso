@@ -8,6 +8,7 @@ import net.minecraft.client.option.GameOptions
 import org.progreso.api.Api
 import org.progreso.api.command.AbstractCommand
 import org.progreso.api.managers.CommandManager
+import org.progreso.api.managers.ConfigManager
 import org.progreso.api.managers.ModuleManager
 import org.progreso.api.managers.PluginManager
 import org.progreso.api.module.AbstractModule
@@ -32,6 +33,8 @@ class Client : ModInitializer {
 
         @JvmField
         val EVENT_BUS = Api.API_EVENT_BUS
+
+        val config get() = ProgresoGlobalConfigAccessor.config
     }
 
     override fun onInitialize() {
@@ -66,7 +69,7 @@ class Client : ModInitializer {
             }
         }
 
-        Api.initialize()
+        Api.initialize(ProgresoGlobalConfigAccessor)
 
         LOGGER.info("Initializing client guis...")
         ClickGUI.initialize()
@@ -76,12 +79,41 @@ class Client : ModInitializer {
         CombatManager
     }
 
+    object ProgresoGlobalConfigAccessor : ConfigManager.GlobalConfigAccessor {
+        data class GlobalConfig(
+            var categories: Map<String, String> = emptyMap(),
+            var customFont: CustomFont? = null
+        ) {
+            data class CustomFont(
+                var name: String? = null,
+                var size: Float? = null
+            )
+        }
+
+        var config = GlobalConfig()
+
+        override var categories
+            get() = config.categories
+            set(value) {
+                config.categories = value
+            }
+
+        override fun fromJson(text: String) {
+            config = Api.GSON.fromJson(text, GlobalConfig::class.java)
+        }
+
+        override fun toJson(): String {
+            return Api.GSON.toJson(config)
+        }
+    }
+
     class MinecraftClientWrapper(val client: MinecraftClient) {
         val tickDelta get() = client.tickDelta
 
         val world get() = client.world!!
         val player get() = client.player!!
         val textRenderer get() = client.textRenderer!!
+        val resourceManager get() = client.resourceManager!!
         val inGameHud get() = client.inGameHud!!
         val interactionManager get() = client.interactionManager!!
         val networkHandler get() = client.networkHandler!!

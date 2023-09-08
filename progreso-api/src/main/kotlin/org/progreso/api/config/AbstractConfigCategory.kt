@@ -3,7 +3,7 @@ package org.progreso.api.config
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
 import org.progreso.api.Api
-import org.progreso.api.config.container.ConfigCategoryContainer
+import org.progreso.api.managers.ConfigManager
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
@@ -16,18 +16,17 @@ import kotlin.io.path.*
  * @param name Category name
  * @param path Category path
  * @param provider Config provider
- * @param container Category container
  * @param defaultConfigName Default config name
  */
 abstract class AbstractConfigCategory<T : AbstractConfig>(
     name: String,
     path: String,
     private val provider: AbstractConfigProvider<T>,
-    private val container: ConfigCategoryContainer,
     private val defaultConfigName: String? = null
 ) {
     val name = name.trim()
     val configs = mutableListOf<T>()
+    var config = defaultConfigName ?: ConfigManager.DEFAULT_CONFIG_NAME
 
     private val path: Path = Paths.get("progreso${File.separator}$path")
 
@@ -52,7 +51,7 @@ abstract class AbstractConfigCategory<T : AbstractConfig>(
         configs.firstOrNull { it.name == name }.also { config ->
             var currentConfig = config ?: provider.create(name)
 
-            if (currentConfig.name.equals(container.getCategoryConfig(this), true)) {
+            if (currentConfig.name.equals(this.config, true)) {
                 configs.remove(currentConfig)
 
                 provider.create(name).also {
@@ -64,7 +63,7 @@ abstract class AbstractConfigCategory<T : AbstractConfig>(
             writeConfig(name, currentConfig)
 
             if (setCurrent) {
-                container.setCategoryConfig(this, currentConfig.name)
+                this.config = currentConfig.name
             }
         }
     }
@@ -78,7 +77,7 @@ abstract class AbstractConfigCategory<T : AbstractConfig>(
 
         configs.first { it.name == name }.also { config ->
             provider.apply(config)
-            container.setCategoryConfig(this, name)
+            this.config = name
         }
     }
 
@@ -109,9 +108,8 @@ abstract class AbstractConfigCategory<T : AbstractConfig>(
     }
 
     private fun checkCurrent() {
-        val current = container.getCategoryConfig(this)!!
-        if (!configs.any { it.name == current }) {
-            configs.add(provider.create(current))
+        if (!configs.any { it.name == config }) {
+            configs.add(provider.create(config))
         }
     }
 

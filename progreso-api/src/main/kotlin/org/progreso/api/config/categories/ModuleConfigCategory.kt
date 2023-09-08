@@ -6,7 +6,6 @@ import com.google.gson.stream.JsonWriter
 import org.progreso.api.config.AbstractConfigCategory
 import org.progreso.api.config.AbstractConfigProvider
 import org.progreso.api.config.configs.ModuleConfig
-import org.progreso.api.config.container.ConfigCategoryContainer
 import org.progreso.api.config.providers.ModuleConfigProvider
 import org.progreso.api.managers.ConfigManager
 import org.progreso.api.managers.ModuleManager
@@ -16,9 +15,8 @@ class ModuleConfigCategory(
     name: String = "module",
     path: String = "modules",
     provider: AbstractConfigProvider<ModuleConfig> = ModuleConfigProvider(ModuleManager),
-    container: ConfigCategoryContainer = ConfigManager,
     defaultConfigName: String? = ConfigManager.DEFAULT_CONFIG_NAME
-) : AbstractConfigCategory<ModuleConfig>(name, path, provider, container, defaultConfigName) {
+) : AbstractConfigCategory<ModuleConfig>(name, path, provider, defaultConfigName) {
     override fun read(name: String, reader: JsonReader): ModuleConfig {
         val config = ModuleConfig(name, mutableListOf())
         reader.beginObject()

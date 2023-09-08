@@ -12,7 +12,6 @@ class AltConfigCategory : AbstractConfigCategory<AltConfig>(
     name = "alt",
     path = "alts",
     provider = AltConfigProvider,
-    container = ConfigManager,
     defaultConfigName = ConfigManager.DEFAULT_CONFIG_NAME
 ) {
     override fun read(name: String, reader: JsonReader): AltConfig {

@@ -14,8 +14,6 @@ interface Element {
 
     fun render(context: DrawContext, mouseX: Int, mouseY: Int) {}
 
-    fun postRender(context: DrawContext, mouseX: Int, mouseY: Int) {}
-
     fun mouseClicked(mouseX: Int, mouseY: Int, button: Int) {}
 
     fun mouseClickedOutside(mouseX: Int, mouseY: Int, mouseButton: Int) {}

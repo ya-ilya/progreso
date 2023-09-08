@@ -1,6 +1,7 @@
 package org.progreso.client.gui.clickgui.window
 
 import net.minecraft.client.gui.DrawContext
+import org.progreso.api.common.ObservableCollection
 import org.progreso.client.gui.clickgui.element.AbstractChildElement
 import org.progreso.client.gui.clickgui.element.ParentElement
 import org.progreso.client.gui.clickgui.element.data.ElementOffsets
@@ -20,8 +21,17 @@ abstract class AbstractWindow(
     private var dragX = 0
     private var dragY = 0
 
-    protected val windowElements = mutableListOf<AbstractChildElement>()
-    private var opened = false
+    private var opened = true
+
+    protected val windowElements = object : ObservableCollection.List<AbstractChildElement>() {
+        override fun elementAdded(element: AbstractChildElement) {
+            if (opened) elements.add(element)
+        }
+
+        override fun elementRemoved(element: AbstractChildElement) {
+            if (opened) elements.remove(element)
+        }
+    }
 
     override var height = 0; get() = visibleElements.sumOf { it.height }
 

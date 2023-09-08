@@ -12,7 +12,7 @@ class NumberArgumentType<T : Number>(
         inline fun <reified T : Number> number() = NumberArgumentType(T::class)
     }
 
-    override val name = "number"
+    override val name = type.simpleName!!.lowercase()
 
     override fun parse(reader: StringReader): T {
         val string = reader.readString()

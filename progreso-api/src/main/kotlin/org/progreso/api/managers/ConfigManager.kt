@@ -1,7 +1,6 @@
 package org.progreso.api.managers
 
-import org.progreso.api.Api.GSON
-import org.progreso.api.config.AbstractConfigCategory
+import org.progreso.api.Api
 import org.progreso.api.config.categories.AltConfigCategory
 import org.progreso.api.config.categories.FriendConfigCategory
 import org.progreso.api.config.categories.ModuleConfigCategory
@@ -15,40 +14,62 @@ import kotlin.io.path.*
 object ConfigManager : ConfigCategoryContainer {
     const val DEFAULT_CONFIG_NAME = "default"
 
-    override val categories = mutableMapOf<AbstractConfigCategory<*>, String>(
-        ModuleConfigCategory(provider = ModuleConfigProvider(ModuleManager)) to DEFAULT_CONFIG_NAME,
-        FriendConfigCategory() to DEFAULT_CONFIG_NAME,
-        AltConfigCategory() to DEFAULT_CONFIG_NAME
+    override val categories = mutableSetOf(
+        ModuleConfigCategory(provider = ModuleConfigProvider(ModuleManager)),
+        FriendConfigCategory(),
+        AltConfigCategory()
     )
 
-    init {
-        load()
+    private var globalConfigAccessor: GlobalConfigAccessor = GlobalConfigAccessor.Default
+
+    fun load(globalConfigAccessor: GlobalConfigAccessor) {
+        this.globalConfigAccessor = globalConfigAccessor
+        this.load()
     }
 
     fun load() {
-        for ((key, value) in GSON.fromJson<Map<String, String>>(checkConfigs().readText(), Map::class.java)) {
+        globalConfigAccessor.fromJson(checkGlobalConfig().readText())
+
+        for ((key, value) in globalConfigAccessor.categories) {
             getCategoryByName(key).load(value, true)
         }
     }
 
     fun save() {
-        for (category in categories.keys) {
-            category.save()
-        }
+        globalConfigAccessor.categories = categories.onEach { it.save() }.associate { it.name to it.config }
 
-        checkConfigs().writeText(GSON.toJson(categories.mapKeys { it.key.name }))
+        checkGlobalConfig().writeText(globalConfigAccessor.toJson())
     }
 
-    private fun checkConfigs(): Path {
-        val configs = Paths.get("progreso${File.separator}configs.json")
+    private fun checkGlobalConfig(): Path {
+        val global = Paths.get("progreso${File.separator}global.json")
 
-        configs.parent.createDirectories()
+        global.createParentDirectories()
 
-        if (configs.notExists()) {
-            configs.createFile()
+        if (global.notExists()) {
+            global.createFile()
             save()
         }
 
-        return configs
+        return global
+    }
+
+    interface GlobalConfigAccessor {
+        object Default : GlobalConfigAccessor {
+            override var categories: Map<String, String> = emptyMap()
+
+            override fun fromJson(text: String) {
+                categories = Api.GSON.fromJson<Map<String, String>>(text, Map::class.java)
+            }
+
+            override fun toJson(): String {
+                return Api.GSON.toJson(categories)
+            }
+        }
+
+        var categories: Map<String, String>
+
+        fun fromJson(text: String)
+        fun toJson(): String
     }
 }

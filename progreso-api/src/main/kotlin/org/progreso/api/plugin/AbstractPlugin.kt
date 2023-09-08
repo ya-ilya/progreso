@@ -24,7 +24,6 @@ abstract class AbstractPlugin : ModuleContainer, CommandContainer {
             name = "plugin",
             path = "plugins",
             provider = ModuleConfigProvider(this),
-            container = PluginManager.configContainer,
             defaultConfigName = name
         )
     }
@@ -33,7 +32,7 @@ abstract class AbstractPlugin : ModuleContainer, CommandContainer {
     abstract fun unload()
 
     fun loadPlugin() {
-        PluginManager.configContainer.setCategoryConfig(configCategory, name)
+        configCategory.config = name
 
         load()
 

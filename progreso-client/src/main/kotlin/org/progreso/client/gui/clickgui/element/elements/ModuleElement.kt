@@ -1,19 +1,17 @@
 package org.progreso.client.gui.clickgui.element.elements
 
 import net.minecraft.client.gui.DrawContext
-import net.minecraft.text.Text
 import org.progreso.api.module.AbstractModule
+import org.progreso.client.gui.clickgui.ClickGUI
 import org.progreso.client.gui.clickgui.element.AbstractChildElement
 import org.progreso.client.gui.clickgui.element.AbstractChildListElement
 import org.progreso.client.gui.clickgui.element.ParentElement
-import org.progreso.client.gui.clickgui.element.elements.ColorElement.Companion.copy
 import org.progreso.client.gui.clickgui.element.elements.SettingElement.Companion.createSettingElement
 import org.progreso.client.gui.invoke
-import org.progreso.client.gui.textRenderer
 import java.awt.Color
 
 class ModuleElement(
-    module: AbstractModule,
+    val module: AbstractModule,
     height: Int,
     parent: ParentElement
 ) : AbstractChildListElement(height, parent) {
@@ -33,30 +31,9 @@ class ModuleElement(
                     5,
                     if (module.enabled) Color.WHITE else DISABLED_MODULE_COLOR
                 )
-            }
 
-            override fun postRender(context: DrawContext, mouseX: Int, mouseY: Int) = context {
-                if (!descriptions || !isHover(mouseX, mouseY) || module.description.isBlank()) return@context
-                val lines = textRenderer.wrapLines(Text.of(module.description), 200)
-
-                drawBorderedRect(
-                    mouseX + 6,
-                    mouseY,
-                    lines.maxOf { textRenderer.getWidth(it) } + 4,
-                    (fontHeight + 3) * lines.size,
-                    rectColor.copy(255),
-                    mainColor
-                )
-
-                for ((index, line) in lines.withIndex()) {
-                    context.drawText(
-                        textRenderer,
-                        line,
-                        mouseX + 8,
-                        mouseY + index * (fontHeight + 3) + 2,
-                        mainColor.rgb,
-                        false
-                    )
+                if (isHover(mouseX, mouseY)) {
+                    ClickGUI.descriptionWindow.update(this@ModuleElement)
                 }
             }
 

@@ -63,7 +63,7 @@ object IRCCommand : AbstractCommand() {
             }
         }
 
-        literal("disconnect").executes {
+        literal("disconnect").executes { _ ->
             if (client == null || client?.isClosed == true || client?.isOpen == false) {
                 return@executes errorLocalized("command.irc.disconnect_error")
             }

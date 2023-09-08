@@ -6,6 +6,7 @@ import net.minecraft.text.Text
 import org.progreso.api.module.Category
 import org.progreso.client.gui.clickgui.window.AbstractWindow
 import org.progreso.client.gui.clickgui.window.windows.CategoryWindow
+import org.progreso.client.gui.clickgui.window.windows.DescriptionWindow
 
 open class ClickGUI(title: String) : Screen(Text.of(title)) {
     companion object : ClickGUI("ClickGUI") {
@@ -13,9 +14,13 @@ open class ClickGUI(title: String) : Screen(Text.of(title)) {
         const val ELEMENT_HEIGHT = 16
         const val X_INDENT = 10
         const val Y_INDENT = 10
+
+        const val DESCRIPTION_WINDOW_WIDTH = 200
     }
 
     protected var windows = mutableListOf<AbstractWindow>()
+
+    lateinit var descriptionWindow: DescriptionWindow
 
     open fun initialize() {
         var x = X_INDENT
@@ -24,13 +29,16 @@ open class ClickGUI(title: String) : Screen(Text.of(title)) {
             windows.add(CategoryWindow(category, x, Y_INDENT, ELEMENT_WIDTH))
             x += ELEMENT_WIDTH + X_INDENT
         }
+
+        windows.add(DescriptionWindow(x, Y_INDENT, DESCRIPTION_WINDOW_WIDTH).also {
+            descriptionWindow = it
+        })
     }
 
     override fun render(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
         super.render(context, mouseX, mouseY, delta)
 
         windows.forEach { it.render(context, mouseX, mouseY) }
-        windows.forEach { it.postRender(context, mouseX, mouseY) }
     }
 
     override fun mouseScrolled(mouseX: Double, mouseY: Double, amount: Double): Boolean {

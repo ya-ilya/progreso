@@ -12,10 +12,6 @@ interface ParentElement : Element {
         visibleElements.forEach { it.render(context, mouseX, mouseY) }
     }
 
-    override fun postRender(context: DrawContext, mouseX: Int, mouseY: Int) {
-        visibleElements.forEach { it.postRender(context, mouseX, mouseY) }
-    }
-
     override fun mouseClicked(mouseX: Int, mouseY: Int, button: Int) {
         visibleElements.forEach {
             if (it.isHover(mouseX, mouseY)) {

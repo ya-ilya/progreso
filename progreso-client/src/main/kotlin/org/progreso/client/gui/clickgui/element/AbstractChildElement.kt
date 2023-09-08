@@ -11,7 +11,6 @@ abstract class AbstractChildElement(
     companion object {
         val mainColor get() = ClickGUI.mainColor
         val rectColor get() = ClickGUI.rectColor
-        val descriptions get() = ClickGUI.descriptions
     }
 
     open var renderRect = true
