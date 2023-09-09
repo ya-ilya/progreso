@@ -12,6 +12,7 @@
     "MixinClientPlayerInteractionManager",
     "MixinInGameHud",
     "MixinKeyboard",
+    "MixinLightmapTextureManager",
     "MixinMinecraftClient",
     "MixinMouse",
     "MixinPlayerEntity",
