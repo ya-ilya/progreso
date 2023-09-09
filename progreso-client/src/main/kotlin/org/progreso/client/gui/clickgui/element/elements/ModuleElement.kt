@@ -46,25 +46,23 @@ class ModuleElement(
     override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
         super.render(context, mouseX, mouseY)
 
-        if (opened) {
-            for (element in visibleElements.drop(1)) {
-                context {
-                    if (element is AbstractChildListElement) {
-                        drawVerticalLine(
-                            x,
-                            element.y,
-                            element.y + (element.header?.height ?: element.height),
-                            mainColor
-                        )
-                    } else {
-                        drawVerticalLine(
-                            x,
-                            element.y,
-                            element.y + element.height,
-                            mainColor
-                        )
-                    }
-                }
+        if (!opened) return
+
+        for (element in visibleElements.drop(1)) context {
+            if (element is AbstractChildListElement) {
+                drawVerticalLine(
+                    x,
+                    element.y,
+                    element.y + (element.header?.height ?: element.height),
+                    mainColor
+                )
+            } else {
+                drawVerticalLine(
+                    x,
+                    element.y,
+                    element.y + element.height,
+                    mainColor
+                )
             }
         }
     }

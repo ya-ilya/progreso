@@ -1,15 +1,14 @@
 package org.progreso.client.commands
 
-import org.java_websocket.handshake.ServerHandshake
 import org.progreso.api.command.AbstractCommand
 import org.progreso.api.command.argument.arguments.StringArgumentType.Companion.string
 import org.progreso.client.Client.Companion.mc
-import org.progreso.irc.client.IRCClient
-import org.progreso.irc.packet.IRCPacket
-import org.progreso.irc.packet.packets.IRCAuthPacket
-import org.progreso.irc.packet.packets.IRCClosePacket
-import org.progreso.irc.packet.packets.IRCMessagePacket
-import java.net.URI
+import org.progreso.irc.IRCClient
+import org.progreso.irc.event.IRCEvent
+import org.progreso.irc.event.c2s.MessageC2SEvent
+import org.progreso.irc.event.c2s.RegisterC2SEvent
+import org.progreso.irc.event.s2c.CloseS2CEvent
+import org.progreso.irc.event.s2c.MessageS2CEvent
 
 @AbstractCommand.Register("irc")
 object IRCCommand : AbstractCommand() {
@@ -20,7 +19,7 @@ object IRCCommand : AbstractCommand() {
             val address: String by context
 
             if (client?.isOpen == true && client?.isClosed == false) client?.close()
-            client = object : IRCClient(URI.create(address)) {
+            client = object : IRCClient(address) {
                 init {
                     try {
                         connect()
@@ -29,35 +28,35 @@ object IRCCommand : AbstractCommand() {
                     }
                 }
 
-                override fun onPacket(packet: IRCPacket) {
-                    when (packet) {
-                        is IRCClosePacket -> {
+                override fun onEvent(event: IRCEvent.S2C) {
+                    when (event) {
+                        is CloseS2CEvent -> {
                             errorLocalized(
                                 "command.irc.close",
-                                packet.reason
+                                event.reason
                             )
                             close()
                         }
 
-                        is IRCMessagePacket -> {
+                        is MessageS2CEvent -> {
                             infoLocalized(
                                 "command.irc.message",
-                                packet.author,
-                                packet.message
+                                event.author,
+                                event.message
                             )
                         }
                     }
                 }
 
-                override fun onOpen(handshakedata: ServerHandshake) {
-                    send(IRCAuthPacket(mc.player.name.string))
+                override fun onOpen() {
+                    send(RegisterC2SEvent(mc.player.name.string))
                     infoLocalized(
                         "command.irc.connect",
                         address
                     )
                 }
 
-                override fun onClose(code: Int, reason: String, remote: Boolean) {
+                override fun onClose() {
                     infoLocalized("command.irc.disconnect")
                 }
             }
@@ -77,7 +76,7 @@ object IRCCommand : AbstractCommand() {
                 return@executes errorLocalized("command.irc.disconnect_error")
             }
 
-            client?.send(IRCMessagePacket(mc.player.name.string, context.get("message")))
+            client?.send(MessageC2SEvent(context.get("message")))
         }
     }
 }

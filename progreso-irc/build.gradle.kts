@@ -18,11 +18,11 @@ dependencies {
 }
 
 application {
-    mainClass.set("org.progreso.irc.server.application.ApplicationKt")
+    mainClass.set("org.progreso.irc.application.ApplicationKt")
 }
 
 tasks.jar {
     manifest.attributes(
-        "Main-Class" to "org.progreso.irc.server.application.ApplicationKt"
+        "Main-Class" to "org.progreso.irc.application.ApplicationKt"
     )
 }
