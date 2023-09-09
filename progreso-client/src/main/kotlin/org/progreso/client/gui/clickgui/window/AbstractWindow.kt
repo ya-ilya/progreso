@@ -2,10 +2,13 @@ package org.progreso.client.gui.clickgui.window
 
 import net.minecraft.client.gui.DrawContext
 import org.progreso.api.common.ObservableCollection
+import org.progreso.client.gui.clickgui.ClickGUI
 import org.progreso.client.gui.clickgui.element.AbstractChildElement
 import org.progreso.client.gui.clickgui.element.ParentElement
 import org.progreso.client.gui.clickgui.element.data.ElementOffsets
 import org.progreso.client.gui.drawRect
+import org.progreso.client.gui.invokeSuper
+import java.awt.Color
 
 @Suppress("SuspiciousVarProperty")
 abstract class AbstractWindow(
@@ -91,6 +94,23 @@ abstract class AbstractWindow(
                 element.drawRect(context)
             } else if (element.renderRect) {
                 context.drawRect(element.x, element.y, element.width, element.height, AbstractChildElement.rectColor)
+            }
+        }
+    }
+
+    class HeaderElement(
+        private val header: String,
+        parent: ParentElement
+    ) : AbstractChildElement(ClickGUI.ELEMENT_HEIGHT, parent) {
+        override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
+            super.render(context, mouseX, mouseY)
+
+            context.invokeSuper(this) {
+                drawHorizontalLine(it.x, it.x + it.width, it.y + it.height - 1, mainColor)
+                drawCenteredString(
+                    header,
+                    Color.WHITE
+                )
             }
         }
     }

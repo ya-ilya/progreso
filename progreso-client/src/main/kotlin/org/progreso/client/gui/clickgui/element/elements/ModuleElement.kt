@@ -1,8 +1,10 @@
 package org.progreso.client.gui.clickgui.element.elements
 
 import net.minecraft.client.gui.DrawContext
+import org.progreso.api.module.AbstractHudModule
 import org.progreso.api.module.AbstractModule
 import org.progreso.client.gui.clickgui.ClickGUI
+import org.progreso.client.gui.clickgui.HudEditor
 import org.progreso.client.gui.clickgui.element.AbstractChildElement
 import org.progreso.client.gui.clickgui.element.AbstractChildListElement
 import org.progreso.client.gui.clickgui.element.ParentElement
@@ -33,7 +35,9 @@ class ModuleElement(
                 )
 
                 if (isHover(mouseX, mouseY)) {
-                    ClickGUI.descriptionWindow.update(this@ModuleElement)
+                    (if (module is AbstractHudModule) HudEditor else ClickGUI)
+                        .descriptionWindow
+                        .update(this@ModuleElement)
                 }
             }
 

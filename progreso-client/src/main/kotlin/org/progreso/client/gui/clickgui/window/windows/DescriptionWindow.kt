@@ -9,7 +9,6 @@ import org.progreso.client.gui.clickgui.ClickGUI
 import org.progreso.client.gui.clickgui.element.AbstractChildElement
 import org.progreso.client.gui.clickgui.element.elements.ModuleElement
 import org.progreso.client.gui.clickgui.window.AbstractWindow
-import org.progreso.client.gui.invokeSuper
 import org.progreso.client.gui.textRenderer
 import java.awt.Color
 
@@ -46,19 +45,7 @@ class DescriptionWindow(x: Int, y: Int, width: Int) : AbstractWindow(x, y, width
             }
         })
 
-        header = object : AbstractChildElement(ClickGUI.ELEMENT_HEIGHT, this@DescriptionWindow) {
-            override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
-                super.render(context, mouseX, mouseY)
-
-                context.invokeSuper(this) {
-                    drawHorizontalLine(it.x, it.x + it.width, it.y + it.height - 1, mainColor)
-                    drawCenteredString(
-                        "Description",
-                        Color.WHITE
-                    )
-                }
-            }
-        }
+        header = HeaderElement("Description", this)
     }
 
     fun update(element: ModuleElement? = null) {
