@@ -1,3 +1,6 @@
+val websocketVersion: String by project
+val gsonVersion: String by project
+
 plugins {
     kotlin("jvm")
     application
@@ -10,8 +13,8 @@ repositories {
 }
 
 dependencies {
-    api("org.java-websocket:Java-WebSocket:1.5.3")
-    implementation("com.google.code.gson:gson:2.10.1")
+    api("org.java-websocket:Java-WebSocket:$websocketVersion")
+    implementation("com.google.code.gson:gson:$gsonVersion")
 }
 
 application {

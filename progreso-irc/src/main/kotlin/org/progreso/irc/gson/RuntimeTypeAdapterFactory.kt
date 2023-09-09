@@ -87,6 +87,11 @@ class RuntimeTypeAdapterFactory<T> private constructor(
         return registerSubtype(type, type.simpleName)
     }
 
+    inline fun <reified E : T> registerSubtype(): RuntimeTypeAdapterFactory<T> {
+        registerSubtype(E::class.java)
+        return this
+    }
+
     override fun <R : Any> create(gson: Gson, type: TypeToken<R>): TypeAdapter<R>? {
         val rawType: Class<*> = type.rawType
         val handle = if (recognizeSubtypes) baseType.isAssignableFrom(rawType) else baseType == rawType

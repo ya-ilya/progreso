@@ -35,7 +35,7 @@
   "command.irc.connect_error": "[IRC] Не удалось подключится к серверу",
   "command.irc.disconnect": "[IRC] Отключен",
   "command.irc.disconnect_error": "[IRC] Клиент не подключен к серверу",
-  "command.irc.auth_error": "[IRC] Не удалось пройти аутентификацию. Причина: %s",
+  "command.irc.close": "[IRC] Соеденение разорвано. Причина: %s",
   "command.irc.message": "[IRC] %s: %s",
 
   "command.plugin.name_entry": "Название: %s",

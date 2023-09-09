@@ -9,12 +9,14 @@ import org.progreso.api.command.reader.StringReader
 class CommandDispatcher {
     private val builders = mutableListOf<LiteralBuilder>()
 
-    fun register(builder: LiteralBuilder) {
+    fun register(builder: LiteralBuilder): CommandDispatcher {
         builders.add(builder)
+        return this
     }
 
-    fun unregister(builder: LiteralBuilder) {
+    fun unregister(builder: LiteralBuilder): CommandDispatcher {
         builders.remove(builder)
+        return this
     }
 
     fun dispatch(string: String): Boolean {

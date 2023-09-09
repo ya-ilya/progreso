@@ -6,8 +6,8 @@ import org.progreso.api.command.argument.arguments.StringArgumentType.Companion.
 import org.progreso.client.Client.Companion.mc
 import org.progreso.irc.client.IRCClient
 import org.progreso.irc.packet.IRCPacket
-import org.progreso.irc.packet.packets.IRCAuthFailedPacket
 import org.progreso.irc.packet.packets.IRCAuthPacket
+import org.progreso.irc.packet.packets.IRCClosePacket
 import org.progreso.irc.packet.packets.IRCMessagePacket
 import java.net.URI
 
@@ -31,9 +31,9 @@ object IRCCommand : AbstractCommand() {
 
                 override fun onPacket(packet: IRCPacket) {
                     when (packet) {
-                        is IRCAuthFailedPacket -> {
+                        is IRCClosePacket -> {
                             errorLocalized(
-                                "command.irc.auth_error",
+                                "command.irc.close",
                                 packet.reason
                             )
                             close()

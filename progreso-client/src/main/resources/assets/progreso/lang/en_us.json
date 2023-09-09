@@ -35,7 +35,7 @@
   "command.irc.connect_error": "[IRC] Failed to connect to the server",
   "command.irc.disconnect": "[IRC] Disconnected",
   "command.irc.disconnect_error": "[IRC] Client isn't connected to the server",
-  "command.irc.auth_error": "[IRC] Authentication failed. Reason: %s",
+  "command.irc.close": "[IRC] Connection closed. Reason: %s",
   "command.irc.message": "[IRC] %s: %s",
 
   "command.plugin.name_entry": "Name: %s",

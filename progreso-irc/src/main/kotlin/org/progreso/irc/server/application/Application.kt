@@ -2,7 +2,6 @@ package org.progreso.irc.server.application
 
 import org.java_websocket.WebSocket
 import org.progreso.irc.packet.IRCPacket
-import org.progreso.irc.packet.packets.IRCAuthFailedPacket
 import org.progreso.irc.packet.packets.IRCAuthPacket
 import org.progreso.irc.packet.packets.IRCMessagePacket
 import org.progreso.irc.server.IRCServer
@@ -16,33 +15,24 @@ fun main(args: Array<String>) {
             println("Server started")
         }
 
-        override fun onPacket(socket: WebSocket, packet: IRCPacket) {
+        override fun onPacket(conn: WebSocket, packet: IRCPacket) {
             when (packet) {
                 is IRCAuthPacket -> {
-                    if (authorized.containsKey(socket)) {
-                        socket.send(IRCAuthFailedPacket("Socket already connected to this IRC server"))
-                        return
-                    }
-
                     if (packet.username.length < 3) {
-                        socket.send(IRCAuthFailedPacket("Username length must be >= 3"))
-                        socket.close()
-                        return
+                        return conn.close("Username length must be >= 3")
                     }
 
                     if (authorized.containsValue(packet.username)) {
-                        socket.send(IRCAuthFailedPacket("User with same username already connected to this IRC server"))
-                        socket.close()
-                        return
+                        return conn.close("User with same username already connected to this IRC server")
                     }
 
-                    authorized[socket] = packet.username
+                    authorized[conn] = packet.username
 
                     println("Authorization: ${packet.username}")
                 }
 
                 is IRCMessagePacket -> {
-                    val username = authorized[socket] ?: return
+                    val username = authorized[conn] ?: return
 
                     println("Message from $username: ${packet.message}")
                     send(IRCMessagePacket(username, packet.message))

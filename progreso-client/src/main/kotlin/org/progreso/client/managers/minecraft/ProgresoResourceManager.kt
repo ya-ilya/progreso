@@ -6,6 +6,7 @@ import net.minecraft.resource.ResourcePack
 import net.minecraft.util.Identifier
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.managers.minecraft.exceptions.ProgresoResourceManagerException
+import java.io.File
 import java.nio.file.Paths
 import java.util.*
 import java.util.function.Predicate
@@ -13,7 +14,7 @@ import java.util.stream.Stream
 import kotlin.io.path.*
 
 object ProgresoResourceManager : ResourceManager {
-    private val path = Paths.get("progreso/resources")
+    private val path = Paths.get("progreso${File.separator}resources")
 
     init {
         path.createDirectories()

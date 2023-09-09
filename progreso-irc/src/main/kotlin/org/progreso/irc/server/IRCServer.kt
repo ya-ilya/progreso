@@ -4,10 +4,11 @@ import org.java_websocket.WebSocket
 import org.java_websocket.handshake.ClientHandshake
 import org.java_websocket.server.WebSocketServer
 import org.progreso.irc.packet.IRCPacket
+import org.progreso.irc.packet.packets.IRCClosePacket
 import java.net.InetSocketAddress
 
 open class IRCServer(address: InetSocketAddress) : WebSocketServer(address) {
-    open fun onPacket(socket: WebSocket, packet: IRCPacket) {}
+    open fun onPacket(conn: WebSocket, packet: IRCPacket) {}
 
     override fun onOpen(conn: WebSocket, handshake: ClientHandshake) {}
     override fun onClose(conn: WebSocket, code: Int, reason: String, remote: Boolean) {}
@@ -24,5 +25,10 @@ open class IRCServer(address: InetSocketAddress) : WebSocketServer(address) {
 
     fun WebSocket.send(packet: IRCPacket) {
         send(IRCPacket.GSON.toJson(packet, IRCPacket::class.java))
+    }
+
+    fun WebSocket.close(reason: String) {
+        send(IRCClosePacket(reason))
+        close()
     }
 }
