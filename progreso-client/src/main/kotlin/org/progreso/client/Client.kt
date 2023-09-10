@@ -17,6 +17,7 @@ import org.progreso.client.accessors.*
 import org.progreso.client.gui.clickgui.ClickGUI
 import org.progreso.client.gui.clickgui.HudEditor
 import org.progreso.client.managers.CombatManager
+import org.progreso.client.util.client.KeyboardUtil
 import org.reflections.Reflections
 import org.slf4j.LoggerFactory
 
@@ -65,6 +66,8 @@ class Client : ModInitializer {
                 // Ignored
             }
         }
+
+        println(KeyboardUtil.keyMap)
 
         LOGGER.info("Initializing client commands...")
         for (clazz in Reflections("org.progreso.client.commands")

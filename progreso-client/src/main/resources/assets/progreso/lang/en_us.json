@@ -1,13 +1,16 @@
 {
-  "argument.config_category.error": "Config category '%s' not found",
   "argument.friend.error": "Friend '%s' not found",
   "argument.module.error": "Module '%s' not found",
-  "argument.locale.error": "Locale '%s' not found",
   "argument.plugin.error": "Plugin '%s' not found",
 
   "command.command_not_found": "Command not found",
   "command.invalid_syntax": "Invalid syntax: %s",
   "command.failed_to_execute": "Failed to execute command",
+
+  "command.bind.key": "%s bound to %s",
+  "command.bind.key_error": "Key %s not found",
+  "command.bind.reset": "Reset %s bind",
+  "command.bind.current": "Current %s bind: %s",
 
   "command.config.load": "Loaded %s config",
   "command.config.load_error": "Config %s not found",

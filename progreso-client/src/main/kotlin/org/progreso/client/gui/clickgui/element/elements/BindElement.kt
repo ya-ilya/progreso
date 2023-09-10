@@ -20,12 +20,6 @@ class BindElement(
             "Listening.."
         } else {
             when (setting.value) {
-                InputUtil.GLFW_KEY_LEFT_SHIFT -> "LSHIFT"
-                InputUtil.GLFW_KEY_RIGHT_SHIFT -> "RSHIFT"
-                InputUtil.GLFW_KEY_LEFT_CONTROL -> "LCTRL"
-                InputUtil.GLFW_KEY_RIGHT_CONTROL -> "RCTRL"
-                InputUtil.GLFW_KEY_LEFT_ALT -> "LALT"
-                InputUtil.GLFW_KEY_RIGHT_ALT -> "RALT"
                 -1, 0, 256 -> "NONE"
                 else -> KeyboardUtil.getKeyName(setting.value, -1)
             }

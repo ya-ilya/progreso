@@ -1,13 +1,16 @@
 {
-  "argument.config_category.error": "Категория конфигов '%s' не найдена",
   "argument.friend.error": "У вас нету друга с именем %s",
   "argument.module.error": "Модуль '%s' не найден",
-  "argument.locale.error": "Перевод '%s' не найден",
   "argument.plugin.error": "Плагин '%s' не найден",
 
   "command.command_not_found": "Команда не найдена",
   "command.invalid_syntax": "Неправильный синтаксис. Сообщение об ошибке: %s",
   "command.failed_to_execute": "Ошибка при выполнении команды",
+
+  "command.bind.key": "%s забинжен на клавишу '%s'",
+  "command.bind.key_error": "Клавина '%s' не найдена",
+  "command.bind.reset": "Клавиша %s сброшена",
+  "command.bind.current": "Текущий бинд %s: %s",
 
   "command.config.load": "Конфиг '%s' загружен",
   "command.config.load_error": "Конфиг '%s' не найден",

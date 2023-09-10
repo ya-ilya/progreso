@@ -3,12 +3,22 @@ package org.progreso.api.setting.container
 import org.progreso.api.setting.AbstractSetting
 import org.progreso.api.setting.settings.*
 import java.awt.Color
+import kotlin.reflect.KClass
 
 /**
  * Interface for setting container
  */
 interface SettingContainer {
     val settings: MutableSet<AbstractSetting<*>>
+
+    fun <T : AbstractSetting<*>> getSettingByName(name: String, clazz: KClass<T>): T {
+        return getSettingByNameOrNull(name, clazz)!!
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    fun <T : AbstractSetting<*>> getSettingByNameOrNull(name: String, clazz: KClass<T>): T? {
+        return settings.first { it::class == clazz && it.name == name } as T?
+    }
 
     fun setting(
         name: String,
