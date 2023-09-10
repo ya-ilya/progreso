@@ -10,7 +10,8 @@ import java.util.*
 @AbstractModule.AutoRegister
 object FakePlayer : AbstractModule() {
     private val fakePlayerName by setting("Name", "FakePlayer")
-    private var fakePlayer: OtherClientPlayerEntity? = null
+
+    var fakePlayer: OtherClientPlayerEntity? = null
 
     init {
         onEnable {

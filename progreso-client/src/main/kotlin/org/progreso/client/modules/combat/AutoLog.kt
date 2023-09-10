@@ -6,6 +6,7 @@ import org.progreso.api.module.AbstractModule
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.events.misc.TickEvent
 import org.progreso.client.events.safeEventListener
+import org.progreso.client.modules.misc.FakePlayer
 
 @AbstractModule.AutoRegister
 object AutoLog : AbstractModule() {
@@ -20,7 +21,7 @@ object AutoLog : AbstractModule() {
             if (range) {
                 val playersInRange = mc.world.players
                     .filter { mc.player.distanceTo(it) <= rangeValue }
-                    .filter { mc.player != it }
+                    .filter { mc.player != it && FakePlayer.fakePlayer != it }
                     .map { it.name.string }
 
                 if (playersInRange.isNotEmpty()) {

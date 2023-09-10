@@ -1,6 +1,6 @@
 package org.progreso.client
 
-import net.fabricmc.api.ModInitializer
+import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.screen.Screen
@@ -21,7 +21,7 @@ import org.progreso.client.util.client.KeyboardUtil
 import org.reflections.Reflections
 import org.slf4j.LoggerFactory
 
-class Client : ModInitializer {
+class Client : ClientModInitializer {
     companion object {
         @JvmStatic
         val mc by lazy { MinecraftClientWrapper(MinecraftClient.getInstance()) }
@@ -35,7 +35,7 @@ class Client : ModInitializer {
         val config get() = ProgresoGlobalConfigAccessor.config
     }
 
-    override fun onInitialize() {
+    override fun onInitializeClient() {
         Api.accessors(
             EventAccessor,
             ChatAccessor,
