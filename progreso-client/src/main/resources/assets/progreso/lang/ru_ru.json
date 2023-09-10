@@ -1,6 +1,7 @@
 {
   "argument.friend.error": "У вас нету друга с именем %s",
   "argument.module.error": "Модуль '%s' не найден",
+  "argument.player.error": "Игрок '%s' не найден",
   "argument.plugin.error": "Плагин '%s' не найден",
 
   "command.command_not_found": "Команда не найдена",
@@ -33,6 +34,9 @@
   "command.friend.add_error": "%s уже является вашим другом",
   "command.friend.remove": "%s теперь не является вашим другом",
   "command.friend.list": "Ваши друзья: %s",
+
+  "command.help.header": "Доступные команды:",
+  "command.help.entry": "- %s: %s",
 
   "command.irc.connect": "[IRC] Подключен к %s",
   "command.irc.connect_error": "[IRC] Не удалось подключится к серверу",
@@ -69,6 +73,15 @@
   "gui.plugins.label.plugin_author": "Автор: %s",
   "gui.plugins.button.open_folder": "Открыть папку",
   "gui.plugins.button.done": "Готово",
+
+  "command.bind.description": "Забиндить/разбиндить модуль",
+  "command.config.description": "Загрузить/сохранить/обновить конфиг",
+  "command.font.description": "Сменить/сбросить кастомный шрифт",
+  "command.friend.description": "Добавить/удалить друга",
+  "command.help.description": "Список команд",
+  "command.irc.description": "Подключиться/отправить сообщение по IRC",
+  "command.plugin.description": "Управление плагинами",
+  "command.toggle.description": "Включить/выключить модуль",
 
   "module.clickgui.description": "Открывает ClickGUI",
   "module.hudeditor.description": "Открывает HudEditor",

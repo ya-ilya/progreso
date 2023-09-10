@@ -16,11 +16,14 @@ abstract class AbstractCommand {
     private val annotation = javaClass.getAnnotation(Register::class.java)
 
     val name = annotation.name
-    val description = annotation.description
+    val description
+        get() = Api.TEXT.i18n(
+            annotation.descriptionKey.ifBlank { "command.${name.lowercase()}.description" }
+        )
 
     annotation class Register(
         val name: String,
-        val description: String = ""
+        val descriptionKey: String = ""
     )
 
     abstract fun build(builder: LiteralArgumentBuilder<Any>)

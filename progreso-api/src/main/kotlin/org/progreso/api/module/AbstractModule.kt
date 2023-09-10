@@ -37,7 +37,7 @@ abstract class AbstractModule : SettingContainer {
 
     val description
         get() = Api.TEXT.i18n(
-            if (annotation != null && annotation.descriptionKey != "") annotation.descriptionKey
+            if (annotation != null && annotation.descriptionKey.isNotBlank()) annotation.descriptionKey
             else "module.${name.lowercase()}.description"
         )
 

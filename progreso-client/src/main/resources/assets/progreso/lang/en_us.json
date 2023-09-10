@@ -1,6 +1,7 @@
 {
   "argument.friend.error": "Friend '%s' not found",
   "argument.module.error": "Module '%s' not found",
+  "argument.player.error": "Player '%s' not found",
   "argument.plugin.error": "Plugin '%s' not found",
 
   "command.command_not_found": "Command not found",
@@ -33,6 +34,9 @@
   "command.friend.add_error": "%s already your friend",
   "command.friend.remove": "%s now isn't your friend",
   "command.friend.list": "Friends: %s",
+
+  "command.help.header": "Available commands:",
+  "command.help.entry": "- %s: %s",
 
   "command.irc.connect": "[IRC] Connected to %s",
   "command.irc.connect_error": "[IRC] Failed to connect to the server",
@@ -69,6 +73,15 @@
   "gui.plugins.label.plugin_author": "Author: %s",
   "gui.plugins.button.open_folder": "Open folder",
   "gui.plugins.button.done": "Done",
+
+  "command.bind.description": "Bind/unbind modules",
+  "command.config.description": "Load/save/refresh config",
+  "command.font.description": "Change/reset custom font in ClickGUI",
+  "command.friend.description": "Add/remove friend",
+  "command.help.description": "Command list",
+  "command.irc.description": "Connect/send message to IRC",
+  "command.plugin.description": "Manage plugins",
+  "command.toggle.description": "Toggle module on/off",
 
   "module.clickgui.description": "Opens the ClickGUI",
   "module.hudeditor.description": "Opens the HudEditor",
