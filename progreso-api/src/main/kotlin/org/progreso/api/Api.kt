@@ -2,20 +2,18 @@ package org.progreso.api
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import org.progreso.api.accessor.ChatAccessor
-import org.progreso.api.accessor.EventAccessor
-import org.progreso.api.accessor.LoggerAccessor
-import org.progreso.api.accessor.TextAccessor
+import org.progreso.api.accessor.*
 import org.progreso.api.event.EventBus
 import org.progreso.api.managers.*
 
 object Api {
     private var initialized = false
 
-    lateinit var EVENT: EventAccessor
-    lateinit var CHAT: ChatAccessor
-    lateinit var TEXT: TextAccessor
-    lateinit var LOGGER: LoggerAccessor
+    var EVENT: EventAccessor = EventAccessor.Default()
+    var CHAT: ChatAccessor = ChatAccessor.Default()
+    var COMMAND: CommandAccessor = CommandAccessor.Default()
+    var TEXT: TextAccessor = TextAccessor.Default()
+    var LOGGER: LoggerAccessor = LoggerAccessor.Default()
 
     val API_EVENT_BUS = EventBus()
     val GSON: Gson = GsonBuilder()
@@ -25,12 +23,14 @@ object Api {
     fun accessors(
         event: EventAccessor,
         chat: ChatAccessor,
+        command: CommandAccessor,
         text: TextAccessor,
         logger: LoggerAccessor
     ) {
         logger.info("Setting accessors...")
         EVENT = event
         CHAT = chat
+        COMMAND = command
         TEXT = text
         LOGGER = logger
     }

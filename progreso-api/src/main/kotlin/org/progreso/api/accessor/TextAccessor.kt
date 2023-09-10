@@ -1,5 +1,7 @@
 package org.progreso.api.accessor
 
+import com.mojang.brigadier.Message
+
 /**
  * Provides access to the minecraft text class
  * ```java
@@ -16,6 +18,7 @@ package org.progreso.api.accessor
 interface TextAccessor {
     open class Default : TextAccessor {
         override fun i18n(key: String, vararg args: Any) = key
+        override fun i18nMessage(key: String, vararg args: Any) = Message { i18n(key, args) }
     }
 
     /**
@@ -25,4 +28,12 @@ interface TextAccessor {
      * @see [String.format]
      */
     fun i18n(key: String, vararg args: Any): String
+
+    /**
+     * Get internationalization by [key]
+     *
+     * @param args Arguments
+     * @see [String.format]
+     */
+    fun i18nMessage(key: String, vararg args: Any): Message
 }

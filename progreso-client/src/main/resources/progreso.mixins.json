@@ -7,15 +7,18 @@
     "defaultRequire": 1
   },
   "client": [
+    "MixinChatInputSuggestor",
     "MixinClientConnection",
     "MixinClientPlayerEntity",
     "MixinClientPlayerInteractionManager",
+    "MixinClientPlayNetworkHandler",
     "MixinInGameHud",
     "MixinKeyboard",
     "MixinLightmapTextureManager",
     "MixinMinecraftClient",
     "MixinMouse",
     "MixinPlayerEntity",
+    "MixinScreen",
     "MixinTitleScreen"
   ]
 }

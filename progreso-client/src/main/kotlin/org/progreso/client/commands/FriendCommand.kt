@@ -1,45 +1,54 @@
 package org.progreso.client.commands
 
+import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import org.progreso.api.command.AbstractCommand
-import org.progreso.api.command.argument.arguments.FriendArgumentType
-import org.progreso.api.command.argument.arguments.StringArgumentType.Companion.string
+import org.progreso.api.command.arguments.FriendArgumentType
 import org.progreso.api.managers.FriendManager
+import org.progreso.client.commands.arguments.PlayerArgumentType
 
 @AbstractCommand.Register("friend")
 object FriendCommand : AbstractCommand() {
-    init {
-        literal("add").argument("player", string()).executes { context ->
-            val player: String by context
+    override fun build(builder: LiteralArgumentBuilder<Any>) {
+        builder.then(
+            literal("add").then(
+                argument("player", PlayerArgumentType()).executesSuccess { context ->
+                    val player = PlayerArgumentType[context]
 
-            if (FriendManager.isFriend(player)) {
-                errorLocalized(
-                    "command.friend.add_error",
-                    player
-                )
-            } else {
-                FriendManager.addFriendByName(player)
-                infoLocalized(
-                    "command.friend.add",
-                    player
-                )
-            }
-        }
-
-        literal("remove").argument("friend", FriendArgumentType.create()).executes { context ->
-            val friend = context.nullable<FriendManager.Friend>("friend") ?: return@executes
-
-            FriendManager.removeFriendByName(friend.name)
-            infoLocalized(
-                "command.friend.remove",
-                friend.name
+                    if (FriendManager.isFriend(player.profile.name)) {
+                        errorLocalized(
+                            "command.friend.add_error",
+                            player
+                        )
+                    } else {
+                        FriendManager.addFriendByName(player.profile.name)
+                        infoLocalized(
+                            "command.friend.add",
+                            player
+                        )
+                    }
+                }
             )
-        }
+        )
 
-        literal("list").executes { _ ->
+        builder.then(
+            literal("remove").then(
+                argument("friend", FriendArgumentType()).executesSuccess { context ->
+                    val friend = FriendArgumentType[context]
+
+                    FriendManager.removeFriendByName(friend.name)
+                    infoLocalized(
+                        "command.friend.remove",
+                        friend.name
+                    )
+                }
+            )
+        )
+
+        builder.then(literal("list").executesSuccess {
             infoLocalized(
                 "command.friend.list",
                 FriendManager.friends.joinToString()
             )
-        }
+        })
     }
 }

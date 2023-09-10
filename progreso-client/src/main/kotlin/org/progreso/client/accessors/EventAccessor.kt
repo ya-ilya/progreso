@@ -11,13 +11,11 @@ import org.progreso.client.Client
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.events.entity.EntityDeathEvent
 import org.progreso.client.events.eventListener
-import org.progreso.client.events.input.CharEvent
 import org.progreso.client.events.input.KeyEvent
 import org.progreso.client.events.misc.TickEvent
 import org.progreso.client.events.network.PacketEvent
 import org.progreso.client.events.player.TotemPopEvent
 import org.progreso.client.events.safeEventListener
-import org.progreso.client.gui.minecraft.ProgresoChatScreen
 
 object EventAccessor : EventAccessor {
     override fun register(instance: Any) {
@@ -33,13 +31,6 @@ object EventAccessor : EventAccessor {
 
         safeEventListener<KeyEvent> { event ->
             ModuleManager.onKey(event.key)
-        }
-
-        safeEventListener<CharEvent> { event ->
-            if (!mc.options!!.sneakKey.isPressed && event.codePoint == CommandManager.PREFIX_CODE && mc.currentScreen !is ProgresoChatScreen) {
-                mc.setScreen(ProgresoChatScreen())
-                event.isCancelled = true
-            }
         }
 
         eventListener<PacketEvent.Receive<*>> { event ->

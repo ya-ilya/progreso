@@ -1,47 +1,49 @@
 package org.progreso.client.commands
 
+import com.mojang.brigadier.arguments.StringArgumentType
+import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import org.progreso.api.command.AbstractCommand
-import org.progreso.api.command.argument.arguments.StringArgumentType
 import org.progreso.api.managers.ConfigManager
 
 @AbstractCommand.Register("config")
 object ConfigCommand : AbstractCommand() {
-    init {
+    override fun build(builder: LiteralArgumentBuilder<Any>) {
         for (category in ConfigManager.categories) {
-            literal(category.name) {
-                literal("load") {
-                    argument("config", StringArgumentType.string()).executes { context ->
-                        val config: String by context
+            val literal = literal(category.name)
+                .then(
+                    literal("load").then(
+                        argument("config", StringArgumentType.string()).executesSuccess { context ->
+                            val config = StringArgumentType.getString(context, "config")
 
-                        try {
-                            category.load(config)
-                        } catch (ex: Exception) {
-                            errorLocalized(
-                                "command.config.load_error",
+                            try {
+                                category.load(config)
+                            } catch (ex: Exception) {
+                                errorLocalized(
+                                    "command.config.load_error",
+                                    config
+                                )
+                                return@executesSuccess
+                            }
+
+                            infoLocalized(
+                                "command.config.load",
                                 config
                             )
-                            return@executes
                         }
+                    )
+                )
+                .then(
+                    literal("save").then(
+                        argument("config", StringArgumentType.string()).executesSuccess { context ->
+                            val config = StringArgumentType.getString(context, "config")
 
-                        infoLocalized(
-                            "command.config.load",
-                            config
-                        )
-                    }
-                }
-
-                literal("save") {
-                    argument("config", StringArgumentType.string()).executes { context ->
-                        val config: String by context
-
-                        category.save(config)
-                        infoLocalized(
-                            "command.config.save",
-                            config
-                        )
-                    }
-
-                    executes { _ ->
+                            category.save(config)
+                            infoLocalized(
+                                "command.config.save",
+                                config
+                            )
+                        }
+                    ).executesSuccess {
                         category.save()
 
                         infoLocalized(
@@ -49,45 +51,44 @@ object ConfigCommand : AbstractCommand() {
                             category.name
                         )
                     }
-                }
+                )
+                .then(
+                    literal("refresh").then(
+                        argument("config", StringArgumentType.string()).executesSuccess { context ->
+                            val config = StringArgumentType.getString(context, "config")
 
-                literal("refresh") {
-                    argument("config", StringArgumentType.string()).executes { context ->
-                        val config: String by context
-
-                        category.refresh(config)
-                        infoLocalized(
-                            "command.config.refresh",
-                            config
-                        )
-                    }
-
-                    executes { _ ->
+                            category.refresh(config)
+                            infoLocalized(
+                                "command.config.refresh",
+                                config
+                            )
+                        }
+                    ).executesSuccess {
                         category.refresh()
                         infoLocalized(
                             "command.config.refresh_many",
                             category.name
                         )
                     }
-                }
-
-                literal("list").executes { _ ->
-                    infoLocalized(
-                        "command.config.list",
-                        category.name,
-                        category.configs.joinToString { it.name }
-                    )
-                }
-
-
-                executes { _ ->
+                )
+                .then(
+                    literal("list").executesSuccess {
+                        infoLocalized(
+                            "command.config.list",
+                            category.name,
+                            category.configs.joinToString { it.name }
+                        )
+                    }
+                )
+                .executesSuccess {
                     infoLocalized(
                         "command.config.current",
                         category.name,
                         category.config
                     )
                 }
-            }
+
+            builder.then(literal)
         }
     }
 }

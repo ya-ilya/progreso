@@ -15,12 +15,12 @@ public abstract class MixinPlayerEntity {
         at = @At("HEAD"),
         cancellable = true
     )
-    public void clipAtLedgeHook(CallbackInfoReturnable<Boolean> cir) {
+    public void clipAtLedgeHook(CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
         ClipAtLedgeEvent event = new ClipAtLedgeEvent();
         Client.EVENT_BUS.post(event);
 
         if (event.getClip() != null) {
-            cir.setReturnValue(event.getClip());
+            callbackInfoReturnable.setReturnValue(event.getClip());
         }
     }
 }

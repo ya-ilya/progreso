@@ -1,20 +1,16 @@
 package org.progreso.client.commands
 
+import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import org.progreso.api.command.AbstractCommand
-import org.progreso.api.command.argument.arguments.ModuleArgumentType
-import org.progreso.api.command.dispatcher.CommandContext
-import org.progreso.api.module.AbstractModule
+import org.progreso.api.command.arguments.ModuleArgumentType
 
 @AbstractCommand.Register("toggle")
 object ToggleCommand : AbstractCommand() {
-    init {
-        argument("module", ModuleArgumentType.create()).executes { context ->
-            val module = context.module() ?: return@executes
-            module.toggle()
-        }
-    }
-
-    private fun CommandContext.module(): AbstractModule? {
-        return nullable<AbstractModule>("module")
+    override fun build(builder: LiteralArgumentBuilder<Any>) {
+        builder.then(
+            argument("module", ModuleArgumentType()).executesSuccess { context ->
+                ModuleArgumentType[context].toggle()
+            }
+        )
     }
 }

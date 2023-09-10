@@ -1,8 +1,9 @@
 package org.progreso.client.commands
 
+import com.mojang.brigadier.arguments.FloatArgumentType
+import com.mojang.brigadier.arguments.StringArgumentType
+import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import org.progreso.api.command.AbstractCommand
-import org.progreso.api.command.argument.arguments.NumberArgumentType.Companion.number
-import org.progreso.api.command.argument.arguments.StringArgumentType.Companion.string
 import org.progreso.client.Client
 import org.progreso.client.Client.Companion.config
 import org.progreso.client.gui.createDefaultTextRenderer
@@ -13,35 +14,43 @@ import org.progreso.client.util.render.TextRendererUtil
 
 @AbstractCommand.Register("font")
 object FontCommand : AbstractCommand() {
-    init {
-        literal("load").argument("font", string()) {
-            argument("size", number<Float>()).executes { context ->
-                loadFont(
-                    context.get("font"),
-                    context.get("size")
+    override fun build(builder: LiteralArgumentBuilder<Any>) {
+        builder.then(
+            literal("load").then(
+                argument("font", StringArgumentType.string())
+                    .then(
+                        argument("size", FloatArgumentType.floatArg()).executesSuccess { context ->
+                            loadFont(
+                                StringArgumentType.getString(context, "font"),
+                                FloatArgumentType.getFloat(context, "size")
+                            )
+                        }
+                    )
+                    .executesSuccess { context ->
+                        loadFont(StringArgumentType.getString(context, "font"))
+                    }
+            )
+        )
+
+        builder.then(
+            literal("reset").executesSuccess {
+                customTextRenderer = createDefaultTextRenderer()
+                config.customFont = null
+
+                infoLocalized("command.font.reset")
+            }
+        )
+
+        builder.then(
+            literal("list").executesSuccess {
+                infoLocalized(
+                    "command.font.list",
+                    ProgresoResourceManager.fonts.joinToString()
                 )
             }
+        )
 
-            executes { context ->
-                loadFont(context.get("font"))
-            }
-        }
-
-        literal("reset").executes { _ ->
-            customTextRenderer = createDefaultTextRenderer()
-            config.customFont = null
-
-            infoLocalized("command.font.reset")
-        }
-
-        literal("list").executes { _ ->
-            infoLocalized(
-                "command.font.list",
-                ProgresoResourceManager.fonts.joinToString()
-            )
-        }
-
-        executes { _ ->
+        builder.executesSuccess {
             if (config.customFont != null) {
                 infoLocalized(
                     "command.font.current",

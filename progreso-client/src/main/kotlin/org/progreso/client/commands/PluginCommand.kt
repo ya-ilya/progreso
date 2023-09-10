@@ -1,40 +1,37 @@
 package org.progreso.client.commands
 
+import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import org.progreso.api.command.AbstractCommand
-import org.progreso.api.command.argument.arguments.PluginArgumentType
-import org.progreso.api.command.dispatcher.CommandContext
+import org.progreso.api.command.arguments.PluginArgumentType
 import org.progreso.api.managers.PluginManager
-import org.progreso.api.plugin.AbstractPlugin
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.gui.minecraft.ProgresoPluginsScreen
 
 @AbstractCommand.Register("plugin")
 object PluginCommand : AbstractCommand() {
-    init {
-        literal("info") {
-            argument("plugin", PluginArgumentType.create()).executes { context ->
-                val plugin = context.plugin() ?: return@executes
+    override fun build(builder: LiteralArgumentBuilder<Any>) {
+        builder.then(
+            literal("info").then(
+                argument("plugin", PluginArgumentType()).executesSuccess { context ->
+                    val plugin = PluginArgumentType[context]
 
-                info("--------")
-                infoLocalized("command.plugin.name_entry", plugin.name)
-                infoLocalized("command.plugin.version_entry", plugin.version)
-                infoLocalized("command.plugin.author_entry", plugin.author)
-            }
-        }
+                    info("--------")
+                    infoLocalized("command.plugin.name_entry", plugin.name)
+                    infoLocalized("command.plugin.version_entry", plugin.version)
+                    infoLocalized("command.plugin.author_entry", plugin.author)
+                }
+            )
+        )
 
-        literal("list").executes { _ ->
+        builder.then(literal("list").executesSuccess {
             infoLocalized(
                 "command.plugin.list",
                 PluginManager.plugins.joinToString { it.name }
             )
-        }
+        })
 
-        literal("gui").executes { _ ->
+        builder.then(literal("gui").executesSuccess {
             mc.setScreen(ProgresoPluginsScreen(PluginManager.plugins))
-        }
-    }
-
-    private fun CommandContext.plugin(): AbstractPlugin? {
-        return nullable<AbstractPlugin>("plugin")
+        })
     }
 }

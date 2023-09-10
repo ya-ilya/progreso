@@ -13,10 +13,7 @@ import org.progreso.api.managers.ModuleManager
 import org.progreso.api.managers.PluginManager
 import org.progreso.api.module.AbstractModule
 import org.progreso.api.plugin.AbstractPlugin
-import org.progreso.client.accessors.ChatAccessor
-import org.progreso.client.accessors.EventAccessor
-import org.progreso.client.accessors.LoggerAccessor
-import org.progreso.client.accessors.TextAccessor
+import org.progreso.client.accessors.*
 import org.progreso.client.gui.clickgui.ClickGUI
 import org.progreso.client.gui.clickgui.HudEditor
 import org.progreso.client.managers.CombatManager
@@ -38,7 +35,13 @@ class Client : ModInitializer {
     }
 
     override fun onInitialize() {
-        Api.accessors(EventAccessor, ChatAccessor, TextAccessor, LoggerAccessor)
+        Api.accessors(
+            EventAccessor,
+            ChatAccessor,
+            CommandAccessor,
+            TextAccessor,
+            LoggerAccessor
+        )
 
         for (entrypoint in FabricLoader.getInstance().getEntrypointContainers("progreso", AbstractPlugin::class.java)) {
             val metadata = entrypoint.provider.metadata
@@ -52,7 +55,10 @@ class Client : ModInitializer {
         }
 
         LOGGER.info("Initializing client modules...")
-        for (clazz in Reflections("org.progreso.client.modules").getSubTypesOf(AbstractModule::class.java)) {
+        for (clazz in Reflections("org.progreso.client.modules")
+            .getSubTypesOf(AbstractModule::class.java)
+            .sortedBy { it.name }
+        ) {
             try {
                 ModuleManager.addModule(clazz.getField("INSTANCE").get(null) as AbstractModule)
             } catch (ex: Exception) {
@@ -61,7 +67,10 @@ class Client : ModInitializer {
         }
 
         LOGGER.info("Initializing client commands...")
-        for (clazz in Reflections("org.progreso.client.commands").getSubTypesOf(AbstractCommand::class.java)) {
+        for (clazz in Reflections("org.progreso.client.commands")
+            .getSubTypesOf(AbstractCommand::class.java)
+            .sortedBy { it.name }
+        ) {
             try {
                 CommandManager.addCommand(clazz.getField("INSTANCE").get(null) as AbstractCommand)
             } catch (ex: Exception) {

@@ -1,15 +1,21 @@
 package org.progreso.api.command
 
+import com.mojang.brigadier.Command
+import com.mojang.brigadier.arguments.ArgumentType
+import com.mojang.brigadier.builder.ArgumentBuilder
+import com.mojang.brigadier.builder.LiteralArgumentBuilder
+import com.mojang.brigadier.builder.RequiredArgumentBuilder
+import com.mojang.brigadier.context.CommandContext
 import org.progreso.api.Api
-import org.progreso.api.command.builder.builders.LiteralBuilder
+
 
 /**
  * Command abstract class
  */
-abstract class AbstractCommand : LiteralBuilder("") {
+abstract class AbstractCommand {
     private val annotation = javaClass.getAnnotation(Register::class.java)
 
-    override val name = annotation.name
+    val name = annotation.name
     val description = annotation.description
 
     annotation class Register(
@@ -17,7 +23,24 @@ abstract class AbstractCommand : LiteralBuilder("") {
         val description: String = ""
     )
 
+    abstract fun build(builder: LiteralArgumentBuilder<Any>)
+
     protected companion object {
+        fun <T> argument(name: String, type: ArgumentType<T>): RequiredArgumentBuilder<Any, T> {
+            return RequiredArgumentBuilder.argument(name, type)
+        }
+
+        fun literal(name: String): LiteralArgumentBuilder<Any> {
+            return LiteralArgumentBuilder.literal(name)
+        }
+
+        fun <S, T : ArgumentBuilder<S, T>> T.executesSuccess(block: (CommandContext<S>) -> Unit): T {
+            return executes { context ->
+                block(context)
+                Command.SINGLE_SUCCESS
+            }
+        }
+
         fun send(message: Any) = Api.CHAT.send(message)
 
         fun sendLocalized(key: String, vararg args: Any) =
