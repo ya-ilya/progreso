@@ -2,30 +2,24 @@
 
 package org.progreso.client.gui
 
-import com.mojang.blaze3d.systems.RenderSystem
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
-import net.minecraft.client.render.GameRenderer
-import net.minecraft.client.render.Tessellator
-import net.minecraft.client.render.VertexFormat
-import net.minecraft.client.render.VertexFormats
 import org.progreso.client.Client.Companion.config
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.gui.clickgui.element.Element
 import org.progreso.client.modules.client.ClickGUI
-import org.progreso.client.util.render.TextRendererUtil
+import org.progreso.client.util.render.createTextRenderer
+import org.progreso.client.util.render.createTextRendererFromProgresoResource
 import java.awt.Color
-import kotlin.math.cos
-import kotlin.math.sin
 
 fun createDefaultTextRenderer(): TextRenderer {
-    return TextRendererUtil.createTextRenderer("vitala", 11f)!!
+    return createTextRenderer("vitala", 11f)!!
 }
 
 var customTextRenderer = run {
     if (config.customFont != null) {
         try {
-            return@run TextRendererUtil.createTextRendererFromProgresoResource(
+            return@run createTextRendererFromProgresoResource(
                 config.customFont!!.name!!,
                 config.customFont!!.size!!
             )!!
@@ -49,12 +43,12 @@ val Color.glColors: List<Float>
         (rgb shr 24 and 0xFF) / 255.0f,
     )
 
-operator fun DrawContext.invoke(block: ContextWrapper.() -> Unit) {
-    ContextWrapper(this).apply(block)
+operator fun DrawContext.invoke(block: DrawContextWrapper.() -> Unit) {
+    DrawContextWrapper(this).apply(block)
 }
 
-fun <S> DrawContext.invokeSuper(superRef: S, block: ContextWrapper.(S) -> Unit) {
-    ContextWrapper(this).also { block(it, superRef) }
+fun <S> DrawContext.invokeSuper(superRef: S, block: DrawContextWrapper.(S) -> Unit) {
+    DrawContextWrapper(this).also { block(it, superRef) }
 }
 
 val DrawContext.fontHeight get() = textRenderer.fontHeight
@@ -108,44 +102,11 @@ fun DrawContext.drawHorizontalLine(startX: Int, endX: Int, y: Int, color: Color)
     fill(startX, y, endX, y + 1, color.rgb)
 }
 
-fun DrawContext.drawCircle(
-    centerX: Int,
-    centerY: Int,
-    angleFrom: Double,
-    angleTo: Double,
-    segments: Int,
-    radius: Double,
-    color: Color
-) {
-    val buffer = Tessellator.getInstance().buffer
-    val matrix = matrices.peek().positionMatrix
-
-    val angleStep = Math.toRadians(angleTo - angleFrom) / segments
-
-    buffer.begin(VertexFormat.DrawMode.TRIANGLE_FAN, VertexFormats.POSITION_COLOR)
-    buffer.vertex(matrix, centerX.toFloat(), centerY.toFloat(), 0f).color(color.rgb).next()
-
-    for (i in segments downTo 0) {
-        val theta = Math.toRadians(angleFrom) + i * angleStep
-        buffer.vertex(
-            matrix,
-            (centerX - cos(theta) * radius).toFloat(),
-            (centerY - sin(theta) * radius).toFloat(), 0f
-        ).color(color.rgb).next()
-    }
-
-    RenderSystem.enableBlend()
-    RenderSystem.defaultBlendFunc()
-    RenderSystem.setShader(GameRenderer::getPositionColorProgram)
-
-    Tessellator.getInstance().draw()
-}
-
 fun DrawContext.getTextWidth(string: String): Int {
     return textRenderer.getWidth(string)
 }
 
-class ContextWrapper(private val context: DrawContext) {
+class DrawContextWrapper(private val context: DrawContext) {
     val fontHeight get() = context.fontHeight
 
     fun drawText(textRenderer: TextRenderer, text: String, x: Int, y: Int, color: Color, shadow: Boolean = false) {
@@ -203,18 +164,6 @@ class ContextWrapper(private val context: DrawContext) {
             y + height.div(2) - context.fontHeight.div(2),
             color
         )
-    }
-
-    fun drawCircle(
-        centerX: Int,
-        centerY: Int,
-        angleFrom: Double,
-        angleTo: Double,
-        segments: Int,
-        radius: Double,
-        color: Color
-    ) {
-        context.drawCircle(centerX, centerY, angleFrom, angleTo, segments, radius, color)
     }
 
     fun getTextWidth(string: String): Int {

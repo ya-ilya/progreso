@@ -4,6 +4,9 @@ import net.minecraft.client.gui.DrawContext
 import org.progreso.api.setting.settings.NumberSetting
 import org.progreso.client.gui.clickgui.element.ParentElement
 import org.progreso.client.gui.invoke
+import org.progreso.client.util.render.drawCircle
+import org.progreso.client.util.render.render2D
+import org.progreso.client.util.render.withColor
 import java.awt.Color
 import kotlin.math.floor
 
@@ -84,13 +87,17 @@ class SliderElement(
                 SLIDER_HEIGHT,
                 mainColor
             )
-            drawCircle(
-                sliderStartX + sliderWidth,
-                sliderStartY + SLIDER_HEIGHT / 2,
-                0.0, 360.0,
-                40, 2.6,
-                mainColor
-            )
+
+            render2D(context) {
+                withColor(mainColor) {
+                    drawCircle(
+                        sliderStartX + sliderWidth,
+                        sliderStartY + SLIDER_HEIGHT / 2,
+                        0.0, 360.0,
+                        40, 2.6
+                    )
+                }
+            }
         }
     }
 

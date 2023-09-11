@@ -14,7 +14,7 @@ import org.progreso.client.gui.drawText
 import org.progreso.client.gui.invoke
 import org.progreso.client.gui.minecraft.common.SimpleElementListEntry
 import org.progreso.client.gui.minecraft.common.TitledScreen
-import org.progreso.client.util.session.SessionUtil
+import org.progreso.client.util.misc.SessionUtil
 import java.awt.Color
 
 class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n = "gui.alts.title") {

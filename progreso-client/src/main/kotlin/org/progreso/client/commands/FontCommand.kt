@@ -10,7 +10,7 @@ import org.progreso.client.gui.createDefaultTextRenderer
 import org.progreso.client.gui.customTextRenderer
 import org.progreso.client.managers.minecraft.ProgresoResourceManager
 import org.progreso.client.managers.minecraft.exceptions.ProgresoResourceManagerException
-import org.progreso.client.util.render.TextRendererUtil
+import org.progreso.client.util.render.createTextRendererFromProgresoResource
 
 @AbstractCommand.Register("font")
 object FontCommand : AbstractCommand() {
@@ -65,7 +65,7 @@ object FontCommand : AbstractCommand() {
 
     private fun loadFont(fontName: String, size: Float = 11f) {
         try {
-            customTextRenderer = TextRendererUtil.createTextRendererFromProgresoResource(fontName, size)!!
+            customTextRenderer = createTextRendererFromProgresoResource(fontName, size)!!
             config.customFont = Client.ProgresoGlobalConfigAccessor.GlobalConfig.CustomFont(fontName, size)
 
             infoLocalized(

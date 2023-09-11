@@ -1,4 +1,4 @@
-package org.progreso.client.util.session
+package org.progreso.client.util.misc
 
 import com.google.gson.JsonElement
 import net.minecraft.client.util.Session

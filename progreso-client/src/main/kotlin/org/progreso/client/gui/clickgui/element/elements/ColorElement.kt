@@ -3,6 +3,7 @@ package org.progreso.client.gui.clickgui.element.elements
 import com.mojang.blaze3d.platform.GlStateManager
 import com.mojang.blaze3d.systems.RenderSystem
 import net.minecraft.client.gui.DrawContext
+import net.minecraft.client.render.GameRenderer
 import net.minecraft.client.render.Tessellator
 import net.minecraft.client.render.VertexFormat
 import net.minecraft.client.render.VertexFormats
@@ -13,6 +14,9 @@ import org.progreso.client.gui.clickgui.element.AbstractChildListElement
 import org.progreso.client.gui.clickgui.element.ParentElement
 import org.progreso.client.gui.glColors
 import org.progreso.client.gui.invoke
+import org.progreso.client.util.render.drawCircle
+import org.progreso.client.util.render.render2D
+import org.progreso.client.util.render.withColor
 import java.awt.Color
 import kotlin.math.max
 import kotlin.math.min
@@ -108,9 +112,13 @@ class ColorElement(
                 val (red, green, blue, alpha) = color.glColors
                 val matrix = context.matrices.peek().positionMatrix
 
-                context.matrices.push()
                 RenderSystem.enableBlend()
                 RenderSystem.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA)
+                RenderSystem.disableDepthTest()
+
+                context.matrices.push()
+
+                RenderSystem.setShader(GameRenderer::getPositionColorProgram)
 
                 val buffer = Tessellator.getInstance().buffer
                 buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR)
@@ -160,6 +168,10 @@ class ColorElement(
 
                 Tessellator.getInstance().draw()
                 context.matrices.pop()
+
+                RenderSystem.setShaderColor(1f, 1f, 1f, 1f)
+                RenderSystem.disableBlend()
+                RenderSystem.enableDepthTest()
             }
         })
 
@@ -173,13 +185,17 @@ class ColorElement(
                     offsets.textOffset,
                     Color.WHITE
                 )
-                drawCircle(
-                    x + width - 9,
-                    y + height.div(2),
-                    0.0, 360.0,
-                    40, 2.6,
-                    setting.value
-                )
+
+                render2D(context) {
+                    withColor(setting.value) {
+                        drawCircle(
+                            x + width - 9,
+                            y + height.div(2),
+                            0.0, 360.0,
+                            40, 2.6
+                        )
+                    }
+                }
             }
         }
     }

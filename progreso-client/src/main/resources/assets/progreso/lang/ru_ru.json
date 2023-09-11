@@ -98,5 +98,6 @@
   "module.autowalk.description": "Автоматически ходит в заданном направлении",
   "module.safewalk.description": "Предотвращает схождение с краев блоков",
   "module.sprint.description": "Автоматически зажимает кнопку спринта",
-  "module.fullbright.description": "Изменяет гамму игры на максимум"
+  "module.fullbright.description": "Изменяет гамму игры на максимум",
+  "module.storageesp.description": "Показывает сундуки через блоки"
 }
