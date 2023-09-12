@@ -10,7 +10,7 @@ import java.awt.Color
 object ClickGUI : AbstractModule() {
     val scrollSpeed by setting("ScrollSpeed", 15, 0..30)
     val mainColor by setting("MainColor", Color.RED)
-    val rectColor by setting("RectColor", Color(0, 0, 0, 130))
+    val rectColor by setting("RectColor", Color(0, 0, 0, 170))
     val customFont by setting("CustomFont", true)
 
     init {
