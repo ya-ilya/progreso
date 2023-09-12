@@ -98,6 +98,7 @@
   "module.AutoWalk.description": "Automatically walks in the specified direction",
   "module.SafeWalk.description": "Prevents you from walking off edges",
   "module.Sprint.description": "Automatically makes the player sprint",
+  "module.ESP.description": "Draws entities through blocks",
   "module.FullBright.description": "Changes game gamma to maximum",
   "module.StorageESP.description": "Draws storages through blocks"
 }

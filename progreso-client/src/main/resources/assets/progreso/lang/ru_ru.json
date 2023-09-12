@@ -98,6 +98,7 @@
   "module.AutoWalk.description": "Автоматически ходит в заданном направлении",
   "module.SafeWalk.description": "Предотвращает схождение с краев блоков",
   "module.Sprint.description": "Автоматически зажимает кнопку спринта",
+  "module.ESP.description": "Показывает сущностей через блоки",
   "module.FullBright.description": "Изменяет гамму игры на максимум",
   "module.StorageESP.description": "Показывает сундуки через блоки"
 }

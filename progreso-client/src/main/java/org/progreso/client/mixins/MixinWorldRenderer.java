@@ -30,6 +30,6 @@ public abstract class MixinWorldRenderer {
         Matrix4f projectionMatrix,
         CallbackInfo callbackInfo
     ) {
-        Client.EVENT_BUS.post(new Render3DEvent(matrices));
+        Client.EVENT_BUS.post(new Render3DEvent(matrices, tickDelta));
     }
 }
