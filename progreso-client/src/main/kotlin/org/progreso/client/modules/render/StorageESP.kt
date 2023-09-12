@@ -13,7 +13,6 @@ import org.progreso.client.util.render.*
 import org.progreso.client.util.world.WorldUtil.blockEntities
 import java.awt.Color
 
-
 @AbstractModule.AutoRegister
 object StorageESP : AbstractModule() {
     private val DEFAULT_BOX = Box(0.0, 0.0, 0.0, 1.0, 1.0, 1.0)
