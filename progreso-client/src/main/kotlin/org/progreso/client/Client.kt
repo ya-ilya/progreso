@@ -139,7 +139,9 @@ class Client : ClientModInitializer {
             }
 
         fun setScreen(screen: Screen?) {
-            client.setScreen(screen)
+            client.send {
+                client.setScreen(screen)
+            }
         }
 
         fun isNotSafe(): Boolean {
