@@ -18,12 +18,14 @@ class NumberSetting<T>(
     val max: T get() = range.endInclusive
 
     @Suppress("UNCHECKED_CAST")
-    fun setNumberValue(number: Number) {
+    override fun setAnyValue(any: Any) {
+        if (any !is Number) throw IllegalArgumentException()
+
         value = when (initialValue) {
-            is Short -> number.toShort() as T
-            is Int -> number.toInt() as T
-            is Float -> number.toFloat() as T
-            is Double -> number.toDouble() as T
+            is Short -> any.toShort() as T
+            is Int -> any.toInt() as T
+            is Float -> any.toFloat() as T
+            is Double -> any.toDouble() as T
             else -> throw IllegalArgumentException()
         }
     }

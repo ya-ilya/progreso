@@ -50,7 +50,7 @@ class SliderElement(
             }
 
             try {
-                setting.setNumberValue(
+                setting.setAnyValue(
                     when {
                         setting.value == setting.max.toDouble() - 0.1f && sliderWidth == width - 1 -> {
                             setting.max
