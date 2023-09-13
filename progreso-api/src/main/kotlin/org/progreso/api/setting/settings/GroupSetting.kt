@@ -18,6 +18,10 @@ class GroupSetting(
             valueListeners.forEach { it.invoke(oldValue, settings) }
         }
 
+    override fun reset() {
+        // Empty
+    }
+
     override fun setting(name: String, visibility: () -> Boolean): GroupSetting {
         throw UnsupportedOperationException("GroupSetting doesn't support adding other GroupSettings to itself")
     }

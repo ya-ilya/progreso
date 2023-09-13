@@ -3,6 +3,7 @@
   "argument.module.error": "Модуль '%s' не найден",
   "argument.player.error": "Игрок '%s' не найден",
   "argument.plugin.error": "Плагин '%s' не найден",
+  "argument.setting.error": "Настройка '%s' не найдена в модуле %s",
 
   "command.command_not_found": "Команда не найдена",
   "command.invalid_syntax": "Неправильный синтаксис. Сообщение об ошибке: %s",
@@ -50,6 +51,8 @@
   "command.plugin.version_entry": "Версия: %s",
   "command.plugin.list": "Плагины: %s",
 
+  "command.reset.setting": "Значение настройки %s в модуле %s было сброшено",
+
   "module.notifications.module_message": "[Notifications] %s%s",
   "module.notifications.pop_message": "[Notifications] %s потреял %d тотемов",
   "module.notifications.death_message": "[Notifications] %s умер после %d тотемов",
@@ -81,6 +84,7 @@
   "command.help.description": "Список команд",
   "command.irc.description": "Подключиться/отправить сообщение по IRC",
   "command.plugin.description": "Управление плагинами",
+  "command.reset.description": "Сбросить значение настройки в модуле",
   "command.toggle.description": "Включить/выключить модуль",
 
   "module.ClickGUI.description": "Открывает ClickGUI",

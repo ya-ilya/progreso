@@ -3,6 +3,7 @@
   "argument.module.error": "Module '%s' not found",
   "argument.player.error": "Player '%s' not found",
   "argument.plugin.error": "Plugin '%s' not found",
+  "argument.setting.error": "Setting '%s' not found in %s module",
 
   "command.command_not_found": "Command not found",
   "command.invalid_syntax": "Invalid syntax: %s",
@@ -50,6 +51,8 @@
   "command.plugin.version_entry": "Version: %s",
   "command.plugin.list": "Plugins: %s",
 
+  "command.reset.setting": "Value of %s setting in module %s has been reset",
+
   "module.notifications.module_message": "[Notifications] %s%s",
   "module.notifications.pop_message": "[Notifications] %s has popped %d totems",
   "module.notifications.death_message": "[Notifications] %s died after popping %d totems",
@@ -81,6 +84,7 @@
   "command.help.description": "Command list",
   "command.irc.description": "Connect/send message to IRC",
   "command.plugin.description": "Manage plugins",
+  "command.reset.description": "Reset setting value in module",
   "command.toggle.description": "Toggle module on/off",
 
   "module.ClickGUI.description": "Opens the ClickGUI",

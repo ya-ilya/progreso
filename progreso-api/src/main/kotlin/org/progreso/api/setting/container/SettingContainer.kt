@@ -17,7 +17,7 @@ interface SettingContainer {
 
     @Suppress("UNCHECKED_CAST")
     fun <T : AbstractSetting<*>> getSettingByNameOrNull(name: String, clazz: KClass<T>): T? {
-        return settings.first { it::class == clazz && it.name == name } as T?
+        return settings.firstOrNull { (if (clazz != AbstractSetting::class) it::class == clazz else true) && it.name == name } as T?
     }
 
     fun setting(

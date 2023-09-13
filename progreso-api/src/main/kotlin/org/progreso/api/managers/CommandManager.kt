@@ -32,7 +32,7 @@ object CommandManager : CommandContainer {
                 Api.CHAT.errorLocalized("command.command_not_found")
             }
         } catch (ex: CommandSyntaxException) {
-            Api.CHAT.errorLocalized("command.invalid_syntax", "message" to ex.message!!)
+            Api.CHAT.errorLocalized("command.invalid_syntax", ex.message!!)
             ex.printStackTrace()
         } catch (ex: Exception) {
             Api.CHAT.errorLocalized("command.failed_to_execute")

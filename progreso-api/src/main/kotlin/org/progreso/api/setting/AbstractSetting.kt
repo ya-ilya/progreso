@@ -26,6 +26,10 @@ abstract class AbstractSetting<T : Any>(
         valueListeners.add(block)
     }
 
+    open fun reset() {
+        this.value = initialValue
+    }
+
     @Suppress("UNCHECKED_CAST")
     open fun setAnyValue(any: Any) {
         this.value = any as T
