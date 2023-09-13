@@ -10,6 +10,7 @@ import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.util.math.MathHelper
 import net.minecraft.util.math.Vec3d
 import org.progreso.api.module.AbstractModule
+import org.progreso.api.setting.container.SettingContainer
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.events.misc.TickEvent
 import org.progreso.client.events.render.Render3DEvent
@@ -17,20 +18,34 @@ import org.progreso.client.events.safeEventListener
 import org.progreso.client.gui.clickgui.element.elements.ColorElement.Companion.copy
 import org.progreso.client.util.render.*
 import java.awt.Color
+import kotlin.properties.ReadWriteProperty
+import kotlin.reflect.KProperty
 
 @AbstractModule.AutoRegister
 object ESP : AbstractModule() {
-    private val players by setting("Players", true)
-    private val monsters by setting("Monsters", false)
-    private val animals by setting("Animals", false)
+    private val players by espSetting("Players", true, Color.WHITE)
+    private val monsters by espSetting("Monsters", false, Color.RED)
+    private val animals by espSetting("Animals", false, Color.GREEN)
     private val self by setting("Self", false)
 
-    private val colors = setting("colors")
-    private val playersColor by colors.setting("Players", Color.WHITE)
-    private val monstersColor by colors.setting("Monsters", Color.RED)
-    private val animalsColor by colors.setting("Animals", Color.GREEN)
-
     private val renderMap = mutableMapOf<Entity, Color>()
+
+    fun SettingContainer.espSetting(name: String, render: Boolean, color: Color): ReadWriteProperty<Any?, Pair<Boolean, Color>> {
+        return object : ReadWriteProperty<Any?, Pair<Boolean, Color>> {
+            private val groupSetting = setting(name)
+            private var renderSetting by groupSetting.setting("Render", render)
+            private var colorSetting by groupSetting.setting("Color", color)
+
+            override fun getValue(thisRef: Any?, property: KProperty<*>): Pair<Boolean, Color> {
+                return renderSetting to colorSetting
+            }
+
+            override fun setValue(thisRef: Any?, property: KProperty<*>, value: Pair<Boolean, Color>) {
+                renderSetting = value.first
+                colorSetting = value.second
+            }
+        }
+    }
 
     init {
         safeEventListener<TickEvent> {
@@ -40,9 +55,9 @@ object ESP : AbstractModule() {
                 if (entity == mc.player && !self) continue
 
                 val (render, color) = when (entity) {
-                    is PlayerEntity -> players to playersColor
-                    is Monster -> monsters to monstersColor
-                    is PassiveEntity, is WaterCreatureEntity, is SnowGolemEntity, is IronGolemEntity -> animals to animalsColor
+                    is PlayerEntity -> players
+                    is Monster -> monsters
+                    is PassiveEntity, is WaterCreatureEntity, is SnowGolemEntity, is IronGolemEntity -> animals
                     else -> continue
                 }
 
