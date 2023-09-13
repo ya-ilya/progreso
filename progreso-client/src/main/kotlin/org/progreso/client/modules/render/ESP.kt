@@ -28,7 +28,7 @@ object ESP : AbstractModule() {
     private val colors = setting("colors")
     private val playersColor by colors.setting("Players", Color.WHITE)
     private val monstersColor by colors.setting("Monsters", Color.RED)
-    private val animalsColor by setting("Animals", Color.GREEN)
+    private val animalsColor by colors.setting("Animals", Color.GREEN)
 
     private val renderMap = mutableMapOf<Entity, Color>()
 
