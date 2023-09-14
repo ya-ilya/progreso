@@ -1,10 +1,10 @@
 package org.progreso.client.commands
 
-import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import org.progreso.api.command.AbstractCommand
 import org.progreso.api.command.arguments.ModuleArgumentType
 import org.progreso.api.setting.settings.BindSetting
+import org.progreso.client.commands.arguments.KeyArgumentType
 import org.progreso.client.util.client.KeyboardUtil
 
 @AbstractCommand.Register("bind")
@@ -13,17 +13,11 @@ object BindCommand : AbstractCommand() {
         builder.then(
             argument("module", ModuleArgumentType())
                 .then(
-                    argument("key", StringArgumentType.string()).executesSuccess { context ->
+                    argument("key", KeyArgumentType()).executesSuccess { context ->
                         val module = ModuleArgumentType[context]
-                        val key = StringArgumentType.getString(context, "key")
+                        val key = KeyArgumentType[context]
 
-                        module.bind = try {
-                            KeyboardUtil.getKeyCode(key)
-                        } catch (ex: Exception) {
-                            errorLocalized("command.bind.key_error", key)
-                            return@executesSuccess
-                        }
-
+                        module.bind = key
                         infoLocalized("command.bind.key", module.name, key)
                     }
                 )

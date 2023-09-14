@@ -1,6 +1,7 @@
 {
   "argument.font.error": "Шрифт '%s' не найден",
   "argument.friend.error": "У вас нету друга с именем %s",
+  "argument.key.error": "Клавиша '%s' не существует",
   "argument.module.error": "Модуль '%s' не найден",
   "argument.player.error": "Игрок '%s' не найден",
   "argument.plugin.error": "Плагин '%s' не найден",
@@ -11,7 +12,6 @@
   "command.failed_to_execute": "Ошибка при выполнении команды",
 
   "command.bind.key": "%s забинжен на клавишу '%s'",
-  "command.bind.key_error": "Клавина '%s' не найдена",
   "command.bind.reset": "Клавиша %s сброшена",
   "command.bind.current": "Текущий бинд %s: %s",
 
