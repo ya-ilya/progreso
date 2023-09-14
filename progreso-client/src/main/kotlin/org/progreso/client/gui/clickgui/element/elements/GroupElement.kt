@@ -6,7 +6,7 @@ import org.progreso.client.gui.clickgui.element.AbstractChildElement
 import org.progreso.client.gui.clickgui.element.AbstractChildListElement
 import org.progreso.client.gui.clickgui.element.ParentElement
 import org.progreso.client.gui.clickgui.element.elements.SettingElement.Companion.createSettingElement
-import org.progreso.client.gui.invokeSuper
+import org.progreso.client.gui.invoke
 import java.awt.Color
 
 class GroupElement(
@@ -24,7 +24,7 @@ class GroupElement(
         )
 
         header = object : AbstractChildElement(height, this@GroupElement) {
-            override fun render(context: DrawContext, mouseX: Int, mouseY: Int) = context.invokeSuper(this) {
+            override fun render(context: DrawContext, mouseX: Int, mouseY: Int) = context.invoke(this) {
                 drawTextRelatively(
                     setting.name,
                     it.parent.offsets.textOffset,

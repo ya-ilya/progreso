@@ -7,7 +7,7 @@ import org.progreso.client.gui.clickgui.element.AbstractChildElement
 import org.progreso.client.gui.clickgui.element.ParentElement
 import org.progreso.client.gui.clickgui.element.data.ElementOffsets
 import org.progreso.client.gui.drawRect
-import org.progreso.client.gui.invokeSuper
+import org.progreso.client.gui.invoke
 import java.awt.Color
 
 @Suppress("SuspiciousVarProperty")
@@ -105,7 +105,7 @@ abstract class AbstractWindow(
         override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
             super.render(context, mouseX, mouseY)
 
-            context.invokeSuper(this) {
+            context.invoke(this) {
                 drawHorizontalLine(it.x, it.x + it.width, it.y + it.height - 1, mainColor)
                 drawCenteredString(
                     header,

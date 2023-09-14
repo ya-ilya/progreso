@@ -47,7 +47,7 @@ operator fun DrawContext.invoke(block: DrawContextWrapper.() -> Unit) {
     DrawContextWrapper(this).apply(block)
 }
 
-fun <S> DrawContext.invokeSuper(superRef: S, block: DrawContextWrapper.(S) -> Unit) {
+fun <S> DrawContext.invoke(superRef: S, block: DrawContextWrapper.(S) -> Unit) {
     DrawContextWrapper(this).also { block(it, superRef) }
 }
 
