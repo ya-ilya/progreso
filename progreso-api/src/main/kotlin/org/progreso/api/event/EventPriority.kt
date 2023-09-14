@@ -1,8 +1,8 @@
 package org.progreso.api.event
 
 enum class EventPriority {
-    LOW,
     LOWEST,
+    LOW,
     NORMAL,
     HIGH,
     HIGHEST
