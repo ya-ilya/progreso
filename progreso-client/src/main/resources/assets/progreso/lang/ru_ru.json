@@ -1,4 +1,5 @@
 {
+  "argument.config.error": "Конфиг '%s' не найден в категории %s",
   "argument.font.error": "Шрифт '%s' не найден",
   "argument.friend.error": "У вас нету друга с именем %s",
   "argument.key.error": "Клавиша '%s' не существует",
@@ -16,7 +17,6 @@
   "command.bind.current": "Текущий бинд %s: %s",
 
   "command.config.load": "Конфиг '%s' загружен",
-  "command.config.load_error": "Конфиг '%s' не найден",
   "command.config.save": "Конфиг '%s' сохранен",
   "command.config.save_many": "Конфиги в хелпере '%s' сохранены",
   "command.config.refresh": "Конфиг '%s' обновлен",

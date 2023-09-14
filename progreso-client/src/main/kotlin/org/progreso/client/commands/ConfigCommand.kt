@@ -3,6 +3,7 @@ package org.progreso.client.commands
 import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import org.progreso.api.command.AbstractCommand
+import org.progreso.api.command.arguments.ConfigArgumentType
 import org.progreso.api.managers.ConfigManager
 
 @AbstractCommand.Register("config")
@@ -12,19 +13,10 @@ object ConfigCommand : AbstractCommand() {
             val literal = literal(category.name)
                 .then(
                     literal("load").then(
-                        argument("config", StringArgumentType.string()).executesSuccess { context ->
-                            val config = StringArgumentType.getString(context, "config")
+                        argument("config", ConfigArgumentType(category)).executesSuccess { context ->
+                            val config = ConfigArgumentType[context]
 
-                            try {
-                                category.load(config)
-                            } catch (ex: Exception) {
-                                errorLocalized(
-                                    "command.config.load_error",
-                                    config
-                                )
-                                return@executesSuccess
-                            }
-
+                            category.load(config.name)
                             infoLocalized(
                                 "command.config.load",
                                 config
@@ -54,10 +46,10 @@ object ConfigCommand : AbstractCommand() {
                 )
                 .then(
                     literal("refresh").then(
-                        argument("config", StringArgumentType.string()).executesSuccess { context ->
-                            val config = StringArgumentType.getString(context, "config")
+                        argument("config", ConfigArgumentType(category)).executesSuccess { context ->
+                            val config = ConfigArgumentType[context]
 
-                            category.refresh(config)
+                            category.refresh(config.name)
                             infoLocalized(
                                 "command.config.refresh",
                                 config

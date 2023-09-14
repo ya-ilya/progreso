@@ -1,4 +1,5 @@
 {
+  "argument.config.error": "Config '%s' not found in %s category",
   "argument.font.error": "Font '%s' not found",
   "argument.friend.error": "Friend '%s' not found",
   "argument.key.error": "Key '%s' not exists",
@@ -16,7 +17,6 @@
   "command.bind.current": "Current %s bind: %s",
 
   "command.config.load": "Loaded %s config",
-  "command.config.load_error": "Config %s not found",
   "command.config.save": "Saved %s config",
   "command.config.save_many": "Saved %s configs",
   "command.config.refresh": "Refreshed %s config",
