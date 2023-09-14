@@ -1,11 +1,11 @@
 package org.progreso.client.commands
 
 import com.mojang.brigadier.arguments.FloatArgumentType
-import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import org.progreso.api.command.AbstractCommand
 import org.progreso.client.Client
 import org.progreso.client.Client.Companion.config
+import org.progreso.client.commands.arguments.FontArgumentType
 import org.progreso.client.gui.createDefaultTextRenderer
 import org.progreso.client.gui.customTextRenderer
 import org.progreso.client.managers.minecraft.ProgresoResourceManager
@@ -17,17 +17,17 @@ object FontCommand : AbstractCommand() {
     override fun build(builder: LiteralArgumentBuilder<Any>) {
         builder.then(
             literal("load").then(
-                argument("font", StringArgumentType.string())
+                argument("font", FontArgumentType())
                     .then(
                         argument("size", FloatArgumentType.floatArg()).executesSuccess { context ->
                             loadFont(
-                                StringArgumentType.getString(context, "font"),
+                                FontArgumentType[context],
                                 FloatArgumentType.getFloat(context, "size")
                             )
                         }
                     )
                     .executesSuccess { context ->
-                        loadFont(StringArgumentType.getString(context, "font"))
+                        loadFont(FontArgumentType[context])
                     }
             )
         )
@@ -74,7 +74,7 @@ object FontCommand : AbstractCommand() {
             )
         } catch (ex: ProgresoResourceManagerException) {
             errorLocalized(
-                "command.font.not_found_error",
+                "argument.font.error",
                 fontName
             )
         } catch (ex: Exception) {

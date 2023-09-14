@@ -7,12 +7,12 @@ import com.mojang.brigadier.exceptions.DynamicCommandExceptionType
 import com.mojang.brigadier.suggestion.Suggestions
 import com.mojang.brigadier.suggestion.SuggestionsBuilder
 import net.minecraft.client.network.PlayerListEntry
-import net.minecraft.command.CommandSource
+import org.progreso.api.Api
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.accessors.TextAccessor
 import java.util.concurrent.CompletableFuture
 
-class PlayerArgumentType : ArgumentType<PlayerListEntry?> {
+class PlayerArgumentType : ArgumentType<PlayerListEntry> {
     companion object {
         private val NO_SUCH_PLAYER = DynamicCommandExceptionType { name: Any ->
             TextAccessor.i18nMessage("argument.player.error", name)
@@ -45,7 +45,7 @@ class PlayerArgumentType : ArgumentType<PlayerListEntry?> {
         context: CommandContext<S>,
         builder: SuggestionsBuilder
     ): CompletableFuture<Suggestions> {
-        return CommandSource.suggestMatching(mc.networkHandler.playerList.map { it.profile.name }, builder)
+        return Api.COMMAND.suggestMatching(mc.networkHandler.playerList.map { it.profile.name }, builder)
     }
 
     override fun getExamples(): Collection<String> {

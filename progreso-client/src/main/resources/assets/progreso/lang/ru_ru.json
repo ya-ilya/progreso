@@ -1,4 +1,5 @@
 {
+  "argument.font.error": "Шрифт '%s' не найден",
   "argument.friend.error": "У вас нету друга с именем %s",
   "argument.module.error": "Модуль '%s' не найден",
   "argument.player.error": "Игрок '%s' не найден",
@@ -24,7 +25,6 @@
   "command.config.current": "Текущий '%s' конфиг: %s",
 
   "command.font.load": "Шрифт '%s' загружен",
-  "command.font.not_found_error": "Шрифт '%s' не найден в папке шрифтов",
   "command.font.unknown_error": "Произошла неизвестная ошибка при загрузке шрифта '%s'",
   "command.font.reset": "Шрифт сброшен до шрифта по умолчанию",
   "command.font.list": "Шрифты: %s",

@@ -1,4 +1,5 @@
 {
+  "argument.font.error": "Font '%s' not found",
   "argument.friend.error": "Friend '%s' not found",
   "argument.module.error": "Module '%s' not found",
   "argument.player.error": "Player '%s' not found",
@@ -24,7 +25,6 @@
   "command.config.current": "Current %s config: %s",
 
   "command.font.load": "Loaded %s font",
-  "command.font.not_found_error": "Font %s not found in fonts folder",
   "command.font.unknown_error": "Unknown error has occurred when loading %s font",
   "command.font.reset": "Font reset to default font",
   "command.font.list": "Fonts: %s",

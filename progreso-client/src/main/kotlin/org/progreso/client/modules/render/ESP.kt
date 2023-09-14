@@ -30,7 +30,11 @@ object ESP : AbstractModule() {
 
     private val renderMap = mutableMapOf<Entity, Color>()
 
-    fun SettingContainer.espSetting(name: String, render: Boolean, color: Color): ReadWriteProperty<Any?, Pair<Boolean, Color>> {
+    fun SettingContainer.espSetting(
+        name: String,
+        render: Boolean,
+        color: Color
+    ): ReadWriteProperty<Any?, Pair<Boolean, Color>> {
         return object : ReadWriteProperty<Any?, Pair<Boolean, Color>> {
             private val groupSetting = setting(name)
             private var renderSetting by groupSetting.setting("Render", render)

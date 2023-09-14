@@ -17,13 +17,13 @@ object FriendCommand : AbstractCommand() {
                     if (FriendManager.isFriend(player.profile.name)) {
                         errorLocalized(
                             "command.friend.add_error",
-                            player
+                            player.profile.name
                         )
                     } else {
                         FriendManager.addFriendByName(player.profile.name)
                         infoLocalized(
                             "command.friend.add",
-                            player
+                            player.profile.name
                         )
                     }
                 }
