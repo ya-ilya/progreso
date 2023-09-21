@@ -1,6 +1,5 @@
 package org.progreso.api.managers
 
-import com.mojang.brigadier.Command.SINGLE_SUCCESS
 import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import com.mojang.brigadier.exceptions.CommandSyntaxException
@@ -28,11 +27,14 @@ object CommandManager : CommandContainer {
 
     fun dispatch(input: String) {
         try {
-            if (DISPATCHER.execute(input.removePrefix(PREFIX), SOURCE) != SINGLE_SUCCESS) {
-                Api.CHAT.errorLocalized("command.command_not_found")
-            }
+            DISPATCHER.execute(input.removePrefix(PREFIX), SOURCE)
         } catch (ex: CommandSyntaxException) {
-            Api.CHAT.errorLocalized("command.invalid_syntax", ex.message!!)
+            if (ex.cursor == 0) {
+                Api.CHAT.errorLocalized("command.command_not_found")
+            } else {
+                Api.CHAT.errorLocalized("command.invalid_syntax", ex.message!!)
+            }
+
             ex.printStackTrace()
         } catch (ex: Exception) {
             Api.CHAT.errorLocalized("command.failed_to_execute")
