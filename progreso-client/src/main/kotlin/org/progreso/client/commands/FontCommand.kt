@@ -44,7 +44,7 @@ object FontCommand : AbstractCommand() {
         builder.then(
             literal("list").executesSuccess {
                 infoLocalized(
-                    "command.font.list",
+                    ProgresoResourceManager.fonts.ifEmpty("command.font.list", "command.font.list_empty"),
                     ProgresoResourceManager.fonts.joinToString()
                 )
             }

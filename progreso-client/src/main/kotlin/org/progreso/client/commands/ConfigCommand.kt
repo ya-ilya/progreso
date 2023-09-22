@@ -66,7 +66,7 @@ object ConfigCommand : AbstractCommand() {
                 .then(
                     literal("list").executesSuccess {
                         infoLocalized(
-                            "command.config.list",
+                            category.configs.ifEmpty("command.config.list", "command.config.list_empty"),
                             category.name,
                             category.configs.joinToString { it.name }
                         )

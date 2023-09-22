@@ -44,6 +44,10 @@ abstract class AbstractCommand {
             }
         }
 
+        fun <T, R> Collection<T>.ifEmpty(notEmpty: R, empty: R): R {
+            return if (isEmpty()) empty else notEmpty
+        }
+
         fun send(message: Any) = Api.CHAT.send(message)
 
         fun sendLocalized(key: String, vararg args: Any) =

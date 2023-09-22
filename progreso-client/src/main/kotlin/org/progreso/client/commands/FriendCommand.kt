@@ -46,7 +46,7 @@ object FriendCommand : AbstractCommand() {
 
         builder.then(literal("list").executesSuccess {
             infoLocalized(
-                "command.friend.list",
+                FriendManager.friends.ifEmpty("command.friend.list", "command.friend.list_empty"),
                 FriendManager.friends.joinToString()
             )
         })

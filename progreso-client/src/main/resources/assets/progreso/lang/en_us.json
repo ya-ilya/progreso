@@ -22,12 +22,14 @@
   "command.config.refresh": "Refreshed %s config",
   "command.config.refresh_many": "Refreshed %s configs",
   "command.config.list": "Configs in %s: %s",
+  "command.config.list_empty": "Config list in %s is empty",
   "command.config.current": "Current %s config: %s",
 
   "command.font.load": "Loaded %s font",
   "command.font.unknown_error": "Unknown error has occurred when loading %s font",
   "command.font.reset": "Font reset to default font",
   "command.font.list": "Fonts: %s",
+  "command.font.list_empty": "Font list is empty",
   "command.font.current": "Current font: %s (Size = %d)",
   "command.font.current_error": "Font not set",
 
@@ -35,6 +37,7 @@
   "command.friend.add_error": "%s already your friend",
   "command.friend.remove": "%s now isn't your friend",
   "command.friend.list": "Friends: %s",
+  "command.friend.list_empty": "Friend list is empty",
 
   "command.help.header": "Available commands:",
   "command.help.entry": "- %s: %s",
@@ -50,6 +53,7 @@
   "command.plugin.author_entry": "Author: %s",
   "command.plugin.version_entry": "Version: %s",
   "command.plugin.list": "Plugins: %s",
+  "command.plugin.list_empty": "Plugin list is empty",
 
   "command.reset.setting": "Value of %s setting in module %s has been reset",
 

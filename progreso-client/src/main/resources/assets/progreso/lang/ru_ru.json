@@ -22,12 +22,14 @@
   "command.config.refresh": "Конфиг '%s' обновлен",
   "command.config.refresh_many": "Конфиги в хелпере '%s' обновлены",
   "command.config.list": "Конфиги в хелпере '%s': %s",
+  "command.config.list_empty": "Список конфигов в хелпере '%s' пуст",
   "command.config.current": "Текущий '%s' конфиг: %s",
 
   "command.font.load": "Шрифт '%s' загружен",
   "command.font.unknown_error": "Произошла неизвестная ошибка при загрузке шрифта '%s'",
   "command.font.reset": "Шрифт сброшен до шрифта по умолчанию",
   "command.font.list": "Шрифты: %s",
+  "command.font.list_empty": "Список шрифтов пуст",
   "command.font.current": "Текущий шрифт: %s (Размер = %d)",
   "command.font.current_error": "Шрифт не установлен",
 
@@ -35,6 +37,7 @@
   "command.friend.add_error": "%s уже является вашим другом",
   "command.friend.remove": "%s теперь не является вашим другом",
   "command.friend.list": "Ваши друзья: %s",
+  "command.friend.list_empty": "Список друзей пуст",
 
   "command.help.header": "Доступные команды:",
   "command.help.entry": "- %s: %s",
@@ -50,6 +53,7 @@
   "command.plugin.author_entry": "Автор: %s",
   "command.plugin.version_entry": "Версия: %s",
   "command.plugin.list": "Плагины: %s",
+  "command.plugin.list_empty": "Список плагинов пуст",
 
   "command.reset.setting": "Значение настройки %s в модуле %s было сброшено",
 

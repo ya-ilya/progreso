@@ -25,7 +25,7 @@ object PluginCommand : AbstractCommand() {
 
         builder.then(literal("list").executesSuccess {
             infoLocalized(
-                "command.plugin.list",
+                PluginManager.plugins.ifEmpty("command.plugin.list", "command.plugin.list_empty"),
                 PluginManager.plugins.joinToString { it.name }
             )
         })
