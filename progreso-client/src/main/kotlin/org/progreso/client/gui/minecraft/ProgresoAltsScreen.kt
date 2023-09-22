@@ -99,7 +99,7 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
                     button.dimensions(width / 2 - 66, height / 2 + 8, 132, 20)
                     button.onPress {
                         if (name.text.length >= 3) {
-                            AltManager.addAlt(AltAccount.Cracked(name.text))
+                            AltManager.addAlt(AltAccount.Offline(name.text))
                             close()
                         }
                     }
@@ -128,7 +128,9 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
             )
             drawText(
                 mc.textRenderer,
-                i18n("gui.alts.label.alt_type", alt.type),
+                i18n("gui.alts.label.alt_type", when (alt) {
+                    is AltAccount.Offline -> i18n("gui.alts.label.offline_alt_type")
+                }),
                 x + 3,
                 y + 26 - mc.textRenderer.fontHeight,
                 Color.WHITE

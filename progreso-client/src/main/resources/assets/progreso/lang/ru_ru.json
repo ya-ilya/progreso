@@ -67,6 +67,7 @@
   "gui.alts.title.create_alt": "Создать альт",
   "gui.alts.label.alt_name": "Имя: %s",
   "gui.alts.label.alt_type": "Тип: %s",
+  "gui.alts.label.offline_alt_type": "Оффлайн",
   "gui.alts.label.current_name": "Текущее имя: %s",
   "gui.alts.label.name_text_field": "Имя",
   "gui.alts.button.add_account": "Добавить аккаунт",

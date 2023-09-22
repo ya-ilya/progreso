@@ -28,8 +28,8 @@ class AltConfigCategory : AbstractConfigCategory<AltConfig>(
 
             alts.add(
                 when (type) {
-                    "Cracked" -> AltAccount.Cracked(username)
-                    else -> throw RuntimeException()
+                    "Offline" -> AltAccount.Offline(username)
+                    else -> throw IllegalArgumentException()
                 }
             )
 

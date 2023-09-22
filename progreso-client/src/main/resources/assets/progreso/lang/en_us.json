@@ -67,6 +67,7 @@
   "gui.alts.title.create_alt": "Create Alt",
   "gui.alts.label.alt_name": "Name: %s",
   "gui.alts.label.alt_type": "Type: %s",
+  "gui.alts.label.offline_alt_type": "Offline",
   "gui.alts.label.current_name": "Current name: %s",
   "gui.alts.label.name_text_field": "Name",
   "gui.alts.button.add_account": "Add account",

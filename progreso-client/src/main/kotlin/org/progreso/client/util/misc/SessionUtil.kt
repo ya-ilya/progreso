@@ -15,12 +15,12 @@ object SessionUtil {
 
     fun login(alt: AltAccount): LoginResult {
         return when (alt) {
-            is AltAccount.Cracked -> loginCracked(alt.username)
+            is AltAccount.Offline -> loginOffline(alt.username)
             else -> LoginResult.Error
         }
     }
 
-    private fun loginCracked(username: String): LoginResult {
+    private fun loginOffline(username: String): LoginResult {
         return try {
             mc.session = Session(
                 username,
