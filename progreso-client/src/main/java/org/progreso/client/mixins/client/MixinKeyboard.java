@@ -1,4 +1,4 @@
-package org.progreso.client.mixins;
+package org.progreso.client.mixins.client;
 
 import net.minecraft.client.Keyboard;
 import org.progreso.client.Client;

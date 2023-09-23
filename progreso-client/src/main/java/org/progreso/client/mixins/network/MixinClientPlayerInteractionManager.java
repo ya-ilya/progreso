@@ -1,4 +1,4 @@
-package org.progreso.client.mixins;
+package org.progreso.client.mixins.network;
 
 import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.util.math.BlockPos;

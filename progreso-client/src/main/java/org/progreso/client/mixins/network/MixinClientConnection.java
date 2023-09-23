@@ -1,4 +1,4 @@
-package org.progreso.client.mixins;
+package org.progreso.client.mixins.network;
 
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.network.ClientConnection;

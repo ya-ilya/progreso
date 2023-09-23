@@ -7,19 +7,19 @@
     "defaultRequire": 1
   },
   "client": [
-    "MixinChatInputSuggestor",
-    "MixinClientConnection",
-    "MixinClientPlayerEntity",
-    "MixinClientPlayerInteractionManager",
-    "MixinClientPlayNetworkHandler",
-    "MixinInGameHud",
-    "MixinKeyboard",
-    "MixinLightmapTextureManager",
-    "MixinMinecraftClient",
-    "MixinMouse",
-    "MixinPlayerEntity",
-    "MixinScreen",
-    "MixinTitleScreen",
-    "MixinWorldRenderer"
+    "client.MixinKeyboard",
+    "client.MixinMinecraftClient",
+    "client.MixinMouse",
+    "entity.MixinPlayerEntity",
+    "gui.MixinChatInputSuggestor",
+    "gui.MixinInGameHud",
+    "gui.MixinScreen",
+    "gui.MixinTitleScreen",
+    "network.MixinClientConnection",
+    "network.MixinClientPlayerEntity",
+    "network.MixinClientPlayerInteractionManager",
+    "network.MixinClientPlayNetworkHandler",
+    "render.MixinLightmapTextureManager",
+    "render.MixinWorldRenderer"
   ]
 }

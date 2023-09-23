@@ -1,4 +1,4 @@
-package org.progreso.client.mixins;
+package org.progreso.client.mixins.render;
 
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.GameRenderer;

@@ -1,4 +1,4 @@
-package org.progreso.client.mixins;
+package org.progreso.client.mixins.gui;
 
 import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.StringReader;

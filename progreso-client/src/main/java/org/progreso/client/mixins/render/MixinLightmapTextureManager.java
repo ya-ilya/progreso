@@ -1,4 +1,4 @@
-package org.progreso.client.mixins;
+package org.progreso.client.mixins.render;
 
 import net.minecraft.client.render.LightmapTextureManager;
 import org.progreso.client.modules.render.FullBright;

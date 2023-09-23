@@ -1,4 +1,4 @@
-package org.progreso.client.mixins;
+package org.progreso.client.mixins.gui;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Style;

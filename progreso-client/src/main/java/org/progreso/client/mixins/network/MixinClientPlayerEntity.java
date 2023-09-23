@@ -1,4 +1,4 @@
-package org.progreso.client.mixins;
+package org.progreso.client.mixins.network;
 
 import net.minecraft.client.network.ClientPlayerEntity;
 import org.progreso.client.Client;
