@@ -4,6 +4,8 @@ import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.util.InputUtil
 import org.progreso.api.setting.settings.StringSetting
 import org.progreso.client.gui.clickgui.element.ParentElement
+import org.progreso.client.gui.drawTextRelatively
+import org.progreso.client.gui.getTextWidth
 import org.progreso.client.gui.invoke
 import java.awt.Color
 
@@ -17,11 +19,13 @@ class StringElement(
 
     override fun render(context: DrawContext, mouseX: Int, mouseY: Int) = context {
         drawTextRelatively(
+            this@StringElement,
             setting.name,
             offsets.textOffset,
             Color.WHITE
         )
         drawTextRelatively(
+            this@StringElement,
             if (stringEditing) stringEditor else setting.value,
             offsets.textOffset + getTextWidth("${setting.name}  "),
             if (stringEditing) Color.WHITE else mainColor

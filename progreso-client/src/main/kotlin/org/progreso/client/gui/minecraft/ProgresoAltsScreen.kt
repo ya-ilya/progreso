@@ -128,9 +128,11 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
             )
             drawText(
                 mc.textRenderer,
-                i18n("gui.alts.label.alt_type", when (alt) {
-                    is AltAccount.Offline -> i18n("gui.alts.label.offline_alt_type")
-                }),
+                i18n(
+                    "gui.alts.label.alt_type", when (alt) {
+                        is AltAccount.Offline -> i18n("gui.alts.label.offline_alt_type")
+                    }
+                ),
                 x + 3,
                 y + 26 - mc.textRenderer.fontHeight,
                 Color.WHITE

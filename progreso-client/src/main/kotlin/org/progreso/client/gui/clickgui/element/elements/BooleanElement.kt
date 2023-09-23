@@ -3,6 +3,8 @@ package org.progreso.client.gui.clickgui.element.elements
 import net.minecraft.client.gui.DrawContext
 import org.progreso.api.setting.settings.BooleanSetting
 import org.progreso.client.gui.clickgui.element.ParentElement
+import org.progreso.client.gui.drawRect
+import org.progreso.client.gui.drawTextRelatively
 import org.progreso.client.gui.invoke
 import org.progreso.client.util.render.drawCircle
 import org.progreso.client.util.render.render2D
@@ -27,6 +29,7 @@ class BooleanElement(
         val buttonStartY = y + height.div(2) - BUTTON_HEIGHT.div(2)
 
         drawTextRelatively(
+            this@BooleanElement,
             setting.name,
             offsets.textOffset,
             Color.WHITE

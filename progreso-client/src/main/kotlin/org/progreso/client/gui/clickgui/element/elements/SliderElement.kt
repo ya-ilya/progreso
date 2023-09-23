@@ -3,6 +3,9 @@ package org.progreso.client.gui.clickgui.element.elements
 import net.minecraft.client.gui.DrawContext
 import org.progreso.api.setting.settings.NumberSetting
 import org.progreso.client.gui.clickgui.element.ParentElement
+import org.progreso.client.gui.drawRect
+import org.progreso.client.gui.drawTextRelatively
+import org.progreso.client.gui.getTextWidth
 import org.progreso.client.gui.invoke
 import org.progreso.client.util.render.drawCircle
 import org.progreso.client.util.render.render2D
@@ -71,11 +74,13 @@ class SliderElement(
 
         context {
             drawTextRelatively(
+                this@SliderElement,
                 setting.name,
                 offsets.textOffset,
                 Color.WHITE
             )
             drawTextRelatively(
+                this@SliderElement,
                 setting.value.toString(),
                 width - 10 - getTextWidth(setting.value.toString()),
                 Color.WHITE

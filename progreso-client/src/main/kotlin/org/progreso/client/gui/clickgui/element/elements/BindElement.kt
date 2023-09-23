@@ -4,6 +4,8 @@ import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.util.InputUtil
 import org.progreso.api.setting.settings.BindSetting
 import org.progreso.client.gui.clickgui.element.ParentElement
+import org.progreso.client.gui.drawTextRelatively
+import org.progreso.client.gui.getTextWidth
 import org.progreso.client.gui.invoke
 import org.progreso.client.util.client.KeyboardUtil
 import java.awt.Color
@@ -27,11 +29,13 @@ class BindElement(
 
         context {
             drawTextRelatively(
+                this@BindElement,
                 setting.name,
                 offsets.textOffset,
                 Color.WHITE
             )
             drawTextRelatively(
+                this@BindElement,
                 text,
                 offsets.textOffset + getTextWidth("${setting.name}  "),
                 mainColor

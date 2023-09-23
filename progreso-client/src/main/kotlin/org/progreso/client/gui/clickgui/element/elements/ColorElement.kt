@@ -12,6 +12,8 @@ import org.progreso.api.setting.settings.NumberSetting
 import org.progreso.client.gui.clickgui.element.AbstractChildElement
 import org.progreso.client.gui.clickgui.element.AbstractChildListElement
 import org.progreso.client.gui.clickgui.element.ParentElement
+import org.progreso.client.gui.drawRect
+import org.progreso.client.gui.drawTextRelatively
 import org.progreso.client.gui.glColors
 import org.progreso.client.gui.invoke
 import org.progreso.client.util.render.drawCircle
@@ -181,6 +183,7 @@ class ColorElement(
         header = object : AbstractChildElement(height, this@ColorElement) {
             override fun render(context: DrawContext, mouseX: Int, mouseY: Int) = context {
                 drawTextRelatively(
+                    this@ColorElement,
                     setting.name,
                     offsets.textOffset,
                     Color.WHITE

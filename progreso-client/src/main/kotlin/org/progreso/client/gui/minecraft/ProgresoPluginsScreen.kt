@@ -7,6 +7,7 @@ import org.progreso.client.Client.Companion.mc
 import org.progreso.client.accessors.TextAccessor.i18n
 import org.progreso.client.gui.builders.ButtonBuilder.Companion.button
 import org.progreso.client.gui.builders.ElementListBuilder.Companion.elementList
+import org.progreso.client.gui.drawText
 import org.progreso.client.gui.invoke
 import org.progreso.client.gui.minecraft.common.SimpleElementListEntry
 import org.progreso.client.gui.minecraft.common.TitledScreen

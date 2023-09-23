@@ -43,12 +43,8 @@ val Color.glColors: List<Float>
         (rgb shr 24 and 0xFF) / 255.0f,
     )
 
-operator fun DrawContext.invoke(block: DrawContextWrapper.() -> Unit) {
-    DrawContextWrapper(this).apply(block)
-}
-
-fun <S> DrawContext.invoke(superRef: S, block: DrawContextWrapper.(S) -> Unit) {
-    DrawContextWrapper(this).also { block(it, superRef) }
+operator fun DrawContext.invoke(block: DrawContext.() -> Unit) {
+    this.apply(block)
 }
 
 val DrawContext.fontHeight get() = textRenderer.fontHeight
@@ -74,11 +70,23 @@ fun DrawContext.drawText(
     drawText(textRenderer, text, x, y, color.rgb, shadow)
 }
 
-fun DrawContext.drawRect(x: Int, y: Int, width: Int, height: Int, color: Color) {
+fun DrawContext.drawRect(
+    x: Int,
+    y: Int,
+    width: Int,
+    height: Int,
+    color: Color
+) {
     fill(x, y, x + width, y + height, color.rgb)
 }
 
-fun DrawContext.drawBorder(x: Int, y: Int, width: Int, height: Int, color: Color) {
+fun DrawContext.drawBorder(
+    x: Int,
+    y: Int,
+    width: Int,
+    height: Int,
+    color: Color
+) {
     drawBorder(x, y, width, height, color.rgb)
 }
 
@@ -94,11 +102,21 @@ fun DrawContext.drawBorderedRect(
     drawBorder(x, y, width, height, borderColor)
 }
 
-fun DrawContext.drawVerticalLine(x: Int, startY: Int, endY: Int, color: Color) {
+fun DrawContext.drawVerticalLine(
+    x: Int,
+    startY: Int,
+    endY: Int,
+    color: Color
+) {
     fill(x, startY, x + 1, endY, color.rgb)
 }
 
-fun DrawContext.drawHorizontalLine(startX: Int, endX: Int, y: Int, color: Color) {
+fun DrawContext.drawHorizontalLine(
+    startX: Int,
+    endX: Int,
+    y: Int,
+    color: Color
+) {
     fill(startX, y, endX, y + 1, color.rgb)
 }
 
@@ -106,67 +124,40 @@ fun DrawContext.getTextWidth(string: String): Int {
     return textRenderer.getWidth(string)
 }
 
-class DrawContextWrapper(private val context: DrawContext) {
-    val fontHeight get() = context.fontHeight
+fun DrawContext.drawTextRelatively(
+    element: Element,
+    text: String,
+    xOffset: Int,
+    yOffset: Int,
+    color: Color
+) {
+    drawText(text, element.x + xOffset, element.y + yOffset, color)
+}
 
-    fun drawText(textRenderer: TextRenderer, text: String, x: Int, y: Int, color: Color, shadow: Boolean = false) {
-        context.drawText(textRenderer, text, x, y, color, shadow)
-    }
+fun DrawContext.drawTextRelatively(
+    element: Element,
+    text: String,
+    xOffset: Int,
+    color: Color
+) {
+    drawTextRelatively(
+        element,
+        text,
+        xOffset,
+        element.height.div(2) - fontHeight.div(2),
+        color
+    )
+}
 
-    fun drawText(text: String, x: Int, y: Int, color: Color, shadow: Boolean = false) {
-        context.drawText(text, x, y, color, shadow)
-    }
-
-    fun drawRect(x: Int, y: Int, width: Int, height: Int, color: Color) {
-        context.drawRect(x, y, width, height, color)
-    }
-
-    fun drawBorder(x: Int, y: Int, width: Int, height: Int, color: Color) {
-        context.drawBorder(x, y, width, height, color)
-    }
-
-    fun drawBorderedRect(
-        x: Int,
-        y: Int,
-        width: Int,
-        height: Int,
-        fillColor: Color,
-        borderColor: Color
-    ) {
-        context.drawBorderedRect(x, y, width, height, fillColor, borderColor)
-    }
-
-    fun drawVerticalLine(x: Int, startY: Int, endY: Int, color: Color) {
-        context.drawVerticalLine(x, startY, endY, color)
-    }
-
-    fun drawHorizontalLine(startX: Int, endX: Int, y: Int, color: Color) {
-        context.drawHorizontalLine(startX, endX, y, color)
-    }
-
-    fun Element.drawTextRelatively(text: String, xOffset: Int, yOffset: Int, color: Color) {
-        context.drawText(text, x + xOffset, y + yOffset, color)
-    }
-
-    fun Element.drawTextRelatively(text: String, xOffset: Int, color: Color) {
-        drawTextRelatively(
-            text,
-            xOffset,
-            height.div(2) - fontHeight.div(2),
-            color
-        )
-    }
-
-    fun Element.drawCenteredString(text: String, color: Color) {
-        context.drawText(
-            text,
-            x + width.div(2) - context.getTextWidth(text).div(2),
-            y + height.div(2) - context.fontHeight.div(2),
-            color
-        )
-    }
-
-    fun getTextWidth(string: String): Int {
-        return context.getTextWidth(string)
-    }
+fun DrawContext.drawCenteredString(
+    element: Element,
+    text: String,
+    color: Color
+) {
+    drawText(
+        text,
+        element.x + element.width.div(2) - getTextWidth(text).div(2),
+        element.y + element.height.div(2) - fontHeight.div(2),
+        color
+    )
 }

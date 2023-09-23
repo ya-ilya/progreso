@@ -9,6 +9,8 @@ import org.progreso.client.gui.clickgui.element.AbstractChildElement
 import org.progreso.client.gui.clickgui.element.AbstractChildListElement
 import org.progreso.client.gui.clickgui.element.ParentElement
 import org.progreso.client.gui.clickgui.element.elements.SettingElement.Companion.createSettingElement
+import org.progreso.client.gui.drawTextRelatively
+import org.progreso.client.gui.drawVerticalLine
 import org.progreso.client.gui.invoke
 import java.awt.Color
 
@@ -29,6 +31,7 @@ class ModuleElement(
         header = object : AbstractChildElement(height, this@ModuleElement) {
             override fun render(context: DrawContext, mouseX: Int, mouseY: Int) = context {
                 drawTextRelatively(
+                    header!!,
                     module.name,
                     5,
                     if (module.enabled) Color.WHITE else DISABLED_MODULE_COLOR
