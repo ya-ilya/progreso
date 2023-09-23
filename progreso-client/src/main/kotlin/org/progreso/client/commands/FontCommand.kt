@@ -1,7 +1,6 @@
 package org.progreso.client.commands
 
 import com.mojang.brigadier.arguments.FloatArgumentType
-import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import org.progreso.api.command.AbstractCommand
 import org.progreso.client.Client
 import org.progreso.client.Client.Companion.config
@@ -14,26 +13,26 @@ import org.progreso.client.util.render.createTextRendererFromProgresoResource
 
 @AbstractCommand.Register("font")
 object FontCommand : AbstractCommand() {
-    override fun build(builder: LiteralArgumentBuilder<Any>) {
+    init {
         builder.then(
             literal("load").then(
                 argument("font", FontArgumentType())
                     .then(
-                        argument("size", FloatArgumentType.floatArg()).executesSuccess { context ->
+                        argument("size", FloatArgumentType.floatArg()).execute { context ->
                             loadFont(
                                 FontArgumentType[context],
                                 FloatArgumentType.getFloat(context, "size")
                             )
                         }
                     )
-                    .executesSuccess { context ->
+                    .execute { context ->
                         loadFont(FontArgumentType[context])
                     }
             )
         )
 
         builder.then(
-            literal("reset").executesSuccess {
+            literal("reset").execute {
                 customTextRenderer = createDefaultTextRenderer()
                 config.customFont = null
 
@@ -42,7 +41,7 @@ object FontCommand : AbstractCommand() {
         )
 
         builder.then(
-            literal("list").executesSuccess {
+            literal("list").execute {
                 infoLocalized(
                     ProgresoResourceManager.fonts.ifEmpty("command.font.list", "command.font.list_empty"),
                     ProgresoResourceManager.fonts.joinToString()
@@ -50,7 +49,7 @@ object FontCommand : AbstractCommand() {
             }
         )
 
-        builder.executesSuccess {
+        builder.execute {
             if (config.customFont != null) {
                 infoLocalized(
                     "command.font.current",

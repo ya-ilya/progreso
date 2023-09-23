@@ -1,7 +1,6 @@
 package org.progreso.api.managers
 
 import com.mojang.brigadier.CommandDispatcher
-import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import com.mojang.brigadier.exceptions.CommandSyntaxException
 import org.progreso.api.Api
 import org.progreso.api.command.AbstractCommand
@@ -19,9 +18,7 @@ object CommandManager : CommandContainer {
     override val commands = mutableSetOf<AbstractCommand>()
 
     override fun addCommand(command: AbstractCommand) {
-        val literal = LiteralArgumentBuilder.literal<Any>(command.name)
-        command.build(literal)
-        DISPATCHER.register(literal)
+        DISPATCHER.register(command.builder)
         super.addCommand(command)
     }
 

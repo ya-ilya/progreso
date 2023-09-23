@@ -1,7 +1,6 @@
 package org.progreso.client.commands
 
 import com.mojang.brigadier.arguments.StringArgumentType
-import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import org.progreso.api.command.AbstractCommand
 import org.progreso.client.Client.Companion.mc
 import org.progreso.irc.IRCClient
@@ -15,10 +14,10 @@ import org.progreso.irc.event.s2c.MessageS2CEvent
 object IRCCommand : AbstractCommand() {
     private var client: IRCClient? = null
 
-    override fun build(builder: LiteralArgumentBuilder<Any>) {
+    init {
         builder.then(
             literal("connect").then(
-                argument("address", StringArgumentType.string()).executesSuccess { context ->
+                argument("address", StringArgumentType.string()).execute { context ->
                     val address = StringArgumentType.getString(context, "address")
 
                     if (client?.isOpen == true && client?.isClosed == false) client?.close()
@@ -67,9 +66,9 @@ object IRCCommand : AbstractCommand() {
             )
         )
 
-        builder.then(literal("disconnect").executesSuccess {
+        builder.then(literal("disconnect").execute {
             if (client == null || client?.isClosed == true || client?.isOpen == false) {
-                return@executesSuccess errorLocalized("command.irc.disconnect_error")
+                return@execute errorLocalized("command.irc.disconnect_error")
             }
 
             client?.close()
@@ -78,9 +77,9 @@ object IRCCommand : AbstractCommand() {
 
         builder.then(literal("send").then(
             argument("message", StringArgumentType.greedyString())
-        ).executesSuccess { context ->
+        ).execute { context ->
             if (client == null || client?.isClosed == true || client?.isOpen == false) {
-                return@executesSuccess errorLocalized("command.irc.disconnect_error")
+                return@execute errorLocalized("command.irc.disconnect_error")
             }
 
             client?.send(MessageC2SEvent(StringArgumentType.getString(context, "message")))

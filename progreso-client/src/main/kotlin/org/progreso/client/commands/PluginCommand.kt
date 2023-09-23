@@ -1,6 +1,5 @@
 package org.progreso.client.commands
 
-import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import org.progreso.api.command.AbstractCommand
 import org.progreso.api.command.arguments.PluginArgumentType
 import org.progreso.api.managers.PluginManager
@@ -9,10 +8,10 @@ import org.progreso.client.gui.minecraft.ProgresoPluginsScreen
 
 @AbstractCommand.Register("plugin")
 object PluginCommand : AbstractCommand() {
-    override fun build(builder: LiteralArgumentBuilder<Any>) {
+    init {
         builder.then(
             literal("info").then(
-                argument("plugin", PluginArgumentType()).executesSuccess { context ->
+                argument("plugin", PluginArgumentType()).execute { context ->
                     val plugin = PluginArgumentType[context]
 
                     info("--------")
@@ -23,14 +22,14 @@ object PluginCommand : AbstractCommand() {
             )
         )
 
-        builder.then(literal("list").executesSuccess {
+        builder.then(literal("list").execute {
             infoLocalized(
                 PluginManager.plugins.ifEmpty("command.plugin.list", "command.plugin.list_empty"),
                 PluginManager.plugins.joinToString { it.name }
             )
         })
 
-        builder.then(literal("gui").executesSuccess {
+        builder.then(literal("gui").execute {
             mc.setScreen(ProgresoPluginsScreen(PluginManager.plugins))
         })
     }

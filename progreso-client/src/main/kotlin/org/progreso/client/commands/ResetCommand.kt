@@ -1,16 +1,15 @@
 package org.progreso.client.commands
 
-import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import org.progreso.api.command.AbstractCommand
 import org.progreso.api.command.arguments.ModuleArgumentType
 import org.progreso.api.command.arguments.SettingArgumentType
 
 @AbstractCommand.Register("reset")
 object ResetCommand : AbstractCommand() {
-    override fun build(builder: LiteralArgumentBuilder<Any>) {
+    init {
         builder.then(
             argument("module", ModuleArgumentType()).then(
-                argument("setting", SettingArgumentType()).executesSuccess { context ->
+                argument("setting", SettingArgumentType()).execute { context ->
                     val (module, setting) = SettingArgumentType[context]
 
                     setting.reset()

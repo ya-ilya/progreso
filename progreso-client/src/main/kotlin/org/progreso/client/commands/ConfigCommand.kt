@@ -1,19 +1,18 @@
 package org.progreso.client.commands
 
 import com.mojang.brigadier.arguments.StringArgumentType
-import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import org.progreso.api.command.AbstractCommand
 import org.progreso.api.command.arguments.ConfigArgumentType
 import org.progreso.api.managers.ConfigManager
 
 @AbstractCommand.Register("config")
 object ConfigCommand : AbstractCommand() {
-    override fun build(builder: LiteralArgumentBuilder<Any>) {
+    init {
         for (category in ConfigManager.categories) {
             val literal = literal(category.name)
                 .then(
                     literal("load").then(
-                        argument("config", ConfigArgumentType(category)).executesSuccess { context ->
+                        argument("config", ConfigArgumentType(category)).execute { context ->
                             val config = ConfigArgumentType[context]
 
                             category.load(config.name)
@@ -26,7 +25,7 @@ object ConfigCommand : AbstractCommand() {
                 )
                 .then(
                     literal("save").then(
-                        argument("config", StringArgumentType.string()).executesSuccess { context ->
+                        argument("config", StringArgumentType.string()).execute { context ->
                             val config = StringArgumentType.getString(context, "config")
 
                             category.save(config)
@@ -35,7 +34,7 @@ object ConfigCommand : AbstractCommand() {
                                 config
                             )
                         }
-                    ).executesSuccess {
+                    ).execute {
                         category.save()
 
                         infoLocalized(
@@ -46,7 +45,7 @@ object ConfigCommand : AbstractCommand() {
                 )
                 .then(
                     literal("refresh").then(
-                        argument("config", ConfigArgumentType(category)).executesSuccess { context ->
+                        argument("config", ConfigArgumentType(category)).execute { context ->
                             val config = ConfigArgumentType[context]
 
                             category.refresh(config.name)
@@ -55,7 +54,7 @@ object ConfigCommand : AbstractCommand() {
                                 config
                             )
                         }
-                    ).executesSuccess {
+                    ).execute {
                         category.refresh()
                         infoLocalized(
                             "command.config.refresh_many",
@@ -64,7 +63,7 @@ object ConfigCommand : AbstractCommand() {
                     }
                 )
                 .then(
-                    literal("list").executesSuccess {
+                    literal("list").execute {
                         infoLocalized(
                             category.configs.ifEmpty("command.config.list", "command.config.list_empty"),
                             category.name,
@@ -72,7 +71,7 @@ object ConfigCommand : AbstractCommand() {
                         )
                     }
                 )
-                .executesSuccess {
+                .execute {
                     infoLocalized(
                         "command.config.current",
                         category.name,

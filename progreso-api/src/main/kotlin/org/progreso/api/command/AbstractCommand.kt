@@ -21,12 +21,12 @@ abstract class AbstractCommand {
             annotation.descriptionKey.ifBlank { "command.${name.lowercase()}.description" }
         )
 
+    val builder = literal(name)
+
     annotation class Register(
         val name: String,
         val descriptionKey: String = ""
     )
-
-    abstract fun build(builder: LiteralArgumentBuilder<Any>)
 
     protected companion object {
         fun <T> argument(name: String, type: ArgumentType<T>): RequiredArgumentBuilder<Any, T> {
@@ -37,7 +37,7 @@ abstract class AbstractCommand {
             return LiteralArgumentBuilder.literal(name)
         }
 
-        fun <S, T : ArgumentBuilder<S, T>> T.executesSuccess(block: (CommandContext<S>) -> Unit): T {
+        fun <S, T : ArgumentBuilder<S, T>> T.execute(block: (CommandContext<S>) -> Unit): T {
             return executes { context ->
                 block(context)
                 Command.SINGLE_SUCCESS

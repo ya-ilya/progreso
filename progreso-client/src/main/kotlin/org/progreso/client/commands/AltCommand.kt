@@ -2,7 +2,6 @@ package org.progreso.client.commands
 
 import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.brigadier.arguments.StringArgumentType.string
-import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import org.progreso.api.alt.AltAccount
 import org.progreso.api.command.AbstractCommand
 import org.progreso.api.command.arguments.AltArgumentType
@@ -10,12 +9,12 @@ import org.progreso.api.managers.AltManager
 
 @AbstractCommand.Register("alt")
 object AltCommand : AbstractCommand() {
-    override fun build(builder: LiteralArgumentBuilder<Any>) {
+    init {
         builder.then(
             literal("add")
                 .then(
                     literal("offline").then(
-                        argument("name", string()).executesSuccess { context ->
+                        argument("name", string()).execute { context ->
                             val name = StringArgumentType.getString(context, "name")
 
                             AltManager.addAlt(AltAccount.Offline(name))
@@ -27,7 +26,7 @@ object AltCommand : AbstractCommand() {
 
         builder.then(
             literal("remove").then(
-                argument("alt", AltArgumentType()).executesSuccess { context ->
+                argument("alt", AltArgumentType()).execute { context ->
                     val alt = AltArgumentType[context]
 
                     AltManager.removeAlt(alt)
@@ -36,7 +35,7 @@ object AltCommand : AbstractCommand() {
             )
         )
 
-        builder.then(literal("list").executesSuccess {
+        builder.then(literal("list").execute {
             infoLocalized(
                 AltManager.alts.ifEmpty("command.alt.list", "command.alt.list_empty"),
                 AltManager.alts.joinToString()

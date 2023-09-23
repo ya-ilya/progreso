@@ -1,6 +1,5 @@
 package org.progreso.client.commands
 
-import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import org.progreso.api.command.AbstractCommand
 import org.progreso.api.command.arguments.FriendArgumentType
 import org.progreso.api.managers.FriendManager
@@ -8,10 +7,10 @@ import org.progreso.client.commands.arguments.PlayerArgumentType
 
 @AbstractCommand.Register("friend")
 object FriendCommand : AbstractCommand() {
-    override fun build(builder: LiteralArgumentBuilder<Any>) {
+    init {
         builder.then(
             literal("add").then(
-                argument("player", PlayerArgumentType()).executesSuccess { context ->
+                argument("player", PlayerArgumentType()).execute { context ->
                     val player = PlayerArgumentType[context]
 
                     if (FriendManager.isFriend(player.profile.name)) {
@@ -32,7 +31,7 @@ object FriendCommand : AbstractCommand() {
 
         builder.then(
             literal("remove").then(
-                argument("friend", FriendArgumentType()).executesSuccess { context ->
+                argument("friend", FriendArgumentType()).execute { context ->
                     val friend = FriendArgumentType[context]
 
                     FriendManager.removeFriendByName(friend.name)
@@ -44,7 +43,7 @@ object FriendCommand : AbstractCommand() {
             )
         )
 
-        builder.then(literal("list").executesSuccess {
+        builder.then(literal("list").execute {
             infoLocalized(
                 FriendManager.friends.ifEmpty("command.friend.list", "command.friend.list_empty"),
                 FriendManager.friends.joinToString()
