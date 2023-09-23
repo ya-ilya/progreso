@@ -76,15 +76,16 @@ object ESP : AbstractModule() {
                     MathHelper.lerp(event.tickDelta.toDouble(), entity.lastRenderY, entity.y) - entity.y,
                     MathHelper.lerp(event.tickDelta.toDouble(), entity.lastRenderZ, entity.z) - entity.z
                 )
+                val box = entity.boundingBox.expand(0.1, 0.0, 0.1)
 
                 render3D(event.matrices) {
                     withPosition(pos) {
                         withColor(color.copy(50)) {
-                            drawSolidBox(entity.boundingBox)
+                            drawSolidBox(box)
                         }
 
                         withColor(color.copy(100)) {
-                            drawOutlinedBox(entity.boundingBox)
+                            drawOutlinedBox(box)
                         }
                     }
                 }
