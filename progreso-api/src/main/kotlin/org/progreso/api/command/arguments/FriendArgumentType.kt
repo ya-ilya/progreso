@@ -24,8 +24,10 @@ class FriendArgumentType : ArgumentType<FriendManager.Friend> {
     }
 
     override fun parse(reader: StringReader): FriendManager.Friend {
-        val friendName = reader.readString()
-        return FriendManager.getFriendByNameOrNull(friendName) ?: throw NO_SUCH_FRIEND.create(friendName)
+        val argument = reader.readString()
+
+        return FriendManager.getFriendByNameOrNull(argument)
+            ?: throw NO_SUCH_FRIEND.create(argument)
     }
 
     override fun <S : Any?> listSuggestions(

@@ -26,7 +26,7 @@ class PlayerArgumentType : ArgumentType<PlayerListEntry> {
     }
 
     override fun parse(reader: StringReader): PlayerListEntry {
-        val argument: String = reader.readString()
+        val argument = reader.readString()
         var playerListEntry: PlayerListEntry? = null
 
         for (player in mc.networkHandler.playerList) {

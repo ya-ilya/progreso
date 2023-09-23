@@ -1,3 +1,4 @@
+val progresoVersion: String by project
 val websocketVersion: String by project
 val gsonVersion: String by project
 
@@ -7,6 +8,7 @@ plugins {
 }
 
 group = "org.progreso"
+version = progresoVersion
 
 repositories {
     mavenCentral()

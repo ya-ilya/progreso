@@ -1,4 +1,5 @@
 {
+  "argument.alt.error": "Альт '%s' не найден",
   "argument.config.error": "Конфиг '%s' не найден в категории %s",
   "argument.font.error": "Шрифт '%s' не найден",
   "argument.friend.error": "У вас нету друга с именем %s",
@@ -11,6 +12,11 @@
   "command.command_not_found": "Команда не найдена",
   "command.invalid_syntax": "Неправильный синтаксис. Сообщение об ошибке: %s",
   "command.failed_to_execute": "Ошибка при выполнении команды",
+
+  "command.alt.add": "Добавлен альт '%s'",
+  "command.alt.remove": "Альт '%s' удален",
+  "command.alt.list": "Альты: %s",
+  "command.alt.list_empty": "Список альтов пуст",
 
   "command.bind.key": "%s забинжен на клавишу '%s'",
   "command.bind.reset": "Клавиша %s сброшена",

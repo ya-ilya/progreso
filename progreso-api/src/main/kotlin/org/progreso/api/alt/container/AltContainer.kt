@@ -8,6 +8,14 @@ import org.progreso.api.alt.AltAccount
 interface AltContainer {
     val alts: MutableSet<AltAccount>
 
+    fun getAltByName(name: String): AltAccount {
+        return getAltByNameOrNull(name)!!
+    }
+
+    fun getAltByNameOrNull(name: String): AltAccount? {
+        return alts.firstOrNull { it.username == name }
+    }
+
     fun addAlt(alt: AltAccount) {
         alts.add(alt)
     }

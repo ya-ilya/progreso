@@ -1,4 +1,5 @@
 {
+  "argument.alt.error": "Alt '%s' not found",
   "argument.config.error": "Config '%s' not found in %s category",
   "argument.font.error": "Font '%s' not found",
   "argument.friend.error": "Friend '%s' not found",
@@ -11,6 +12,11 @@
   "command.command_not_found": "Command not found",
   "command.invalid_syntax": "Invalid syntax: %s",
   "command.failed_to_execute": "Failed to execute command",
+
+  "command.alt.add": "Added %s alt account",
+  "command.alt.remove": "Removed %s alt account",
+  "command.alt.list": "Alts: %s",
+  "command.alt.list_empty": "Alt list is empty",
 
   "command.bind.key": "%s bound to %s",
   "command.bind.reset": "Reset %s bind",

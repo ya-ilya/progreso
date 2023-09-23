@@ -1,3 +1,4 @@
+val progresoVersion: String by project
 val gsonVersion: String by project
 val brigadierVersion: String by project
 
@@ -6,6 +7,7 @@ plugins {
 }
 
 group = "org.progreso"
+version = progresoVersion
 
 repositories {
     mavenCentral()
@@ -13,6 +15,6 @@ repositories {
 }
 
 dependencies {
-    implementation("com.mojang:brigadier:$brigadierVersion")
+    api("com.mojang:brigadier:$brigadierVersion")
     api("com.google.code.gson:gson:$gsonVersion")
 }

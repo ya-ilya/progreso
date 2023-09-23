@@ -30,8 +30,10 @@ class ModuleArgumentType : ArgumentType<AbstractModule> {
     }
 
     override fun parse(reader: StringReader): AbstractModule {
-        val moduleName = reader.readString()
-        return ModuleManager.getModuleByNameOrNull(moduleName) ?: throw NO_SUCH_MODULE.create(moduleName)
+        val argument = reader.readString()
+
+        return ModuleManager.getModuleByNameOrNull(argument)
+            ?: throw NO_SUCH_MODULE.create(argument)
     }
 
     override fun <S : Any?> listSuggestions(

@@ -25,8 +25,9 @@ class KeyArgumentType : ArgumentType<Int> {
 
     override fun parse(reader: StringReader): Int {
         val argument: String = reader.readString()
-        if (!KeyboardUtil.keyMap.containsValue(argument)) throw NO_SUCH_KEY.create(argument)
-        return KeyboardUtil.getKeyCode(argument)
+
+        return if (KeyboardUtil.keyMap.containsValue(argument)) KeyboardUtil.getKeyCode(argument)
+        else throw NO_SUCH_KEY.create(argument)
     }
 
     override fun <S> listSuggestions(

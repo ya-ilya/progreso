@@ -26,7 +26,7 @@ class FontArgumentType : ArgumentType<String> {
     }
 
     override fun parse(reader: StringReader): String {
-        val argument: String = reader.readString()
+        val argument = reader.readString()
 
         return ProgresoResourceManager.fonts.firstOrNull { it == argument }
             ?: throw NO_SUCH_FONT.create(argument)

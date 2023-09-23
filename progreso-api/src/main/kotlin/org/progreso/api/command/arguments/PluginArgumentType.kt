@@ -23,8 +23,10 @@ class PluginArgumentType : ArgumentType<AbstractPlugin> {
     }
 
     override fun parse(reader: StringReader): AbstractPlugin {
-        val pluginName = reader.readString()
-        return PluginManager.getPluginByNameOrNull(pluginName) ?: throw NO_SUCH_PLUGIN.create(pluginName)
+        val argument = reader.readString()
+
+        return PluginManager.getPluginByNameOrNull(argument)
+            ?: throw NO_SUCH_PLUGIN.create(argument)
     }
 
     override fun <S : Any?> listSuggestions(
