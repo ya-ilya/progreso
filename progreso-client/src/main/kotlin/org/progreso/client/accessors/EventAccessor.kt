@@ -2,11 +2,10 @@ package org.progreso.client.accessors
 
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket
 import net.minecraft.network.packet.s2c.play.EntityStatusS2CPacket
 import org.progreso.api.accessor.EventAccessor
-import org.progreso.api.managers.CommandManager
 import org.progreso.api.managers.ModuleManager
+import org.progreso.api.managers.PluginManager
 import org.progreso.client.Client
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.events.entity.EntityDeathEvent
@@ -30,7 +29,9 @@ object EventAccessor : EventAccessor {
         register(this)
 
         safeEventListener<KeyEvent> { event ->
-            ModuleManager.onKey(event.key)
+            (ModuleManager.modules + PluginManager.modules)
+                .filter { it.bind == event.key }
+                .forEach { it.toggle() }
         }
 
         eventListener<PacketEvent.Receive<*>> { event ->
@@ -39,14 +40,6 @@ object EventAccessor : EventAccessor {
 
                 if (entity is PlayerEntity) {
                     Client.EVENT_BUS.post(TotemPopEvent(entity))
-                }
-            }
-        }
-
-        eventListener<PacketEvent.Send<*>> { event ->
-            if (event.packet is ChatMessageC2SPacket) {
-                if (CommandManager.onChat(event.packet.chatMessage)) {
-                    event.isCancelled = true
                 }
             }
         }

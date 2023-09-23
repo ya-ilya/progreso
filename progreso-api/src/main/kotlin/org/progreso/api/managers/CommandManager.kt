@@ -41,14 +41,4 @@ object CommandManager : CommandContainer {
             ex.printStackTrace()
         }
     }
-
-    fun onChat(message: String): Boolean {
-        if (message.startsWith(PREFIX)) {
-            dispatch(message)
-            Api.CHAT.addToSentMessages(message)
-            return true
-        }
-
-        return false
-    }
 }

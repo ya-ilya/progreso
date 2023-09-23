@@ -27,11 +27,6 @@ import org.progreso.api.Api
  *     public void error(Object message) {
  *         send(ChatFormatting.RED + message.toString());
  *     }
- *
- *     @Override
- *     public void addToSentMessages(Object message) {
- *         mc.ingameGUI.chatGUI.addToSentMessages(message.toString());
- *     }
  * }
  * ```
  */
@@ -41,7 +36,6 @@ interface ChatAccessor {
         override fun info(message: Any) {}
         override fun warn(message: Any) {}
         override fun error(message: Any) {}
-        override fun addToSentMessages(message: Any) {}
     }
 
     /**
@@ -91,9 +85,4 @@ interface ChatAccessor {
     fun errorLocalized(key: String, vararg args: Any) {
         error(Api.TEXT.i18n(key, *args))
     }
-
-    /**
-     * Add message to sent messages
-     */
-    fun addToSentMessages(message: Any)
 }

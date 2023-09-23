@@ -12,10 +12,4 @@ object ModuleManager : ModuleContainer {
             .filter { it.category == category }
             .filter { it !in exclude }
     }
-
-    fun onKey(key: Int) {
-        (modules + PluginManager.modules)
-            .filter { it.bind == key }
-            .forEach { it.toggle() }
-    }
 }

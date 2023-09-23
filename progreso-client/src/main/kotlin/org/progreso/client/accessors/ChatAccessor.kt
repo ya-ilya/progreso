@@ -21,8 +21,4 @@ object ChatAccessor : ChatAccessor {
     override fun error(message: Any) {
         send("${Formatting.RED}$message")
     }
-
-    override fun addToSentMessages(message: Any) {
-        mc.inGameHud.chatHud.addToMessageHistory(message.toString())
-    }
 }
