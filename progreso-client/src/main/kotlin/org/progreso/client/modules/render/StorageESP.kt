@@ -11,7 +11,7 @@ import org.progreso.client.events.safeEventListener
 import org.progreso.client.gui.clickgui.element.elements.ColorElement.Companion.copy
 import org.progreso.client.modules.render.ESP.espSetting
 import org.progreso.client.util.render.*
-import org.progreso.client.util.world.WorldUtil.blockEntities
+import org.progreso.client.util.world.blockEntities
 import java.awt.Color
 
 @AbstractModule.AutoRegister

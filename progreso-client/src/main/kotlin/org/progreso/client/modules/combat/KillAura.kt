@@ -12,8 +12,8 @@ import org.progreso.api.module.AbstractModule
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.events.misc.TickEvent
 import org.progreso.client.events.safeEventListener
-import org.progreso.client.util.entity.EntityUtil.canBeAttacked
-import org.progreso.client.util.player.PlayerUtil
+import org.progreso.client.util.entity.canBeAttacked
+import org.progreso.client.util.player.attack
 
 @AbstractModule.AutoRegister
 object KillAura : AbstractModule() {
@@ -53,7 +53,7 @@ object KillAura : AbstractModule() {
                 }
 
             if (entity != null) {
-                PlayerUtil.attack(entity)
+                mc.interactionManager.attack(entity)
             }
         }
     }

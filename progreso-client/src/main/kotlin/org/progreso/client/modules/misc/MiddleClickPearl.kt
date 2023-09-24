@@ -7,7 +7,7 @@ import org.progreso.api.module.AbstractModule
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.events.input.MouseEvent
 import org.progreso.client.events.safeEventListener
-import org.progreso.client.util.player.InventoryUtil
+import org.progreso.client.util.player.findItemInHotbar
 
 @AbstractModule.AutoRegister
 object MiddleClickPearl : AbstractModule() {
@@ -17,7 +17,8 @@ object MiddleClickPearl : AbstractModule() {
                 return@safeEventListener
 
             val previousSelectedSlot = mc.player.inventory.selectedSlot
-            val enderPearl = InventoryUtil.findItemInHotbar { _, stack -> stack.item == Items.ENDER_PEARL }
+            val enderPearl = mc.player.inventory
+                .findItemInHotbar { _, stack -> stack.item == Items.ENDER_PEARL }
                 ?: return@safeEventListener
 
             mc.player.inventory.selectedSlot = enderPearl.index

@@ -7,7 +7,8 @@ import org.progreso.api.module.AbstractModule
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.events.misc.TickEvent
 import org.progreso.client.events.safeEventListener
-import org.progreso.client.util.player.InventoryUtil
+import org.progreso.client.util.player.findItem
+import org.progreso.client.util.player.moveItem
 
 @AbstractModule.AutoRegister
 object Offhand : AbstractModule() {
@@ -33,10 +34,10 @@ object Offhand : AbstractModule() {
 
         fun switch() {
             if (mc.player.offHandStack.item == item) return
-            val slot = InventoryUtil.findItem(fromIndex = 9) { _, stack -> stack.item == item }
+            val slot = mc.player.inventory.findItem(fromIndex = 9) { _, stack -> stack.item == item }
 
             if (slot != null) {
-                InventoryUtil.moveItem(slot.index, 45)
+                mc.interactionManager.moveItem(slot.index, 45)
             }
         }
     }

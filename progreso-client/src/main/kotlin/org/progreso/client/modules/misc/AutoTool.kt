@@ -8,18 +8,19 @@ import org.progreso.api.module.AbstractModule
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.events.block.DamageBlockEvent
 import org.progreso.client.events.safeEventListener
-import org.progreso.client.util.player.InventoryUtil
+import org.progreso.client.util.player.hotbar
+import org.progreso.client.util.player.updateSelectedSlot
 
 @AbstractModule.AutoRegister
 object AutoTool : AbstractModule() {
     init {
         safeEventListener<DamageBlockEvent> { event ->
-            val best = InventoryUtil.hotbar
+            val best = mc.player.inventory.hotbar
                 .associateWith { getDestroySpeedForBlock(it.stack, event.pos) }
                 .maxByOrNull { it.value }
 
             if (best != null && best.value > getDestroySpeedForBlock(mc.player.mainHandStack, event.pos)) {
-                InventoryUtil.updateSelectedSlot(best.key.index)
+                mc.player.inventory.updateSelectedSlot(best.key.index)
             }
         }
     }
