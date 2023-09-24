@@ -88,6 +88,7 @@
   "gui.plugins.button.open_folder": "Open folder",
   "gui.plugins.button.done": "Done",
 
+  "command.alt.description": "Add/remove alt accounts",
   "command.bind.description": "Bind/unbind modules",
   "command.config.description": "Load/save/refresh config",
   "command.font.description": "Change/reset custom font in ClickGUI",
