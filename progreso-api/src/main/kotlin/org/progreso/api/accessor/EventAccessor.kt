@@ -1,5 +1,7 @@
 package org.progreso.api.accessor
 
+import org.progreso.api.event.Event
+
 /**
  * Provides access to the event system
  * ```java
@@ -15,6 +17,11 @@ package org.progreso.api.accessor
  *     public void unregister(Object instance) {
  *         MinecraftForge.EVENT_BUS.unregister(instance);
  *     }
+ *
+ *     @Override
+ *     public void post(Event event) {
+ *         Client.EVENT_BUS.post(event);
+ *     }
  * }
  * ```
  */
@@ -22,6 +29,7 @@ interface EventAccessor {
     open class Default : EventAccessor {
         override fun register(instance: Any) {}
         override fun unregister(instance: Any) {}
+        override fun post(event: Event) {}
     }
 
     /**
@@ -37,4 +45,11 @@ interface EventAccessor {
      * @param instance Object
      */
     fun unregister(instance: Any)
+
+    /**
+     * Post event to event system
+     *
+     * @param event Event
+     */
+    fun post(event: Event)
 }

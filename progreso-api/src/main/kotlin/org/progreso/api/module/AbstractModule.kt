@@ -19,11 +19,11 @@ abstract class AbstractModule : SettingContainer {
         valueChanged { _, newValue ->
             if (newValue) {
                 Api.EVENT.register(this@AbstractModule)
-                Api.API_EVENT_BUS.post(ModuleEvent.Toggle(this@AbstractModule))
+                Api.EVENT.post(ModuleEvent.Toggle(this@AbstractModule))
                 enableBlock()
             } else {
                 Api.EVENT.unregister(this@AbstractModule)
-                Api.API_EVENT_BUS.post(ModuleEvent.Toggle(this@AbstractModule))
+                Api.EVENT.post(ModuleEvent.Toggle(this@AbstractModule))
                 disableBlock()
             }
         }

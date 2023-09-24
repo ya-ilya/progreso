@@ -4,6 +4,7 @@ import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.network.packet.s2c.play.EntityStatusS2CPacket
 import org.progreso.api.accessor.EventAccessor
+import org.progreso.api.event.Event
 import org.progreso.api.managers.ModuleManager
 import org.progreso.api.managers.PluginManager
 import org.progreso.client.Client
@@ -23,6 +24,10 @@ object EventAccessor : EventAccessor {
 
     override fun unregister(instance: Any) {
         Client.EVENT_BUS.unregister(instance)
+    }
+
+    override fun post(event: Event) {
+        Client.EVENT_BUS.post(event)
     }
 
     init {

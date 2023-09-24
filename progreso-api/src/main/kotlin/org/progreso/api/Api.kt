@@ -3,7 +3,6 @@ package org.progreso.api
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import org.progreso.api.accessor.*
-import org.progreso.api.event.EventBus
 import org.progreso.api.managers.*
 
 object Api {
@@ -15,7 +14,6 @@ object Api {
     var TEXT: TextAccessor = TextAccessor.Default()
     var LOGGER: LoggerAccessor = LoggerAccessor.Default()
 
-    val API_EVENT_BUS = EventBus()
     val GSON: Gson = GsonBuilder()
         .setPrettyPrinting()
         .create()

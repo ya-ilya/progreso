@@ -7,6 +7,7 @@ import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.option.GameOptions
 import org.progreso.api.Api
 import org.progreso.api.command.AbstractCommand
+import org.progreso.api.event.EventBus
 import org.progreso.api.managers.CommandManager
 import org.progreso.api.managers.ConfigManager
 import org.progreso.api.managers.ModuleManager
@@ -30,7 +31,7 @@ class Client : ClientModInitializer {
         val LOGGER = LoggerFactory.getLogger("progreso")!!
 
         @JvmField
-        val EVENT_BUS = Api.API_EVENT_BUS
+        val EVENT_BUS = EventBus()
 
         val config get() = ProgresoGlobalConfigAccessor.config
     }
