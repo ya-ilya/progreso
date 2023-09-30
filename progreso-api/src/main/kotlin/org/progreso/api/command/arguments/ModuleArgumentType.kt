@@ -9,10 +9,11 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder
 import org.progreso.api.Api
 import org.progreso.api.managers.ModuleManager
 import org.progreso.api.module.AbstractModule
+import org.progreso.api.module.container.ModuleContainer
 import java.util.concurrent.CompletableFuture
 import java.util.stream.Collectors
 
-class ModuleArgumentType : ArgumentType<AbstractModule> {
+class ModuleArgumentType(private val container: ModuleContainer = ModuleManager) : ArgumentType<AbstractModule> {
     companion object {
         private val NO_SUCH_MODULE = DynamicCommandExceptionType { name: Any ->
             Api.TEXT.i18nMessage("argument.module.error", name)
@@ -32,7 +33,7 @@ class ModuleArgumentType : ArgumentType<AbstractModule> {
     override fun parse(reader: StringReader): AbstractModule {
         val argument = reader.readString()
 
-        return ModuleManager.getModuleByNameOrNull(argument)
+        return container.getModuleByNameOrNull(argument)
             ?: throw NO_SUCH_MODULE.create(argument)
     }
 
@@ -40,7 +41,7 @@ class ModuleArgumentType : ArgumentType<AbstractModule> {
         context: CommandContext<S>,
         builder: SuggestionsBuilder
     ): CompletableFuture<Suggestions> {
-        return Api.COMMAND.suggestMatching(ModuleManager.modules.map { it.name }, builder)
+        return Api.COMMAND.suggestMatching(container.modules.map { it.name }, builder)
     }
 
     override fun getExamples(): Collection<String> {

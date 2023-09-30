@@ -8,10 +8,11 @@ import com.mojang.brigadier.suggestion.Suggestions
 import com.mojang.brigadier.suggestion.SuggestionsBuilder
 import org.progreso.api.Api
 import org.progreso.api.alt.AltAccount
+import org.progreso.api.alt.container.AltContainer
 import org.progreso.api.managers.AltManager
 import java.util.concurrent.CompletableFuture
 
-class AltArgumentType : ArgumentType<AltAccount> {
+class AltArgumentType(private val container: AltContainer = AltManager) : ArgumentType<AltAccount> {
     companion object {
         private val NO_SUCH_ALT = DynamicCommandExceptionType { name: Any ->
             Api.TEXT.i18nMessage("argument.alt.error", name)
@@ -25,7 +26,7 @@ class AltArgumentType : ArgumentType<AltAccount> {
     override fun parse(reader: StringReader): AltAccount {
         val argument = reader.readString()
 
-        return AltManager.getAltByNameOrNull(argument)
+        return container.getAltByNameOrNull(argument)
             ?: throw NO_SUCH_ALT.create(argument)
     }
 
@@ -33,6 +34,6 @@ class AltArgumentType : ArgumentType<AltAccount> {
         context: CommandContext<S>,
         builder: SuggestionsBuilder
     ): CompletableFuture<Suggestions> {
-        return Api.COMMAND.suggestMatching(AltManager.alts.map { it.username }, builder)
+        return Api.COMMAND.suggestMatching(container.alts.map { it.username }, builder)
     }
 }

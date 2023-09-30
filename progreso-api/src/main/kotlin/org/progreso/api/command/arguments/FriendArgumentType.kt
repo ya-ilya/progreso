@@ -8,10 +8,11 @@ import com.mojang.brigadier.suggestion.Suggestions
 import com.mojang.brigadier.suggestion.SuggestionsBuilder
 import org.progreso.api.Api
 import org.progreso.api.friend.Friend
+import org.progreso.api.friend.container.FriendContainer
 import org.progreso.api.managers.FriendManager
 import java.util.concurrent.CompletableFuture
 
-class FriendArgumentType : ArgumentType<Friend> {
+class FriendArgumentType(private val container: FriendContainer = FriendManager) : ArgumentType<Friend> {
     companion object {
         private val NO_SUCH_FRIEND = DynamicCommandExceptionType { name: Any ->
             Api.TEXT.i18nMessage("argument.friend.error", name)
@@ -27,7 +28,7 @@ class FriendArgumentType : ArgumentType<Friend> {
     override fun parse(reader: StringReader): Friend {
         val argument = reader.readString()
 
-        return FriendManager.getFriendByNameOrNull(argument)
+        return container.getFriendByNameOrNull(argument)
             ?: throw NO_SUCH_FRIEND.create(argument)
     }
 
@@ -35,7 +36,7 @@ class FriendArgumentType : ArgumentType<Friend> {
         context: CommandContext<S>,
         builder: SuggestionsBuilder
     ): CompletableFuture<Suggestions> {
-        return Api.COMMAND.suggestMatching(FriendManager.friends.map { it.name }, builder)
+        return Api.COMMAND.suggestMatching(container.friends.map { it.name }, builder)
     }
 
     override fun getExamples(): Collection<String> {

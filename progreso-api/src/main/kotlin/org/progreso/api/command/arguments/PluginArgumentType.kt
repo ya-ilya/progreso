@@ -9,9 +9,10 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder
 import org.progreso.api.Api
 import org.progreso.api.managers.PluginManager
 import org.progreso.api.plugin.AbstractPlugin
+import org.progreso.api.plugin.container.PluginContainer
 import java.util.concurrent.CompletableFuture
 
-class PluginArgumentType : ArgumentType<AbstractPlugin> {
+class PluginArgumentType(private val container: PluginContainer = PluginManager) : ArgumentType<AbstractPlugin> {
     companion object {
         private val NO_SUCH_PLUGIN = DynamicCommandExceptionType { name: Any ->
             Api.TEXT.i18nMessage("argument.plugin.error", name)
@@ -25,7 +26,7 @@ class PluginArgumentType : ArgumentType<AbstractPlugin> {
     override fun parse(reader: StringReader): AbstractPlugin {
         val argument = reader.readString()
 
-        return PluginManager.getPluginByNameOrNull(argument)
+        return container.getPluginByNameOrNull(argument)
             ?: throw NO_SUCH_PLUGIN.create(argument)
     }
 
@@ -33,6 +34,6 @@ class PluginArgumentType : ArgumentType<AbstractPlugin> {
         context: CommandContext<S>,
         builder: SuggestionsBuilder
     ): CompletableFuture<Suggestions> {
-        return Api.COMMAND.suggestMatching(PluginManager.plugins.map { it.name }, builder)
+        return Api.COMMAND.suggestMatching(container.plugins.map { it.name }, builder)
     }
 }
