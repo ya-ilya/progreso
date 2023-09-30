@@ -22,7 +22,7 @@ public abstract class MixinScreen {
         ),
         cancellable = true
     )
-    private void onRunCommand(Style style, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
+    private void handleTextClickHook(Style style, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
         if (Objects.requireNonNull(style.getClickEvent()).getValue().startsWith(CommandManager.PREFIX)) {
             CommandManager.INSTANCE.dispatch(style.getClickEvent().getValue());
             callbackInfoReturnable.setReturnValue(true);

@@ -21,7 +21,7 @@ public abstract class MixinClientPlayNetworkHandler {
         at = @At("HEAD"),
         cancellable = true
     )
-    public void onSendChatMessage(String message, CallbackInfo callbackInfo) {
+    public void sendChatMessageHook(String message, CallbackInfo callbackInfo) {
         if (message.startsWith(CommandManager.PREFIX)) {
             CommandManager.INSTANCE.dispatch(message);
             client.inGameHud.getChatHud().addToMessageHistory(message);
