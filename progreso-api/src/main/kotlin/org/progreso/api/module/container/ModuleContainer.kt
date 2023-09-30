@@ -1,12 +1,13 @@
 package org.progreso.api.module.container
 
+import org.progreso.api.common.Container
 import org.progreso.api.module.AbstractModule
 import kotlin.reflect.KClass
 
 /**
  * Interface for module containers
  */
-interface ModuleContainer {
+interface ModuleContainer : Container {
     val modules: MutableSet<AbstractModule>
 
     fun addModule(module: AbstractModule) {

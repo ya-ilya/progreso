@@ -25,7 +25,7 @@ class SettingArgumentType : ArgumentType<String> {
             return module to (
                 module.getSettingByNameOrNull(settingName, AbstractSetting::class)
                     ?: throw NO_SUCH_SETTING.create(module.name to settingName)
-            )
+                )
         }
     }
 

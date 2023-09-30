@@ -31,13 +31,9 @@ class ModuleConfig(name: String, val modules: MutableList<ModuleConfigData>) : A
         companion object {
             fun create(setting: AbstractSetting<*>): SettingConfigData {
                 return when (setting) {
-                    is GroupSetting -> create(setting)
+                    is GroupSetting -> SettingConfigData(setting.name, setting.settings.map { create(it) })
                     else -> SettingConfigData(setting.name, setting.value)
                 }
-            }
-
-            private fun create(setting: GroupSetting): SettingConfigData {
-                return SettingConfigData(setting.name, setting.settings.map { create(it) })
             }
         }
     }

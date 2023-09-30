@@ -1,13 +1,14 @@
 package org.progreso.api.command.container
 
 import org.progreso.api.command.AbstractCommand
+import org.progreso.api.common.Container
 
 import kotlin.reflect.KClass
 
 /**
  * Interface for command containers
  */
-interface CommandContainer {
+interface CommandContainer : Container {
     val commands: MutableSet<AbstractCommand>
 
     fun addCommand(command: AbstractCommand) {

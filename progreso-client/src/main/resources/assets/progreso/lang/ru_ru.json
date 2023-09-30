@@ -55,6 +55,7 @@
   "command.irc.close": "[IRC] Соеденение разорвано. Причина: %s",
   "command.irc.message": "[IRC] %s: %s",
 
+  "command.plugin.header": "--------",
   "command.plugin.name_entry": "Название: %s",
   "command.plugin.author_entry": "Автор: %s",
   "command.plugin.version_entry": "Версия: %s",

@@ -3,7 +3,6 @@ package org.progreso.api.plugin
 import org.progreso.api.command.AbstractCommand
 import org.progreso.api.command.container.CommandContainer
 import org.progreso.api.config.categories.ModuleConfigCategory
-import org.progreso.api.config.providers.ModuleConfigProvider
 import org.progreso.api.managers.PluginManager
 import org.progreso.api.module.AbstractModule
 import org.progreso.api.module.container.ModuleContainer
@@ -23,7 +22,7 @@ abstract class AbstractPlugin : ModuleContainer, CommandContainer {
         ModuleConfigCategory(
             name = "plugin",
             path = "plugins",
-            provider = ModuleConfigProvider(this),
+            container = this,
             defaultConfigName = name
         )
     }
@@ -32,8 +31,6 @@ abstract class AbstractPlugin : ModuleContainer, CommandContainer {
     abstract fun unload()
 
     fun loadPlugin() {
-        configCategory.config = name
-
         load()
 
         configCategory.load(name)

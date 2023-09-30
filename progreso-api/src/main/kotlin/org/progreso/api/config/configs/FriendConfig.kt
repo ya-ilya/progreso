@@ -1,6 +1,6 @@
 package org.progreso.api.config.configs
 
 import org.progreso.api.config.AbstractConfig
-import org.progreso.api.managers.FriendManager
+import org.progreso.api.friend.Friend
 
-class FriendConfig(name: String, val friends: List<FriendManager.Friend>) : AbstractConfig(name)
+class FriendConfig(name: String, val friends: List<Friend>) : AbstractConfig(name)

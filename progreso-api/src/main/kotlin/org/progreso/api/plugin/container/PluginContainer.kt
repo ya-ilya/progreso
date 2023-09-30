@@ -1,12 +1,13 @@
 package org.progreso.api.plugin.container
 
+import org.progreso.api.common.Container
 import org.progreso.api.plugin.AbstractPlugin
 import kotlin.reflect.KClass
 
 /**
  * Interface for plugin containers
  */
-interface PluginContainer {
+interface PluginContainer : Container {
     val plugins: MutableSet<AbstractPlugin>
 
     fun addPlugin(plugin: AbstractPlugin) {

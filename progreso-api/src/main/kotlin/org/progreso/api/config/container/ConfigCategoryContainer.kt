@@ -1,15 +1,16 @@
 package org.progreso.api.config.container
 
+import org.progreso.api.common.Container
 import org.progreso.api.config.AbstractConfigCategory
 
-interface ConfigCategoryContainer {
-    val categories: MutableSet<AbstractConfigCategory<*>>
+interface ConfigCategoryContainer : Container {
+    val categories: MutableSet<AbstractConfigCategory<*, *>>
 
-    fun getCategoryByName(name: String): AbstractConfigCategory<*> {
+    fun getCategoryByName(name: String): AbstractConfigCategory<*, *> {
         return getCategoryByNameOrNull(name)!!
     }
 
-    fun getCategoryByNameOrNull(name: String): AbstractConfigCategory<*>? {
+    fun getCategoryByNameOrNull(name: String): AbstractConfigCategory<*, *>? {
         return categories.firstOrNull { it.name == name }
     }
 }

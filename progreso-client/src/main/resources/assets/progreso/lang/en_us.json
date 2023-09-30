@@ -55,6 +55,7 @@
   "command.irc.close": "[IRC] Connection closed. Reason: %s",
   "command.irc.message": "[IRC] %s: %s",
 
+  "command.plugin.header": "--------",
   "command.plugin.name_entry": "Name: %s",
   "command.plugin.author_entry": "Author: %s",
   "command.plugin.version_entry": "Version: %s",

@@ -14,7 +14,7 @@ object PluginCommand : AbstractCommand() {
                 argument("plugin", PluginArgumentType()).execute { context ->
                     val plugin = PluginArgumentType[context]
 
-                    info("--------")
+                    infoLocalized("command.plugin.header")
                     infoLocalized("command.plugin.name_entry", plugin.name)
                     infoLocalized("command.plugin.version_entry", plugin.version)
                     infoLocalized("command.plugin.author_entry", plugin.author)

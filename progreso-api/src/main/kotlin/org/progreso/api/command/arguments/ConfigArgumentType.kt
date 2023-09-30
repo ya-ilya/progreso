@@ -11,7 +11,7 @@ import org.progreso.api.config.AbstractConfig
 import org.progreso.api.config.AbstractConfigCategory
 import java.util.concurrent.CompletableFuture
 
-class ConfigArgumentType(private val category: AbstractConfigCategory<*>) : ArgumentType<AbstractConfig> {
+class ConfigArgumentType(private val category: AbstractConfigCategory<*, *>) : ArgumentType<AbstractConfig> {
     companion object {
         @Suppress("UNCHECKED_CAST")
         private val NO_SUCH_CONFIG = DynamicCommandExceptionType { name: Any ->

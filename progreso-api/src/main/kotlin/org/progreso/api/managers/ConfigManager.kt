@@ -5,7 +5,6 @@ import org.progreso.api.config.categories.AltConfigCategory
 import org.progreso.api.config.categories.FriendConfigCategory
 import org.progreso.api.config.categories.ModuleConfigCategory
 import org.progreso.api.config.container.ConfigCategoryContainer
-import org.progreso.api.config.providers.ModuleConfigProvider
 import java.io.File
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -15,7 +14,7 @@ object ConfigManager : ConfigCategoryContainer {
     const val DEFAULT_CONFIG_NAME = "default"
 
     override val categories = mutableSetOf(
-        ModuleConfigCategory(provider = ModuleConfigProvider(ModuleManager)),
+        ModuleConfigCategory(container = ModuleManager),
         FriendConfigCategory(),
         AltConfigCategory()
     )

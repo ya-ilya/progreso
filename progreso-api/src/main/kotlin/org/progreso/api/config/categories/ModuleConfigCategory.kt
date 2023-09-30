@@ -4,19 +4,20 @@ import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonToken
 import com.google.gson.stream.JsonWriter
 import org.progreso.api.config.AbstractConfigCategory
-import org.progreso.api.config.AbstractConfigProvider
 import org.progreso.api.config.configs.ModuleConfig
-import org.progreso.api.config.providers.ModuleConfigProvider
 import org.progreso.api.managers.ConfigManager
 import org.progreso.api.managers.ModuleManager
+import org.progreso.api.module.container.ModuleContainer
+import org.progreso.api.setting.container.SettingContainer
+import org.progreso.api.setting.settings.GroupSetting
 import java.awt.Color
 
 class ModuleConfigCategory(
     name: String = "module",
     path: String = "modules",
-    provider: AbstractConfigProvider<ModuleConfig> = ModuleConfigProvider(ModuleManager),
+    container: ModuleContainer = ModuleManager,
     defaultConfigName: String? = ConfigManager.DEFAULT_CONFIG_NAME
-) : AbstractConfigCategory<ModuleConfig>(name, path, provider, defaultConfigName) {
+) : AbstractConfigCategory<ModuleConfig, ModuleContainer>(name, path, container, defaultConfigName) {
     override fun read(name: String, reader: JsonReader): ModuleConfig {
         val config = ModuleConfig(name, mutableListOf())
         reader.beginObject()
@@ -52,7 +53,46 @@ class ModuleConfigCategory(
         writer.endObject()
     }
 
+    override fun create(name: String): ModuleConfig {
+        return ModuleConfig(
+            name,
+            container.modules
+                .map { ModuleConfig.ModuleConfigData.create(it) }
+                .toMutableList()
+        )
+    }
+
+    override fun apply(config: ModuleConfig) {
+        config.modules.removeIf { module ->
+            !container.modules.any { it.name == module.name }
+        }
+
+        for (moduleData in config.modules) {
+            val module = container.getModuleByName(moduleData.name)
+            module.enabled = moduleData.enabled
+            moduleData.settings.removeIf { setting ->
+                !module.settings.any { it.name == setting.name }
+            }
+            module.setSettings(moduleData.settings)
+        }
+    }
+
     private companion object {
+        @Suppress("UNCHECKED_CAST")
+        fun SettingContainer.setSettings(settings: List<ModuleConfig.SettingConfigData>) {
+            for (settingData in settings) {
+                when (val setting = this.settings.firstOrNull { it.name == settingData.name }) {
+                    null -> continue
+
+                    is GroupSetting -> {
+                        setting.setSettings(settingData.value as List<ModuleConfig.SettingConfigData>)
+                    }
+
+                    else -> setting.setAnyValue(settingData.value)
+                }
+            }
+        }
+
         fun readSettings(reader: JsonReader): List<ModuleConfig.SettingConfigData> {
             val settings = mutableListOf<ModuleConfig.SettingConfigData>()
 

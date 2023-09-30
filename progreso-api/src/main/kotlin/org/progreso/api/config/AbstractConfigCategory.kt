@@ -3,6 +3,7 @@ package org.progreso.api.config
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
 import org.progreso.api.Api
+import org.progreso.api.common.Container
 import org.progreso.api.managers.ConfigManager
 import java.io.File
 import java.nio.file.Files
@@ -15,13 +16,12 @@ import kotlin.io.path.*
  *
  * @param name Category name
  * @param path Category path
- * @param provider Config provider
  * @param defaultConfigName Default config name
  */
-abstract class AbstractConfigCategory<T : AbstractConfig>(
+abstract class AbstractConfigCategory<T : AbstractConfig, C : Container>(
     name: String,
     path: String,
-    private val provider: AbstractConfigProvider<T>,
+    protected val container: C,
     private val defaultConfigName: String? = null
 ) {
     val name = name.trim()
@@ -38,6 +38,9 @@ abstract class AbstractConfigCategory<T : AbstractConfig>(
     abstract fun read(name: String, reader: JsonReader): T
     abstract fun write(config: T, writer: JsonWriter)
 
+    abstract fun create(name: String): T
+    abstract fun apply(config: T)
+
     fun save() {
         for (config in configs.toList()) {
             save(config.name, false)
@@ -49,12 +52,12 @@ abstract class AbstractConfigCategory<T : AbstractConfig>(
         checkDirectory()
 
         configs.firstOrNull { it.name == name }.also { config ->
-            var currentConfig = config ?: provider.create(name)
+            var currentConfig = config ?: create(name)
 
             if (currentConfig.name.equals(this.config, true)) {
                 configs.remove(currentConfig)
 
-                provider.create(name).also {
+                create(name).also {
                     configs.add(it)
                     currentConfig = it
                 }
@@ -72,11 +75,11 @@ abstract class AbstractConfigCategory<T : AbstractConfig>(
         checkCurrent()
 
         if (createIfNotExists && !configs.any { it.name == name }) {
-            configs.add(provider.create(name))
+            configs.add(create(name))
         }
 
         configs.first { it.name == name }.also { config ->
-            provider.apply(config)
+            apply(config)
             this.config = name
         }
     }
@@ -109,14 +112,14 @@ abstract class AbstractConfigCategory<T : AbstractConfig>(
 
     private fun checkCurrent() {
         if (!configs.any { it.name == config }) {
-            configs.add(provider.create(config))
+            configs.add(create(config))
         }
     }
 
     private fun checkDefault() {
         if (defaultConfigName != null) {
             if (!configs.any { it.name == defaultConfigName }) {
-                provider.create(defaultConfigName).also {
+                create(defaultConfigName).also {
                     configs.add(it)
                     writeConfig(defaultConfigName, it)
                 }
