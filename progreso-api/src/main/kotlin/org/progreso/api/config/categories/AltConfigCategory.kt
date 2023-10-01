@@ -23,13 +23,20 @@ class AltConfigCategory : AbstractConfigCategory<AltConfig, AltContainer>(
                 iterateArray {
                     readObject {
                         reader.nextName()
-                        val type = reader.nextString()
 
-                        reader.nextName()
-                        val username = reader.nextString()
+                        when (reader.nextString()) {
+                            "Offline" -> {
+                                reader.nextName()
 
-                        when (type) {
-                            "Offline" -> AltAccount.Offline(username)
+                                AltAccount.Offline(reader.nextString())
+                            }
+
+                            "Microsoft" -> {
+                                reader.nextName()
+
+                                AltAccount.Microsoft(reader.nextString())
+                            }
+
                             else -> throw IllegalArgumentException()
                         }
                     }
@@ -43,7 +50,16 @@ class AltConfigCategory : AbstractConfigCategory<AltConfig, AltContainer>(
             for (alt in config.alts) {
                 writeObject {
                     name("Type").value(alt.type)
-                    name("Name").value(alt.username)
+
+                    when (alt) {
+                        is AltAccount.Offline -> {
+                            name("Name").value(alt.username)
+                        }
+
+                        is AltAccount.Microsoft -> {
+                            name("RefreshToken").value(alt.refreshToken)
+                        }
+                    }
                 }
             }
         }

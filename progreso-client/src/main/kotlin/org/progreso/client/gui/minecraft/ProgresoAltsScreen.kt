@@ -76,7 +76,7 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
             button.active = false
             button.dimensions(width / 2 - 100, height - 24, 96, 20)
             button.onPress {
-                if (SessionUtil.login(selectedAlt!!) == SessionUtil.LoginResult.Successful) {
+                if (SessionUtil.login(selectedAlt!!) == SessionUtil.Status.Successful) {
                     close()
                 }
             }
@@ -99,8 +99,28 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
                     button.dimensions(width / 2 - 66, height / 2 + 8, 132, 20)
                     button.onPress {
                         if (name.text.length >= 3) {
-                            AltManager.addAlt(AltAccount.Offline(name.text))
+                            if (!AltManager.alts.any { it.username == name.text }) {
+                                AltManager.addAlt(SessionUtil.createOfflineAltAccount(name.text))
+                                close()
+                            } else {
+                                showErrorCreateAltScreen(i18n("gui.alts.label.error_alt_exists"))
+                            }
+                        }
+                    }
+                }
+
+                button(i18n = "gui.alts.button.add_microsoft_account") { button ->
+                    button.dimensions(width / 2 - 66, height / 2 + 36, 132, 20)
+                    button.onPress {
+                        val (status, account) = SessionUtil.createMicrosoftAltAccount() ?: return@onPress close()
+
+                        if (status is SessionUtil.Status.Error) {
+                            showErrorCreateAltScreen(status.message)
+                        } else if (!AltManager.alts.any { it.username == account!!.username }) {
+                            AltManager.addAlt(account!!)
                             close()
+                        } else {
+                            showErrorCreateAltScreen(i18n("gui.alts.label.error_alt_exists"))
                         }
                     }
                 }
@@ -112,6 +132,29 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
                     textRenderer,
                     i18n("gui.alts.label.name_text_field"),
                     width / 2 - 65, height / 2 - 14, Color.WHITE
+                )
+            }
+        })
+    }
+
+    private fun showErrorCreateAltScreen(error: String) {
+        val errorI18n = i18n("gui.alts.label.error_create_alt", error)
+
+        client!!.setScreen(screen(i18n = "gui.alts.title.error_create_alt") {
+            init {
+                button(i18n = "gui.alts.button.done") { button ->
+                    button.dimensions(width / 2 - 66, height / 2 + 8, 132, 20)
+                    button.onPress { close() }
+                }
+            }
+
+            render { context, _, _ ->
+                renderBackgroundTexture(context)
+                context.drawText(
+                    textRenderer,
+                    errorI18n,
+                    width / 2 - textRenderer.getWidth(errorI18n) / 2,
+                    height / 2 - 14, Color.WHITE
                 )
             }
         })
@@ -131,6 +174,7 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
                 i18n(
                     "gui.alts.label.alt_type", when (alt) {
                         is AltAccount.Offline -> i18n("gui.alts.label.offline_alt_type")
+                        is AltAccount.Microsoft -> i18n("gui.alts.label.microsoft_alt_type")
                     }
                 ),
                 x + 3,
