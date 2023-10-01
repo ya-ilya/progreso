@@ -11,7 +11,6 @@ import org.progreso.api.managers.ModuleManager
 import org.progreso.api.module.AbstractModule
 import org.progreso.api.module.container.ModuleContainer
 import java.util.concurrent.CompletableFuture
-import java.util.stream.Collectors
 
 class ModuleArgumentType(private val container: ModuleContainer = ModuleManager) : ArgumentType<AbstractModule> {
     companion object {
@@ -19,16 +18,14 @@ class ModuleArgumentType(private val container: ModuleContainer = ModuleManager)
             Api.TEXT.i18nMessage("argument.module.error", name)
         }
 
-        private val EXAMPLES = ModuleManager.modules
-            .stream()
-            .limit(3)
-            .map { it.name }
-            .collect(Collectors.toList())
-
         operator fun get(context: CommandContext<*>): AbstractModule {
             return context.getArgument("module", AbstractModule::class.java)
         }
     }
+
+    private val examples = container.modules
+        .take(3)
+        .map { it.name }
 
     override fun parse(reader: StringReader): AbstractModule {
         val argument = reader.readString()
@@ -45,6 +42,6 @@ class ModuleArgumentType(private val container: ModuleContainer = ModuleManager)
     }
 
     override fun getExamples(): Collection<String> {
-        return EXAMPLES
+        return examples
     }
 }

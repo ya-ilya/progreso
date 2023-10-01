@@ -5,7 +5,6 @@ import com.google.gson.stream.JsonWriter
 import org.progreso.api.Api
 import org.progreso.api.common.Container
 import org.progreso.api.managers.ConfigManager
-import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -28,7 +27,7 @@ abstract class AbstractConfigCategory<T : AbstractConfig, C : Container>(
     val configs = mutableListOf<T>()
     var config = defaultConfigName ?: ConfigManager.DEFAULT_CONFIG_NAME
 
-    private val path: Path = Paths.get("progreso${File.separator}$path")
+    private val path: Path = Paths.get("progreso", path)
 
     init {
         refresh()
@@ -141,5 +140,5 @@ abstract class AbstractConfigCategory<T : AbstractConfig, C : Container>(
         }
     }
 
-    private val String.configPath get() = Paths.get("$path${File.separator}$this.json")
+    private val String.configPath get() = Paths.get(path.toString(), "$this.json")
 }

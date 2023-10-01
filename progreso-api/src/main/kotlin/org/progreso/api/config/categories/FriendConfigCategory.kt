@@ -4,6 +4,9 @@ import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
 import org.progreso.api.config.AbstractConfigCategory
 import org.progreso.api.config.configs.FriendConfig
+import org.progreso.api.extensions.iterateArray
+import org.progreso.api.extensions.readArray
+import org.progreso.api.extensions.writeArray
 import org.progreso.api.friend.Friend
 import org.progreso.api.friend.container.FriendContainer
 import org.progreso.api.managers.ConfigManager
@@ -16,21 +19,20 @@ class FriendConfigCategory : AbstractConfigCategory<FriendConfig, FriendContaine
     defaultConfigName = ConfigManager.DEFAULT_CONFIG_NAME
 ) {
     override fun read(name: String, reader: JsonReader): FriendConfig {
-        val friends = mutableListOf<String>()
-        reader.beginArray()
-        while (reader.hasNext()) {
-            friends.add(reader.nextString())
-        }
-        reader.endArray()
-        return FriendConfig(name, friends.map { Friend(it) })
+        return FriendConfig(
+            name,
+            reader.readArray {
+                iterateArray { Friend(nextString()) }
+            }
+        )
     }
 
     override fun write(config: FriendConfig, writer: JsonWriter) {
-        writer.beginArray()
-        for (friend in config.friends) {
-            writer.value(friend.name)
+        writer.writeArray {
+            for (friend in config.friends) {
+                value(friend.name)
+            }
         }
-        writer.endArray()
     }
 
     override fun create(name: String): FriendConfig {

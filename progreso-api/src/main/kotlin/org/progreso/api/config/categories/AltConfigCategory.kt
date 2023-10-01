@@ -6,6 +6,7 @@ import org.progreso.api.alt.AltAccount
 import org.progreso.api.alt.container.AltContainer
 import org.progreso.api.config.AbstractConfigCategory
 import org.progreso.api.config.configs.AltConfig
+import org.progreso.api.extensions.*
 import org.progreso.api.managers.AltManager
 import org.progreso.api.managers.ConfigManager
 
@@ -16,39 +17,36 @@ class AltConfigCategory : AbstractConfigCategory<AltConfig, AltContainer>(
     defaultConfigName = ConfigManager.DEFAULT_CONFIG_NAME
 ) {
     override fun read(name: String, reader: JsonReader): AltConfig {
-        val alts = mutableListOf<AltAccount>()
-        reader.beginArray()
-        while (reader.hasNext()) {
-            reader.beginObject()
+        return AltConfig(
+            name,
+            reader.readArray {
+                iterateArray {
+                    readObject {
+                        reader.nextName()
+                        val type = reader.nextString()
 
-            reader.nextName()
-            val type = reader.nextString()
+                        reader.nextName()
+                        val username = reader.nextString()
 
-            reader.nextName()
-            val username = reader.nextString()
-
-            alts.add(
-                when (type) {
-                    "Offline" -> AltAccount.Offline(username)
-                    else -> throw IllegalArgumentException()
+                        when (type) {
+                            "Offline" -> AltAccount.Offline(username)
+                            else -> throw IllegalArgumentException()
+                        }
+                    }
                 }
-            )
-
-            reader.endObject()
-        }
-        reader.endArray()
-        return AltConfig(name, alts)
+            }
+        )
     }
 
     override fun write(config: AltConfig, writer: JsonWriter) {
-        writer.beginArray()
-        for (alt in config.alts) {
-            writer.beginObject()
-            writer.name("Type").value(alt.type)
-            writer.name("Name").value(alt.username)
-            writer.endObject()
+        writer.writeArray {
+            for (alt in config.alts) {
+                writeObject {
+                    name("Type").value(alt.type)
+                    name("Name").value(alt.username)
+                }
+            }
         }
-        writer.endArray()
     }
 
     override fun create(name: String): AltConfig {

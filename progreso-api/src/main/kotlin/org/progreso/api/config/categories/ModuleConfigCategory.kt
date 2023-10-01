@@ -5,6 +5,9 @@ import com.google.gson.stream.JsonToken
 import com.google.gson.stream.JsonWriter
 import org.progreso.api.config.AbstractConfigCategory
 import org.progreso.api.config.configs.ModuleConfig
+import org.progreso.api.extensions.iterateObjectMap
+import org.progreso.api.extensions.readObject
+import org.progreso.api.extensions.writeObject
 import org.progreso.api.managers.ConfigManager
 import org.progreso.api.managers.ModuleManager
 import org.progreso.api.module.container.ModuleContainer
@@ -19,25 +22,17 @@ class ModuleConfigCategory(
     defaultConfigName: String? = ConfigManager.DEFAULT_CONFIG_NAME
 ) : AbstractConfigCategory<ModuleConfig, ModuleContainer>(name, path, container, defaultConfigName) {
     override fun read(name: String, reader: JsonReader): ModuleConfig {
-        val config = ModuleConfig(name, mutableListOf())
-        reader.beginObject()
-
-        while (reader.hasNext()) {
-            val module = ModuleConfig.ModuleConfigData(
-                reader.nextName(),
-                false,
-                mutableListOf()
-            )
-
-            reader.beginObject()
-            module.settings.addAll(readSettings(reader))
-            reader.endObject()
-
-            config.modules.add(module)
-        }
-
-        reader.endObject()
-        return config
+        return ModuleConfig(
+            name,
+            reader.readObject {
+                iterateObjectMap { entryName ->
+                    ModuleConfig.ModuleConfigData(
+                        entryName,
+                        readSettings(this)
+                    )
+                }
+            }
+        )
     }
 
     override fun write(config: ModuleConfig, writer: JsonWriter) {
@@ -63,15 +58,14 @@ class ModuleConfigCategory(
     }
 
     override fun apply(config: ModuleConfig) {
-        config.modules.removeIf { module ->
-            !container.modules.any { it.name == module.name }
+        config.modules = config.modules.filter { module ->
+            container.modules.any { it.name == module.name }
         }
 
         for (moduleData in config.modules) {
             val module = container.getModuleByName(moduleData.name)
-            module.enabled = moduleData.enabled
-            moduleData.settings.removeIf { setting ->
-                !module.settings.any { it.name == setting.name }
+            moduleData.settings = moduleData.settings.filter { setting ->
+                module.settings.any { it.name == setting.name }
             }
             module.setSettings(moduleData.settings)
         }
@@ -123,9 +117,7 @@ class ModuleConfigCategory(
 
                     // GroupSetting
                     JsonToken.BEGIN_OBJECT -> {
-                        reader.beginObject()
-                        setting.value = readSettings(reader)
-                        reader.endObject()
+                        setting.value = reader.readObject { readSettings(reader) }
                     }
 
                     else -> throw RuntimeException("Unknown setting type: ${setting.name}")
@@ -149,9 +141,9 @@ class ModuleConfigCategory(
                     is Boolean -> writer.value(value)
                     is Number -> writer.value(value)
                     is List<*> -> {
-                        writer.beginObject()
-                        writeSettings(writer, value as List<ModuleConfig.SettingConfigData>)
-                        writer.endObject()
+                        writer.writeObject {
+                            writeSettings(this, value as List<ModuleConfig.SettingConfigData>)
+                        }
                     }
 
                     else -> throw RuntimeException("Unknown setting type: ${setting.name}")

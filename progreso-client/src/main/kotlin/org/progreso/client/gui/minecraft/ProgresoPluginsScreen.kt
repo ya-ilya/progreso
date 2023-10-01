@@ -12,7 +12,6 @@ import org.progreso.client.gui.invoke
 import org.progreso.client.gui.minecraft.common.SimpleElementListEntry
 import org.progreso.client.gui.minecraft.common.TitledScreen
 import java.awt.Color
-import java.io.File
 import java.nio.file.Paths
 
 class ProgresoPluginsScreen(private val plugins: Set<AbstractPlugin>) : TitledScreen(i18n = "gui.plugins.title") {
@@ -77,7 +76,7 @@ class ProgresoPluginsScreen(private val plugins: Set<AbstractPlugin>) : TitledSc
 
         button(i18n = "gui.plugins.button.open_folder") { button ->
             button.dimensions(width / 2 - 154, height - 24, 150, 20)
-            button.onPress { Util.getOperatingSystem().open(Paths.get("progreso${File.separator}plugins").toFile()) }
+            button.onPress { Util.getOperatingSystem().open(Paths.get("mods").toFile()) }
         }
 
         button(i18n = "gui.plugins.button.done") { button ->

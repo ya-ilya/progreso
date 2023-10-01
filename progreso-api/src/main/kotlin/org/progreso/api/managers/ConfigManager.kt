@@ -5,7 +5,6 @@ import org.progreso.api.config.categories.AltConfigCategory
 import org.progreso.api.config.categories.FriendConfigCategory
 import org.progreso.api.config.categories.ModuleConfigCategory
 import org.progreso.api.config.container.ConfigCategoryContainer
-import java.io.File
 import java.nio.file.Path
 import java.nio.file.Paths
 import kotlin.io.path.*
@@ -41,7 +40,7 @@ object ConfigManager : ConfigCategoryContainer {
     }
 
     private fun checkGlobalConfig(): Path {
-        val global = Paths.get("progreso${File.separator}global.json")
+        val global = Paths.get("progreso", "global.json")
 
         global.createParentDirectories()
 

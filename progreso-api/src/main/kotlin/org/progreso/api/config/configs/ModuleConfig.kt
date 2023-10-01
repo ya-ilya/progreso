@@ -5,17 +5,15 @@ import org.progreso.api.module.AbstractModule
 import org.progreso.api.setting.AbstractSetting
 import org.progreso.api.setting.settings.GroupSetting
 
-class ModuleConfig(name: String, val modules: MutableList<ModuleConfigData>) : AbstractConfig(name) {
+class ModuleConfig(name: String, var modules: List<ModuleConfigData>) : AbstractConfig(name) {
     data class ModuleConfigData(
         val name: String,
-        var enabled: Boolean,
-        val settings: MutableList<SettingConfigData>
+        var settings: List<SettingConfigData>
     ) {
         companion object {
             fun create(module: AbstractModule): ModuleConfigData {
                 return ModuleConfigData(
                     module.name,
-                    module.enabled,
                     module.settings
                         .map { SettingConfigData.create(it) }
                         .toMutableList()
