@@ -31,7 +31,7 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
                 width = 200,
                 height = height,
                 top = 24,
-                bottom = height - 55 + 4,
+                bottom = height - 75,
                 itemHeight = 36
             )
 
@@ -58,14 +58,30 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
             }
         }
 
-        button(i18n = "gui.alts.button.add_account") { button ->
-            button.dimensions(width / 2 - 100, height - 48, 96, 20)
-            button.onPress { showCreateAltScreen() }
+        button(i18n = "gui.alts.button.add_offline_alt") { button ->
+            button.dimensions(width / 2 - 100, height - 72, 96, 20)
+            button.onPress { showCreateOfflineAltScreen() }
         }
 
-        removeButtonWidget = button(i18n = "gui.alts.button.remove_account") { button ->
+        button(i18n = "gui.alts.button.add_microsoft_alt") { button ->
+            button.dimensions(width / 2 + 4, height - 72, 96, 20)
+            button.onPress {
+                val (status, account) = SessionUtil.createMicrosoftAltAccount() ?: return@onPress close()
+
+                if (status is SessionUtil.Status.Error) {
+                    showErrorCreateAltScreen(status.message)
+                } else if (!AltManager.alts.any { it.username == account!!.username }) {
+                    AltManager.addAlt(account!!)
+                    close()
+                } else {
+                    showErrorCreateAltScreen(i18n("gui.alts.label.error_alt_exists"))
+                }
+            }
+        }
+
+        removeButtonWidget = button(i18n = "gui.alts.button.remove_alt") { button ->
             button.active = false
-            button.dimensions(width / 2 + 4, height - 48, 96, 20)
+            button.dimensions(width / 2 - 100, height - 48, 96, 20)
             button.onPress {
                 AltManager.removeAlt(selectedAlt!!)
                 client!!.setScreen(ProgresoAltsScreen(AltManager.alts))
@@ -74,7 +90,7 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
 
         loginButtonWidget = button(i18n = "gui.alts.button.login") { button ->
             button.active = false
-            button.dimensions(width / 2 - 100, height - 24, 96, 20)
+            button.dimensions(width / 2 + 4, height - 48, 96, 20)
             button.onPress {
                 if (SessionUtil.login(selectedAlt!!) == SessionUtil.Status.Successful) {
                     close()
@@ -83,19 +99,19 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
         }
 
         button(i18n = "gui.alts.button.done") { button ->
-            button.dimensions(width / 2 + 4, height - 24, 96, 20)
+            button.dimensions(width / 2 - 100, height - 24, 200, 20)
             button.onPress { close() }
         }
     }
 
-    private fun showCreateAltScreen() {
-        client!!.setScreen(screen(i18n = "gui.alts.title.create_alt") {
+    private fun showCreateOfflineAltScreen() {
+        client!!.setScreen(screen(i18n = "gui.alts.title.add_offline_alt") {
             init {
                 val name = textField { textField ->
                     textField.dimensions(width / 2 - 36, height / 2 - 20, 100, 20)
                 }
 
-                button(i18n = "gui.alts.button.add_account") { button ->
+                button(i18n = "gui.alts.button.add_offline_alt") { button ->
                     button.dimensions(width / 2 - 66, height / 2 + 8, 132, 20)
                     button.onPress {
                         if (name.text.length >= 3) {
@@ -105,22 +121,6 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
                             } else {
                                 showErrorCreateAltScreen(i18n("gui.alts.label.error_alt_exists"))
                             }
-                        }
-                    }
-                }
-
-                button(i18n = "gui.alts.button.add_microsoft_account") { button ->
-                    button.dimensions(width / 2 - 66, height / 2 + 36, 132, 20)
-                    button.onPress {
-                        val (status, account) = SessionUtil.createMicrosoftAltAccount() ?: return@onPress close()
-
-                        if (status is SessionUtil.Status.Error) {
-                            showErrorCreateAltScreen(status.message)
-                        } else if (!AltManager.alts.any { it.username == account!!.username }) {
-                            AltManager.addAlt(account!!)
-                            close()
-                        } else {
-                            showErrorCreateAltScreen(i18n("gui.alts.label.error_alt_exists"))
                         }
                     }
                 }

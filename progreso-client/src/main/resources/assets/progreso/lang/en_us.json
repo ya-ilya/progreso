@@ -71,7 +71,7 @@
   "module.notifications.visualrange_leave_message": "[Notifications] %s left visual range",
 
   "gui.alts.title": "Alts",
-  "gui.alts.title.create_alt": "Create Alt",
+  "gui.alts.title.add_offline_alt": "Add offline alt",
   "gui.alts.title.error_create_alt": "Error occurred when creating alt",
   "gui.alts.label.alt_name": "Name: %s",
   "gui.alts.label.alt_type": "Type: %s",
@@ -80,10 +80,10 @@
   "gui.alts.label.current_name": "Current name: %s",
   "gui.alts.label.name_text_field": "Name",
   "gui.alts.label.error_create_alt": "Error occurred when creating alt: %s",
-  "gui.alts.label.error_alt_exists": "Alt account with same username already exists",
-  "gui.alts.button.add_account": "Add account",
-  "gui.alts.button.add_microsoft_account": "Add microsoft account",
-  "gui.alts.button.remove_account": "Remove account",
+  "gui.alts.label.error_alt_exists": "Alt with same username already exists",
+  "gui.alts.button.add_offline_alt": "+ Offline",
+  "gui.alts.button.add_microsoft_alt": "+ Microsoft",
+  "gui.alts.button.remove_alt": "Remove alt",
   "gui.alts.button.login": "Login",
   "gui.alts.button.done": "Done",
 
