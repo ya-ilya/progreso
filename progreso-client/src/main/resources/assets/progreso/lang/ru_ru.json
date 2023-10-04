@@ -72,9 +72,11 @@
 
   "gui.alts.title": "Альты",
   "gui.alts.title.add_offline_alt": "Создать оффлайн альт",
+  "gui.alts.title.add_microsoft_alt": "Создать альт майкрософт",
   "gui.alts.title.error_create_alt": "Произошла ошибка во время создания альта",
   "gui.alts.label.alt_name": "Имя: %s",
   "gui.alts.label.alt_type": "Тип: %s",
+  "gui.alts.label.add_microsoft_alt_link": "Страница входа была открыта в вашем бразуере",
   "gui.alts.label.offline_alt_type": "Оффлайн",
   "gui.alts.label.microsoft_alt_type": "Майкрософт",
   "gui.alts.label.current_name": "Текущее имя: %s",
@@ -84,6 +86,7 @@
   "gui.alts.button.add_offline_alt": "+ Оффлайн",
   "gui.alts.button.add_microsoft_alt": "+ Майкрософт",
   "gui.alts.button.remove_alt": "Удалить альт",
+  "gui.alts.button.open_link": "Открыть сыллку",
   "gui.alts.button.login": "Войти",
   "gui.alts.button.done": "Готово",
 

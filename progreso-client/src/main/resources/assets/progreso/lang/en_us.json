@@ -72,9 +72,11 @@
 
   "gui.alts.title": "Alts",
   "gui.alts.title.add_offline_alt": "Add offline alt",
+  "gui.alts.title.add_microsoft_alt": "Add microsoft alt",
   "gui.alts.title.error_create_alt": "Error occurred when creating alt",
   "gui.alts.label.alt_name": "Name: %s",
   "gui.alts.label.alt_type": "Type: %s",
+  "gui.alts.label.add_microsoft_alt_link": "The login page was opened in your browser",
   "gui.alts.label.offline_alt_type": "Offline",
   "gui.alts.label.microsoft_alt_type": "Microsoft",
   "gui.alts.label.current_name": "Current name: %s",
@@ -84,6 +86,7 @@
   "gui.alts.button.add_offline_alt": "+ Offline",
   "gui.alts.button.add_microsoft_alt": "+ Microsoft",
   "gui.alts.button.remove_alt": "Remove alt",
+  "gui.alts.button.open_link": "Open Link",
   "gui.alts.button.login": "Login",
   "gui.alts.button.done": "Done",
 

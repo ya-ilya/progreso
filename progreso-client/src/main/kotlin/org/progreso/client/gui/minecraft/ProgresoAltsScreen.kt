@@ -2,6 +2,7 @@ package org.progreso.client.gui.minecraft
 
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.widget.ButtonWidget
+import net.minecraft.util.Util
 import org.progreso.api.alt.AltAccount
 import org.progreso.api.managers.AltManager
 import org.progreso.client.Client.Companion.mc
@@ -16,6 +17,7 @@ import org.progreso.client.gui.minecraft.common.SimpleElementListEntry
 import org.progreso.client.gui.minecraft.common.TitledScreen
 import org.progreso.client.util.misc.SessionUtil
 import java.awt.Color
+import kotlin.concurrent.thread
 
 class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n = "gui.alts.title") {
     private var selectedAlt: AltAccount? = null
@@ -60,23 +62,12 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
 
         button(i18n = "gui.alts.button.add_offline_alt") { button ->
             button.dimensions(width / 2 - 100, height - 72, 96, 20)
-            button.onPress { showCreateOfflineAltScreen() }
+            button.onPress { showAddOfflineAltScreen() }
         }
 
         button(i18n = "gui.alts.button.add_microsoft_alt") { button ->
             button.dimensions(width / 2 + 4, height - 72, 96, 20)
-            button.onPress {
-                val (status, account) = SessionUtil.createMicrosoftAltAccount() ?: return@onPress close()
-
-                if (status is SessionUtil.Status.Error) {
-                    showErrorCreateAltScreen(status.message)
-                } else if (!AltManager.alts.any { it.username == account!!.username }) {
-                    AltManager.addAlt(account!!)
-                    close()
-                } else {
-                    showErrorCreateAltScreen(i18n("gui.alts.label.error_alt_exists"))
-                }
-            }
+            button.onPress { showAddMicrosoftAltScreen() }
         }
 
         removeButtonWidget = button(i18n = "gui.alts.button.remove_alt") { button ->
@@ -104,7 +95,7 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
         }
     }
 
-    private fun showCreateOfflineAltScreen() {
+    private fun showAddOfflineAltScreen() {
         client!!.setScreen(screen(i18n = "gui.alts.title.add_offline_alt") {
             init {
                 val name = textField { textField ->
@@ -131,7 +122,67 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
                 context.drawText(
                     textRenderer,
                     i18n("gui.alts.label.name_text_field"),
-                    width / 2 - 65, height / 2 - 14, Color.WHITE
+                    width / 2 - 66, height / 2 - 14, Color.WHITE
+                )
+            }
+        })
+    }
+
+    private fun showAddMicrosoftAltScreen() {
+        client!!.setScreen(screen(i18n = "gui.alts.title.add_microsoft_alt") {
+            val result = object {
+                var set = false
+                var url: String? = null
+                var pair: Pair<SessionUtil.Status, AltAccount.Microsoft?>? = null
+            }
+
+            val thread = thread {
+                result.pair = SessionUtil.createMicrosoftAltAccount {
+                    Util.getOperatingSystem().open(it)
+                    result.url = it
+                }
+                result.set = true
+            }
+
+            init {
+                button(i18n = "gui.alts.button.open_link") { button ->
+                    button.dimensions(width / 2 - 136, height / 2 + 8, 132, 20)
+                    button.onPress { if (result.url != null) Util.getOperatingSystem().open(result.url)  }
+                }
+
+                button(i18n = "gui.alts.button.done") { button ->
+                    button.dimensions(width / 2 + 4, height / 2 + 8, 132, 20)
+                    button.onPress { close() }
+                }
+            }
+
+            close {
+                thread.interrupt()
+            }
+
+            render {context, _, _ ->
+                if (result.set) {
+                    val (status, account) = result.pair ?: return@render close()
+
+                    if (status is SessionUtil.Status.Error) {
+                        showErrorCreateAltScreen(status.message)
+                    } else if (!AltManager.alts.any { it.username == account!!.username }) {
+                        AltManager.addAlt(account!!)
+                        close()
+                    } else {
+                        showErrorCreateAltScreen(i18n("gui.alts.label.error_alt_exists"))
+                    }
+                }
+
+                val text = i18n("gui.alts.label.add_microsoft_alt_link")
+
+                renderBackgroundTexture(context)
+                context.drawText(
+                    textRenderer,
+                    text,
+                    width / 2 - textRenderer.getWidth(text) / 2,
+                    height / 2 - 14,
+                    Color.WHITE
                 )
             }
         })

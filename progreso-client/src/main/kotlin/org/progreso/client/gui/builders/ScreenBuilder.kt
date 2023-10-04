@@ -40,6 +40,12 @@ class ScreenBuilder : AbstractScreenBuilder<DrawContext, Screen>() {
 
                 return super.mouseReleased(mouseX, mouseY, button)
             }
+
+            override fun close() {
+                super.close()
+
+                screenListeners.close(this)
+            }
         }
     }
 }

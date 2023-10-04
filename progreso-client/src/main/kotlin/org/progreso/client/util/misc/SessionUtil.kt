@@ -90,9 +90,11 @@ object SessionUtil {
             }
         }
 
-        while (!server.isShutdown) {
+        while (!server.isShutdown && !Thread.currentThread().isInterrupted) {
             // Return
         }
+
+        server.stop()
 
         return result
     }
