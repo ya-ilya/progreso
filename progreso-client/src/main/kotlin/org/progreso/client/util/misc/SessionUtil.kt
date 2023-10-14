@@ -2,7 +2,7 @@ package org.progreso.client.util.misc
 
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService
 import com.mojang.authlib.yggdrasil.YggdrasilEnvironment
-import net.minecraft.client.util.Session
+import net.minecraft.client.session.Session
 import net.minecraft.util.Util
 import org.progreso.api.alt.AltAccount
 import org.progreso.api.alt.oauth.OAuthServer
@@ -22,7 +22,7 @@ object SessionUtil {
                 try {
                     mc.session = Session(
                         alt.username,
-                        alt.uuid,
+                        UUID.fromString(alt.uuid),
                         "-",
                         Optional.empty(),
                         Optional.empty(),
@@ -30,7 +30,6 @@ object SessionUtil {
                     )
                     mc.client.sessionService = YggdrasilAuthenticationService(
                         Proxy.NO_PROXY,
-                        "",
                         YggdrasilEnvironment.PROD.environment
                     ).createMinecraftSessionService()
                     Status.Successful
@@ -43,7 +42,7 @@ object SessionUtil {
                 try {
                     mc.session = Session(
                         alt.username,
-                        alt.uuid,
+                        UUID.fromString(alt.uuid),
                         alt.accessToken,
                         Optional.empty(),
                         Optional.empty(),
@@ -51,7 +50,6 @@ object SessionUtil {
                     )
                     mc.client.sessionService = YggdrasilAuthenticationService(
                         Proxy.NO_PROXY,
-                        "",
                         YggdrasilEnvironment.PROD.environment
                     ).createMinecraftSessionService()
                     Status.Successful

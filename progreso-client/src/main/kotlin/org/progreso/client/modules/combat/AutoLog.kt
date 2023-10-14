@@ -1,6 +1,6 @@
 package org.progreso.client.modules.combat
 
-import net.minecraft.network.packet.s2c.play.DisconnectS2CPacket
+import net.minecraft.network.packet.s2c.common.DisconnectS2CPacket
 import net.minecraft.text.Text
 import org.progreso.api.module.AbstractModule
 import org.progreso.client.Client.Companion.mc

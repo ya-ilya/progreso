@@ -16,7 +16,6 @@ abstract class AbstractElementListBuilder<Context, ElementListWidget, Entry>
     var bottom = 0
     var left = 0
 
-    var renderSelection = true
     var renderHeader = false
 
     protected var children = mutableListOf<Entry>()

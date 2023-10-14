@@ -41,16 +41,21 @@ open class ClickGUI(title: String) : Screen(Text.of(title)) {
         windows.forEach { it.render(context, mouseX, mouseY) }
     }
 
-    override fun mouseScrolled(mouseX: Double, mouseY: Double, amount: Double): Boolean {
+    override fun mouseScrolled(
+        mouseX: Double,
+        mouseY: Double,
+        horizontalAmount: Double,
+        verticalAmount: Double
+    ): Boolean {
         val scrollSpeed = org.progreso.client.modules.client.ClickGUI.scrollSpeed
 
-        if (amount > 0) {
+        if (verticalAmount > 0) {
             windows.forEach { it.y += scrollSpeed }
-        } else if (amount < 0) {
+        } else if (verticalAmount < 0) {
             windows.forEach { it.y -= scrollSpeed }
         }
 
-        return super.mouseScrolled(mouseX, mouseY, amount)
+        return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount)
     }
 
     override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int): Boolean {

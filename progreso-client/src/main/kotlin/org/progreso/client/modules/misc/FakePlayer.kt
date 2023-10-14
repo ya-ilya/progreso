@@ -22,7 +22,9 @@ object FakePlayer : AbstractModule() {
 
             fakePlayer = OtherClientPlayerEntity(mc.world, GameProfile(UUID.randomUUID(), fakePlayerName))
             fakePlayer!!.copyFrom(mc.player)
-            mc.world.addEntity(-1, fakePlayer)
+            fakePlayer!!.id = -1
+
+            mc.world.addEntity(fakePlayer)
         }
 
         onDisable {

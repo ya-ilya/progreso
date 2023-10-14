@@ -22,7 +22,6 @@ class ElementListBuilder<E : ElementListWidget.Entry<E>>
                 setLeftPos(this@ElementListBuilder.left)
                 children().addAll(this@ElementListBuilder.children)
                 setRenderHeader(this@ElementListBuilder.renderHeader, this@ElementListBuilder.headerHeight)
-                setRenderSelection(this@ElementListBuilder.renderSelection)
                 listeners.init(this)
             }
 

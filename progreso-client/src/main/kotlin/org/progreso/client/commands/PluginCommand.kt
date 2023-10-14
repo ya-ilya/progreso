@@ -3,8 +3,6 @@ package org.progreso.client.commands
 import org.progreso.api.command.AbstractCommand
 import org.progreso.api.command.arguments.PluginArgumentType
 import org.progreso.api.managers.PluginManager
-import org.progreso.client.Client.Companion.mc
-import org.progreso.client.gui.minecraft.ProgresoPluginsScreen
 
 @AbstractCommand.Register("plugin")
 object PluginCommand : AbstractCommand() {
@@ -27,10 +25,6 @@ object PluginCommand : AbstractCommand() {
                 PluginManager.plugins.ifEmpty("command.plugin.list", "command.plugin.list_empty"),
                 PluginManager.plugins.joinToString { it.name }
             )
-        })
-
-        builder.then(literal("gui").execute {
-            mc.setScreen(ProgresoPluginsScreen(PluginManager.plugins))
         })
     }
 }
