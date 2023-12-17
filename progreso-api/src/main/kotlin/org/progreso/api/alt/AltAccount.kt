@@ -4,6 +4,7 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import org.progreso.api.extensions.getRequest
 import org.progreso.api.extensions.postRequest
+import java.util.regex.Pattern
 
 sealed class AltAccount(
     var username: String,
@@ -17,12 +18,16 @@ sealed class AltAccount(
 
     class Offline(username: String) : AltAccount(username, getUUID(username)) {
         private companion object {
+            val TRIMMED_UUID: Pattern = Pattern.compile("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})")
+
             fun getUUID(username: String): String {
                 try {
                     val response = getRequest<JsonElement>("https://api.mojang.com/users/profiles/minecraft/$username")
 
                     if (response.isJsonObject) {
-                        return response.asJsonObject.get("id").asString
+                        return TRIMMED_UUID
+                            .matcher(response.asJsonObject.get("id").asString.replace("-", ""))
+                            .replaceAll("$1-$2-$3-$4-$5")
                     }
                 } catch (ex: Exception) {
                     // Ignored

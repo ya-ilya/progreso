@@ -29,11 +29,10 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
 
         elementList<AltEntry> { list ->
             list.listDimension(
-                left = width / 2 - 100,
+                x = width / 2 - 100,
+                y = 24,
                 width = 200,
-                height = height,
-                top = 24,
-                bottom = height - 75,
+                height = height - 75 - 24,
                 itemHeight = 36
             )
 
@@ -99,7 +98,7 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
         client!!.setScreen(screen(i18n = "gui.alts.title.add_offline_alt") {
             init {
                 val name = textField { textField ->
-                    textField.dimensions(width / 2 - 36, height / 2 - 20, 100, 20)
+                    textField.dimensions(width / 2 - 66, height / 2 - 20, 100, 20)
                 }
 
                 button(i18n = "gui.alts.button.add_offline_alt") { button ->
@@ -115,15 +114,6 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
                         }
                     }
                 }
-            }
-
-            render { context, _, _ ->
-                renderBackgroundTexture(context)
-                context.drawText(
-                    textRenderer,
-                    i18n("gui.alts.label.name_text_field"),
-                    width / 2 - 66, height / 2 - 14, Color.WHITE
-                )
             }
         })
     }
@@ -147,7 +137,7 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
             init {
                 button(i18n = "gui.alts.button.open_link") { button ->
                     button.dimensions(width / 2 - 136, height / 2 + 8, 132, 20)
-                    button.onPress { if (result.url != null) Util.getOperatingSystem().open(result.url)  }
+                    button.onPress { if (result.url != null) Util.getOperatingSystem().open(result.url) }
                 }
 
                 button(i18n = "gui.alts.button.done") { button ->
@@ -160,7 +150,7 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
                 thread.interrupt()
             }
 
-            render {context, _, _ ->
+            render { context, _, _ ->
                 if (result.set) {
                     val (status, account) = result.pair ?: return@render close()
 

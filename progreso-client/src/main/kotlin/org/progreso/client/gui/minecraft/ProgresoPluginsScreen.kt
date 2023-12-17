@@ -20,11 +20,10 @@ class ProgresoPluginsScreen(private val plugins: Set<AbstractPlugin>) : TitledSc
     override fun init() {
         elementList<PluginEntry> { list ->
             list.listDimension(
-                left = width / 2 - 4 - 200,
+                x = width / 2 - 4 - 200,
+                y = 24,
                 width = 200,
-                height = height,
-                top = 24,
-                bottom = height - 28,
+                height = height - 28 - 24,
                 itemHeight = 36
             )
 
@@ -39,11 +38,10 @@ class ProgresoPluginsScreen(private val plugins: Set<AbstractPlugin>) : TitledSc
 
         elementList<InfoEntry> { list ->
             list.listDimension(
-                left = width / 2 + 4,
+                x = width / 2 + 4,
+                y = 24,
                 width = 200,
-                height = height,
-                top = 24,
-                bottom = height - 28,
+                height = height - 28 - 24,
                 itemHeight = textRenderer.fontHeight + 1
             )
 

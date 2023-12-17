@@ -12,20 +12,15 @@ abstract class AbstractElementListBuilder<Context, ElementListWidget, Entry>
     var itemWidth = 0
     var itemHeight = 32
 
-    var top = 0
-    var bottom = 0
-    var left = 0
-
     var renderHeader = false
 
     protected var children = mutableListOf<Entry>()
 
-    fun listDimension(left: Int, width: Int, height: Int, top: Int, bottom: Int, itemHeight: Int) {
-        this.left = left
+    fun listDimension(x: Int, y: Int, width: Int, height: Int, itemHeight: Int) {
+        this.x = x
+        this.y = y
         this.width = width
         this.height = height
-        this.top = top
-        this.bottom = bottom
         this.itemHeight = itemHeight
         this.itemWidth = width
     }

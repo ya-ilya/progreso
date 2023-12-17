@@ -3,7 +3,6 @@ val progresoVersion: String by project
 val yarnMappings: String by project
 val loaderVersion: String by project
 val fabricVersion: String by project
-val fabricKotlinVersion: String by project
 val reflectionsVersion: String by project
 
 plugins {
@@ -46,7 +45,6 @@ dependencies {
 
     modImplementation("net.fabricmc:fabric-loader:$loaderVersion")
     modImplementation("net.fabricmc.fabric-api:fabric-api:$fabricVersion")
-    modImplementation("net.fabricmc:fabric-language-kotlin:$fabricKotlinVersion")
 
     library("org.reflections:reflections:$reflectionsVersion")
     library(project(":progreso-api"))

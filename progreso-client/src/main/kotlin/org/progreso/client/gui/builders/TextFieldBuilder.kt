@@ -38,10 +38,10 @@ class TextFieldBuilder : AbstractTextFieldBuilder<DrawContext, TextFieldWidget>(
                 }
             }
 
-            override fun render(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
+            override fun renderWidget(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
                 listeners.render(this, context, mouseX, mouseY)
 
-                super.render(context, mouseX, mouseY, delta)
+                super.renderWidget(context, mouseX, mouseY, delta)
             }
 
             override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int): Boolean {

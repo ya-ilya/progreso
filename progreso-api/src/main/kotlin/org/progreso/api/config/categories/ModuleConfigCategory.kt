@@ -51,9 +51,7 @@ class ModuleConfigCategory(
     override fun create(name: String): ModuleConfig {
         return ModuleConfig(
             name,
-            container.modules
-                .map { ModuleConfig.ModuleConfigData.create(it) }
-                .toMutableList()
+            container.modules.map { ModuleConfig.ModuleConfigData.create(it) }
         )
     }
 

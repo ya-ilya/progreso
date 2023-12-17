@@ -75,15 +75,14 @@ object IRCCommand : AbstractCommand() {
             client = null
         })
 
-        builder.then(literal("send").then(
-            argument("message", StringArgumentType.greedyString())
-        ).execute { context ->
-            if (client == null || client?.isClosed == true || client?.isOpen == false) {
-                return@execute errorLocalized("command.irc.disconnect_error")
-            }
+        builder.then(
+            literal("send").then(argument("message", StringArgumentType.greedyString())).execute { context ->
+                if (client == null || client?.isClosed == true || client?.isOpen == false) {
+                    return@execute errorLocalized("command.irc.disconnect_error")
+                }
 
-            client?.send(MessageC2SEvent(StringArgumentType.getString(context, "message")))
-        }
+                client?.send(MessageC2SEvent(StringArgumentType.getString(context, "message")))
+            }
         )
     }
 }

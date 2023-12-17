@@ -14,9 +14,7 @@ class ModuleConfig(name: String, var modules: List<ModuleConfigData>) : Abstract
             fun create(module: AbstractModule): ModuleConfigData {
                 return ModuleConfigData(
                     module.name,
-                    module.settings
-                        .map { SettingConfigData.create(it) }
-                        .toMutableList()
+                    module.settings.map { SettingConfigData.create(it) }
                 )
             }
         }

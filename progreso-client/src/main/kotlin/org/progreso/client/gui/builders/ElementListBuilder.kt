@@ -17,9 +17,9 @@ class ElementListBuilder<E : ElementListWidget.Entry<E>>
     }
 
     override fun build(): ElementListWidget<E> {
-        return object : ElementListWidget<E>(mc.client, width, height, top, bottom, itemHeight) {
+        return object : ElementListWidget<E>(mc.client, width, height, y, itemHeight) {
             init {
-                setLeftPos(this@ElementListBuilder.left)
+                x = this@ElementListBuilder.x
                 children().addAll(this@ElementListBuilder.children)
                 setRenderHeader(this@ElementListBuilder.renderHeader, this@ElementListBuilder.headerHeight)
                 listeners.init(this)
@@ -30,7 +30,7 @@ class ElementListBuilder<E : ElementListWidget.Entry<E>>
             }
 
             override fun getScrollbarPositionX(): Int {
-                return left + width - 6
+                return x + width - 6
             }
 
             override fun isSelectedEntry(index: Int): Boolean {
@@ -50,10 +50,10 @@ class ElementListBuilder<E : ElementListWidget.Entry<E>>
                 super.renderHeader(context, x, y)
             }
 
-            override fun render(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
+            override fun renderWidget(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
                 listeners.render(this, context, mouseX, mouseY)
 
-                super.render(context, mouseX, mouseY, delta)
+                super.renderWidget(context, mouseX, mouseY, delta)
             }
 
             override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int): Boolean {

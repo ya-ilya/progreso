@@ -7,9 +7,7 @@ import org.progreso.api.module.container.ModuleContainer
 object ModuleManager : ModuleContainer {
     override val modules = mutableSetOf<AbstractModule>()
 
-    fun getModulesByCategory(category: Category, vararg exclude: AbstractModule): List<AbstractModule> {
-        return (modules + PluginManager.modules)
-            .filter { it.category == category }
-            .filter { it !in exclude }
+    fun getModulesByCategory(category: Category): List<AbstractModule> {
+        return (modules + PluginManager.modules).filter { it.category == category }
     }
 }
