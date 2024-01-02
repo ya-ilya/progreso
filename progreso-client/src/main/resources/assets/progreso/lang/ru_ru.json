@@ -116,6 +116,7 @@
   "module.KillAura.description": "Бьет цели рядом с вами",
   "module.Offhand.description": "AutoTotem + OffhandGapple + OffhandCrystal",
   "module.Watermark.description": "Водяной знак Progreso Client",
+  "module.Welcomer.description": "Привествие!",
   "module.AutoRespawn.description": "Автоматически возрождает вас после смерти",
   "module.AutoTool.description": "Автоматически выбирает лучший инструмент для блока",
   "module.FakePlayer.description": "Спавнит фейкплеера",

@@ -116,6 +116,7 @@
   "module.KillAura.description": "Hits targets near you",
   "module.Offhand.description": "AutoTotem + OffhandGapple + OffhandCrystal",
   "module.Watermark.description": "Progreso Client watermark",
+  "module.Welcomer.description": "Welcome!",
   "module.AutoRespawn.description": "Automatically respawn after dying",
   "module.AutoTool.description": "Automatically selects the best tool for block",
   "module.FakePlayer.description": "Spawns in a FakePlayer",
