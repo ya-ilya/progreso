@@ -7,9 +7,9 @@ import org.progreso.client.Client.Companion.config
 import org.progreso.client.commands.arguments.FontArgumentType
 import org.progreso.client.gui.createDefaultTextRenderer
 import org.progreso.client.gui.customTextRenderer
-import org.progreso.client.managers.minecraft.ProgresoResourceManager
-import org.progreso.client.managers.minecraft.exceptions.ProgresoResourceManagerException
+import org.progreso.client.managers.ProgresoResourceManager
 import org.progreso.client.util.render.createTextRendererFromProgresoResource
+import java.io.FileNotFoundException
 
 @AbstractCommand.Register("font")
 object FontCommand : AbstractCommand() {
@@ -71,7 +71,7 @@ object FontCommand : AbstractCommand() {
                 "command.font.load",
                 fontName
             )
-        } catch (ex: ProgresoResourceManagerException) {
+        } catch (ex: FileNotFoundException) {
             errorLocalized(
                 "argument.font.error",
                 fontName

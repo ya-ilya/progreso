@@ -9,7 +9,7 @@ import org.progreso.client.events.render.ScreenEvent
 @AbstractModule.AutoRegister
 object AutoRespawn : AbstractModule() {
     init {
-        eventListener<ScreenEvent.Open> { event ->
+        eventListener<ScreenEvent.Set> { event ->
             if (event.screen !is DeathScreen) return@eventListener
             mc.player.requestRespawn()
             event.cancel()

@@ -11,17 +11,16 @@ import org.progreso.api.managers.AltManager
 object AltCommand : AbstractCommand() {
     init {
         builder.then(
-            literal("add")
-                .then(
-                    literal("offline").then(
-                        argument("name", string()).execute { context ->
-                            val name = StringArgumentType.getString(context, "name")
+            literal("add").then(
+                literal("offline").then(
+                    argument("name", string()).execute { context ->
+                        val name = StringArgumentType.getString(context, "name")
 
-                            AltManager.addAlt(AltAccount.Offline(name))
-                            infoLocalized("command.alt.add", name)
-                        }
-                    )
+                        AltManager.addAlt(AltAccount.Offline(name))
+                        infoLocalized("command.alt.add", name)
+                    }
                 )
+            )
         )
 
         builder.then(

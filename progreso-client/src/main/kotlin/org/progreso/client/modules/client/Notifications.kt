@@ -12,7 +12,8 @@ import org.progreso.client.events.misc.TickEvent
 import org.progreso.client.events.player.TotemPopEvent
 import org.progreso.client.events.safeEventListener
 import org.progreso.client.managers.CombatManager
-import org.progreso.client.util.client.TimerUtil
+import org.progreso.client.util.client.TimeUnit
+import org.progreso.client.util.client.createTimer
 
 @AbstractModule.AutoRegister
 object Notifications : AbstractModule() {
@@ -20,7 +21,7 @@ object Notifications : AbstractModule() {
     private val pops by setting("Pops", true)
     private val visualRange by setting("VisualRange", false)
 
-    private val visualRangeTimer = TimerUtil.createTimer(TimerUtil.TimeUnit.Second)
+    private val visualRangeTimer = createTimer(TimeUnit.Second)
     private val visualRangePlayers = mutableSetOf<PlayerEntity>()
 
     init {

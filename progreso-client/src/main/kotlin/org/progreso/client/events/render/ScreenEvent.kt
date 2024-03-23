@@ -4,5 +4,5 @@ import net.minecraft.client.gui.screen.Screen
 import org.progreso.api.event.Event
 
 sealed class ScreenEvent(val screen: Screen?) : Event() {
-    class Open(screen: Screen?) : ScreenEvent(screen)
+    class Set(screen: Screen?) : ScreenEvent(screen)
 }

@@ -11,12 +11,12 @@ import java.net.Proxy
 import java.util.*
 
 object SessionUtil {
-    sealed class Status {
-        data object Successful : Status()
-        class Error(val message: String = "") : Status()
+    sealed class LoginResult {
+        data object Successful : LoginResult()
+        class Error(val message: String = "") : LoginResult()
     }
 
-    fun login(alt: AltAccount): Status {
+    fun login(alt: AltAccount): LoginResult {
         return when (alt) {
             is AltAccount.Offline -> {
                 try {
@@ -32,9 +32,9 @@ object SessionUtil {
                         Proxy.NO_PROXY,
                         YggdrasilEnvironment.PROD.environment
                     ).createMinecraftSessionService()
-                    Status.Successful
+                    LoginResult.Successful
                 } catch (ex: Exception) {
-                    Status.Error()
+                    LoginResult.Error()
                 }
             }
 
@@ -52,13 +52,13 @@ object SessionUtil {
                         Proxy.NO_PROXY,
                         YggdrasilEnvironment.PROD.environment
                     ).createMinecraftSessionService()
-                    Status.Successful
+                    LoginResult.Successful
                 } catch (ex: Exception) {
-                    Status.Error()
+                    LoginResult.Error()
                 }
             }
 
-            else -> Status.Error()
+            else -> LoginResult.Error()
         }
     }
 
@@ -68,8 +68,8 @@ object SessionUtil {
 
     fun createMicrosoftAltAccount(
         openLink: (String) -> Unit = { Util.getOperatingSystem().open(it) }
-    ): Pair<Status, AltAccount.Microsoft?>? {
-        var result: Pair<Status, AltAccount.Microsoft?>? = null
+    ): Pair<LoginResult, AltAccount.Microsoft?>? {
+        var result: Pair<LoginResult, AltAccount.Microsoft?>? = null
         val server = object : OAuthServer() {
             init {
                 start()
@@ -80,11 +80,11 @@ object SessionUtil {
             }
 
             override fun onLogin(account: AltAccount.Microsoft) {
-                result = Status.Successful to account
+                result = LoginResult.Successful to account
             }
 
             override fun onError(message: String) {
-                result = Status.Error(message) to null
+                result = LoginResult.Error(message) to null
             }
         }
 

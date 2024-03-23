@@ -107,20 +107,22 @@ sealed class AltAccount(
             const val XBOX_PRE_AUTH_URL =
                 "https://login.live.com/oauth20_authorize.srf?client_id=<client_id>&redirect_uri=<redirect_uri>&response_type=code&display=touch&scope=<scope>&prompt=select_account"
             const val XBOX_AUTH_URL = "https://login.live.com/oauth20_token.srf"
-            const val XBOX_XBL_URL = "https://user.auth.xboxlive.com/user/authenticate"
-            const val XBOX_XSTS_URL = "https://xsts.auth.xboxlive.com/xsts/authorize"
-            const val MC_AUTH_URL = "https://api.minecraftservices.com/authentication/login_with_xbox"
-            const val MC_PROFILE_URL = "https://api.minecraftservices.com/minecraft/profile"
+
+            private const val XBOX_XBL_URL = "https://user.auth.xboxlive.com/user/authenticate"
+            private const val XBOX_XSTS_URL = "https://xsts.auth.xboxlive.com/xsts/authorize"
+            private const val MC_AUTH_URL = "https://api.minecraftservices.com/authentication/login_with_xbox"
+            private const val MC_PROFILE_URL = "https://api.minecraftservices.com/minecraft/profile"
 
             const val XBOX_AUTH_DATA =
                 "client_id=<client_id>&redirect_uri=<redirect_uri>&grant_type=authorization_code&code="
-            const val XBOX_REFRESH_DATA =
+
+            private const val XBOX_REFRESH_DATA =
                 "client_id=<client_id>&scope=<scope>&grant_type=refresh_token&redirect_uri=<redirect_uri>&refresh_token="
-            const val XBOX_XBL_DATA =
+            private const val XBOX_XBL_DATA =
                 """{"Properties":{"AuthMethod":"RPS","SiteName":"user.auth.xboxlive.com","RpsTicket":"<rps_ticket>"},"RelyingParty":"http://auth.xboxlive.com","TokenType":"JWT"}"""
-            const val XBOX_XSTS_DATA =
+            private const val XBOX_XSTS_DATA =
                 """{"Properties":{"SandboxId":"RETAIL","UserTokens":["<xbl_token>"]},"RelyingParty":"rp://api.minecraftservices.com/","TokenType":"JWT"}"""
-            const val MC_AUTH_DATA =
+            private const val MC_AUTH_DATA =
                 """{"identityToken":"XBL3.0 x=<userhash>;<xsts_token>"}"""
 
             fun String.replaceAuthKeys() = this

@@ -3,7 +3,7 @@ package org.progreso.api.accessor
 import com.mojang.brigadier.Message
 
 /**
- * Provides access to the minecraft text class
+ * Provides access to the internationalization system
  * ```java
  * import org.progreso.api.accessor.TextAccessor;
  *
@@ -24,6 +24,7 @@ interface TextAccessor {
     /**
      * Get internationalization by [key]
      *
+     * @param key Key
      * @param args Arguments
      * @see [String.format]
      */
@@ -32,6 +33,7 @@ interface TextAccessor {
     /**
      * Get internationalization by [key]
      *
+     * @param key Key
      * @param args Arguments
      * @see [String.format]
      */

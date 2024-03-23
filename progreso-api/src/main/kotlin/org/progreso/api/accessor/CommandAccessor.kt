@@ -35,7 +35,16 @@ interface CommandAccessor {
         }
     }
 
+    /**
+     * Create command source for [com.mojang.brigadier]
+     */
     fun createCommandSource(): Any
 
+    /**
+     * Get suggestions for [com.mojang.brigadier]
+     *
+     * @param candidates Candidates
+     * @param builder Builder
+     */
     fun suggestMatching(candidates: Iterable<String>, builder: SuggestionsBuilder): CompletableFuture<Suggestions>
 }

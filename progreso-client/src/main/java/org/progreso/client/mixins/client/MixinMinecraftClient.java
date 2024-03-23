@@ -17,7 +17,7 @@ public abstract class MixinMinecraftClient {
         cancellable = true
     )
     public void setScreenHook(Screen screen, CallbackInfo callbackInfo) {
-        if (Client.EVENT_BUS.post(new ScreenEvent.Open(screen))) {
+        if (Client.EVENT_BUS.post(new ScreenEvent.Set(screen))) {
             callbackInfo.cancel();
         }
     }

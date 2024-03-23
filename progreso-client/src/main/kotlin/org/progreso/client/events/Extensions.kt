@@ -15,7 +15,7 @@ inline fun <reified T : Event> Any.eventListener(
         instanceClass = javaClass,
         eventClass = T::class.java,
         priority = priority,
-        listener = EventListener<T> {
+        listener = EventListener {
             block(it)
         }
     )

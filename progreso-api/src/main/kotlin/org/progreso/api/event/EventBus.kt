@@ -4,7 +4,10 @@ import java.lang.reflect.Method
 import java.lang.reflect.ParameterizedType
 import java.util.concurrent.ConcurrentHashMap
 
-class EventBus {
+class EventBus(
+    private val registerMethods: Boolean = true,
+    private val registerFields: Boolean = true
+) {
     companion object {
         private val CACHE = ConcurrentHashMap<Class<*>, MutableList<ListenerInvoker>>()
     }
@@ -17,43 +20,53 @@ class EventBus {
         if (!CACHE.containsKey(instanceClass)) {
             val listeners = mutableListOf<ListenerInvoker>()
 
-            for (method in instanceClass.declaredMethods) {
-                val annotation = method.getAnnotation(EventHandler::class.java)
+            if (registerMethods) {
+                for (method in instanceClass.declaredMethods) {
+                    val annotation = method.getAnnotation(EventHandler::class.java)
 
-                if (annotation != null) {
-                    val parameterType = method.parameterTypes[0]
+                    if (annotation != null) {
+                        val parameterType = method.parameterTypes[0]
 
-                    if (!Event::class.java.isAssignableFrom(parameterType)) {
-                        throw RuntimeException("Method: $method")
+                        if (!Event::class.java.isAssignableFrom(parameterType)) {
+                            throw RuntimeException("Method: $method")
+                        }
+
+                        listeners.add(
+                            ListenerInvoker(
+                                annotation.priority,
+                                parameterType,
+                                method
+                            )
+                        )
                     }
-
-                    listeners.add(ListenerInvoker(annotation.priority, parameterType, method))
                 }
             }
 
-            for (field in instanceClass.declaredFields) {
-                field.isAccessible = true
+            if (registerFields) {
+                for (field in instanceClass.declaredFields) {
+                    field.isAccessible = true
 
-                val annotation = field.getAnnotation(EventHandler::class.java)
+                    val annotation = field.getAnnotation(EventHandler::class.java)
 
-                if (annotation != null) {
-                    val type = field.genericType as ParameterizedType
+                    if (annotation != null) {
+                        val type = field.genericType as ParameterizedType
 
-                    if (!EventListener::class.java.isAssignableFrom(type.rawType as Class<*>)) {
-                        throw RuntimeException("Field: $field")
+                        if (!EventListener::class.java.isAssignableFrom(type.rawType as Class<*>)) {
+                            throw RuntimeException("Field: $field")
+                        }
+
+                        listeners.add(
+                            ListenerInvoker(
+                                annotation.priority,
+                                type.actualTypeArguments[0] as Class<*>,
+                                EventListener.INVOKE_METHOD,
+                                field.get(instance)
+                            )
+                        )
                     }
 
-                    listeners.add(
-                        ListenerInvoker(
-                            annotation.priority,
-                            type.actualTypeArguments[0] as Class<*>,
-                            EventListener.INVOKE_METHOD,
-                            field.get(instance)
-                        )
-                    )
+                    field.isAccessible = false
                 }
-
-                field.isAccessible = false
             }
 
             sortListeners(listeners)
@@ -68,11 +81,11 @@ class EventBus {
         }
     }
 
-    fun registerListener(
+    fun <T : Event> registerListener(
         instanceClass: Class<*>,
-        eventClass: Class<*>,
+        eventClass: Class<T>,
         priority: EventPriority,
-        listener: EventListener<*>
+        listener: EventListener<T>
     ) {
         val listenerInvoker = ListenerInvoker(
             priority,

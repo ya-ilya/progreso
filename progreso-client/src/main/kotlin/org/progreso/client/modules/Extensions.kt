@@ -22,7 +22,7 @@ fun AbstractHudModule.render(block: DrawContext.() -> Unit) {
     }
 }
 
-abstract class SimpleHudModule(private val text: () -> String) : AbstractHudModule() {
+abstract class SimpleTextHudModule(private val text: () -> String) : AbstractHudModule() {
     private val color by setting("Color", Color.RED)
 
     override var width = 0; get() = textRenderer.getWidth(text()) + 2

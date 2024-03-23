@@ -13,6 +13,10 @@ import org.progreso.irc.event.s2c.MessageS2CEvent
 @AbstractCommand.Register("irc")
 object IRCCommand : AbstractCommand() {
     private var client: IRCClient? = null
+        set(value) {
+            field?.close()
+            field = value
+        }
 
     init {
         builder.then(
@@ -20,7 +24,6 @@ object IRCCommand : AbstractCommand() {
                 argument("address", StringArgumentType.string()).execute { context ->
                     val address = StringArgumentType.getString(context, "address")
 
-                    if (client?.isOpen == true && client?.isClosed == false) client?.close()
                     client = object : IRCClient(address) {
                         init {
                             try {
@@ -71,7 +74,6 @@ object IRCCommand : AbstractCommand() {
                 return@execute errorLocalized("command.irc.disconnect_error")
             }
 
-            client?.close()
             client = null
         })
 

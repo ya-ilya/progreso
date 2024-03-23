@@ -1,11 +1,11 @@
-package org.progreso.client.managers.minecraft
+package org.progreso.client.managers
 
 import net.minecraft.resource.Resource
 import net.minecraft.resource.ResourceManager
 import net.minecraft.resource.ResourcePack
 import net.minecraft.util.Identifier
 import org.progreso.client.Client.Companion.mc
-import org.progreso.client.managers.minecraft.exceptions.ProgresoResourceManagerException
+import java.io.FileNotFoundException
 import java.nio.file.Paths
 import java.util.*
 import java.util.function.Predicate
@@ -33,7 +33,7 @@ object ProgresoResourceManager : ResourceManager {
                 resourcePath.createParentDirectories()
 
                 if (!resourcePath.exists()) {
-                    throw ProgresoResourceManagerException("Resource not found")
+                    throw FileNotFoundException("Resource not found")
                 }
 
                 Optional.of(Resource(mc.client.defaultResourcePack) { resourcePath.inputStream() })

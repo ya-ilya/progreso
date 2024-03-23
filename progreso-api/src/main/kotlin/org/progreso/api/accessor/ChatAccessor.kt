@@ -40,11 +40,17 @@ interface ChatAccessor {
 
     /**
      * Send message to the chat
+     *
+     * @param message Message
      */
     fun send(message: Any)
 
     /**
      * Send localized message to the chat
+     *
+     * @param args Internationalization key
+     * @param args Internationalization args
+     * @see [TextAccessor.i18n]
      */
     fun sendLocalized(key: String, vararg args: Any) {
         send(Api.TEXT.i18n(key, *args))
@@ -52,11 +58,17 @@ interface ChatAccessor {
 
     /**
      * Sends info message to the chat
+     *
+     * @param message Info message
      */
     fun info(message: Any)
 
     /**
      * Send localized info message to the chat
+     *
+     * @param args Internationalization key
+     * @param args Internationalization args
+     * @see [TextAccessor.i18n]
      */
     fun infoLocalized(key: String, vararg args: Any) {
         info(Api.TEXT.i18n(key, *args))
@@ -64,11 +76,18 @@ interface ChatAccessor {
 
     /**
      * Sends warn message to the chat
+     *
+     * @param message Warn message
      */
     fun warn(message: Any)
 
     /**
      * Send localized warn message to the chat
+     *
+     *
+     * @param args Internationalization key
+     * @param args Internationalization args
+     * @see [TextAccessor.i18n]
      */
     fun warnLocalized(key: String, vararg args: Any) {
         warn(Api.TEXT.i18n(key, *args))
@@ -76,11 +95,18 @@ interface ChatAccessor {
 
     /**
      * Sends error message to the chat
+     *
+     * @param message Error message
      */
     fun error(message: Any)
 
     /**
      * Send localized error message to the chat
+     *
+     *
+     * @param args Internationalization key
+     * @param args Internationalization args
+     * @see [TextAccessor.i18n]
      */
     fun errorLocalized(key: String, vararg args: Any) {
         error(Api.TEXT.i18n(key, *args))

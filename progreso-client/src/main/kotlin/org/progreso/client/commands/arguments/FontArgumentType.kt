@@ -9,7 +9,7 @@ import com.mojang.brigadier.suggestion.Suggestions
 import com.mojang.brigadier.suggestion.SuggestionsBuilder
 import org.progreso.api.Api
 import org.progreso.client.accessors.TextAccessor
-import org.progreso.client.managers.minecraft.ProgresoResourceManager
+import org.progreso.client.managers.ProgresoResourceManager
 import java.util.concurrent.CompletableFuture
 
 class FontArgumentType : ArgumentType<String> {

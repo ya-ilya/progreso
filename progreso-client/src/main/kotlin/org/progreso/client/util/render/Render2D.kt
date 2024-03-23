@@ -13,7 +13,7 @@ import net.minecraft.client.render.VertexFormats
 import net.minecraft.resource.ResourceManager
 import net.minecraft.util.Identifier
 import org.progreso.client.Client
-import org.progreso.client.managers.minecraft.ProgresoResourceManager
+import org.progreso.client.managers.ProgresoResourceManager
 import java.awt.Color
 import kotlin.math.cos
 import kotlin.math.sin

@@ -10,27 +10,17 @@ class ModuleConfig(name: String, var modules: List<ModuleConfigData>) : Abstract
         val name: String,
         var settings: List<SettingConfigData>
     ) {
-        companion object {
-            fun create(module: AbstractModule): ModuleConfigData {
-                return ModuleConfigData(
-                    module.name,
-                    module.settings.map { SettingConfigData.create(it) }
-                )
-            }
-        }
+        constructor(module: AbstractModule) : this(module.name, module.settings.map { SettingConfigData(it) })
     }
 
     data class SettingConfigData(
         val name: String,
         var value: Any
     ) {
-        companion object {
-            fun create(setting: AbstractSetting<*>): SettingConfigData {
-                return when (setting) {
-                    is GroupSetting -> SettingConfigData(setting.name, setting.settings.map { create(it) })
-                    else -> SettingConfigData(setting.name, setting.value)
-                }
-            }
-        }
+        constructor(setting: AbstractSetting<*>) : this(
+            setting.name,
+            if (setting is GroupSetting) setting.settings.map { SettingConfigData(it) }
+            else setting.value
+        )
     }
 }

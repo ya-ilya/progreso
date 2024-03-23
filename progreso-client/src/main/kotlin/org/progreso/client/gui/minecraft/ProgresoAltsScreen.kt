@@ -82,7 +82,7 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
             button.active = false
             button.dimensions(width / 2 + 4, height - 48, 96, 20)
             button.onPress {
-                if (SessionUtil.login(selectedAlt!!) == SessionUtil.Status.Successful) {
+                if (SessionUtil.login(selectedAlt!!) == SessionUtil.LoginResult.Successful) {
                     close()
                 }
             }
@@ -123,7 +123,7 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
             val result = object {
                 var set = false
                 var url: String? = null
-                var pair: Pair<SessionUtil.Status, AltAccount.Microsoft?>? = null
+                var pair: Pair<SessionUtil.LoginResult, AltAccount.Microsoft?>? = null
             }
 
             val thread = thread {
@@ -154,7 +154,7 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
                 if (result.set) {
                     val (status, account) = result.pair ?: return@render close()
 
-                    if (status is SessionUtil.Status.Error) {
+                    if (status is SessionUtil.LoginResult.Error) {
                         showErrorCreateAltScreen(status.message)
                     } else if (!AltManager.alts.any { it.username == account!!.username }) {
                         AltManager.addAlt(account!!)
