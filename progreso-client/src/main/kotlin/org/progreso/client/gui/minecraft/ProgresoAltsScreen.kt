@@ -98,7 +98,7 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
         client!!.setScreen(screen(i18n = "gui.alts.title.add_offline_alt") {
             init {
                 val name = textField { textField ->
-                    textField.dimensions(width / 2 - 66, height / 2 - 20, 100, 20)
+                    textField.dimensions(width / 2 - 66, height / 2 - 20, 132, 20)
                 }
 
                 button(i18n = "gui.alts.button.add_offline_alt") { button ->
