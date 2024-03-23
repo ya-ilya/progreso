@@ -64,6 +64,8 @@
 
   "command.reset.setting": "Значение настройки %s в модуле %s было сброшено",
 
+  "command.uuid.player": "%s uuid: %s",
+
   "module.notifications.module_message": "[Notifications] %s%s",
   "module.notifications.pop_message": "[Notifications] %s потреял %d тотемов",
   "module.notifications.death_message": "[Notifications] %s умер после %d тотемов",

@@ -10,7 +10,7 @@ import java.util.concurrent.CompletableFuture
 
 object CommandAccessor : CommandAccessor {
     override fun createCommandSource(): Any {
-        return ClientCommandSource(mc.networkHandler, mc.client)
+        return ClientCommandSource(null, mc.client)
     }
 
     override fun suggestMatching(

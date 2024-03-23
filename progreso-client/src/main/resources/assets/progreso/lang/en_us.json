@@ -64,6 +64,8 @@
 
   "command.reset.setting": "Value of %s setting in module %s has been reset",
 
+  "command.uuid.player": "%s uuid: %s",
+
   "module.notifications.module_message": "[Notifications] %s%s",
   "module.notifications.pop_message": "[Notifications] %s has popped %d totems",
   "module.notifications.death_message": "[Notifications] %s died after popping %d totems",
