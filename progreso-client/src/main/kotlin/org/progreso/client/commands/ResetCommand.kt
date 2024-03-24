@@ -10,12 +10,13 @@ object ResetCommand : AbstractCommand() {
         builder.then(
             argument("module", ModuleArgumentType()).then(
                 argument("setting", SettingArgumentType()).execute { context ->
-                    val (module, setting) = SettingArgumentType[context]
+                    val module = ModuleArgumentType[context]
+                    val (setting, path) = SettingArgumentType[context]
 
                     setting.reset()
                     infoLocalized(
                         "command.reset.setting",
-                        setting.name,
+                        path,
                         module.name
                     )
                 }
