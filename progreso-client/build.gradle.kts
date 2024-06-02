@@ -16,8 +16,8 @@ group = "org.progreso"
 version = progresoVersion
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 base {
@@ -89,7 +89,7 @@ tasks {
     }
 
     withType<JavaCompile>().configureEach {
-        options.release.set(17)
+        options.release.set(21)
     }
 
     shadowJar {

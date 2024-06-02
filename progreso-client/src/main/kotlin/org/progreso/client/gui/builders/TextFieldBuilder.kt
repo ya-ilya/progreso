@@ -39,7 +39,7 @@ class TextFieldBuilder : AbstractTextFieldBuilder<DrawContext, TextFieldWidget>(
             }
 
             override fun renderWidget(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
-                listeners.render(this, context, mouseX, mouseY)
+                listeners.render(this, context, mouseX, mouseY, delta)
 
                 super.renderWidget(context, mouseX, mouseY, delta)
             }

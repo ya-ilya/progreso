@@ -2,9 +2,7 @@ package org.progreso.client.util.render
 
 import com.mojang.blaze3d.platform.GlStateManager
 import com.mojang.blaze3d.systems.RenderSystem
-import net.minecraft.client.font.FontStorage
-import net.minecraft.client.font.TextRenderer
-import net.minecraft.client.font.TrueTypeFontLoader
+import net.minecraft.client.font.*
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.render.GameRenderer
 import net.minecraft.client.render.Tessellator
@@ -90,7 +88,10 @@ fun createTextRenderer(
 
     if (font.isPresent) {
         val fontStorage = FontStorage(Client.mc.client.textureManager, Identifier("progreso"))
-        fontStorage.setFonts(listOf(font.get().load(resourceManager)))
+        fontStorage.setFonts(
+            listOf(Font.FontFilterPair(font.get().load(resourceManager), FontFilterType.FilterMap.NO_FILTER)),
+            emptySet()
+        )
         return TextRenderer({ fontStorage }, false)
     }
 

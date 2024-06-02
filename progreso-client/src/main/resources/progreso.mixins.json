@@ -20,7 +20,7 @@
     "network.MixinClientPlayerInteractionManager",
     "network.MixinClientPlayNetworkHandler",
     "render.MixinLightmapTextureManager",
-    "render.MixinWorldRenderer",
+    "render.MixinGameRenderer",
     "sound.MixinSoundSystem"
   ]
 }

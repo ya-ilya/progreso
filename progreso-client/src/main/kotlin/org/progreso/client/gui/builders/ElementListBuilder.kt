@@ -29,7 +29,7 @@ class ElementListBuilder<E : ElementListWidget.Entry<E>>
                 return this@ElementListBuilder.itemWidth
             }
 
-            override fun getScrollbarPositionX(): Int {
+            override fun getScrollbarX(): Int {
                 return x + width - 6
             }
 
@@ -51,7 +51,7 @@ class ElementListBuilder<E : ElementListWidget.Entry<E>>
             }
 
             override fun renderWidget(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
-                listeners.render(this, context, mouseX, mouseY)
+                listeners.render(this, context, mouseX, mouseY, delta)
 
                 super.renderWidget(context, mouseX, mouseY, delta)
             }

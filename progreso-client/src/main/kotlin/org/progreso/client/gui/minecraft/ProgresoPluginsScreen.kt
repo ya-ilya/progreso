@@ -46,7 +46,7 @@ class ProgresoPluginsScreen(private val plugins: Set<AbstractPlugin>) : TitledSc
             )
 
             var lastSelected: AbstractPlugin? = null
-            list.render { _, _, _ ->
+            list.render { _, _, _, _ ->
                 if (selectedPlugin != lastSelected) {
                     lastSelected = selectedPlugin
                     children().clear()

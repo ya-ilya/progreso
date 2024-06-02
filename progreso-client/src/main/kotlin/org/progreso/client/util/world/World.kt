@@ -1,6 +1,7 @@
 package org.progreso.client.util.world
 
 import net.minecraft.block.entity.BlockEntity
+import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.ChunkPos
 import net.minecraft.world.World
 import net.minecraft.world.chunk.WorldChunk
@@ -39,3 +40,25 @@ val World.loadedChunks: Stream<WorldChunk>
             .filter { isChunkLoaded(it.x, it.z) }
             .map { getChunk(it.x, it.z) }
     }
+
+fun World.getBlocksInRadius(radius: Int, pos: BlockPos): List<BlockPos> {
+    return getBlocksInRadius(radius, radius, radius, pos)
+}
+
+fun World.getBlocksInRadius(xRadius: Int, yRadius: Int, zRadius: Int, pos: BlockPos): List<BlockPos> {
+    val poses = mutableListOf<BlockPos>()
+
+    for (x in -xRadius..xRadius) {
+        for (z in -zRadius..zRadius) {
+            for (y in -yRadius..yRadius) {
+                val blockPos = pos.add(x, y, z)
+
+                if (getBlockState(blockPos) != null) {
+                    poses.add(blockPos)
+                }
+            }
+        }
+    }
+
+    return poses
+}

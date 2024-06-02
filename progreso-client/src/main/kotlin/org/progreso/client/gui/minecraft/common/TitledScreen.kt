@@ -12,7 +12,7 @@ open class TitledScreen(title: String) : Screen(Text.of(title)) {
     constructor(title: String = "", i18n: String) : this(i18n(i18n))
 
     override fun render(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
-        renderBackgroundTexture(context)
+        renderBackground(context, mouseX, mouseY, delta)
         super.render(context, mouseX, mouseY, delta)
         context.drawText(
             textRenderer,

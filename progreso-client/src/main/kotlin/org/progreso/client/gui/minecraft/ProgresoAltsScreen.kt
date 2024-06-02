@@ -150,7 +150,7 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
                 thread.interrupt()
             }
 
-            render { context, _, _ ->
+            render { context, mouseX, mouseY, delta ->
                 if (result.set) {
                     val (status, account) = result.pair ?: return@render close()
 
@@ -166,7 +166,7 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
 
                 val text = i18n("gui.alts.label.add_microsoft_alt_link")
 
-                renderBackgroundTexture(context)
+                renderBackground(context, mouseX, mouseY, delta)
                 context.drawText(
                     textRenderer,
                     text,
@@ -189,8 +189,8 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
                 }
             }
 
-            render { context, _, _ ->
-                renderBackgroundTexture(context)
+            render { context, mouseX, mouseY, delta ->
+                renderBackground(context, mouseX, mouseY, delta)
                 context.drawText(
                     textRenderer,
                     errorI18n,

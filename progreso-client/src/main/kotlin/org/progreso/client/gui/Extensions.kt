@@ -13,7 +13,7 @@ import org.progreso.client.util.render.createTextRendererFromProgresoResource
 import java.awt.Color
 
 fun createDefaultTextRenderer(): TextRenderer {
-    return createTextRenderer("vitala", 11f)!!
+    return createTextRenderer("vitala", 9f)!!
 }
 
 var customTextRenderer = run {

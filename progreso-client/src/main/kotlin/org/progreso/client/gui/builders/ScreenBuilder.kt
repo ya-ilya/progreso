@@ -24,7 +24,7 @@ class ScreenBuilder : AbstractScreenBuilder<DrawContext, Screen>() {
             }
 
             override fun render(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
-                listeners.render(this, context, mouseX, mouseY)
+                listeners.render(this, context, mouseX, mouseY, delta)
 
                 super.render(context, mouseX, mouseY, delta)
             }

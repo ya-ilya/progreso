@@ -21,7 +21,7 @@ abstract class AbstractWidgetBuilder<Context, Widget> {
         listeners.init = block
     }
 
-    fun render(block: Widget.(Context, Int, Int) -> Unit) {
+    fun render(block: Widget.(Context, Int, Int, Float) -> Unit) {
         listeners.render = block
     }
 

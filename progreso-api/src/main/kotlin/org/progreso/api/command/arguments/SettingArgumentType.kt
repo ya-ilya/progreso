@@ -71,7 +71,11 @@ class SettingArgumentType : ArgumentType<String> {
         builder: SuggestionsBuilder
     ): CompletableFuture<Suggestions> {
         return Api.COMMAND.suggestMatching(
-            try { getSettingPaths(ModuleArgumentType[context]) } catch (ex: Exception) { emptyList() },
+            try {
+                getSettingPaths(ModuleArgumentType[context])
+            } catch (ex: Exception) {
+                emptyList()
+            },
             builder
         )
     }
