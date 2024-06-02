@@ -11,10 +11,6 @@
 
 A Minecraft Utility Mod for anarchy servers
 
-#### ⚠️ Attention
-
-This utility mod not ready to use. So for now it's just an experiment
-
 ### Installation
 
 - Install [fabric 1.20.2](https://fabricmc.net/use/installer/)
