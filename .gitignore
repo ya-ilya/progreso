@@ -17,6 +17,9 @@ bin
 build
 .gradle
 
+# Kotlin
+.kotlin
+
 # Minecraft
 progreso-client/run
 

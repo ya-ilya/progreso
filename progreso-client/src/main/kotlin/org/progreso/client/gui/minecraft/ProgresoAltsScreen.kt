@@ -22,7 +22,6 @@ import kotlin.concurrent.thread
 class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n = "gui.alts.title") {
     private var selectedAlt: AltAccount? = null
 
-    @Suppress("JoinDeclarationAndAssignment")
     override fun init() {
         lateinit var removeButtonWidget: ButtonWidget
         lateinit var loginButtonWidget: ButtonWidget
