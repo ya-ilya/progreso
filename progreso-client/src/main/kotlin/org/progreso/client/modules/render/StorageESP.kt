@@ -13,6 +13,7 @@ import org.progreso.client.modules.render.ESP.espSetting
 import org.progreso.client.util.render.*
 import org.progreso.client.util.world.blockEntities
 import java.awt.Color
+import java.util.concurrent.ConcurrentHashMap
 
 @AbstractModule.AutoRegister
 object StorageESP : AbstractModule() {
@@ -25,7 +26,7 @@ object StorageESP : AbstractModule() {
     private val hopper by espSetting("Hopper", true, Color.GRAY)
     private val shulkerBox by espSetting("ShulkerBox", true, Color(0x6e, 0x4d, 0x6e).brighter())
 
-    private val renderMap = mutableMapOf<BlockPos, Color>()
+    private val renderMap = ConcurrentHashMap<BlockPos, Color>()
 
     init {
         safeEventListener<TickEvent> {

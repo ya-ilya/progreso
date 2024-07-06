@@ -6,4 +6,6 @@ mutable field net/minecraft/client/MinecraftClient session Lnet/minecraft/client
 accessible field net/minecraft/client/MinecraftClient sessionService Lcom/mojang/authlib/minecraft/MinecraftSessionService;
 mutable field net/minecraft/client/MinecraftClient sessionService Lcom/mojang/authlib/minecraft/MinecraftSessionService;
 
+accessible field net/minecraft/client/MinecraftClient currentFps I
+
 accessible method net/minecraft/client/gui/screen/Screen addDrawableChild (Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;

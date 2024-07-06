@@ -33,7 +33,7 @@ object HudEditor : ClickGUI("HudEditor") {
         val mouseXInt: Int = mouseX.toInt()
         val mouseYInt: Int = mouseY.toInt()
 
-        HUD_MODULES.filter { it.isHover(mouseXInt, mouseYInt) }.forEach {
+        HUD_MODULES.filter { it.enabled && it.isHover(mouseXInt, mouseYInt) }.forEach {
             it.dragging = true
             it.dragX = mouseXInt - it.x
             it.dragY = mouseYInt - it.y

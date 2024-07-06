@@ -18,6 +18,7 @@ import org.progreso.client.events.safeEventListener
 import org.progreso.client.gui.clickgui.element.elements.ColorElement.Companion.copy
 import org.progreso.client.util.render.*
 import java.awt.Color
+import java.util.concurrent.ConcurrentHashMap
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
@@ -28,7 +29,7 @@ object ESP : AbstractModule() {
     private val animals by espSetting("Animals", false, Color.GREEN)
     private val self by setting("Self", false)
 
-    private val renderMap = mutableMapOf<Entity, Color>()
+    private val renderMap = ConcurrentHashMap<Entity, Color>()
 
     fun SettingContainer.espSetting(
         name: String,

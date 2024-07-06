@@ -72,6 +72,8 @@
   "module.notifications.visualrange_enter_message": "[Notifications] %s entered to visual range",
   "module.notifications.visualrange_leave_message": "[Notifications] %s left visual range",
 
+  "module.welcomer.text": "Welcome to Progreso Client, %s!",
+
   "gui.alts.title": "Alts",
   "gui.alts.title.add_offline_alt": "Add offline alt",
   "gui.alts.title.add_microsoft_alt": "Add microsoft alt",
@@ -128,5 +130,6 @@
   "module.Sprint.description": "Automatically makes the player sprint",
   "module.ESP.description": "Draws entities through blocks",
   "module.FullBright.description": "Changes game gamma to maximum",
+  "module.HoleESP.description": "Draws holes through blocks",
   "module.StorageESP.description": "Draws storages through blocks"
 }

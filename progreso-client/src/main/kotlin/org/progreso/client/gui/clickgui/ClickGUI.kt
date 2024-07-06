@@ -36,8 +36,6 @@ open class ClickGUI(title: String) : Screen(Text.of(title)) {
     }
 
     override fun render(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
-        super.render(context, mouseX, mouseY, delta)
-
         windows.forEach { it.render(context, mouseX, mouseY) }
     }
 

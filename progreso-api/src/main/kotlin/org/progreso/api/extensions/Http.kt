@@ -3,13 +3,13 @@ package org.progreso.api.extensions
 import org.progreso.api.Api
 import java.io.DataOutputStream
 import java.net.HttpURLConnection
-import java.net.URL
+import java.net.URI
 
 private const val USER_AGENT =
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36 Edg/117.0.2045.47"
 
 fun request(url: String, method: String, data: String, headers: Map<String, String>): String {
-    val httpConnection = URL(url).openConnection() as HttpURLConnection
+    val httpConnection = URI(url).toURL().openConnection() as HttpURLConnection
 
     httpConnection.requestMethod = method
     httpConnection.connectTimeout = 2000

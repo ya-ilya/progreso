@@ -13,16 +13,17 @@ import org.progreso.client.gui.clickgui.element.elements.ColorElement.Companion.
 import org.progreso.client.util.render.*
 import org.progreso.client.util.world.getBlocksInRadius
 import java.awt.Color
+import java.util.concurrent.CopyOnWriteArrayList
 
 @AbstractModule.AutoRegister
 object HoleESP : AbstractModule() {
     private val DEFAULT_BOX = Box(0.0, 0.0, 0.0, 1.0, 1.0, 1.0)
+    private val HOLE_DIRECTIONS = Direction.entries.filter { it != Direction.UP }
 
     private val radius by setting("Radius", 5, 3..25)
     private val color by setting("Color", Color.RED)
 
-    private val holeDirections = Direction.entries.filter { it != Direction.UP }
-    private val holes = mutableListOf<BlockPos>()
+    private val holes = CopyOnWriteArrayList<BlockPos>()
 
     init {
         safeEventListener<TickEvent> {
@@ -54,7 +55,7 @@ object HoleESP : AbstractModule() {
 
     private fun isHole(pos: BlockPos): Boolean {
         if (!isAir(pos)) return false
-        if (!holeDirections.map { pos.offset(it) }.all { isObsidianOrBedrock(it) }) return false
+        if (!HOLE_DIRECTIONS.map { pos.offset(it) }.all { isObsidianOrBedrock(it) }) return false
         if (!isAir(pos.offset(Direction.UP))) return false
         return true
     }
