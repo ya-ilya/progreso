@@ -5,7 +5,7 @@
 [![Latest Version](https://img.shields.io/github/v/release/ya-ilya/progreso?logo=github)](https://github.com/ya-ilya/progreso/releases/latest)
 [![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/ya-ilya/progreso?color=royalblue)](https://www.codefactor.io/repository/github/ya-ilya/progreso)
 [![Build Status](https://img.shields.io/github/actions/workflow/status/ya-ilya/progreso/build.yml?branch=main&logo=gradle)](https://github.com/ya-ilya/progreso/actions)
-[![Fabric Version](https://img.shields.io/badge/Fabric-1.20.2-informational)](https://fabricmc.net/)
+[![Fabric Version](https://img.shields.io/badge/Fabric-1.21-informational)](https://fabricmc.net/)
 
 </div>
 
@@ -13,10 +13,10 @@ A Minecraft Utility Mod for anarchy servers
 
 ### Installation
 
-- Install [fabric 1.20.2](https://fabricmc.net/use/installer/)
+- Install [fabric 1.21](https://fabricmc.net/use/installer/)
 - Download the latest release from [releases](https://github.com/ya-ilya/progreso/releases) or dev build from [actions](https://github.com/ya-ilya/progreso/actions)
 - Put the jar to `.minecraft/mods` folder
-- Run [fabric 1.20.2](https://fabricmc.net/use/installer/) from your launcher
+- Run [fabric 1.21](https://fabricmc.net/use/installer/) from your launcher
 
 ### Development
 
