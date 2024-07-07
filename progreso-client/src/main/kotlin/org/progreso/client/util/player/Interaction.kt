@@ -5,8 +5,12 @@ import net.minecraft.entity.LivingEntity
 import net.minecraft.util.Hand
 import org.progreso.client.Client.Companion.mc
 
-fun ClientPlayerInteractionManager.attack(entity: LivingEntity, checkStrength: Boolean = true) {
-    if (checkStrength && mc.player.getAttackCooldownProgress(mc.tickDelta) != 1.0f) {
+fun ClientPlayerInteractionManager.attack(
+    entity: LivingEntity,
+    checkStrength: Boolean = true,
+    tickDelta: Float = 0.5f
+) {
+    if (checkStrength && mc.player.getAttackCooldownProgress(tickDelta) != 1.0f) {
         return
     }
 

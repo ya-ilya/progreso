@@ -4,10 +4,7 @@ import com.mojang.blaze3d.platform.GlStateManager
 import com.mojang.blaze3d.systems.RenderSystem
 import net.minecraft.client.font.*
 import net.minecraft.client.gui.DrawContext
-import net.minecraft.client.render.GameRenderer
-import net.minecraft.client.render.Tessellator
-import net.minecraft.client.render.VertexFormat
-import net.minecraft.client.render.VertexFormats
+import net.minecraft.client.render.*
 import net.minecraft.resource.ResourceManager
 import net.minecraft.util.Identifier
 import org.progreso.client.Client
@@ -53,15 +50,14 @@ fun Render2DContext.drawCircle(
     segments: Int,
     radius: Double
 ) {
-    val buffer = Tessellator.getInstance().buffer
     val matrix = context.matrices.peek().positionMatrix
 
     val angleStep = Math.toRadians(angleTo - angleFrom) / segments
 
     RenderSystem.setShader { GameRenderer.getPositionProgram() }
 
-    buffer.begin(VertexFormat.DrawMode.TRIANGLE_FAN, VertexFormats.POSITION)
-    buffer.vertex(matrix, centerX.toFloat(), centerY.toFloat(), 0f).next()
+    val buffer = Tessellator.getInstance().begin(VertexFormat.DrawMode.TRIANGLE_FAN, VertexFormats.POSITION)
+    buffer.vertex(matrix, centerX.toFloat(), centerY.toFloat(), 0f)
 
     for (i in segments downTo 0) {
         val theta = Math.toRadians(angleFrom) + i * angleStep
@@ -69,10 +65,10 @@ fun Render2DContext.drawCircle(
             matrix,
             (centerX - cos(theta) * radius).toFloat(),
             (centerY - sin(theta) * radius).toFloat(), 0f
-        ).next()
+        )
     }
 
-    Tessellator.getInstance().draw()
+    BufferRenderer.drawWithGlobalProgram(buffer.end())
 }
 
 fun createTextRenderer(
@@ -82,12 +78,12 @@ fun createTextRenderer(
     namespace: String = "progreso"
 ): TextRenderer? {
     val font =
-        TrueTypeFontLoader(Identifier(namespace, "$fontName.ttf"), size, 2f, TrueTypeFontLoader.Shift.NONE, "")
+        TrueTypeFontLoader(Identifier.of(namespace, "$fontName.ttf"), size, 2f, TrueTypeFontLoader.Shift.NONE, "")
             .build()
             .left()
 
     if (font.isPresent) {
-        val fontStorage = FontStorage(Client.mc.client.textureManager, Identifier("progreso"))
+        val fontStorage = FontStorage(Client.mc.client.textureManager, Identifier.of("progreso"))
         fontStorage.setFonts(
             listOf(Font.FontFilterPair(font.get().load(resourceManager), FontFilterType.FilterMap.NO_FILTER)),
             emptySet()

@@ -118,8 +118,6 @@ class Client : ClientModInitializer {
     }
 
     class MinecraftClientWrapper(val client: MinecraftClient) {
-        val tickDelta get() = client.tickDelta
-
         val world get() = client.world!!
         val player get() = client.player!!
         val textRenderer get() = client.textRenderer!!

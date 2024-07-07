@@ -3,6 +3,7 @@ package org.progreso.client.modules.misc
 import net.minecraft.enchantment.EnchantmentHelper
 import net.minecraft.enchantment.Enchantments
 import net.minecraft.item.ItemStack
+import net.minecraft.registry.RegistryKeys
 import net.minecraft.util.math.BlockPos
 import org.progreso.api.module.AbstractModule
 import org.progreso.client.Client.Companion.mc
@@ -29,7 +30,10 @@ object AutoTool : AbstractModule() {
         var speed = stack.getMiningSpeedMultiplier(mc.world.getBlockState(pos))
 
         if (speed > 1.0f) {
-            speed += EnchantmentHelper.getLevel(Enchantments.EFFICIENCY, stack)
+            speed += EnchantmentHelper.getLevel(
+                mc.world.registryManager.get(RegistryKeys.ENCHANTMENT).getEntry(Enchantments.EFFICIENCY).get(),
+                stack
+            )
         }
 
         return speed

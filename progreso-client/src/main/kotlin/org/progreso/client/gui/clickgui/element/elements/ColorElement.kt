@@ -3,10 +3,7 @@ package org.progreso.client.gui.clickgui.element.elements
 import com.mojang.blaze3d.platform.GlStateManager
 import com.mojang.blaze3d.systems.RenderSystem
 import net.minecraft.client.gui.DrawContext
-import net.minecraft.client.render.GameRenderer
-import net.minecraft.client.render.Tessellator
-import net.minecraft.client.render.VertexFormat
-import net.minecraft.client.render.VertexFormats
+import net.minecraft.client.render.*
 import org.progreso.api.setting.settings.ColorSetting
 import org.progreso.api.setting.settings.NumberSetting
 import org.progreso.client.gui.clickgui.element.AbstractChildElement
@@ -122,53 +119,46 @@ class ColorElement(
 
                 RenderSystem.setShader(GameRenderer::getPositionColorProgram)
 
-                val buffer = Tessellator.getInstance().buffer
-                buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR)
+                var buffer = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR)
 
                 buffer
                     .vertex(matrix, x, y, 0f)
                     .color(1f, 1f, 1f, 1f)
-                    .next()
 
                 buffer
                     .vertex(matrix, x, y + height, 0f)
                     .color(1f, 1f, 1f, 1f)
-                    .next()
 
                 buffer
                     .vertex(matrix, x + width, y + height, 0f)
                     .color(red, green, blue, alpha)
-                    .next()
 
                 buffer
                     .vertex(matrix, x + width, y, 0f)
                     .color(red, green, blue, alpha)
-                    .next()
 
-                Tessellator.getInstance().draw()
-                buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR)
+                BufferRenderer.drawWithGlobalProgram(buffer.end())
+
+                buffer = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR)
 
                 buffer
                     .vertex(matrix, x, y, 0f)
                     .color(0f, 0f, 0f, 0f)
-                    .next()
 
                 buffer
                     .vertex(matrix, x, y + height, 0f)
                     .color(0f, 0f, 0f, 1f)
-                    .next()
 
                 buffer
                     .vertex(matrix, x + width, y + height, 0f)
                     .color(0f, 0f, 0f, 1f)
-                    .next()
 
                 buffer
                     .vertex(matrix, x + width, y, 0f)
                     .color(0f, 0f, 0f, 0f)
-                    .next()
 
-                Tessellator.getInstance().draw()
+                BufferRenderer.drawWithGlobalProgram(buffer.end())
+
                 context.matrices.pop()
 
                 RenderSystem.setShaderColor(1f, 1f, 1f, 1f)

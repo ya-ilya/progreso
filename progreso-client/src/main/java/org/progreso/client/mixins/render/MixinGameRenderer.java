@@ -2,6 +2,7 @@ package org.progreso.client.mixins.render;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.client.util.math.MatrixStack;
 import org.joml.Matrix4f;
 import org.objectweb.asm.Opcodes;
@@ -15,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(GameRenderer.class)
 public abstract class MixinGameRenderer {
     @Inject(
-        method = "renderWorld(FJ)V",
+        method = "renderWorld",
         at = @At(
             value = "FIELD",
             target = "Lnet/minecraft/client/render/GameRenderer;renderHand:Z",
@@ -24,12 +25,12 @@ public abstract class MixinGameRenderer {
         )
     )
     public void renderWorldHook(
-        float tickDelta,
-        long limitTime,
-        CallbackInfo ci,
-        @Local(ordinal = 1) Matrix4f matrix4f2
+        RenderTickCounter tickCounter,
+        CallbackInfo callbackInfo,
+        @Local(ordinal = 1) Matrix4f matrix4f2,
+        @Local(ordinal = 1) float tickDelta
     ) {
-        Client.getMc().getClient().getProfiler().push("progreso_render");
+        Client.getMc().getClient().getProfiler().push("progreso_3d_render");
         MatrixStack matrixStack = new MatrixStack();
         matrixStack.multiplyPositionMatrix(matrix4f2);
         Client.EVENT_BUS.post(new Render3DEvent(matrixStack, tickDelta));

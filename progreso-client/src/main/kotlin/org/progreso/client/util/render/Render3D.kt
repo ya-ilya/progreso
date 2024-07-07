@@ -2,10 +2,7 @@ package org.progreso.client.util.render
 
 import com.mojang.blaze3d.platform.GlStateManager
 import com.mojang.blaze3d.systems.RenderSystem
-import net.minecraft.client.render.GameRenderer
-import net.minecraft.client.render.Tessellator
-import net.minecraft.client.render.VertexFormat
-import net.minecraft.client.render.VertexFormats
+import net.minecraft.client.render.*
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
@@ -59,12 +56,10 @@ fun Render3DContext.withColor(color: Color, block: Render3DContext.() -> Unit) {
 }
 
 fun Render3DContext.drawOutlinedBox(box: Box) {
-    val matrix = matrices.peek().positionMatrix
-    val buffer = Tessellator.getInstance().buffer
-
     RenderSystem.setShader(GameRenderer::getPositionProgram)
 
-    buffer.begin(VertexFormat.DrawMode.DEBUG_LINES, VertexFormats.POSITION)
+    val matrix = matrices.peek().positionMatrix
+    val buffer = Tessellator.getInstance().begin(VertexFormat.DrawMode.DEBUG_LINES, VertexFormats.POSITION)
 
     val vertices = listOf(
         Vec3d(box.minX, box.minY, box.minZ),
@@ -99,19 +94,17 @@ fun Render3DContext.drawOutlinedBox(box: Box) {
             vec3d.x.toFloat(),
             vec3d.y.toFloat(),
             vec3d.z.toFloat()
-        ).next()
+        )
     }
 
-    Tessellator.getInstance().draw()
+    BufferRenderer.drawWithGlobalProgram(buffer.end())
 }
 
 fun Render3DContext.drawSolidBox(box: Box) {
+    RenderSystem.setShader(GameRenderer::getPositionProgram)
+
     val matrix = matrices.peek().positionMatrix
-    val buffer = Tessellator.getInstance().buffer
-
-    RenderSystem.setShader { GameRenderer.getPositionProgram() }
-
-    buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION)
+    val buffer = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION)
 
     val vertices = listOf(
         Vec3d(box.minX, box.minY, box.minZ),
@@ -146,8 +139,8 @@ fun Render3DContext.drawSolidBox(box: Box) {
             vec3d.x.toFloat(),
             vec3d.y.toFloat(),
             vec3d.z.toFloat()
-        ).next()
+        )
     }
 
-    Tessellator.getInstance().draw()
+    BufferRenderer.drawWithGlobalProgram(buffer.end())
 }
