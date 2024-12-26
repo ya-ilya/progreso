@@ -2,8 +2,12 @@ package org.progreso.client.gui.clickgui.element.elements
 
 import com.mojang.blaze3d.platform.GlStateManager
 import com.mojang.blaze3d.systems.RenderSystem
+import net.minecraft.client.gl.ShaderProgramKeys
 import net.minecraft.client.gui.DrawContext
-import net.minecraft.client.render.*
+import net.minecraft.client.render.BufferRenderer
+import net.minecraft.client.render.Tessellator
+import net.minecraft.client.render.VertexFormat
+import net.minecraft.client.render.VertexFormats
 import org.progreso.api.setting.settings.ColorSetting
 import org.progreso.api.setting.settings.NumberSetting
 import org.progreso.client.gui.clickgui.element.AbstractChildElement
@@ -117,7 +121,7 @@ class ColorElement(
 
                 context.matrices.push()
 
-                RenderSystem.setShader(GameRenderer::getPositionColorProgram)
+                RenderSystem.setShader(ShaderProgramKeys.POSITION_COLOR)
 
                 var buffer = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR)
 

@@ -3,6 +3,7 @@ package org.progreso.client.mixins.gui;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.render.RenderTickCounter;
+import net.minecraft.util.profiler.Profilers;
 import org.progreso.client.Client;
 import org.progreso.client.events.render.Render2DEvent;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,8 +22,8 @@ public abstract class MixinInGameHud {
         RenderTickCounter tickCounter,
         CallbackInfo callbackInfo
     ) {
-        Client.getMc().getClient().getProfiler().push("progreso_2d_render");
+        Profilers.get().push("progreso_2d_render");
         Client.EVENT_BUS.post(new Render2DEvent(context));
-        Client.getMc().getClient().getProfiler().pop();
+        Profilers.get().pop();
     }
 }

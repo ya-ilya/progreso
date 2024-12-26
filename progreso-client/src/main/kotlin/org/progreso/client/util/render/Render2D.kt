@@ -3,8 +3,12 @@ package org.progreso.client.util.render
 import com.mojang.blaze3d.platform.GlStateManager
 import com.mojang.blaze3d.systems.RenderSystem
 import net.minecraft.client.font.*
+import net.minecraft.client.gl.ShaderProgramKeys
 import net.minecraft.client.gui.DrawContext
-import net.minecraft.client.render.*
+import net.minecraft.client.render.BufferRenderer
+import net.minecraft.client.render.Tessellator
+import net.minecraft.client.render.VertexFormat
+import net.minecraft.client.render.VertexFormats
 import net.minecraft.resource.ResourceManager
 import net.minecraft.util.Identifier
 import org.progreso.client.Client
@@ -54,7 +58,7 @@ fun Render2DContext.drawCircle(
 
     val angleStep = Math.toRadians(angleTo - angleFrom) / segments
 
-    RenderSystem.setShader { GameRenderer.getPositionProgram() }
+    RenderSystem.setShader(ShaderProgramKeys.POSITION)
 
     val buffer = Tessellator.getInstance().begin(VertexFormat.DrawMode.TRIANGLE_FAN, VertexFormats.POSITION)
     buffer.vertex(matrix, centerX.toFloat(), centerY.toFloat(), 0f)

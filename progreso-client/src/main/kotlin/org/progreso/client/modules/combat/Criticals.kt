@@ -22,10 +22,10 @@ object Criticals : AbstractModule() {
             val y = mc.player.y
             val z = mc.player.z
 
-            mc.networkHandler.sendPacket(PlayerMoveC2SPacket.PositionAndOnGround(x, y + 0.05, z, false))
-            mc.networkHandler.sendPacket(PlayerMoveC2SPacket.PositionAndOnGround(x, y, z, false))
-            mc.networkHandler.sendPacket(PlayerMoveC2SPacket.PositionAndOnGround(x, y + 0.012, z, false))
-            mc.networkHandler.sendPacket(PlayerMoveC2SPacket.PositionAndOnGround(x, y, z, false))
+            mc.networkHandler.sendPacket(PlayerMoveC2SPacket.PositionAndOnGround(x, y + 0.05, z, false, false))
+            mc.networkHandler.sendPacket(PlayerMoveC2SPacket.PositionAndOnGround(x, y, z, false, false))
+            mc.networkHandler.sendPacket(PlayerMoveC2SPacket.PositionAndOnGround(x, y + 0.012, z, false, false))
+            mc.networkHandler.sendPacket(PlayerMoveC2SPacket.PositionAndOnGround(x, y, z, false, false))
         }
     }
 }

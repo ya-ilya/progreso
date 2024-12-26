@@ -50,7 +50,7 @@ class ProgresoPluginsScreen(private val plugins: Set<AbstractPlugin>) : TitledSc
                 if (selectedPlugin != lastSelected) {
                     lastSelected = selectedPlugin
                     children().clear()
-                    scrollAmount = -Double.MAX_VALUE
+                    scrollY = -Double.MAX_VALUE
                     if (lastSelected != null) {
                         children().add(
                             InfoEntry(

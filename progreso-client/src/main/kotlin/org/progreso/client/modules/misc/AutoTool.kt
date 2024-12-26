@@ -31,7 +31,9 @@ object AutoTool : AbstractModule() {
 
         if (speed > 1.0f) {
             speed += EnchantmentHelper.getLevel(
-                mc.world.registryManager.get(RegistryKeys.ENCHANTMENT).getEntry(Enchantments.EFFICIENCY).get(),
+                mc.world.registryManager
+                    .getOrThrow(RegistryKeys.ENCHANTMENT)
+                    .getOrThrow(Enchantments.EFFICIENCY),
                 stack
             )
         }

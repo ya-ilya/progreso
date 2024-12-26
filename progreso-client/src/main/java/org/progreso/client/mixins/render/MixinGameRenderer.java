@@ -4,6 +4,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.profiler.Profilers;
 import org.joml.Matrix4f;
 import org.objectweb.asm.Opcodes;
 import org.progreso.client.Client;
@@ -30,10 +31,10 @@ public abstract class MixinGameRenderer {
         @Local(ordinal = 1) Matrix4f matrix4f2,
         @Local(ordinal = 1) float tickDelta
     ) {
-        Client.getMc().getClient().getProfiler().push("progreso_3d_render");
+        Profilers.get().push("progreso_3d_render");
         MatrixStack matrixStack = new MatrixStack();
         matrixStack.multiplyPositionMatrix(matrix4f2);
         Client.EVENT_BUS.post(new Render3DEvent(matrixStack, tickDelta));
-        Client.getMc().getClient().getProfiler().pop();
+        Profilers.get().pop();
     }
 }

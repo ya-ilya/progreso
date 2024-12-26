@@ -32,7 +32,7 @@ import org.progreso.api.Api
  */
 interface ChatAccessor {
     open class Default : ChatAccessor {
-        override fun send(message: Any) {}
+        override fun send(message: Any, overlay: Boolean) {}
         override fun info(message: Any) {}
         override fun warn(message: Any) {}
         override fun error(message: Any) {}
@@ -42,8 +42,9 @@ interface ChatAccessor {
      * Send message to the chat
      *
      * @param message Message
+     * @param overlay Show message in overlay
      */
-    fun send(message: Any)
+    fun send(message: Any, overlay: Boolean = false)
 
     /**
      * Send localized message to the chat
