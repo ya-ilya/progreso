@@ -50,7 +50,7 @@ object StorageESP : AbstractModule() {
         safeEventListener<Render3DEvent> { event ->
             for ((pos, color) in renderMap) {
                 render3D(event.matrices) {
-                    withPosition(pos) {
+                    withRelativeToCameraPosition(pos) {
                         withColor(color.copy(50)) {
                             drawSolidBox(DEFAULT_BOX)
                         }

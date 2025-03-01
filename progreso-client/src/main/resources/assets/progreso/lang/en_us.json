@@ -50,7 +50,7 @@
 
   "command.irc.connect": "[IRC] Connected to %s",
   "command.irc.connect_error": "[IRC] Failed to connect to the server",
-  "command.irc.disconnect": "[IRC] Disconnected",
+  "command.irc.disconnect": "[IRC] Disconnected from %s",
   "command.irc.disconnect_error": "[IRC] Client isn't connected to the server",
   "command.irc.close": "[IRC] Connection closed. Reason: %s",
   "command.irc.message": "[IRC] %s: %s",
@@ -111,6 +111,7 @@
   "command.plugin.description": "Manage plugins",
   "command.reset.description": "Reset setting value in module",
   "command.toggle.description": "Toggle module on/off",
+  "command.uuid.description": "Get player UUID",
 
   "module.ClickGUI.description": "Opens the ClickGUI",
   "module.HudEditor.description": "Opens the HudEditor",

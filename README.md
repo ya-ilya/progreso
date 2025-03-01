@@ -18,6 +18,17 @@ A Minecraft Utility Mod for anarchy servers
 - Put the jar to `.minecraft/mods` folder
 - Run [fabric 1.21](https://fabricmc.net/use/installer/) from your launcher
 
+### Launching IRC server
+
+- Clone the repository
+- Navigate to the project directory
+- Rename `.env.example` to `.env` and set `SERVER_PORT`
+- Run the following command to start the IRC server using Docker Compose:
+  ```sh
+  docker-compose up -d
+  ```
+- The IRC server will be available at `http://localhost:${SERVER_PORT}`
+
 ### Development
 
 - `progreso-api` ([source](https://github.com/ya-ilya/progreso/tree/main/progreso-api)) - Api for `progreso-client`. Shouldn't interact with **minecraft**/**modding api** classes.

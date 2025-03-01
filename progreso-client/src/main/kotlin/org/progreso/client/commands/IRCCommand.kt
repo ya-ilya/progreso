@@ -62,7 +62,7 @@ object IRCCommand : AbstractCommand() {
                         }
 
                         override fun onClose() {
-                            infoLocalized("command.irc.disconnect")
+                            infoLocalized("command.irc.disconnect", address)
                         }
                     }
                 }

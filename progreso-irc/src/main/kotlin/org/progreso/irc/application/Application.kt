@@ -6,15 +6,19 @@ import org.progreso.irc.event.IRCEvent
 import org.progreso.irc.event.c2s.MessageC2SEvent
 import org.progreso.irc.event.c2s.RegisterC2SEvent
 import org.progreso.irc.event.s2c.MessageS2CEvent
-import java.net.InetSocketAddress
+import org.slf4j.LoggerFactory
 import kotlin.concurrent.thread
 
-fun main(args: Array<String>) {
-    val server = object : IRCServer(InetSocketAddress(args[0], args[1].toInt())) {
+val SERVER_PORT: Int = System.getenv("SERVER_PORT").toInt()
+
+fun main() {
+    val server = object : IRCServer(SERVER_PORT) {
+        private val logger = LoggerFactory.getLogger(javaClass)
+
         private val authorized = mutableMapOf<WebSocket, String>()
 
         override fun onStart() {
-            println("Server started")
+            logger.info("Server started")
         }
 
         override fun onEvent(connection: WebSocket, event: IRCEvent.C2S) {
@@ -30,21 +34,25 @@ fun main(args: Array<String>) {
 
                     authorized[connection] = event.username
 
-                    println("${event.username} authorized")
+                    logger.info("${event.username} authorized")
                 }
 
                 is MessageC2SEvent -> {
                     val username = authorized[connection] ?: return
 
-                    println("Message from $username: ${event.message}")
+                    logger.info("Message from $username: ${event.message}")
                     send(MessageS2CEvent(username, event.message))
                 }
             }
         }
 
+        override fun onOpen(connection: WebSocket) {
+            logger.info("New connection: ${connection.localSocketAddress}")
+        }
+
         override fun onClose(connection: WebSocket) {
             if (authorized.containsKey(connection)) {
-                println("${authorized[connection]} disconnected")
+                logger.info("${authorized[connection]} disconnected")
             }
         }
     }

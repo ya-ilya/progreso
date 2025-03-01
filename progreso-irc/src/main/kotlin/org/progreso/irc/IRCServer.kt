@@ -6,7 +6,7 @@ import org.java_websocket.server.WebSocketServer
 import org.progreso.irc.event.IRCEvent
 import java.net.InetSocketAddress
 
-open class IRCServer(address: InetSocketAddress) : WebSocketServer(address) {
+open class IRCServer(port: Int) : WebSocketServer(InetSocketAddress(port)) {
     override fun onStart() {}
 
     override fun onOpen(conn: WebSocket, handshake: ClientHandshake?) {

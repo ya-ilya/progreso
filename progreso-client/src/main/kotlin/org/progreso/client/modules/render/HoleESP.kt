@@ -39,7 +39,7 @@ object HoleESP : AbstractModule() {
         safeEventListener<Render3DEvent> { event ->
             for (pos in holes) {
                 render3D(event.matrices) {
-                    withPosition(pos) {
+                    withRelativeToCameraPosition(pos) {
                         withColor(color.copy(50)) {
                             drawSolidBox(DEFAULT_BOX)
                         }

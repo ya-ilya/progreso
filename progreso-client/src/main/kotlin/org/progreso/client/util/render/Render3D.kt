@@ -3,38 +3,34 @@ package org.progreso.client.util.render
 import com.mojang.blaze3d.platform.GlStateManager
 import com.mojang.blaze3d.systems.RenderSystem
 import net.minecraft.client.gl.ShaderProgramKeys
-import net.minecraft.client.render.BufferRenderer
-import net.minecraft.client.render.Tessellator
-import net.minecraft.client.render.VertexFormat
-import net.minecraft.client.render.VertexFormats
+import net.minecraft.client.render.*
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
+import org.lwjgl.opengl.GL11C
 import org.progreso.client.Client.Companion.mc
 import java.awt.Color
 
-data class Render3DContext(val matrices: MatrixStack)
+data class Render3DContext(val matrices: MatrixStack, val camera: Camera? = null)
 
 fun render3D(matrices: MatrixStack, block: Render3DContext.() -> Unit) {
     val camera = mc.client.entityRenderDispatcher.camera ?: return
-    val cameraPosition = camera.pos
 
     RenderSystem.enableBlend()
     RenderSystem.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA)
     RenderSystem.disableDepthTest()
+    GL11C.glEnable(GL11C.GL_LINE_SMOOTH)
 
     matrices.push()
-
-    matrices.translate(-cameraPosition.x, -cameraPosition.y, -cameraPosition.z)
-
-    block(Render3DContext(matrices))
-
+    block(Render3DContext(matrices, camera))
     matrices.pop()
 
     RenderSystem.setShaderColor(1f, 1f, 1f, 1f)
     RenderSystem.disableBlend()
     RenderSystem.enableDepthTest()
+    RenderSystem.enableCull()
+    GL11C.glDisable(GL11C.GL_LINE_SMOOTH)
 }
 
 fun Render3DContext.withPosition(pos: Vec3d, block: Render3DContext.() -> Unit) {
@@ -46,6 +42,19 @@ fun Render3DContext.withPosition(pos: Vec3d, block: Render3DContext.() -> Unit) 
 
 fun Render3DContext.withPosition(pos: BlockPos, block: Render3DContext.() -> Unit) {
     withPosition(Vec3d(pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble()), block)
+}
+
+fun Render3DContext.withRelativeToCameraPosition(pos: Vec3d, block: Render3DContext.() -> Unit) {
+    val relativePos = pos.subtract(camera!!.pos)
+
+    matrices.push()
+    matrices.translate(relativePos.x, relativePos.y, relativePos.z)
+    block()
+    matrices.pop()
+}
+
+fun Render3DContext.withRelativeToCameraPosition(pos: BlockPos, block: Render3DContext.() -> Unit) {
+    withRelativeToCameraPosition(Vec3d(pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble()), block)
 }
 
 fun Render3DContext.withColor(color: Color, block: Render3DContext.() -> Unit) {
@@ -60,10 +69,9 @@ fun Render3DContext.withColor(color: Color, block: Render3DContext.() -> Unit) {
 }
 
 fun Render3DContext.drawOutlinedBox(box: Box) {
-    RenderSystem.setShader(ShaderProgramKeys.POSITION)
-
     val matrix = matrices.peek().positionMatrix
     val buffer = Tessellator.getInstance().begin(VertexFormat.DrawMode.DEBUG_LINES, VertexFormats.POSITION)
+    RenderSystem.setShader(ShaderProgramKeys.POSITION)
 
     val vertices = listOf(
         Vec3d(box.minX, box.minY, box.minZ),
@@ -105,10 +113,9 @@ fun Render3DContext.drawOutlinedBox(box: Box) {
 }
 
 fun Render3DContext.drawSolidBox(box: Box) {
-    RenderSystem.setShader(ShaderProgramKeys.POSITION)
-
     val matrix = matrices.peek().positionMatrix
     val buffer = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION)
+    RenderSystem.setShader(ShaderProgramKeys.POSITION)
 
     val vertices = listOf(
         Vec3d(box.minX, box.minY, box.minZ),

@@ -20,7 +20,9 @@ object ProgresoResourceManager : ResourceManager {
     }
 
     val fonts
-        get() = Paths.get(path.toString(), "font").listDirectoryEntries()
+        get() = Paths.get(path.toString(), "font")
+            .createDirectories()
+            .listDirectoryEntries()
             .filter { !it.isDirectory() && it.extension == "ttf" }
             .map { it.nameWithoutExtension }
 

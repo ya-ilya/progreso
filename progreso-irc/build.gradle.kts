@@ -4,7 +4,7 @@ val gsonVersion: String by project
 
 plugins {
     kotlin("jvm")
-    application
+    id("com.gradleup.shadow")
 }
 
 group = "org.progreso"
@@ -19,12 +19,18 @@ dependencies {
     implementation("com.google.code.gson:gson:$gsonVersion")
 }
 
-application {
-    mainClass.set("org.progreso.irc.application.ApplicationKt")
-}
+tasks {
+    shadowJar {
+        archiveBaseName.set("shadow")
+        archiveClassifier.set("")
+        archiveVersion.set("")
+    }
 
-tasks.jar {
-    manifest.attributes(
-        "Main-Class" to "org.progreso.irc.application.ApplicationKt"
-    )
+    jar {
+        archiveFileName.set("${project.name}-release.jar")
+
+        manifest.attributes(
+            "Main-Class" to "org.progreso.irc.application.ApplicationKt"
+        )
+    }
 }

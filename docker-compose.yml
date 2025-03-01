@@ -1,0 +1,13 @@
+services:
+  progreso-irc:
+    container_name: progreso-irc
+    env_file: ".env"
+    build:
+      context: .
+      dockerfile: progreso-irc.dockerfile
+    ports:
+      - ${SERVER_PORT}:${SERVER_PORT}
+    networks:
+      - net
+networks:
+  net:

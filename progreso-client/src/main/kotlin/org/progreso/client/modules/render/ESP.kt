@@ -80,7 +80,7 @@ object ESP : AbstractModule() {
                 val box = entity.boundingBox.expand(0.1, 0.0, 0.1)
 
                 render3D(event.matrices) {
-                    withPosition(pos) {
+                    withRelativeToCameraPosition(pos) {
                         withColor(color.copy(50)) {
                             drawSolidBox(box)
                         }
