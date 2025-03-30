@@ -1,14 +1,13 @@
 package org.progreso.client.mixins.gui;
 
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.text.ClickEvent;
 import net.minecraft.text.Style;
 import org.progreso.api.managers.CommandManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.Objects;
 
 @Mixin(Screen.class)
 public abstract class MixinScreen {
@@ -23,9 +22,12 @@ public abstract class MixinScreen {
         cancellable = true
     )
     private void handleTextClickHook(Style style, CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
-        if (Objects.requireNonNull(style.getClickEvent()).getValue().startsWith(CommandManager.PREFIX)) {
-            CommandManager.INSTANCE.dispatch(style.getClickEvent().getValue());
-            callbackInfoReturnable.setReturnValue(true);
+        ClickEvent event = style.getClickEvent();
+        if (event instanceof ClickEvent.RunCommand runCommand) {
+            if (runCommand.command().startsWith(CommandManager.PREFIX)) {
+                CommandManager.INSTANCE.dispatch(runCommand.command());
+                callbackInfoReturnable.setReturnValue(true);
+            }
         }
     }
 }

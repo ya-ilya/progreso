@@ -34,6 +34,6 @@ class PluginArgumentType(private val container: PluginContainer = PluginManager)
         context: CommandContext<S>,
         builder: SuggestionsBuilder
     ): CompletableFuture<Suggestions> {
-        return Api.COMMAND.suggestMatching(container.plugins.map { it.name }, builder)
+        return Api.COMMAND.suggestMatching(container.plugins.map { "'${it.name}'" }, builder)
     }
 }

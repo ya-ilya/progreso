@@ -1,17 +1,11 @@
 package org.progreso.client.util.render
 
-import com.mojang.blaze3d.platform.GlStateManager
-import com.mojang.blaze3d.systems.RenderSystem
 import net.minecraft.client.font.*
-import net.minecraft.client.gl.ShaderProgramKeys
 import net.minecraft.client.gui.DrawContext
-import net.minecraft.client.render.BufferRenderer
-import net.minecraft.client.render.Tessellator
-import net.minecraft.client.render.VertexFormat
-import net.minecraft.client.render.VertexFormats
 import net.minecraft.resource.ResourceManager
 import net.minecraft.util.Identifier
 import org.progreso.client.Client
+import org.progreso.client.gui.glColors
 import org.progreso.client.managers.ProgresoResourceManager
 import java.awt.Color
 import kotlin.math.cos
@@ -20,30 +14,9 @@ import kotlin.math.sin
 data class Render2DContext(val context: DrawContext)
 
 fun render2D(context: DrawContext, block: Render2DContext.() -> Unit) {
-    RenderSystem.enableBlend()
-    RenderSystem.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA)
-    RenderSystem.disableDepthTest()
-
     context.matrices.push()
-
     block(Render2DContext(context))
-
     context.matrices.pop()
-
-    RenderSystem.setShaderColor(1f, 1f, 1f, 1f)
-    RenderSystem.disableBlend()
-    RenderSystem.enableDepthTest()
-}
-
-fun Render2DContext.withColor(color: Color, block: Render2DContext.() -> Unit) {
-    RenderSystem.setShaderColor(
-        color.red / 255f,
-        color.green / 255f,
-        color.blue / 255f,
-        color.alpha / 255f
-    )
-    block()
-    RenderSystem.setShaderColor(1f, 1f, 1f, 1f)
 }
 
 fun Render2DContext.drawCircle(
@@ -52,16 +25,19 @@ fun Render2DContext.drawCircle(
     angleFrom: Double,
     angleTo: Double,
     segments: Int,
-    radius: Double
+    radius: Double,
+    color: Color
 ) {
+    val (red, green, blue, alpha) = color.glColors
     val matrix = context.matrices.peek().positionMatrix
 
     val angleStep = Math.toRadians(angleTo - angleFrom) / segments
 
-    RenderSystem.setShader(ShaderProgramKeys.POSITION)
-
-    val buffer = Tessellator.getInstance().begin(VertexFormat.DrawMode.TRIANGLE_FAN, VertexFormats.POSITION)
-    buffer.vertex(matrix, centerX.toFloat(), centerY.toFloat(), 0f)
+    val layer = Render2DLayers.getTriangles()
+    val buffer = context.vertexConsumers.getBuffer(layer)
+    buffer
+        .vertex(matrix, centerX.toFloat(), centerY.toFloat(), 0f)
+        .color(red, green, blue, alpha)
 
     for (i in segments downTo 0) {
         val theta = Math.toRadians(angleFrom) + i * angleStep
@@ -69,10 +45,10 @@ fun Render2DContext.drawCircle(
             matrix,
             (centerX - cos(theta) * radius).toFloat(),
             (centerY - sin(theta) * radius).toFloat(), 0f
-        )
+        ).color(red, green, blue, alpha)
     }
 
-    BufferRenderer.drawWithGlobalProgram(buffer.end())
+    context.vertexConsumers.draw(layer)
 }
 
 fun createTextRenderer(

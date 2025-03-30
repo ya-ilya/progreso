@@ -8,7 +8,6 @@ import org.progreso.client.gui.drawTextRelatively
 import org.progreso.client.gui.invoke
 import org.progreso.client.util.render.drawCircle
 import org.progreso.client.util.render.render2D
-import org.progreso.client.util.render.withColor
 import java.awt.Color
 
 class BooleanElement(
@@ -43,14 +42,13 @@ class BooleanElement(
         )
 
         render2D(context) {
-            withColor(mainColor) {
-                drawCircle(
-                    buttonStartX + if (setting.value) BUTTON_WIDTH else 0,
-                    buttonStartY + 2,
-                    0.0, 360.0,
-                    40, 3.0
-                )
-            }
+            drawCircle(
+                buttonStartX + if (setting.value) BUTTON_WIDTH else 0,
+                buttonStartY + 2,
+                0.0, 360.0,
+                40, 3.0,
+                mainColor
+            )
         }
     }
 

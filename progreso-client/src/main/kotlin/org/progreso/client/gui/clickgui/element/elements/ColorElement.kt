@@ -1,12 +1,9 @@
 package org.progreso.client.gui.clickgui.element.elements
 
-import com.mojang.blaze3d.platform.GlStateManager
-import com.mojang.blaze3d.systems.RenderSystem
-import net.minecraft.client.gl.ShaderProgramKeys
+import com.mojang.blaze3d.vertex.VertexFormat
 import net.minecraft.client.gui.DrawContext
-import net.minecraft.client.render.BufferRenderer
+import net.minecraft.client.render.RenderLayer
 import net.minecraft.client.render.Tessellator
-import net.minecraft.client.render.VertexFormat
 import net.minecraft.client.render.VertexFormats
 import org.progreso.api.setting.settings.ColorSetting
 import org.progreso.api.setting.settings.NumberSetting
@@ -19,7 +16,6 @@ import org.progreso.client.gui.glColors
 import org.progreso.client.gui.invoke
 import org.progreso.client.util.render.drawCircle
 import org.progreso.client.util.render.render2D
-import org.progreso.client.util.render.withColor
 import java.awt.Color
 import kotlin.math.max
 import kotlin.math.min
@@ -115,13 +111,7 @@ class ColorElement(
                 val (red, green, blue, alpha) = color.glColors
                 val matrix = context.matrices.peek().positionMatrix
 
-                RenderSystem.enableBlend()
-                RenderSystem.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA)
-                RenderSystem.disableDepthTest()
-
                 context.matrices.push()
-
-                RenderSystem.setShader(ShaderProgramKeys.POSITION_COLOR)
 
                 var buffer = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR)
 
@@ -141,7 +131,7 @@ class ColorElement(
                     .vertex(matrix, x + width, y, 0f)
                     .color(red, green, blue, alpha)
 
-                BufferRenderer.drawWithGlobalProgram(buffer.end())
+                RenderLayer.getGui().draw(buffer.end())
 
                 buffer = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR)
 
@@ -161,13 +151,9 @@ class ColorElement(
                     .vertex(matrix, x + width, y, 0f)
                     .color(0f, 0f, 0f, 0f)
 
-                BufferRenderer.drawWithGlobalProgram(buffer.end())
+                RenderLayer.getGui().draw(buffer.end())
 
                 context.matrices.pop()
-
-                RenderSystem.setShaderColor(1f, 1f, 1f, 1f)
-                RenderSystem.disableBlend()
-                RenderSystem.enableDepthTest()
             }
         })
 
@@ -184,14 +170,13 @@ class ColorElement(
                 )
 
                 render2D(context) {
-                    withColor(setting.value) {
-                        drawCircle(
-                            x + width - 9,
-                            y + height.div(2),
-                            0.0, 360.0,
-                            40, 2.6
-                        )
-                    }
+                    drawCircle(
+                        x + width - 9,
+                        y + height.div(2),
+                        0.0, 360.0,
+                        40, 2.6,
+                        setting.value
+                    )
                 }
             }
         }

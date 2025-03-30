@@ -127,6 +127,7 @@ class Client : ClientModInitializer {
         val networkHandler get() = client.networkHandler!!
         val options: GameOptions? get() = client.options
         val currentScreen: Screen? get() = client.currentScreen
+        val bufferBuilders get() = client.bufferBuilders
 
         var session
             get() = client.session!!

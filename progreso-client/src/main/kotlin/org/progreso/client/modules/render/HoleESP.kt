@@ -10,7 +10,10 @@ import org.progreso.client.events.misc.TickEvent
 import org.progreso.client.events.render.Render3DEvent
 import org.progreso.client.events.safeEventListener
 import org.progreso.client.gui.clickgui.element.elements.ColorElement.Companion.copy
-import org.progreso.client.util.render.*
+import org.progreso.client.util.render.drawOutlinedBox
+import org.progreso.client.util.render.drawSolidBox
+import org.progreso.client.util.render.render3D
+import org.progreso.client.util.render.withRelativeToCameraPosition
 import org.progreso.client.util.world.getBlocksInRadius
 import java.awt.Color
 import java.util.concurrent.CopyOnWriteArrayList
@@ -40,13 +43,8 @@ object HoleESP : AbstractModule() {
             for (pos in holes) {
                 render3D(event.matrices) {
                     withRelativeToCameraPosition(pos) {
-                        withColor(color.copy(50)) {
-                            drawSolidBox(DEFAULT_BOX)
-                        }
-
-                        withColor(color.copy(100)) {
-                            drawOutlinedBox(DEFAULT_BOX)
-                        }
+                        drawSolidBox(DEFAULT_BOX, color.copy(50))
+                        drawOutlinedBox(DEFAULT_BOX, color.copy(100))
                     }
                 }
             }

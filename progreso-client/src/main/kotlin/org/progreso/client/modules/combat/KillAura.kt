@@ -8,8 +8,8 @@ import net.minecraft.entity.passive.PassiveEntity
 import net.minecraft.entity.passive.SnowGolemEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.AxeItem
+import net.minecraft.item.Items
 import net.minecraft.item.MaceItem
-import net.minecraft.item.SwordItem
 import org.progreso.api.module.AbstractModule
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.events.misc.TickEvent
@@ -32,14 +32,25 @@ object KillAura : AbstractModule() {
     private val monsters by targets.setting("Monsters", false)
     private val animals by targets.setting("Animals", false)
 
+    private val SWORDS = listOf(
+        Items.WOODEN_SWORD,
+        Items.STONE_SWORD,
+        Items.IRON_SWORD,
+        Items.GOLDEN_SWORD,
+        Items.DIAMOND_SWORD,
+        Items.NETHERITE_SWORD
+    )
+
     init {
         safeEventListener<TickEvent> { _ ->
             when (mc.player.mainHandStack.item) {
                 is AxeItem -> if (!axe) return@safeEventListener
-                is SwordItem -> if (!sword) return@safeEventListener
+                in SWORDS -> if (!sword) return@safeEventListener
                 is MaceItem -> if (!mace) return@safeEventListener
                 else -> return@safeEventListener
             }
+
+            Items.WOODEN_SWORD
 
             val entity = mc.world.entities
                 .asSequence()

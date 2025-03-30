@@ -19,7 +19,6 @@
     "network.MixinClientPlayerEntity",
     "network.MixinClientPlayerInteractionManager",
     "network.MixinClientPlayNetworkHandler",
-    "render.MixinLightmapTextureManager",
     "render.MixinGameRenderer",
     "sound.MixinSoundSystem"
   ]

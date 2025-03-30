@@ -16,7 +16,10 @@ import org.progreso.client.events.misc.TickEvent
 import org.progreso.client.events.render.Render3DEvent
 import org.progreso.client.events.safeEventListener
 import org.progreso.client.gui.clickgui.element.elements.ColorElement.Companion.copy
-import org.progreso.client.util.render.*
+import org.progreso.client.util.render.drawOutlinedBox
+import org.progreso.client.util.render.drawSolidBox
+import org.progreso.client.util.render.render3D
+import org.progreso.client.util.render.withRelativeToCameraPosition
 import java.awt.Color
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.properties.ReadWriteProperty
@@ -81,13 +84,8 @@ object ESP : AbstractModule() {
 
                 render3D(event.matrices) {
                     withRelativeToCameraPosition(pos) {
-                        withColor(color.copy(50)) {
-                            drawSolidBox(box)
-                        }
-
-                        withColor(color.copy(100)) {
-                            drawOutlinedBox(box)
-                        }
+                        drawSolidBox(box, color.copy(50))
+                        drawOutlinedBox(box, color.copy(100))
                     }
                 }
             }
