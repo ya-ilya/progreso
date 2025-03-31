@@ -51,6 +51,59 @@ fun Render2DContext.drawCircle(
     context.vertexConsumers.draw(layer)
 }
 
+fun Render2DContext.drawPicker(
+    x: Float,
+    y: Float,
+    width: Float,
+    height: Float,
+    color: Color
+) {
+    val (red, green, blue, alpha) = color.glColors
+    val matrix = context.matrices.peek().positionMatrix
+
+    var layer = Render2DLayers.getQuads()
+    var buffer = context.vertexConsumers.getBuffer(layer)
+
+    buffer
+        .vertex(matrix, x, y, 0f)
+        .color(1f, 1f, 1f, 1f)
+
+    buffer
+        .vertex(matrix, x, y + height, 0f)
+        .color(1f, 1f, 1f, 1f)
+
+    buffer
+        .vertex(matrix, x + width, y + height, 0f)
+        .color(red, green, blue, alpha)
+
+    buffer
+        .vertex(matrix, x + width, y, 0f)
+        .color(red, green, blue, alpha)
+
+    context.vertexConsumers.draw(layer)
+
+    layer = Render2DLayers.getQuads()
+    buffer = context.vertexConsumers.getBuffer(layer)
+
+    buffer
+        .vertex(matrix, x, y, 0f)
+        .color(0f, 0f, 0f, 0f)
+
+    buffer
+        .vertex(matrix, x, y + height, 0f)
+        .color(0f, 0f, 0f, 1f)
+
+    buffer
+        .vertex(matrix, x + width, y + height, 0f)
+        .color(0f, 0f, 0f, 1f)
+
+    buffer
+        .vertex(matrix, x + width, y, 0f)
+        .color(0f, 0f, 0f, 0f)
+
+    context.vertexConsumers.draw(layer)
+}
+
 fun createTextRenderer(
     fontName: String,
     size: Float,

@@ -1,10 +1,6 @@
 package org.progreso.client.gui.clickgui.element.elements
 
-import com.mojang.blaze3d.vertex.VertexFormat
 import net.minecraft.client.gui.DrawContext
-import net.minecraft.client.render.RenderLayer
-import net.minecraft.client.render.Tessellator
-import net.minecraft.client.render.VertexFormats
 import org.progreso.api.setting.settings.ColorSetting
 import org.progreso.api.setting.settings.NumberSetting
 import org.progreso.client.gui.clickgui.element.AbstractChildElement
@@ -12,9 +8,9 @@ import org.progreso.client.gui.clickgui.element.AbstractChildListElement
 import org.progreso.client.gui.clickgui.element.ParentElement
 import org.progreso.client.gui.drawRect
 import org.progreso.client.gui.drawTextRelatively
-import org.progreso.client.gui.glColors
 import org.progreso.client.gui.invoke
 import org.progreso.client.util.render.drawCircle
+import org.progreso.client.util.render.drawPicker
 import org.progreso.client.util.render.render2D
 import java.awt.Color
 import kotlin.math.max
@@ -78,7 +74,17 @@ class ColorElement(
                     pickerY = mouseY - y
                 }
 
-                drawPicker(context, x.toFloat(), y.toFloat(), width.toFloat(), this.height.toFloat(), setting.value)
+                val headerHeight = this.height
+
+                render2D(context) {
+                    drawPicker(
+                        x.toFloat(),
+                        y.toFloat(),
+                        width.toFloat(),
+                        headerHeight.toFloat(),
+                        setting.value
+                    )
+                }
 
                 context {
                     if (pickerX != -1 && pickerY != -1) {
@@ -97,63 +103,6 @@ class ColorElement(
                 super.mouseReleased(mouseX, mouseY, state)
 
                 picking = false
-            }
-
-            @Suppress("SameParameterValue")
-            private fun drawPicker(
-                context: DrawContext,
-                x: Float,
-                y: Float,
-                width: Float,
-                height: Float,
-                color: Color
-            ) {
-                val (red, green, blue, alpha) = color.glColors
-                val matrix = context.matrices.peek().positionMatrix
-
-                context.matrices.push()
-
-                var buffer = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR)
-
-                buffer
-                    .vertex(matrix, x, y, 0f)
-                    .color(1f, 1f, 1f, 1f)
-
-                buffer
-                    .vertex(matrix, x, y + height, 0f)
-                    .color(1f, 1f, 1f, 1f)
-
-                buffer
-                    .vertex(matrix, x + width, y + height, 0f)
-                    .color(red, green, blue, alpha)
-
-                buffer
-                    .vertex(matrix, x + width, y, 0f)
-                    .color(red, green, blue, alpha)
-
-                RenderLayer.getGui().draw(buffer.end())
-
-                buffer = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR)
-
-                buffer
-                    .vertex(matrix, x, y, 0f)
-                    .color(0f, 0f, 0f, 0f)
-
-                buffer
-                    .vertex(matrix, x, y + height, 0f)
-                    .color(0f, 0f, 0f, 1f)
-
-                buffer
-                    .vertex(matrix, x + width, y + height, 0f)
-                    .color(0f, 0f, 0f, 1f)
-
-                buffer
-                    .vertex(matrix, x + width, y, 0f)
-                    .color(0f, 0f, 0f, 0f)
-
-                RenderLayer.getGui().draw(buffer.end())
-
-                context.matrices.pop()
             }
         })
 

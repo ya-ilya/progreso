@@ -11,7 +11,7 @@ val vertexConsumerProvider: VertexConsumerProvider.Immediate = mc.bufferBuilders
 
 object RenderLayers {
     private val LINES: RenderLayer.MultiPhase = RenderLayer.of(
-        "progreso:lines", 1536, RenderPipelines.LINES,
+        "progreso:lines_3d", 1536, RenderPipelines.LINES,
         RenderLayer.MultiPhaseParameters.builder()
             .lineWidth(LineWidth(OptionalDouble.of(2.0)))
             .layering(RenderLayer.VIEW_OFFSET_Z_LAYERING)
@@ -19,7 +19,7 @@ object RenderLayers {
     )
 
     private val ESP_LINES: RenderLayer.MultiPhase = RenderLayer.of(
-        "progreso:esp_lines", 1536, Render3DShaderPipelines.ESP_LINES,
+        "progreso:esp_lines_3d", 1536, Render3DShaderPipelines.ESP_LINES,
         RenderLayer.MultiPhaseParameters.builder()
             .lineWidth(LineWidth(OptionalDouble.of(2.0)))
             .layering(RenderLayer.VIEW_OFFSET_Z_LAYERING)
@@ -27,7 +27,7 @@ object RenderLayers {
     )
 
     private val QUADS: RenderLayer.MultiPhase = RenderLayer.of(
-        "progreso:quads",
+        "progreso:quads_3d",
         1536,
         false,
         true,
@@ -36,7 +36,7 @@ object RenderLayers {
     )
 
     private val ESP_QUADS: RenderLayer.MultiPhase = RenderLayer.of(
-        "progreso:esp_quads",
+        "progreso:esp_quads_3d",
         1536,
         false,
         true,
