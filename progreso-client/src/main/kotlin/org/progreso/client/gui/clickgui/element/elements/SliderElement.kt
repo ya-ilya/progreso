@@ -7,7 +7,7 @@ import org.progreso.client.gui.drawRect
 import org.progreso.client.gui.drawTextRelatively
 import org.progreso.client.gui.getTextWidth
 import org.progreso.client.gui.invoke
-import org.progreso.client.util.render.drawCircle
+import org.progreso.client.util.render.drawEllipse
 import org.progreso.client.util.render.render2D
 import java.awt.Color
 import kotlin.math.floor
@@ -93,11 +93,11 @@ class SliderElement(
             )
 
             render2D(context) {
-                drawCircle(
-                    sliderStartX + sliderWidth,
-                    sliderStartY + SLIDER_HEIGHT / 2,
-                    0.0, 360.0,
-                    40, 2.6,
+                drawEllipse(
+                    (sliderStartX + sliderWidth).toFloat() - 2.5f,
+                    (sliderStartY + SLIDER_HEIGHT / 2).toFloat() - 2.5f,
+                    5f,
+                    5f,
                     mainColor
                 )
             }

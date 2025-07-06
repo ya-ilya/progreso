@@ -2,53 +2,44 @@ package org.progreso.client.util.render
 
 import net.minecraft.client.font.*
 import net.minecraft.client.gui.DrawContext
+import net.minecraft.client.texture.TextureSetup
 import net.minecraft.resource.ResourceManager
 import net.minecraft.util.Identifier
+import org.joml.Matrix3x2f
 import org.progreso.client.Client
-import org.progreso.client.gui.glColors
 import org.progreso.client.managers.ProgresoResourceManager
+import org.progreso.client.util.render.elements.EllipseElementRenderState
+import org.progreso.client.util.render.elements.PickerElementRenderState
 import java.awt.Color
-import kotlin.math.cos
-import kotlin.math.sin
 
 data class Render2DContext(val context: DrawContext)
 
 fun render2D(context: DrawContext, block: Render2DContext.() -> Unit) {
-    context.matrices.push()
+    context.matrices.pushMatrix()
     block(Render2DContext(context))
-    context.matrices.pop()
+    context.matrices.popMatrix()
 }
 
-fun Render2DContext.drawCircle(
-    centerX: Int,
-    centerY: Int,
-    angleFrom: Double,
-    angleTo: Double,
-    segments: Int,
-    radius: Double,
+fun Render2DContext.drawEllipse(
+    x: Float,
+    y: Float,
+    width: Float,
+    height: Float,
     color: Color
 ) {
-    val (red, green, blue, alpha) = color.glColors
-    val matrix = context.matrices.peek().positionMatrix
-
-    val angleStep = Math.toRadians(angleTo - angleFrom) / segments
-
-    val layer = Render2DLayers.getTriangles()
-    val buffer = context.vertexConsumers.getBuffer(layer)
-    buffer
-        .vertex(matrix, centerX.toFloat(), centerY.toFloat(), 0f)
-        .color(red, green, blue, alpha)
-
-    for (i in segments downTo 0) {
-        val theta = Math.toRadians(angleFrom) + i * angleStep
-        buffer.vertex(
-            matrix,
-            (centerX - cos(theta) * radius).toFloat(),
-            (centerY - sin(theta) * radius).toFloat(), 0f
-        ).color(red, green, blue, alpha)
-    }
-
-    context.vertexConsumers.draw(layer)
+    context.state.addSimpleElement(
+        EllipseElementRenderState(
+            Render2DShaderPipelines.ELLIPSE_PIPELINE,
+            TextureSetup.empty(),
+            Matrix3x2f(context.matrices),
+            x,
+            y,
+            width,
+            height,
+            color,
+            context.scissorStack.peekLast()
+        )
+    )
 }
 
 fun Render2DContext.drawPicker(
@@ -58,50 +49,19 @@ fun Render2DContext.drawPicker(
     height: Float,
     color: Color
 ) {
-    val (red, green, blue, alpha) = color.glColors
-    val matrix = context.matrices.peek().positionMatrix
-
-    var layer = Render2DLayers.getQuads()
-    var buffer = context.vertexConsumers.getBuffer(layer)
-
-    buffer
-        .vertex(matrix, x, y, 0f)
-        .color(1f, 1f, 1f, 1f)
-
-    buffer
-        .vertex(matrix, x, y + height, 0f)
-        .color(1f, 1f, 1f, 1f)
-
-    buffer
-        .vertex(matrix, x + width, y + height, 0f)
-        .color(red, green, blue, alpha)
-
-    buffer
-        .vertex(matrix, x + width, y, 0f)
-        .color(red, green, blue, alpha)
-
-    context.vertexConsumers.draw(layer)
-
-    layer = Render2DLayers.getQuads()
-    buffer = context.vertexConsumers.getBuffer(layer)
-
-    buffer
-        .vertex(matrix, x, y, 0f)
-        .color(0f, 0f, 0f, 0f)
-
-    buffer
-        .vertex(matrix, x, y + height, 0f)
-        .color(0f, 0f, 0f, 1f)
-
-    buffer
-        .vertex(matrix, x + width, y + height, 0f)
-        .color(0f, 0f, 0f, 1f)
-
-    buffer
-        .vertex(matrix, x + width, y, 0f)
-        .color(0f, 0f, 0f, 0f)
-
-    context.vertexConsumers.draw(layer)
+    context.state.addSimpleElement(
+        PickerElementRenderState(
+            Render2DShaderPipelines.PICKER_PIPELINE,
+            TextureSetup.empty(),
+            Matrix3x2f(context.matrices),
+            x,
+            y,
+            width,
+            height,
+            color,
+            context.scissorStack.peekLast()
+        )
+    )
 }
 
 fun createTextRenderer(

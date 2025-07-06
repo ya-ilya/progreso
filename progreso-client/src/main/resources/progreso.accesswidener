@@ -9,5 +9,3 @@ mutable field net/minecraft/client/MinecraftClient sessionService Lcom/mojang/au
 accessible field net/minecraft/client/MinecraftClient currentFps I
 
 accessible method net/minecraft/client/gui/screen/Screen addDrawableChild (Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;
-
-accessible field net/minecraft/client/gui/DrawContext vertexConsumers Lnet/minecraft/client/render/VertexConsumerProvider$Immediate;

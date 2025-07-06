@@ -14,7 +14,6 @@ import org.progreso.client.util.render.drawOutlinedBox
 import org.progreso.client.util.render.drawSolidBox
 import org.progreso.client.util.render.render3D
 import org.progreso.client.util.render.withRelativeToCameraPosition
-import org.progreso.client.util.world.blockEntities
 import java.awt.Color
 import java.util.concurrent.ConcurrentHashMap
 

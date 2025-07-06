@@ -9,7 +9,7 @@ import org.progreso.client.gui.clickgui.element.ParentElement
 import org.progreso.client.gui.drawRect
 import org.progreso.client.gui.drawTextRelatively
 import org.progreso.client.gui.invoke
-import org.progreso.client.util.render.drawCircle
+import org.progreso.client.util.render.drawEllipse
 import org.progreso.client.util.render.drawPicker
 import org.progreso.client.util.render.render2D
 import java.awt.Color
@@ -119,11 +119,11 @@ class ColorElement(
                 )
 
                 render2D(context) {
-                    drawCircle(
-                        x + width - 9,
-                        y + height.div(2),
-                        0.0, 360.0,
-                        40, 2.6,
+                    drawEllipse(
+                        (x + width - 9).toFloat() - 2.5f,
+                        (y + height.div(2)).toFloat() - 2.5f,
+                        5f,
+                        5f,
                         setting.value
                     )
                 }

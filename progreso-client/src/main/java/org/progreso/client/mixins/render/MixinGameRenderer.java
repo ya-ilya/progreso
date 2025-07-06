@@ -37,10 +37,9 @@ public abstract class MixinGameRenderer {
     @Inject(
         method = "renderWorld",
         at = @At(
-            value = "FIELD",
-            target = "Lnet/minecraft/client/render/GameRenderer;renderHand:Z",
-            opcode = Opcodes.GETFIELD,
-            ordinal = 0
+            value = "INVOKE_STRING",
+            target = "Lnet/minecraft/util/profiler/Profiler;swap(Ljava/lang/String;)V",
+            args = {"ldc=hand"}
         )
     )
     public void renderWorldHook(
