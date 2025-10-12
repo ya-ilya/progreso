@@ -85,9 +85,13 @@ fun DrawContext.drawBorder(
     y: Int,
     width: Int,
     height: Int,
-    color: Color
+    color: Color,
+    borderWidth: Int = 1
 ) {
-    drawBorder(x, y, width, height, color.rgb)
+    drawRect(x, y, width, borderWidth, color)
+    drawRect(x, y, borderWidth, height, color)
+    drawRect(x + width - borderWidth, y, borderWidth, height, color)
+    drawRect(x, y + height - borderWidth, width, borderWidth, color)
 }
 
 fun DrawContext.drawBorderedRect(

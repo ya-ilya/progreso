@@ -4,6 +4,7 @@ import net.minecraft.client.font.*
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.texture.TextureSetup
 import net.minecraft.resource.ResourceManager
+import net.minecraft.text.StyleSpriteSource
 import net.minecraft.util.Identifier
 import org.joml.Matrix3x2f
 import org.progreso.client.Client
@@ -76,12 +77,21 @@ fun createTextRenderer(
             .left()
 
     if (font.isPresent) {
-        val fontStorage = FontStorage(Client.mc.client.textureManager, Identifier.of("progreso"))
+        val baker = GlyphBaker(Client.mc.client.textureManager, Identifier.of("progreso"))
+        val fontStorage = FontStorage(baker)
         fontStorage.setFonts(
             listOf(Font.FontFilterPair(font.get().load(resourceManager), FontFilterType.FilterMap.NO_FILTER)),
             emptySet()
         )
-        return TextRenderer({ fontStorage }, false)
+        return TextRenderer(object : TextRenderer.GlyphsProvider {
+            override fun getGlyphs(source: StyleSpriteSource?): GlyphProvider? {
+                return fontStorage.getGlyphs(false)
+            }
+
+            override fun getRectangleGlyph(): EffectGlyph? {
+                return fontStorage.rectangleBakedGlyph
+            }
+        })
     }
 
     return null

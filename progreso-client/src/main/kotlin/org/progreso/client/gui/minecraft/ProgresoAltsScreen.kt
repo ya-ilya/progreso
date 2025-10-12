@@ -1,7 +1,9 @@
 package org.progreso.client.gui.minecraft
 
+import net.minecraft.client.gui.Click
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.widget.ButtonWidget
+import net.minecraft.client.gui.widget.ElementListWidget
 import net.minecraft.util.Util
 import org.progreso.api.alt.AltAccount
 import org.progreso.api.managers.AltManager
@@ -11,6 +13,7 @@ import org.progreso.client.gui.builders.ButtonBuilder.Companion.button
 import org.progreso.client.gui.builders.ElementListBuilder.Companion.elementList
 import org.progreso.client.gui.builders.ScreenBuilder.Companion.screen
 import org.progreso.client.gui.builders.TextFieldBuilder.Companion.textField
+import org.progreso.client.gui.drawBorder
 import org.progreso.client.gui.drawText
 import org.progreso.client.gui.invoke
 import org.progreso.client.gui.minecraft.common.SimpleElementListEntry
@@ -36,25 +39,15 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
             )
 
             for (alt in alts) {
-                list.addEntry(AltEntry(alt))
+                list.addEntry {
+                    AltEntry(this, alt)
+                }
             }
 
             list.select { entry ->
                 selectedAlt = entry?.alt
                 removeButtonWidget.active = selectedAlt != null
                 loginButtonWidget.active = selectedAlt != null
-            }
-
-            list.renderHeader { context, x, y ->
-                val text = i18n("gui.alts.label.current_name", mc.session.username)
-
-                context.drawText(
-                    textRenderer,
-                    text,
-                    x + list.width / 2 - textRenderer.getWidth(text) / 2,
-                    27.coerceAtMost(y),
-                    Color.WHITE
-                )
             }
         }
 
@@ -68,7 +61,7 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
             button.onPress { showAddMicrosoftAltScreen() }
         }
 
-        removeButtonWidget = button(i18n = "gui.alts.button.remove_alt") { button ->
+        button(i18n = "gui.alts.button.remove_alt") { button ->
             button.active = false
             button.dimensions(width / 2 - 100, height - 48, 96, 20)
             button.onPress {
@@ -77,7 +70,7 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
             }
         }
 
-        loginButtonWidget = button(i18n = "gui.alts.button.login") { button ->
+        button(i18n = "gui.alts.button.login") { button ->
             button.active = false
             button.dimensions(width / 2 + 4, height - 48, 96, 20)
             button.onPress {
@@ -200,8 +193,11 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
         })
     }
 
-    private class AltEntry(val alt: AltAccount) : SimpleElementListEntry<AltEntry>() {
-        override fun render(context: DrawContext, index: Int, x: Int, y: Int) = context {
+    private class AltEntry(
+        val parent: ElementListWidget<AltEntry>,
+        val alt: AltAccount
+    ) : SimpleElementListEntry<AltEntry>() {
+        override fun render(context: DrawContext, x: Int, y: Int) = context {
             drawText(
                 mc.textRenderer,
                 i18n("gui.alts.label.alt_name", alt.username),
@@ -221,6 +217,16 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
                 y + 26 - mc.textRenderer.fontHeight,
                 Color.WHITE
             )
+
+            if (parent.selectedOrNull == this@AltEntry) {
+                drawBorder(x, y, width, height, Color.WHITE)
+            }
+        }
+
+        override fun mouseClicked(click: Click?, doubled: Boolean): Boolean {
+            parent.setSelected(this)
+
+            return super.mouseClicked(click, doubled)
         }
     }
 }

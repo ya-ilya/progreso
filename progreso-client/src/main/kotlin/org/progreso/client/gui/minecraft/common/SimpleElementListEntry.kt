@@ -6,21 +6,16 @@ import net.minecraft.client.gui.Selectable
 import net.minecraft.client.gui.widget.ElementListWidget
 
 open class SimpleElementListEntry<E : SimpleElementListEntry<E>> : ElementListWidget.Entry<E>() {
-    open fun render(context: DrawContext, index: Int, x: Int, y: Int) {}
+    open fun render(context: DrawContext, x: Int, y: Int) {}
 
     override fun render(
         context: DrawContext,
-        index: Int,
-        y: Int,
-        x: Int,
-        entryWidth: Int,
-        entryHeight: Int,
         mouseX: Int,
         mouseY: Int,
         hovered: Boolean,
-        tickDelta: Float
+        deltaTicks: Float
     ) {
-        render(context, index, x, y)
+        render(context, x, y)
     }
 
     override fun children(): MutableList<out Element> {

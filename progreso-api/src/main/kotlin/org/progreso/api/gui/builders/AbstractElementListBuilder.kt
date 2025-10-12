@@ -7,14 +7,11 @@ abstract class AbstractElementListBuilder<Context, ElementListWidget, Entry>
     : AbstractWidgetBuilder<Context, ElementListWidget>() {
     protected val elementListListeners = ElementListListeners<Context, ElementListWidget, Entry>()
 
-    var headerHeight = 16
-
     var itemWidth = 0
     var itemHeight = 32
 
-    var renderHeader = false
-
     protected var children = mutableListOf<Entry>()
+    protected var childrenInitializers = mutableListOf<ElementListWidget.() -> Entry>()
 
     fun listDimension(x: Int, y: Int, width: Int, height: Int, itemHeight: Int) {
         this.x = x
@@ -29,9 +26,8 @@ abstract class AbstractElementListBuilder<Context, ElementListWidget, Entry>
         children.add(entry)
     }
 
-    fun renderHeader(block: ElementListWidget.(Context, Int, Int) -> Unit) {
-        renderHeader = true
-        elementListListeners.renderHeader = block
+    fun addEntry(entry: ElementListWidget.() -> Entry) {
+        childrenInitializers.add(entry)
     }
 
     fun select(block: ElementListWidget.(Entry?) -> Unit) {

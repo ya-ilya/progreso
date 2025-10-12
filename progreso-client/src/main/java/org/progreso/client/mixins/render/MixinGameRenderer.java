@@ -7,7 +7,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.profiler.Profilers;
 import org.joml.Matrix4f;
-import org.objectweb.asm.Opcodes;
 import org.progreso.client.Client;
 import org.progreso.client.events.render.Render3DEvent;
 import org.progreso.client.modules.render.FullBright;
@@ -45,7 +44,7 @@ public abstract class MixinGameRenderer {
     public void renderWorldHook(
         RenderTickCounter tickCounter,
         CallbackInfo callbackInfo,
-        @Local(ordinal = 2) Matrix4f matrix4f2,
+        @Local(ordinal = 1) Matrix4f matrix4f2,
         @Local(ordinal = 1) float tickDelta
     ) {
         Profilers.get().push("progreso_3d_render");

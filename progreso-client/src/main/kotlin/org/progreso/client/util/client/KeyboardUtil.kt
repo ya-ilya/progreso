@@ -1,5 +1,6 @@
 package org.progreso.client.util.client
 
+import net.minecraft.client.input.KeyInput
 import net.minecraft.client.util.InputUtil
 
 object KeyboardUtil {
@@ -19,7 +20,7 @@ object KeyboardUtil {
             InputUtil.GLFW_KEY_RIGHT_CONTROL -> "RCTRL"
             InputUtil.GLFW_KEY_LEFT_ALT -> "LALT"
             InputUtil.GLFW_KEY_RIGHT_ALT -> "RALT"
-            else -> InputUtil.fromKeyCode(keyCode, scanCode)
+            else -> InputUtil.fromKeyCode(KeyInput(keyCode, scanCode, 0))
                 .toString()
                 .split(".")
                 .last()

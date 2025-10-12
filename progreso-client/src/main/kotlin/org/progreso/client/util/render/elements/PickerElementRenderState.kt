@@ -30,18 +30,18 @@ data class PickerElementRenderState(
 ) :
     SimpleGuiElementRenderState {
 
-    override fun setupVertices(vertices: VertexConsumer, depth: Float) {
+    override fun setupVertices(vertices: VertexConsumer) {
         val (red, green, blue, alpha) = color.glColors
 
-        vertices.vertex(pose, x, y, depth).color(1f, 1f, 1f, 1f)
-        vertices.vertex(pose, x, y + height, depth).color(1f, 1f, 1f, 1f)
-        vertices.vertex(pose, x + width, y + height, depth).color(red, green, blue, alpha)
-        vertices.vertex(pose, x + width, y, depth).color(red, green, blue, alpha)
+        vertices.vertex(pose, x, y).color(1f, 1f, 1f, 1f)
+        vertices.vertex(pose, x, y + height).color(1f, 1f, 1f, 1f)
+        vertices.vertex(pose, x + width, y + height).color(red, green, blue, alpha)
+        vertices.vertex(pose, x + width, y).color(red, green, blue, alpha)
 
-        vertices.vertex(pose, x, y, depth).color(0f, 0f, 0f, 0f)
-        vertices.vertex(pose, x, y + height, depth).color(0f, 0f, 0f, 1f)
-        vertices.vertex(pose, x + width, y + height, depth).color(0f, 0f, 0f, 1f)
-        vertices.vertex(pose, x + width, y, depth).color(0f, 0f, 0f, 0f)
+        vertices.vertex(pose, x, y).color(0f, 0f, 0f, 0f)
+        vertices.vertex(pose, x, y + height).color(0f, 0f, 0f, 1f)
+        vertices.vertex(pose, x + width, y + height).color(0f, 0f, 0f, 1f)
+        vertices.vertex(pose, x + width, y).color(0f, 0f, 0f, 0f)
     }
 
     override fun pipeline(): RenderPipeline = pipeline

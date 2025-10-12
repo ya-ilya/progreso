@@ -24,7 +24,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ClientPlayerEntity.class)
 public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity {
-    @Shadow @Final protected MinecraftClient client;
+    @Shadow
+    @Final
+    protected MinecraftClient client;
 
     @Unique
     private Screen cachedScreen;
@@ -50,8 +52,7 @@ public abstract class MixinClientPlayerEntity extends AbstractClientPlayerEntity
             ordinal = 1
         )
     )
-    private void afterTickNausea(boolean fromPortalEffect, CallbackInfo ci)
-    {
+    private void afterTickNausea(boolean fromPortalEffect, CallbackInfo ci) {
         if (cachedScreen != null) {
             client.currentScreen = cachedScreen;
             cachedScreen = null;

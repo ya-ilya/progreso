@@ -25,15 +25,14 @@ object SessionUtil {
                         UUID.fromString(alt.uuid),
                         "-",
                         Optional.empty(),
-                        Optional.empty(),
-                        Session.AccountType.LEGACY
+                        Optional.empty()
                     )
-                    mc.client.sessionService = YggdrasilAuthenticationService(
+                    mc.client.apiServices.sessionService = YggdrasilAuthenticationService(
                         Proxy.NO_PROXY,
                         YggdrasilEnvironment.PROD.environment
                     ).createMinecraftSessionService()
                     LoginResult.Successful
-                } catch (ex: Exception) {
+                } catch (_: Exception) {
                     LoginResult.Error()
                 }
             }
@@ -46,19 +45,16 @@ object SessionUtil {
                         alt.accessToken,
                         Optional.empty(),
                         Optional.empty(),
-                        Session.AccountType.MSA
                     )
-                    mc.client.sessionService = YggdrasilAuthenticationService(
+                    mc.client.apiServices.sessionService = YggdrasilAuthenticationService(
                         Proxy.NO_PROXY,
                         YggdrasilEnvironment.PROD.environment
                     ).createMinecraftSessionService()
                     LoginResult.Successful
-                } catch (ex: Exception) {
+                } catch (_: Exception) {
                     LoginResult.Error()
                 }
             }
-
-            else -> LoginResult.Error()
         }
     }
 

@@ -1,8 +1,11 @@
 package org.progreso.client.gui.builders
 
+import net.minecraft.client.gui.Click
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.gui.widget.TextFieldWidget
+import net.minecraft.client.input.CharInput
+import net.minecraft.client.input.KeyInput
 import net.minecraft.text.Text
 import org.progreso.api.gui.builders.AbstractTextFieldBuilder
 import org.progreso.client.Client.Companion.mc
@@ -26,14 +29,14 @@ class TextFieldBuilder : AbstractTextFieldBuilder<DrawContext, TextFieldWidget>(
                 listeners.init(this)
             }
 
-            override fun charTyped(chr: Char, modifiers: Int): Boolean {
-                return super.charTyped(chr, modifiers).also {
+            override fun charTyped(input: CharInput): Boolean {
+                return super.charTyped(input).also {
                     textFieldListeners.textChanged(this)
                 }
             }
 
-            override fun keyPressed(keyCode: Int, scanCode: Int, modifiers: Int): Boolean {
-                return super.keyPressed(keyCode, scanCode, modifiers).also {
+            override fun keyPressed(input: KeyInput?): Boolean {
+                return super.keyPressed(input).also {
                     textFieldListeners.textChanged(this)
                 }
             }
@@ -44,16 +47,16 @@ class TextFieldBuilder : AbstractTextFieldBuilder<DrawContext, TextFieldWidget>(
                 super.renderWidget(context, mouseX, mouseY, delta)
             }
 
-            override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int): Boolean {
-                listeners.mouseClicked(this, mouseX.toInt(), mouseY.toInt(), button)
+            override fun mouseClicked(click: Click, doubled: Boolean): Boolean {
+                listeners.mouseClicked(this, click.x.toInt(), click.y.toInt(), click.button())
 
-                return super.mouseClicked(mouseX, mouseY, button)
+                return super.mouseClicked(click, doubled)
             }
 
-            override fun mouseReleased(mouseX: Double, mouseY: Double, button: Int): Boolean {
-                listeners.mouseReleased(this, mouseX.toInt(), mouseY.toInt(), button)
+            override fun mouseReleased(click: Click): Boolean {
+                listeners.mouseReleased(this, click.x.toInt(), click.y.toInt(), click.button())
 
-                return super.mouseReleased(mouseX, mouseY, button)
+                return super.mouseReleased(click)
             }
         }
     }

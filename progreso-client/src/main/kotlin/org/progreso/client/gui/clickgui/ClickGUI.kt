@@ -1,7 +1,10 @@
 package org.progreso.client.gui.clickgui
 
+import net.minecraft.client.gui.Click
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.Screen
+import net.minecraft.client.input.CharInput
+import net.minecraft.client.input.KeyInput
 import net.minecraft.text.Text
 import org.progreso.api.module.Category
 import org.progreso.client.gui.clickgui.window.AbstractWindow
@@ -56,45 +59,49 @@ open class ClickGUI(title: String) : Screen(Text.of(title)) {
         return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount)
     }
 
-    override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int): Boolean {
-        val mouseXInt: Int = mouseX.toInt()
-        val mouseYInt: Int = mouseY.toInt()
+    override fun mouseClicked(click: Click, doubled: Boolean): Boolean {
+        val mouseXInt: Int = click.x.toInt()
+        val mouseYInt: Int = click.y.toInt()
         val window = windows.lastOrNull { it.isHover(mouseXInt, mouseYInt) }
 
         if (window != null) {
             windows.remove(window)
             windows.add(window)
 
-            window.mouseClicked(mouseXInt, mouseYInt, button)
+            window.mouseClicked(mouseXInt, mouseYInt, click.button())
         }
 
-        windows.filter { it != window }.forEach { it.mouseClickedOutside(mouseXInt, mouseYInt, button) }
+        windows.filter { it != window }.forEach { it.mouseClickedOutside(mouseXInt, mouseYInt, click.button()) }
 
-        return super.mouseClicked(mouseX, mouseY, button)
+        return super.mouseClicked(click, doubled)
     }
 
-    override fun mouseReleased(mouseX: Double, mouseY: Double, button: Int): Boolean {
-        val mouseXInt: Int = mouseX.toInt()
-        val mouseYInt: Int = mouseY.toInt()
+    override fun mouseReleased(click: Click): Boolean {
+        val mouseXInt: Int = click.x.toInt()
+        val mouseYInt: Int = click.y.toInt()
 
-        windows.forEach { it.mouseReleased(mouseXInt, mouseYInt, button) }
+        windows.forEach { it.mouseReleased(mouseXInt, mouseYInt, click.button()) }
 
-        return super.mouseReleased(mouseX, mouseY, button)
+        return super.mouseReleased(click)
     }
 
-    override fun keyPressed(keyCode: Int, scanCode: Int, modifiers: Int): Boolean {
-        windows.forEach { it.keyPressed(keyCode, scanCode) }
+    override fun keyPressed(input: KeyInput): Boolean {
+        windows.forEach { it.keyPressed(input.keycode, input.scancode) }
 
-        return super.keyPressed(keyCode, scanCode, modifiers)
+        return super.keyPressed(input)
     }
 
-    override fun charTyped(chr: Char, modifiers: Int): Boolean {
-        windows.forEach { it.charTyped(chr) }
+    override fun charTyped(input: CharInput): Boolean {
+        windows.forEach { it.charTyped(input.codepoint().toChar()) }
 
-        return super.charTyped(chr, modifiers)
+        return super.charTyped(input)
     }
 
     override fun shouldPause(): Boolean {
         return false
+    }
+
+    override fun applyBlur(context: DrawContext) {
+        // Nothing
     }
 }

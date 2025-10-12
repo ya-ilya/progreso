@@ -30,22 +30,22 @@ data class EllipseElementRenderState(
 ) :
     SimpleGuiElementRenderState {
 
-    override fun setupVertices(vertices: VertexConsumer, depth: Float) {
+    override fun setupVertices(vertices: VertexConsumer) {
         val (red, green, blue, alpha) = color.glColors
 
         vertices
-            .vertex(pose, x, y + height, depth)
+            .vertex(pose, x, y + height)
             .texture(0f, 0f)
             .color(red, green, blue, alpha)
         vertices
-            .vertex(pose, x + width, y + height, depth)
+            .vertex(pose, x + width, y + height)
             .texture(1f, 0f)
             .color(red, green, blue, alpha)
         vertices
-            .vertex(pose, x + width, y, depth)
+            .vertex(pose, x + width, y)
             .texture(1f, 1f)
             .color(red, green, blue, alpha)
-        vertices.vertex(pose, x, y, depth)
+        vertices.vertex(pose, x, y)
             .texture(0f, 1f)
             .color(red, green, blue, alpha)
     }

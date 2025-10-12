@@ -95,7 +95,6 @@
   "gui.alts.button.done": "Done",
 
   "gui.plugins.title": "Plugins",
-  "gui.plugins.label.plugin_name": "Name: %s",
   "gui.plugins.label.plugin_version": "Version: %s",
   "gui.plugins.label.plugin_author": "Author: %s",
   "gui.plugins.button.open_folder": "Open folder",

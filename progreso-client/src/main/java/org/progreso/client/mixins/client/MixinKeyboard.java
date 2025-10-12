@@ -1,6 +1,8 @@
 package org.progreso.client.mixins.client;
 
 import net.minecraft.client.Keyboard;
+import net.minecraft.client.input.CharInput;
+import net.minecraft.client.input.KeyInput;
 import org.progreso.client.Client;
 import org.progreso.client.events.input.CharEvent;
 import org.progreso.client.events.input.KeyEvent;
@@ -16,8 +18,8 @@ public abstract class MixinKeyboard {
         at = @At("HEAD"),
         cancellable = true
     )
-    public void onKeyHook(long window, int key, int scancode, int action, int modifiers, CallbackInfo callbackInfo) {
-        if (action >= 1 && Client.EVENT_BUS.post(new KeyEvent(key, scancode, action))) {
+    public void onKeyHook(long window, int action, KeyInput input, CallbackInfo callbackInfo) {
+        if (action >= 1 && Client.EVENT_BUS.post(new KeyEvent(input.key(), input.scancode(), action))) {
             callbackInfo.cancel();
         }
     }
@@ -27,8 +29,8 @@ public abstract class MixinKeyboard {
         at = @At("HEAD"),
         cancellable = true
     )
-    public void onCharHook(long window, int codePoint, int modifiers, CallbackInfo callbackInfo) {
-        if (Client.EVENT_BUS.post(new CharEvent(codePoint))) {
+    public void onCharHook(long window, CharInput input, CallbackInfo callbackInfo) {
+        if (Client.EVENT_BUS.post(new CharEvent(input.codepoint()))) {
             callbackInfo.cancel();
         }
     }

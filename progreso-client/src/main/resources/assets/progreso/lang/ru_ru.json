@@ -95,7 +95,6 @@
   "gui.alts.button.done": "Готово",
 
   "gui.plugins.title": "Плагины",
-  "gui.plugins.label.plugin_name": "Название: %s",
   "gui.plugins.label.plugin_version": "Версия: %s",
   "gui.plugins.label.plugin_author": "Автор: %s",
   "gui.plugins.button.open_folder": "Открыть папку",

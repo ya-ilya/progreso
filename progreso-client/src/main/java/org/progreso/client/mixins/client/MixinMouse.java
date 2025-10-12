@@ -1,6 +1,7 @@
 package org.progreso.client.mixins.client;
 
 import net.minecraft.client.Mouse;
+import net.minecraft.client.input.MouseInput;
 import org.progreso.client.Client;
 import org.progreso.client.events.input.MouseEvent;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,8 +16,8 @@ public abstract class MixinMouse {
         at = @At("HEAD"),
         cancellable = true
     )
-    public void onMouseButtonHook(long window, int button, int action, int mods, CallbackInfo callbackInfo) {
-        if (Client.EVENT_BUS.post(new MouseEvent(button, action))) {
+    public void onMouseButtonHook(long window, MouseInput input, int action, CallbackInfo callbackInfo) {
+        if (Client.EVENT_BUS.post(new MouseEvent(input.button(), action))) {
             callbackInfo.cancel();
         }
     }

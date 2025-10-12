@@ -1,12 +1,15 @@
 package org.progreso.client.gui.minecraft
 
+import net.minecraft.client.gui.Click
 import net.minecraft.client.gui.DrawContext
+import net.minecraft.client.gui.widget.ElementListWidget
 import net.minecraft.util.Util
 import org.progreso.api.plugin.AbstractPlugin
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.accessors.TextAccessor.i18n
 import org.progreso.client.gui.builders.ButtonBuilder.Companion.button
 import org.progreso.client.gui.builders.ElementListBuilder.Companion.elementList
+import org.progreso.client.gui.drawBorder
 import org.progreso.client.gui.drawText
 import org.progreso.client.gui.invoke
 import org.progreso.client.gui.minecraft.common.SimpleElementListEntry
@@ -20,7 +23,7 @@ class ProgresoPluginsScreen(private val plugins: Set<AbstractPlugin>) : TitledSc
     override fun init() {
         elementList<PluginEntry> { list ->
             list.listDimension(
-                x = width / 2 - 4 - 200,
+                x = width / 2 - 100,
                 y = 24,
                 width = 200,
                 height = height - 28 - 24,
@@ -28,47 +31,13 @@ class ProgresoPluginsScreen(private val plugins: Set<AbstractPlugin>) : TitledSc
             )
 
             for (plugin in plugins) {
-                list.addEntry(PluginEntry(plugin))
+                list.addEntry {
+                    PluginEntry(this, plugin)
+                }
             }
 
             list.select {
                 selectedPlugin = it?.plugin
-            }
-        }
-
-        elementList<InfoEntry> { list ->
-            list.listDimension(
-                x = width / 2 + 4,
-                y = 24,
-                width = 200,
-                height = height - 28 - 24,
-                itemHeight = textRenderer.fontHeight + 1
-            )
-
-            var lastSelected: AbstractPlugin? = null
-            list.render { _, _, _, _ ->
-                if (selectedPlugin != lastSelected) {
-                    lastSelected = selectedPlugin
-                    children().clear()
-                    scrollY = -Double.MAX_VALUE
-                    if (lastSelected != null) {
-                        children().add(
-                            InfoEntry(
-                                i18n("gui.plugins.label.plugin_name", lastSelected!!.name)
-                            )
-                        )
-                        children().add(
-                            InfoEntry(
-                                i18n("gui.plugins.label.plugin_version", lastSelected!!.version)
-                            )
-                        )
-                        children().add(
-                            InfoEntry(
-                                i18n("gui.plugins.label.plugin_author", lastSelected!!.author)
-                            )
-                        )
-                    }
-                }
             }
         }
 
@@ -83,8 +52,11 @@ class ProgresoPluginsScreen(private val plugins: Set<AbstractPlugin>) : TitledSc
         }
     }
 
-    private class PluginEntry(val plugin: AbstractPlugin) : SimpleElementListEntry<PluginEntry>() {
-        override fun render(context: DrawContext, index: Int, x: Int, y: Int) = context {
+    private class PluginEntry(
+        val parent: ElementListWidget<PluginEntry>,
+        val plugin: AbstractPlugin
+    ) : SimpleElementListEntry<PluginEntry>() {
+        override fun render(context: DrawContext, x: Int, y: Int) = context {
             drawText(
                 mc.textRenderer,
                 plugin.name,
@@ -94,17 +66,28 @@ class ProgresoPluginsScreen(private val plugins: Set<AbstractPlugin>) : TitledSc
             )
             drawText(
                 mc.textRenderer,
-                plugin.author,
+                i18n("gui.plugins.label.plugin_version", plugin.version),
                 x + 3,
-                y + 3 + mc.textRenderer.fontHeight,
+                y + 4 + mc.textRenderer.fontHeight,
                 Color.GRAY
             )
-        }
-    }
+            drawText(
+                mc.textRenderer,
+                i18n("gui.plugins.label.plugin_author", plugin.author),
+                x + 3,
+                y + 5 + mc.textRenderer.fontHeight * 2,
+                Color.GRAY
+            )
 
-    private class InfoEntry(val text: String) : SimpleElementListEntry<InfoEntry>() {
-        override fun render(context: DrawContext, index: Int, x: Int, y: Int) = context {
-            drawText(mc.textRenderer, text, x + 3, y, Color.WHITE)
+            if (parent.selectedOrNull == this@PluginEntry) {
+                drawBorder(x, y, width, height, Color.WHITE)
+            }
+        }
+
+        override fun mouseClicked(click: Click?, doubled: Boolean): Boolean {
+            parent.setSelected(this)
+
+            return super.mouseClicked(click, doubled)
         }
     }
 }

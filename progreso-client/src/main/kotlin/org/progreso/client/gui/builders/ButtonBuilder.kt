@@ -1,5 +1,6 @@
 package org.progreso.client.gui.builders
 
+import net.minecraft.client.gui.Click
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.gui.widget.ButtonWidget
@@ -41,16 +42,16 @@ class ButtonBuilder : AbstractButtonBuilder<DrawContext, ButtonWidget>() {
                 super.renderWidget(context, mouseX, mouseY, delta)
             }
 
-            override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int): Boolean {
-                listeners.mouseClicked(this, mouseX.toInt(), mouseY.toInt(), button)
+            override fun mouseClicked(click: Click, doubled: Boolean): Boolean {
+                listeners.mouseClicked(this, click.x.toInt(), click.y.toInt(), click.button())
 
-                return super.mouseClicked(mouseX, mouseY, button)
+                return super.mouseClicked(click, doubled)
             }
 
-            override fun mouseReleased(mouseX: Double, mouseY: Double, button: Int): Boolean {
-                listeners.mouseReleased(this, mouseX.toInt(), mouseY.toInt(), button)
+            override fun mouseReleased(click: Click): Boolean {
+                listeners.mouseReleased(this, click.x.toInt(), click.y.toInt(), click.button())
 
-                return super.mouseReleased(mouseX, mouseY, button)
+                return super.mouseReleased(click)
             }
         }
     }
