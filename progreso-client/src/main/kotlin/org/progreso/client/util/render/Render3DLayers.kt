@@ -1,47 +1,42 @@
 package org.progreso.client.util.render
 
 import net.minecraft.client.gl.RenderPipelines
-import net.minecraft.client.render.RenderLayer
-import net.minecraft.client.render.RenderPhase.LineWidth
-import net.minecraft.client.render.VertexConsumerProvider
+import net.minecraft.client.render.*
 import org.progreso.client.Client.Companion.mc
-import java.util.*
 
 val vertexConsumerProvider: VertexConsumerProvider.Immediate = mc.bufferBuilders.entityVertexConsumers
 
 object RenderLayers {
-    private val LINES: RenderLayer.MultiPhase = RenderLayer.of(
-        "progreso:lines_3d", 1536, RenderPipelines.LINES,
-        RenderLayer.MultiPhaseParameters.builder()
-            .lineWidth(LineWidth(OptionalDouble.of(2.0)))
-            .layering(RenderLayer.VIEW_OFFSET_Z_LAYERING)
-            .target(RenderLayer.ITEM_ENTITY_TARGET).build(false)
+    private val LINES: RenderLayer = RenderLayer.of(
+        "progreso:lines_3d",
+        RenderSetup
+            .builder(RenderPipelines.LINES)
+            .layeringTransform(LayeringTransform.VIEW_OFFSET_Z_LAYERING)
+            .outputTarget(OutputTarget.ITEM_ENTITY_TARGET)
+            .build()
     )
 
-    private val ESP_LINES: RenderLayer.MultiPhase = RenderLayer.of(
-        "progreso:esp_lines_3d", 1536, Render3DShaderPipelines.ESP_LINES,
-        RenderLayer.MultiPhaseParameters.builder()
-            .lineWidth(LineWidth(OptionalDouble.of(2.0)))
-            .layering(RenderLayer.VIEW_OFFSET_Z_LAYERING)
-            .target(RenderLayer.ITEM_ENTITY_TARGET).build(false)
+    private val ESP_LINES: RenderLayer = RenderLayer.of(
+        "progreso:esp_lines_3d",
+        RenderSetup
+            .builder(Render3DShaderPipelines.ESP_LINES)
+            .layeringTransform(LayeringTransform.VIEW_OFFSET_Z_LAYERING)
+            .outputTarget(OutputTarget.ITEM_ENTITY_TARGET)
+            .build()
     )
 
-    private val QUADS: RenderLayer.MultiPhase = RenderLayer.of(
+    private val QUADS: RenderLayer = RenderLayer.of(
         "progreso:quads_3d",
-        1536,
-        false,
-        true,
-        Render3DShaderPipelines.QUADS,
-        RenderLayer.MultiPhaseParameters.builder().build(false)
+        RenderSetup
+            .builder(Render3DShaderPipelines.QUADS)
+            .build()
     )
 
-    private val ESP_QUADS: RenderLayer.MultiPhase = RenderLayer.of(
+    private val ESP_QUADS: RenderLayer = RenderLayer.of(
         "progreso:esp_quads_3d",
-        1536,
-        false,
-        true,
-        Render3DShaderPipelines.ESP_QUADS,
-        RenderLayer.MultiPhaseParameters.builder().build(false)
+        RenderSetup
+            .builder(Render3DShaderPipelines.ESP_QUADS)
+            .build()
     )
 
     /**

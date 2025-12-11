@@ -4,7 +4,6 @@ import net.minecraft.client.gui.Click
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.gui.widget.ButtonWidget
-import net.minecraft.text.Text
 import org.progreso.api.gui.builders.AbstractButtonBuilder
 import org.progreso.client.accessors.TextAccessor.i18n
 
@@ -27,7 +26,7 @@ class ButtonBuilder : AbstractButtonBuilder<DrawContext, ButtonWidget>() {
             y,
             width,
             height,
-            Text.of(text),
+            net.minecraft.text.Text.of(text),
             { buttonListeners.onPress(it) },
             DEFAULT_NARRATION_SUPPLIER
         ) {
@@ -36,10 +35,13 @@ class ButtonBuilder : AbstractButtonBuilder<DrawContext, ButtonWidget>() {
                 listeners.init(this)
             }
 
-            override fun renderWidget(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
-                listeners.render(this, context, mouseX, mouseY, delta)
-
-                super.renderWidget(context, mouseX, mouseY, delta)
+            override fun drawIcon(
+                context: DrawContext?,
+                mouseX: Int,
+                mouseY: Int,
+                deltaTicks: Float
+            ) {
+                // Empty
             }
 
             override fun mouseClicked(click: Click, doubled: Boolean): Boolean {

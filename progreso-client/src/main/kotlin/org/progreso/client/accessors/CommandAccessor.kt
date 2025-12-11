@@ -4,13 +4,14 @@ import com.mojang.brigadier.suggestion.Suggestions
 import com.mojang.brigadier.suggestion.SuggestionsBuilder
 import net.minecraft.client.network.ClientCommandSource
 import net.minecraft.command.CommandSource
+import net.minecraft.command.permission.PermissionPredicate
 import org.progreso.api.accessor.CommandAccessor
 import org.progreso.client.Client.Companion.mc
 import java.util.concurrent.CompletableFuture
 
 object CommandAccessor : CommandAccessor {
     override fun createCommandSource(): Any {
-        return ClientCommandSource(null, mc.client, false)
+        return ClientCommandSource(null, mc.client, PermissionPredicate.NONE)
     }
 
     override fun suggestMatching(

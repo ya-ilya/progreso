@@ -44,13 +44,12 @@ public abstract class MixinGameRenderer {
     public void renderWorldHook(
         RenderTickCounter tickCounter,
         CallbackInfo callbackInfo,
-        @Local(ordinal = 1) Matrix4f matrix4f2,
-        @Local(ordinal = 1) float tickDelta
+        @Local(ordinal = 1) Matrix4f matrix4f2
     ) {
         Profilers.get().push("progreso_3d_render");
         MatrixStack matrixStack = new MatrixStack();
         matrixStack.multiplyPositionMatrix(matrix4f2);
-        Client.EVENT_BUS.post(new Render3DEvent(matrixStack, tickDelta));
+        Client.EVENT_BUS.post(new Render3DEvent(matrixStack, tickCounter.getTickProgress(false)));
         Profilers.get().pop();
     }
 }

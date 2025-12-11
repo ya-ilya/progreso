@@ -12,7 +12,7 @@ import java.awt.Color
 data class Render3DContext(val matrices: MatrixStack, val camera: Camera? = null)
 
 fun render3D(matrices: MatrixStack, block: Render3DContext.() -> Unit) {
-    val camera = mc.client.entityRenderDispatcher.camera ?: return
+    val camera = mc.client.gameRenderer.camera ?: return
 
     matrices.push()
     block(Render3DContext(matrices, camera))
@@ -31,7 +31,7 @@ fun Render3DContext.withPosition(pos: BlockPos, block: Render3DContext.() -> Uni
 }
 
 fun Render3DContext.withRelativeToCameraPosition(pos: Vec3d, block: Render3DContext.() -> Unit) {
-    val relativePos = pos.subtract(camera!!.pos)
+    val relativePos = pos.subtract(camera!!.cameraPos)
 
     matrices.push()
     matrices.translate(relativePos.x, relativePos.y, relativePos.z)
@@ -43,7 +43,7 @@ fun Render3DContext.withRelativeToCameraPosition(pos: BlockPos, block: Render3DC
     withRelativeToCameraPosition(Vec3d(pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble()), block)
 }
 
-fun Render3DContext.drawOutlinedBox(box: Box, color: Color) {
+fun Render3DContext.drawOutlinedBox(box: Box, color: Color, lineWidth: Float = 2.0F) {
     val (red, green, blue, alpha) = color.glColors
     val matrix = matrices.peek().positionMatrix
     val layer = RenderLayers.getLines(false)
@@ -91,13 +91,16 @@ fun Render3DContext.drawOutlinedBox(box: Box, color: Color) {
             vec3d.x.toFloat(),
             vec3d.y.toFloat(),
             vec3d.z.toFloat()
-        ).color(red, green, blue, alpha).normal(normal.x.toFloat(), normal.y.toFloat(), normal.z.toFloat())
+        )
+            .lineWidth(lineWidth)
+            .color(red, green, blue, alpha)
+            .normal(normal.x.toFloat(), normal.y.toFloat(), normal.z.toFloat())
     }
 
     vertexConsumerProvider.draw(layer)
 }
 
-fun Render3DContext.drawSolidBox(box: Box, color: Color) {
+fun Render3DContext.drawSolidBox(box: Box, color: Color, lineWidth: Float = 2.0F) {
     val (red, green, blue, alpha) = color.glColors
     val matrix = matrices.peek().positionMatrix
     val layer = RenderLayers.getQuads(false)
@@ -136,7 +139,9 @@ fun Render3DContext.drawSolidBox(box: Box, color: Color) {
             vec3d.x.toFloat(),
             vec3d.y.toFloat(),
             vec3d.z.toFloat()
-        ).color(red, green, blue, alpha)
+        )
+            .lineWidth(lineWidth)
+            .color(red, green, blue, alpha)
     }
 
     vertexConsumerProvider.draw(layer)

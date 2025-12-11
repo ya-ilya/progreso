@@ -13,3 +13,5 @@ mutable field net/minecraft/util/ApiServices sessionService Lcom/mojang/authlib/
 accessible field net/minecraft/client/gui/widget/EntryListWidget children Ljava/util/List;
 
 accessible method net/minecraft/client/gui/screen/Screen addDrawableChild (Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;
+
+accessible method net/minecraft/client/render/RenderLayer of (Ljava/lang/String;Lnet/minecraft/client/render/RenderSetup;)Lnet/minecraft/client/render/RenderLayer;
