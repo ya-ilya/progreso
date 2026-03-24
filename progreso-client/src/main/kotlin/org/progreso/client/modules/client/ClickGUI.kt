@@ -1,6 +1,6 @@
 package org.progreso.client.modules.client
 
-import net.minecraft.client.util.InputUtil
+import org.lwjgl.glfw.GLFW
 import org.progreso.api.module.AbstractModule
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.gui.clickgui.ClickGUI
@@ -14,7 +14,7 @@ object ClickGUI : AbstractModule() {
     val customFont by setting("CustomFont", true)
 
     init {
-        bind = InputUtil.GLFW_KEY_RIGHT_SHIFT
+        bind = GLFW.GLFW_KEY_RIGHT_SHIFT
 
         onEnable {
             mc.setScreen(ClickGUI)

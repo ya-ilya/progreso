@@ -7,19 +7,20 @@
     "defaultRequire": 1
   },
   "client": [
-    "client.MixinKeyboard",
-    "client.MixinMinecraftClient",
-    "client.MixinMouse",
-    "entity.MixinPlayerEntity",
-    "gui.MixinChatInputSuggestor",
-    "gui.MixinInGameHud",
+    "client.MixinKeyboardHandler",
+    "client.MixinMinecraft",
+    "client.MixinMouseHandler",
+    "entity.MixinPlayer",
+    "gui.MixinCommandSuggestions",
+    "gui.MixinGui",
     "gui.MixinScreen",
     "gui.MixinTitleScreen",
-    "network.MixinClientConnection",
-    "network.MixinClientPlayerEntity",
-    "network.MixinClientPlayerInteractionManager",
-    "network.MixinClientPlayNetworkHandler",
+    "network.MixinConnection",
+    "network.MixinClientPacketListener",
+    "network.MixinMultiPlayerGameMode",
+    "network.MixinLocalPlayer",
     "render.MixinGameRenderer",
-    "sound.MixinSoundSystem"
+    "render.MixinLevelRenderer",
+    "sound.MixinSoundEngine"
   ]
 }

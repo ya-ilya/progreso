@@ -1,8 +1,8 @@
 package org.progreso.client.accessors
 
-import net.minecraft.entity.LivingEntity
-import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.network.packet.s2c.play.EntityStatusS2CPacket
+import net.minecraft.network.protocol.game.ClientboundEntityEventPacket
+import net.minecraft.world.entity.LivingEntity
+import net.minecraft.world.entity.player.Player
 import org.progreso.api.accessor.EventAccessor
 import org.progreso.api.event.Event
 import org.progreso.api.managers.ModuleManager
@@ -40,18 +40,19 @@ object EventAccessor : EventAccessor {
         }
 
         eventListener<PacketEvent.Receive<*>> { event ->
-            if (event.packet is EntityStatusS2CPacket && event.packet.status.toInt() == 35) {
-                val entity = event.packet.getEntity(mc.world)
+            val packet = event.packet
+            if (packet is ClientboundEntityEventPacket && packet.eventId.toInt() == 35) {
+                val entity = packet.getEntity(mc.level)
 
-                if (entity is PlayerEntity) {
+                if (entity is Player) {
                     Client.EVENT_BUS.post(TotemPopEvent(entity))
                 }
             }
         }
 
         safeEventListener<TickEvent> { _ ->
-            for (entity in mc.world.entities.filterIsInstance<LivingEntity>()) {
-                if (entity.deathTime > 0 || entity.health <= 0) {
+            for (entity in mc.level.entitiesForRendering().filterIsInstance<LivingEntity>()) {
+                if (entity.deathTime > 0 || entity.health <= 0f) {
                     Client.EVENT_BUS.post(EntityDeathEvent(entity))
                 }
             }

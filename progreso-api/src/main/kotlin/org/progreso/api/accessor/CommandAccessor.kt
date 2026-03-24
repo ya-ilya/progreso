@@ -23,11 +23,11 @@ import java.util.concurrent.CompletableFuture
  */
 interface CommandAccessor {
     open class Default : CommandAccessor {
-        override fun createCommandSource(): Any {
+        override fun createSuggestionProvider(): Any {
             return Any()
         }
 
-        override fun suggestMatching(
+        override fun suggest(
             candidates: Iterable<String>,
             builder: SuggestionsBuilder
         ): CompletableFuture<Suggestions> {
@@ -38,7 +38,7 @@ interface CommandAccessor {
     /**
      * Create command source for [com.mojang.brigadier]
      */
-    fun createCommandSource(): Any
+    fun createSuggestionProvider(): Any
 
     /**
      * Get suggestions for [com.mojang.brigadier]
@@ -46,5 +46,5 @@ interface CommandAccessor {
      * @param candidates Candidates
      * @param builder Builder
      */
-    fun suggestMatching(candidates: Iterable<String>, builder: SuggestionsBuilder): CompletableFuture<Suggestions>
+    fun suggest(candidates: Iterable<String>, builder: SuggestionsBuilder): CompletableFuture<Suggestions>
 }

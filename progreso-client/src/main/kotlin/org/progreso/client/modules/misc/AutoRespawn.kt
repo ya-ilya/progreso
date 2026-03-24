@@ -1,6 +1,6 @@
 package org.progreso.client.modules.misc
 
-import net.minecraft.client.gui.screen.DeathScreen
+import net.minecraft.client.gui.screens.DeathScreen
 import org.progreso.api.module.AbstractModule
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.events.eventListener
@@ -11,7 +11,7 @@ object AutoRespawn : AbstractModule() {
     init {
         eventListener<ScreenEvent.Set> { event ->
             if (event.screen !is DeathScreen) return@eventListener
-            mc.player.requestRespawn()
+            mc.player.respawn()
             event.cancel()
         }
     }

@@ -1,26 +1,27 @@
 package org.progreso.client.gui.builders
 
-import net.minecraft.client.gui.Click
-import net.minecraft.client.gui.DrawContext
-import net.minecraft.client.gui.screen.Screen
-import net.minecraft.client.gui.widget.ElementListWidget
+import net.minecraft.client.gui.GuiGraphicsExtractor
+import net.minecraft.client.gui.components.ContainerObjectSelectionList
+import net.minecraft.client.gui.screens.Screen
+import net.minecraft.client.input.MouseButtonEvent
 import org.progreso.api.gui.builders.AbstractElementListBuilder
 import org.progreso.client.Client.Companion.mc
 
-class ElementListBuilder<E : ElementListWidget.Entry<E>>
-    : AbstractElementListBuilder<DrawContext, ElementListWidget<E>, E>() {
+class ElementListBuilder<E : ContainerObjectSelectionList.Entry<E>>
+    : AbstractElementListBuilder<GuiGraphicsExtractor, ContainerObjectSelectionList<E>, E>() {
+
     companion object {
-        fun <E : ElementListWidget.Entry<E>> Screen.elementList(block: (ElementListBuilder<E>) -> Unit): ElementListWidget<E> {
-            return addDrawableChild(
+        fun <E : ContainerObjectSelectionList.Entry<E>> Screen.elementList(block: (ElementListBuilder<E>) -> Unit): ContainerObjectSelectionList<E> {
+            return this.addRenderableWidget(
                 ElementListBuilder<E>().apply(block).build()
             )
         }
     }
 
-    override fun build(): ElementListWidget<E> {
-        return object : ElementListWidget<E>(mc.client, width, height, y, itemHeight) {
+    override fun build(): ContainerObjectSelectionList<E> {
+        return object : ContainerObjectSelectionList<E>(mc.client, width, height, y, itemHeight) {
             init {
-                x = this@ElementListBuilder.x
+                this.x = this@ElementListBuilder.x
 
                 for (entry in this@ElementListBuilder.children) {
                     addEntry(entry)
@@ -37,20 +38,25 @@ class ElementListBuilder<E : ElementListWidget.Entry<E>>
                 return this@ElementListBuilder.itemWidth
             }
 
-            override fun getScrollbarX(): Int {
-                return x + width - 6
+            override fun scrollBarX(): Int {
+                return this.x + this.width - 6
             }
 
-            override fun renderWidget(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
-                listeners.render(this, context, mouseX, mouseY, delta)
+            override fun extractWidgetRenderState(
+                graphics: GuiGraphicsExtractor,
+                mouseX: Int,
+                mouseY: Int,
+                delta: Float
+            ) {
+                listeners.render(this, graphics, mouseX, mouseY, delta)
 
-                super.renderWidget(context, mouseX, mouseY, delta)
+                super.extractWidgetRenderState(graphics, mouseX, mouseY, delta)
             }
 
-            override fun mouseClicked(click: Click, doubled: Boolean): Boolean {
-                listeners.mouseClicked(this, click.x.toInt(), click.y.toInt(), click.button())
+            override fun mouseClicked(event: MouseButtonEvent, doubled: Boolean): Boolean {
+                listeners.mouseClicked(this, event.x.toInt(), event.y.toInt(), event.button())
 
-                return super.mouseClicked(click, doubled)
+                return super.mouseClicked(event, doubled)
             }
 
             override fun setSelected(entry: E?) {
@@ -59,10 +65,10 @@ class ElementListBuilder<E : ElementListWidget.Entry<E>>
                 super.setSelected(entry)
             }
 
-            override fun mouseReleased(click: Click): Boolean {
-                listeners.mouseReleased(this, click.x.toInt(), click.y.toInt(), click.button())
+            override fun mouseReleased(event: MouseButtonEvent): Boolean {
+                listeners.mouseReleased(this, event.x.toInt(), event.y.toInt(), event.button())
 
-                return super.mouseReleased(click)
+                return super.mouseReleased(event)
             }
         }
     }

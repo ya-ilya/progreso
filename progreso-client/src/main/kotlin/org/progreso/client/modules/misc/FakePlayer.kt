@@ -1,8 +1,8 @@
 package org.progreso.client.modules.misc
 
 import com.mojang.authlib.GameProfile
-import net.minecraft.client.network.OtherClientPlayerEntity
-import net.minecraft.entity.Entity
+import net.minecraft.client.player.RemotePlayer
+import net.minecraft.world.entity.Entity
 import org.progreso.api.module.AbstractModule
 import org.progreso.client.Client.Companion.mc
 import java.util.*
@@ -11,7 +11,7 @@ import java.util.*
 object FakePlayer : AbstractModule() {
     private val fakePlayerName by setting("Name", "FakePlayer")
 
-    var fakePlayer: OtherClientPlayerEntity? = null
+    var fakePlayer: RemotePlayer? = null
 
     init {
         onEnable {
@@ -20,17 +20,26 @@ object FakePlayer : AbstractModule() {
                 return@onEnable
             }
 
-            fakePlayer = OtherClientPlayerEntity(mc.world, GameProfile(UUID.randomUUID(), fakePlayerName))
-            fakePlayer!!.copyFrom(mc.player)
-            fakePlayer!!.id = -1
+            val level = mc.level
+            val player = mc.player
 
-            mc.world.addEntity(fakePlayer)
+            fakePlayer = RemotePlayer(level, GameProfile(UUID.randomUUID(), fakePlayerName)).apply {
+                restoreFrom(player)
+                copyPosition(player)
+
+                yHeadRot = player.yHeadRot
+                yBodyRot = player.yBodyRot
+
+                id = -1
+
+                level.addEntity(this)
+            }
         }
 
         onDisable {
             if (mc.isNotSafe() || fakePlayer == null) return@onDisable
-
-            mc.world.removeEntity(fakePlayer!!.id, Entity.RemovalReason.DISCARDED)
+            mc.level.removeEntity(fakePlayer!!.id, Entity.RemovalReason.DISCARDED)
+            fakePlayer = null
         }
     }
 }

@@ -2,9 +2,8 @@ package org.progreso.client
 
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.loader.api.FabricLoader
-import net.minecraft.client.MinecraftClient
-import net.minecraft.client.gui.screen.Screen
-import net.minecraft.client.option.GameOptions
+import net.minecraft.client.Minecraft
+import net.minecraft.client.gui.screens.Screen
 import org.progreso.api.Api
 import org.progreso.api.command.AbstractCommand
 import org.progreso.api.event.EventBus
@@ -24,7 +23,7 @@ import org.slf4j.LoggerFactory
 class Client : ClientModInitializer {
     companion object {
         @JvmStatic
-        val mc by lazy { MinecraftClientWrapper(MinecraftClient.getInstance()) }
+        val mc by lazy { MinecraftClientWrapper(Minecraft.getInstance()) }
 
         @JvmField
         val LOGGER = LoggerFactory.getLogger("progreso")!!
@@ -62,7 +61,7 @@ class Client : ClientModInitializer {
         ) {
             try {
                 ModuleManager.addModule(clazz.getField("INSTANCE").get(null) as AbstractModule)
-            } catch (ex: Exception) {
+            } catch (_: Exception) {
                 // Ignored
             }
         }
@@ -74,7 +73,7 @@ class Client : ClientModInitializer {
         ) {
             try {
                 CommandManager.addCommand(clazz.getField("INSTANCE").get(null) as AbstractCommand)
-            } catch (ex: Exception) {
+            } catch (_: Exception) {
                 // Ignored
             }
         }
@@ -117,32 +116,34 @@ class Client : ClientModInitializer {
         }
     }
 
-    class MinecraftClientWrapper(val client: MinecraftClient) {
-        val world get() = client.world!!
+    class MinecraftClientWrapper(val client: Minecraft) {
+        val level get() = client.level!!
         val player get() = client.player!!
-        val textRenderer get() = client.textRenderer!!
-        val resourceManager get() = client.resourceManager!!
-        val inGameHud get() = client.inGameHud!!
-        val interactionManager get() = client.interactionManager!!
-        val networkHandler get() = client.networkHandler!!
-        val options: GameOptions? get() = client.options
-        val currentScreen: Screen? get() = client.currentScreen
-        val bufferBuilders get() = client.bufferBuilders
+        val font get() = client.font
+        val resourceManager get() = client.resourceManager
+        val gui get() = client.gui
+        val gameMode get() = client.gameMode!!
+        val connection get() = client.connection
+        val options get() = client.options
+        val screen get() = client.screen
+        val renderBuffers get() = client.renderBuffers()
+        val services get() = client.services()
+        val gameRenderer get() = client.gameRenderer
 
-        var session
-            get() = client.session!!
+        var user
+            get() = client.user
             set(value) {
-                client.session = value
+                client.user = value
             }
 
         fun setScreen(screen: Screen?) {
-            client.send {
+            client.execute {
                 client.setScreen(screen)
             }
         }
 
         fun isNotSafe(): Boolean {
-            return client.player == null || client.world == null
+            return client.player == null || client.level == null
         }
     }
 }

@@ -1,17 +1,18 @@
-accessWidener	v1	named
+accessWidener v1 official
 
-accessible field net/minecraft/client/MinecraftClient session Lnet/minecraft/client/session/Session;
-mutable field net/minecraft/client/MinecraftClient session Lnet/minecraft/client/session/Session;
+accessible field net/minecraft/server/Services sessionService Lcom/mojang/authlib/minecraft/MinecraftSessionService;
+mutable field net/minecraft/server/Services sessionService Lcom/mojang/authlib/minecraft/MinecraftSessionService;
 
-accessible field net/minecraft/client/MinecraftClient currentFps I
+accessible field net/minecraft/world/entity/player/Inventory selected I
+mutable field net/minecraft/world/entity/player/Inventory selected I
 
-accessible field net/minecraft/client/MinecraftClient apiServices Lnet/minecraft/util/ApiServices;
+accessible field net/minecraft/client/Minecraft user Lnet/minecraft/client/User;
+mutable field net/minecraft/client/Minecraft user Lnet/minecraft/client/User;
 
-accessible field net/minecraft/util/ApiServices sessionService Lcom/mojang/authlib/minecraft/MinecraftSessionService;
-mutable field net/minecraft/util/ApiServices sessionService Lcom/mojang/authlib/minecraft/MinecraftSessionService;
+accessible field net/minecraft/client/Options renderDistance Lnet/minecraft/client/OptionInstance;
 
-accessible field net/minecraft/client/gui/widget/EntryListWidget children Ljava/util/List;
+accessible method net/minecraft/client/gui/screens/Screen addRenderableWidget (Lnet/minecraft/client/gui/components/events/GuiEventListener;)Lnet/minecraft/client/gui/components/events/GuiEventListener;
 
-accessible method net/minecraft/client/gui/screen/Screen addDrawableChild (Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;
-
-accessible method net/minecraft/client/render/RenderLayer of (Ljava/lang/String;Lnet/minecraft/client/render/RenderSetup;)Lnet/minecraft/client/render/RenderLayer;
+accessible  method  net/minecraft/client/gui/components/AbstractButton  extractContents  (Lnet/minecraft/client/gui/GuiGraphicsExtractor;IIF)V
+accessible  method  net/minecraft/client/gui/components/AbstractButton  extractDefaultSprite  (Lnet/minecraft/client/gui/GuiGraphicsExtractor;)V
+accessible  method  net/minecraft/client/gui/components/AbstractButton  extractDefaultLabel  (Lnet/minecraft/client/gui/ActiveTextCollector;)V

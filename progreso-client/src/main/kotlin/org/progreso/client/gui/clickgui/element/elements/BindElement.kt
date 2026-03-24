@@ -1,7 +1,7 @@
 package org.progreso.client.gui.clickgui.element.elements
 
-import net.minecraft.client.gui.DrawContext
-import net.minecraft.client.util.InputUtil
+import net.minecraft.client.gui.GuiGraphicsExtractor
+import org.lwjgl.glfw.GLFW
 import org.progreso.api.setting.settings.BindSetting
 import org.progreso.client.gui.clickgui.element.ParentElement
 import org.progreso.client.gui.drawTextRelatively
@@ -17,13 +17,13 @@ class BindElement(
 ) : SettingElement<BindSetting>(setting, height, parent) {
     private var keyListening = false
 
-    override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
+    override fun render(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int) {
         val text = if (keyListening) {
             "Listening.."
         } else {
             when (setting.value) {
                 -1, 0, 256 -> "NONE"
-                else -> KeyboardUtil.getKeyName(setting.value, -1)
+                else -> KeyboardUtil.getKeyName(setting.value)
             }
         }
 
@@ -52,12 +52,12 @@ class BindElement(
     }
 
     override fun keyPressed(keyCode: Int, scanCode: Int) {
-        if (keyCode == InputUtil.GLFW_KEY_ESCAPE) {
+        if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
             return
         }
 
         if (keyListening) {
-            setting.value = if (keyCode == InputUtil.GLFW_KEY_DELETE) -1 else keyCode
+            setting.value = if (keyCode == GLFW.GLFW_KEY_DELETE) -1 else keyCode
             keyListening = false
         }
     }

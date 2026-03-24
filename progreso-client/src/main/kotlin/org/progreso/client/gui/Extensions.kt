@@ -2,8 +2,8 @@
 
 package org.progreso.client.gui
 
-import net.minecraft.client.font.TextRenderer
-import net.minecraft.client.gui.DrawContext
+import net.minecraft.client.gui.Font
+import net.minecraft.client.gui.GuiGraphicsExtractor
 import org.progreso.client.Client.Companion.config
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.gui.clickgui.element.Element
@@ -12,11 +12,11 @@ import org.progreso.client.util.render.createTextRenderer
 import org.progreso.client.util.render.createTextRendererFromProgresoResource
 import java.awt.Color
 
-fun createDefaultTextRenderer(): TextRenderer {
+fun createDefaultFont(): Font {
     return createTextRenderer("vitala", 9f)!!
 }
 
-var customTextRenderer = run {
+var customFont = run {
     if (config.customFont != null) {
         try {
             return@run createTextRendererFromProgresoResource(
@@ -30,10 +30,10 @@ var customTextRenderer = run {
         }
     }
 
-    createDefaultTextRenderer()
+    createDefaultFont()
 }
 
-val textRenderer get() = if (ClickGUI.customFont) customTextRenderer else mc.textRenderer
+val font get() = if (ClickGUI.customFont) customFont else mc.font
 
 val Color.glColors: List<Float>
     get() = listOf(
@@ -43,34 +43,34 @@ val Color.glColors: List<Float>
         (rgb shr 24 and 0xFF) / 255.0f,
     )
 
-operator fun DrawContext.invoke(block: DrawContext.() -> Unit) {
+operator fun GuiGraphicsExtractor.invoke(block: GuiGraphicsExtractor.() -> Unit) {
     this.apply(block)
 }
 
-val DrawContext.fontHeight get() = textRenderer.fontHeight
+val GuiGraphicsExtractor.lineHeight get() = font.lineHeight
 
-fun DrawContext.drawText(
+fun GuiGraphicsExtractor.drawText(
     text: String,
     x: Int,
     y: Int,
     color: Color,
     shadow: Boolean = true
 ) {
-    drawText(textRenderer, text, x, y, color.rgb, shadow)
+    text(font, text, x, y, color.rgb, shadow)
 }
 
-fun DrawContext.drawText(
-    textRenderer: TextRenderer,
+fun GuiGraphicsExtractor.drawText(
+    font: Font,
     text: String,
     x: Int,
     y: Int,
     color: Color,
     shadow: Boolean = true
 ) {
-    drawText(textRenderer, text, x, y, color.rgb, shadow)
+    text(font, text, x, y, color.rgb, shadow)
 }
 
-fun DrawContext.drawRect(
+fun GuiGraphicsExtractor.drawRect(
     x: Int,
     y: Int,
     width: Int,
@@ -80,7 +80,7 @@ fun DrawContext.drawRect(
     fill(x, y, x + width, y + height, color.rgb)
 }
 
-fun DrawContext.drawBorder(
+fun GuiGraphicsExtractor.drawBorder(
     x: Int,
     y: Int,
     width: Int,
@@ -94,7 +94,7 @@ fun DrawContext.drawBorder(
     drawRect(x, y + height - borderWidth, width, borderWidth, color)
 }
 
-fun DrawContext.drawBorderedRect(
+fun GuiGraphicsExtractor.drawBorderedRect(
     x: Int,
     y: Int,
     width: Int,
@@ -106,7 +106,7 @@ fun DrawContext.drawBorderedRect(
     drawBorder(x, y, width, height, borderColor)
 }
 
-fun DrawContext.drawVerticalLine(
+fun GuiGraphicsExtractor.drawVerticalLine(
     x: Int,
     startY: Int,
     endY: Int,
@@ -115,7 +115,7 @@ fun DrawContext.drawVerticalLine(
     fill(x, startY, x + 1, endY, color.rgb)
 }
 
-fun DrawContext.drawHorizontalLine(
+fun GuiGraphicsExtractor.drawHorizontalLine(
     startX: Int,
     endX: Int,
     y: Int,
@@ -124,11 +124,11 @@ fun DrawContext.drawHorizontalLine(
     fill(startX, y, endX, y + 1, color.rgb)
 }
 
-fun DrawContext.getTextWidth(string: String): Int {
-    return textRenderer.getWidth(string)
+fun GuiGraphicsExtractor.getTextWidth(string: String): Int {
+    return font.width(string)
 }
 
-fun DrawContext.drawTextRelatively(
+fun GuiGraphicsExtractor.drawTextRelatively(
     element: Element,
     text: String,
     xOffset: Int,
@@ -138,7 +138,7 @@ fun DrawContext.drawTextRelatively(
     drawText(text, element.x + xOffset, element.y + yOffset, color)
 }
 
-fun DrawContext.drawTextRelatively(
+fun GuiGraphicsExtractor.drawTextRelatively(
     element: Element,
     text: String,
     xOffset: Int,
@@ -148,12 +148,12 @@ fun DrawContext.drawTextRelatively(
         element,
         text,
         xOffset,
-        element.height.div(2) - fontHeight.div(2),
+        element.height.div(2) - lineHeight.div(2),
         color
     )
 }
 
-fun DrawContext.drawCenteredString(
+fun GuiGraphicsExtractor.drawCenteredString(
     element: Element,
     text: String,
     color: Color
@@ -161,7 +161,7 @@ fun DrawContext.drawCenteredString(
     drawText(
         text,
         element.x + element.width.div(2) - getTextWidth(text).div(2),
-        element.y + element.height.div(2) - fontHeight.div(2),
+        element.y + element.height.div(2) - lineHeight.div(2),
         color
     )
 }

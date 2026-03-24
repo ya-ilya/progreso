@@ -1,19 +1,19 @@
 package org.progreso.client.gui.builders
 
-import net.minecraft.client.gui.Click
-import net.minecraft.client.gui.DrawContext
-import net.minecraft.client.gui.screen.Screen
-import net.minecraft.client.gui.widget.TextFieldWidget
-import net.minecraft.client.input.CharInput
-import net.minecraft.client.input.KeyInput
-import net.minecraft.text.Text
+import net.minecraft.client.gui.GuiGraphicsExtractor
+import net.minecraft.client.gui.components.EditBox
+import net.minecraft.client.gui.screens.Screen
+import net.minecraft.client.input.CharacterEvent
+import net.minecraft.client.input.KeyEvent
+import net.minecraft.client.input.MouseButtonEvent
+import net.minecraft.network.chat.Component
 import org.progreso.api.gui.builders.AbstractTextFieldBuilder
 import org.progreso.client.Client.Companion.mc
 
-class TextFieldBuilder : AbstractTextFieldBuilder<DrawContext, TextFieldWidget>() {
+class TextFieldBuilder : AbstractTextFieldBuilder<GuiGraphicsExtractor, EditBox>() {
     companion object {
-        fun Screen.textField(text: String = "", block: (TextFieldBuilder) -> Unit): TextFieldWidget {
-            return addDrawableChild(
+        fun Screen.textField(text: String = "", block: (TextFieldBuilder) -> Unit): EditBox {
+            return this.addRenderableWidget(
                 TextFieldBuilder().apply {
                     if (text.isNotEmpty()) {
                         this.text = text
@@ -23,40 +23,46 @@ class TextFieldBuilder : AbstractTextFieldBuilder<DrawContext, TextFieldWidget>(
         }
     }
 
-    override fun build(): TextFieldWidget {
-        return object : TextFieldWidget(mc.textRenderer, x, y, width, height, Text.of(text)) {
+    override fun build(): EditBox {
+        return object : EditBox(mc.font, x, y, width, height, Component.literal(text)) {
             init {
+                this.value = this@TextFieldBuilder.text
                 listeners.init(this)
             }
 
-            override fun charTyped(input: CharInput): Boolean {
-                return super.charTyped(input).also {
+            override fun charTyped(event: CharacterEvent): Boolean {
+                return super.charTyped(event).also {
                     textFieldListeners.textChanged(this)
                 }
             }
 
-            override fun keyPressed(input: KeyInput?): Boolean {
-                return super.keyPressed(input).also {
+            override fun keyPressed(event: KeyEvent): Boolean {
+                return super.keyPressed(event).also {
                     textFieldListeners.textChanged(this)
                 }
             }
 
-            override fun renderWidget(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
-                listeners.render(this, context, mouseX, mouseY, delta)
+            override fun extractWidgetRenderState(
+                graphics: GuiGraphicsExtractor,
+                mouseX: Int,
+                mouseY: Int,
+                delta: Float
+            ) {
+                listeners.render(this, graphics, mouseX, mouseY, delta)
 
-                super.renderWidget(context, mouseX, mouseY, delta)
+                super.extractWidgetRenderState(graphics, mouseX, mouseY, delta)
             }
 
-            override fun mouseClicked(click: Click, doubled: Boolean): Boolean {
-                listeners.mouseClicked(this, click.x.toInt(), click.y.toInt(), click.button())
+            override fun mouseClicked(event: MouseButtonEvent, doubleClick: Boolean): Boolean {
+                listeners.mouseClicked(this, event.x.toInt(), event.y.toInt(), event.button())
 
-                return super.mouseClicked(click, doubled)
+                return super.mouseClicked(event, doubleClick)
             }
 
-            override fun mouseReleased(click: Click): Boolean {
-                listeners.mouseReleased(this, click.x.toInt(), click.y.toInt(), click.button())
+            override fun mouseReleased(event: MouseButtonEvent): Boolean {
+                listeners.mouseReleased(this, event.x.toInt(), event.y.toInt(), event.button())
 
-                return super.mouseReleased(click)
+                return super.mouseReleased(event)
             }
         }
     }

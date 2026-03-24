@@ -9,8 +9,7 @@ import org.progreso.api.command.container.CommandContainer
 object CommandManager : CommandContainer {
     const val PREFIX = "."
 
-    @JvmField
-    var SOURCE = Api.COMMAND.createCommandSource()
+    val SUGGESTION_PROVIDER by lazy { Api.COMMAND.createSuggestionProvider() }
 
     @JvmField
     val DISPATCHER = CommandDispatcher<Any>()
@@ -24,7 +23,7 @@ object CommandManager : CommandContainer {
 
     fun dispatch(input: String) {
         try {
-            DISPATCHER.execute(input.removePrefix(PREFIX), SOURCE)
+            DISPATCHER.execute(input.removePrefix(PREFIX), SUGGESTION_PROVIDER)
         } catch (ex: CommandSyntaxException) {
             if (ex.cursor == 0) {
                 Api.CHAT.errorLocalized("command.command_not_found")

@@ -6,5 +6,5 @@ import org.progreso.client.modules.SimpleTextHudModule
 
 @AbstractModule.AutoRegister
 object FPS : SimpleTextHudModule({
-    "FPS: ${mc.client.currentFps}"
+    "FPS: ${mc.client.fps}"
 })

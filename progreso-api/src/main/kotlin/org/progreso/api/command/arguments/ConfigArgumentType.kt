@@ -36,6 +36,6 @@ class ConfigArgumentType(private val category: AbstractConfigCategory<*, *>) : A
         context: CommandContext<S>,
         builder: SuggestionsBuilder
     ): CompletableFuture<Suggestions> {
-        return Api.COMMAND.suggestMatching(category.configs.map { it.name }, builder)
+        return Api.COMMAND.suggest(category.configs.map { it.name }, builder)
     }
 }

@@ -1,6 +1,6 @@
 package org.progreso.client.gui.clickgui.element.elements
 
-import net.minecraft.client.gui.DrawContext
+import net.minecraft.client.gui.GuiGraphicsExtractor
 import org.progreso.api.setting.settings.BooleanSetting
 import org.progreso.client.gui.clickgui.element.ParentElement
 import org.progreso.client.gui.drawRect
@@ -23,7 +23,7 @@ class BooleanElement(
         val BUTTON_BACK_RECT_COLOR = Color(80, 80, 80, 120)
     }
 
-    override fun render(context: DrawContext, mouseX: Int, mouseY: Int) = context {
+    override fun render(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int) = context {
         val buttonStartX = x + width - BUTTON_END_OFFSET - BUTTON_WIDTH
         val buttonStartY = y + height.div(2) - BUTTON_HEIGHT.div(2)
 

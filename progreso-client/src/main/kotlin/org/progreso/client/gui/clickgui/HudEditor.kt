@@ -1,7 +1,7 @@
 package org.progreso.client.gui.clickgui
 
-import net.minecraft.client.gui.Click
-import net.minecraft.client.gui.DrawContext
+import net.minecraft.client.gui.GuiGraphicsExtractor
+import net.minecraft.client.input.MouseButtonEvent
 import org.progreso.api.managers.ModuleManager
 import org.progreso.api.module.AbstractHudModule
 import org.progreso.api.module.Category
@@ -21,8 +21,8 @@ object HudEditor : ClickGUI("HudEditor") {
         })
     }
 
-    override fun render(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
-        super.render(context, mouseX, mouseY, delta)
+    override fun extractRenderState(graphics: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, delta: Float) {
+        super.extractRenderState(graphics, mouseX, mouseY, delta)
 
         HUD_MODULES.filter { it.dragging }.forEach {
             it.x = mouseX - it.dragX
@@ -30,9 +30,9 @@ object HudEditor : ClickGUI("HudEditor") {
         }
     }
 
-    override fun mouseClicked(click: Click, doubled: Boolean): Boolean {
-        val mouseXInt: Int = click.x.toInt()
-        val mouseYInt: Int = click.y.toInt()
+    override fun mouseClicked(event: MouseButtonEvent, doubleClick: Boolean): Boolean {
+        val mouseXInt: Int = event.x.toInt()
+        val mouseYInt: Int = event.y.toInt()
 
         HUD_MODULES.filter { it.enabled && it.isHover(mouseXInt, mouseYInt) }.forEach {
             it.dragging = true
@@ -40,12 +40,12 @@ object HudEditor : ClickGUI("HudEditor") {
             it.dragY = mouseYInt - it.y
         }
 
-        return super.mouseClicked(click, doubled)
+        return super.mouseClicked(event, doubleClick)
     }
 
-    override fun mouseReleased(click: Click): Boolean {
+    override fun mouseReleased(event: MouseButtonEvent): Boolean {
         HUD_MODULES.forEach { it.dragging = false }
 
-        return super.mouseReleased(click)
+        return super.mouseReleased(event)
     }
 }

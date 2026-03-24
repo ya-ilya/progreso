@@ -3,7 +3,6 @@ package org.progreso.client.gui.clickgui.element
 import org.progreso.client.gui.clickgui.element.data.ElementOffsets
 import org.progreso.client.modules.client.ClickGUI
 
-@Suppress("SuspiciousVarProperty")
 abstract class AbstractChildElement(
     override var height: Int,
     val parent: ParentElement

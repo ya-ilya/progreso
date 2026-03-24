@@ -1,6 +1,6 @@
 package org.progreso.client.mixins.entity;
 
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 import org.progreso.client.Client;
 import org.progreso.client.events.player.ClipAtLedgeEvent;
 import org.spongepowered.asm.mixin.Mixin;
@@ -8,14 +8,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(PlayerEntity.class)
-public abstract class MixinPlayerEntity {
+@Mixin(Player.class)
+public abstract class MixinPlayer {
     @Inject(
-        method = "clipAtLedge",
+        method = "isStayingOnGroundSurface",
         at = @At("HEAD"),
         cancellable = true
     )
-    public void clipAtLedgeHook(CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
+    public void isStayingOnGroundSurfaceHook(CallbackInfoReturnable<Boolean> callbackInfoReturnable) {
         ClipAtLedgeEvent event = new ClipAtLedgeEvent();
         Client.EVENT_BUS.post(event);
 

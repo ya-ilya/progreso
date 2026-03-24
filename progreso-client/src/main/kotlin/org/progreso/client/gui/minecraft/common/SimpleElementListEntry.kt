@@ -1,28 +1,24 @@
 package org.progreso.client.gui.minecraft.common
 
-import net.minecraft.client.gui.DrawContext
-import net.minecraft.client.gui.Element
-import net.minecraft.client.gui.Selectable
-import net.minecraft.client.gui.widget.ElementListWidget
+import net.minecraft.client.gui.GuiGraphicsExtractor
+import net.minecraft.client.gui.components.ContainerObjectSelectionList
+import net.minecraft.client.gui.components.events.GuiEventListener
+import net.minecraft.client.gui.narration.NarratableEntry
 
-open class SimpleElementListEntry<E : SimpleElementListEntry<E>> : ElementListWidget.Entry<E>() {
-    open fun render(context: DrawContext, x: Int, y: Int) {}
+abstract class SimpleElementListEntry<E : SimpleElementListEntry<E>> : ContainerObjectSelectionList.Entry<E>() {
+    open fun render(context: GuiGraphicsExtractor, x: Int, y: Int, width: Int, height: Int) {}
 
-    override fun render(
-        context: DrawContext,
+    override fun extractContent(
+        graphics: GuiGraphicsExtractor,
         mouseX: Int,
         mouseY: Int,
         hovered: Boolean,
-        deltaTicks: Float
+        delta: Float
     ) {
-        render(context, x, y)
+        render(graphics, x, y, contentWidth, contentHeight)
     }
 
-    override fun children(): MutableList<out Element> {
-        return mutableListOf()
-    }
+    override fun narratables(): List<NarratableEntry> = emptyList()
 
-    override fun selectableChildren(): MutableList<out Selectable> {
-        return mutableListOf()
-    }
+    override fun children(): List<GuiEventListener> = emptyList()
 }

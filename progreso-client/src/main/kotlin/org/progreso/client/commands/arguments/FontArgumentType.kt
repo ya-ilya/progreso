@@ -36,7 +36,7 @@ class FontArgumentType : ArgumentType<String> {
         context: CommandContext<S>,
         builder: SuggestionsBuilder
     ): CompletableFuture<Suggestions> {
-        return Api.COMMAND.suggestMatching(ProgresoResourceManager.fonts, builder)
+        return Api.COMMAND.suggest(ProgresoResourceManager.fonts, builder)
     }
 
     override fun getExamples(): Collection<String> {

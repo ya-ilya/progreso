@@ -7,7 +7,7 @@ import org.progreso.client.Client.Companion.mc
 object ClearCommand : AbstractCommand() {
     init {
         builder.execute {
-            mc.inGameHud.chatHud.clear(true)
+            mc.gui.chat.clearMessages(true)
         }
     }
 }

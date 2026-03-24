@@ -38,7 +38,7 @@ class ModuleArgumentType(private val container: ModuleContainer = ModuleManager)
         context: CommandContext<S>,
         builder: SuggestionsBuilder
     ): CompletableFuture<Suggestions> {
-        return Api.COMMAND.suggestMatching(container.modules.map { it.name }, builder)
+        return Api.COMMAND.suggest(container.modules.map { it.name }, builder)
     }
 
     override fun getExamples(): Collection<String> {

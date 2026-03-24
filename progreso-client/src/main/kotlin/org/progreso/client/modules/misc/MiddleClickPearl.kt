@@ -1,7 +1,7 @@
 package org.progreso.client.modules.misc
 
-import net.minecraft.item.Items
-import net.minecraft.util.Hand
+import net.minecraft.world.InteractionHand
+import net.minecraft.world.item.Items
 import org.lwjgl.glfw.GLFW
 import org.progreso.api.module.AbstractModule
 import org.progreso.client.Client.Companion.mc
@@ -13,7 +13,7 @@ import org.progreso.client.util.player.findItemInHotbar
 object MiddleClickPearl : AbstractModule() {
     init {
         safeEventListener<MouseEvent> { event ->
-            if (event.action != GLFW.GLFW_PRESS || event.button != GLFW.GLFW_MOUSE_BUTTON_MIDDLE || mc.currentScreen != null)
+            if (event.action != GLFW.GLFW_PRESS || event.button != GLFW.GLFW_MOUSE_BUTTON_MIDDLE || mc.screen != null)
                 return@safeEventListener
 
             val previousSelectedSlot = mc.player.inventory.selectedSlot
@@ -22,7 +22,7 @@ object MiddleClickPearl : AbstractModule() {
                 ?: return@safeEventListener
 
             mc.player.inventory.selectedSlot = enderPearl.index
-            mc.interactionManager.interactItem(mc.player, Hand.MAIN_HAND)
+            mc.gameMode.useItem(mc.player, InteractionHand.MAIN_HAND)
             mc.player.inventory.selectedSlot = previousSelectedSlot
         }
     }

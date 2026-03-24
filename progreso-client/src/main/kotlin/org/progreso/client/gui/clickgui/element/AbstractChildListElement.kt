@@ -1,8 +1,7 @@
 package org.progreso.client.gui.clickgui.element
 
-import net.minecraft.client.gui.DrawContext
+import net.minecraft.client.gui.GuiGraphicsExtractor
 
-@Suppress("SuspiciousVarProperty")
 abstract class AbstractChildListElement(
     height: Int,
     parent: ParentElement
@@ -28,7 +27,7 @@ abstract class AbstractChildListElement(
             }
         }
 
-    override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
+    override fun render(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int) {
         super<AbstractChildElement>.render(context, mouseX, mouseY)
         super<ParentElement>.render(context, mouseX, mouseY)
     }

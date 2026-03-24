@@ -10,6 +10,6 @@ abstract class AbstractScreenBuilder<Context, Screen>
     var title = ""
 
     fun close(block: Screen.() -> Unit) {
-        screenListeners.close = block
+        screenListeners.onClose = block
     }
 }

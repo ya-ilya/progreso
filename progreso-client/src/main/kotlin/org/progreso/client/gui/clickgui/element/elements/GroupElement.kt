@@ -1,6 +1,6 @@
 package org.progreso.client.gui.clickgui.element.elements
 
-import net.minecraft.client.gui.DrawContext
+import net.minecraft.client.gui.GuiGraphicsExtractor
 import org.progreso.api.setting.settings.GroupSetting
 import org.progreso.client.gui.clickgui.element.AbstractChildElement
 import org.progreso.client.gui.clickgui.element.AbstractChildListElement
@@ -25,7 +25,7 @@ class GroupElement(
         )
 
         header = object : AbstractChildElement(height, this@GroupElement) {
-            override fun render(context: DrawContext, mouseX: Int, mouseY: Int) = context {
+            override fun render(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int) = context {
                 drawTextRelatively(
                     header!!,
                     setting.name,

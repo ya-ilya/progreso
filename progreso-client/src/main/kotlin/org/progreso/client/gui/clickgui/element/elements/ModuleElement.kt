@@ -1,6 +1,6 @@
 package org.progreso.client.gui.clickgui.element.elements
 
-import net.minecraft.client.gui.DrawContext
+import net.minecraft.client.gui.GuiGraphicsExtractor
 import org.progreso.api.module.AbstractHudModule
 import org.progreso.api.module.AbstractModule
 import org.progreso.client.gui.clickgui.ClickGUI
@@ -29,7 +29,7 @@ class ModuleElement(
         )
 
         header = object : AbstractChildElement(height, this@ModuleElement) {
-            override fun render(context: DrawContext, mouseX: Int, mouseY: Int) = context {
+            override fun render(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int) = context {
                 drawTextRelatively(
                     header!!,
                     module.name,
@@ -50,7 +50,7 @@ class ModuleElement(
         }
     }
 
-    override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
+    override fun render(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int) {
         super.render(context, mouseX, mouseY)
 
         if (!opened) return

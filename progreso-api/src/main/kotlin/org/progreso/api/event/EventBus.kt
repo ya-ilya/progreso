@@ -64,8 +64,6 @@ class EventBus(
                             )
                         )
                     }
-
-                    field.isAccessible = false
                 }
             }
 
@@ -127,25 +125,7 @@ class EventBus(
     }
 
     private fun sortListeners(listeners: MutableList<ListenerInvoker>) {
-        listeners.sortWith { listener1, listener2 ->
-            if (listener1.priority > listener2.priority) {
-                -1
-            } else if (listener1.priority == listener2.priority) {
-                0
-            } else {
-                1
-            }
-        }
-
-        listeners.sortWith { listener1, listener2 ->
-            if (listener1.eventClass == listener2.eventClass) {
-                0
-            } else if (listener1.eventClass.isAssignableFrom(listener2.eventClass)) {
-                -1
-            } else {
-                1
-            }
-        }
+        listeners.sortWith(compareByDescending<ListenerInvoker> { it.priority }.thenBy { it.eventClass.simpleName })
     }
 
     private data class ListenerInvoker(

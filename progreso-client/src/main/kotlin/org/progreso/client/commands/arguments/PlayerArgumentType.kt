@@ -6,13 +6,13 @@ import com.mojang.brigadier.context.CommandContext
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType
 import com.mojang.brigadier.suggestion.Suggestions
 import com.mojang.brigadier.suggestion.SuggestionsBuilder
-import net.minecraft.client.network.PlayerListEntry
+import net.minecraft.client.multiplayer.PlayerInfo
 import org.progreso.api.Api
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.accessors.TextAccessor
 import java.util.concurrent.CompletableFuture
 
-class PlayerArgumentType : ArgumentType<PlayerListEntry> {
+class PlayerArgumentType : ArgumentType<PlayerInfo> {
     companion object {
         private val NO_SUCH_PLAYER = DynamicCommandExceptionType { name: Any ->
             TextAccessor.i18nMessage("argument.player.error", name)
@@ -20,16 +20,16 @@ class PlayerArgumentType : ArgumentType<PlayerListEntry> {
 
         private val EXAMPLES: Collection<String> = listOf("ya-ilya", "progreso")
 
-        operator fun get(context: CommandContext<*>): PlayerListEntry {
-            return context.getArgument("player", PlayerListEntry::class.java)
+        operator fun get(context: CommandContext<*>): PlayerInfo {
+            return context.getArgument("player", PlayerInfo::class.java)
         }
     }
 
-    override fun parse(reader: StringReader): PlayerListEntry {
+    override fun parse(reader: StringReader): PlayerInfo {
         val argument = reader.readString()
-        var playerListEntry: PlayerListEntry? = null
+        var playerListEntry: PlayerInfo? = null
 
-        for (player in mc.networkHandler.playerList) {
+        for (player in mc.connection!!.onlinePlayers) {
             if (player.profile.name.equals(argument, ignoreCase = true)) {
                 playerListEntry = player
                 break
@@ -45,7 +45,7 @@ class PlayerArgumentType : ArgumentType<PlayerListEntry> {
         context: CommandContext<S>,
         builder: SuggestionsBuilder
     ): CompletableFuture<Suggestions> {
-        return Api.COMMAND.suggestMatching(mc.networkHandler.playerList.map { it.profile.name }, builder)
+        return Api.COMMAND.suggest(mc.connection!!.onlinePlayers.map { it.profile.name }, builder)
     }
 
     override fun getExamples(): Collection<String> {

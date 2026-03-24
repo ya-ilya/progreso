@@ -1,74 +1,51 @@
 package org.progreso.client.util.render.elements
 
 import com.mojang.blaze3d.pipeline.RenderPipeline
-import net.minecraft.client.gui.ScreenRect
-import net.minecraft.client.gui.render.state.SimpleGuiElementRenderState
-import net.minecraft.client.render.VertexConsumer
-import net.minecraft.client.texture.TextureSetup
+import com.mojang.blaze3d.vertex.VertexConsumer
+import net.minecraft.client.gui.navigation.ScreenRectangle
+import net.minecraft.client.gui.render.TextureSetup
+import net.minecraft.client.renderer.state.gui.GuiElementRenderState
 import org.joml.Matrix3x2f
 import org.progreso.client.gui.glColors
 import java.awt.Color
 
 data class EllipseElementRenderState(
-    val pipeline: RenderPipeline,
-    val textureSetup: TextureSetup,
+    private val pipelineVal: RenderPipeline,
+    private val textureSetupVal: TextureSetup,
     val pose: Matrix3x2f,
     val x: Float,
     val y: Float,
     val width: Float,
     val height: Float,
     val color: Color,
-    val scissorArea: ScreenRect?,
-    val bounds: ScreenRect? = createBounds(
-        x.toInt(),
-        y.toInt(),
-        width.toInt(),
-        height.toInt(),
-        pose,
-        scissorArea
-    )
-) :
-    SimpleGuiElementRenderState {
-
-    override fun setupVertices(vertices: VertexConsumer) {
+    private val scissorAreaVal: ScreenRectangle?,
+    private val boundsVal: ScreenRectangle
+) : GuiElementRenderState {
+    override fun buildVertices(vertices: VertexConsumer) {
         val (red, green, blue, alpha) = color.glColors
 
-        vertices
-            .vertex(pose, x, y + height)
-            .texture(0f, 0f)
-            .color(red, green, blue, alpha)
-        vertices
-            .vertex(pose, x + width, y + height)
-            .texture(1f, 0f)
-            .color(red, green, blue, alpha)
-        vertices
-            .vertex(pose, x + width, y)
-            .texture(1f, 1f)
-            .color(red, green, blue, alpha)
-        vertices.vertex(pose, x, y)
-            .texture(0f, 1f)
-            .color(red, green, blue, alpha)
+        vertices.addVertexWith2DPose(pose, x, y + height)
+            .setUv(0f, 0f)
+            .setColor(red, green, blue, alpha)
+
+        vertices.addVertexWith2DPose(pose, x + width, y + height)
+            .setUv(1f, 0f)
+            .setColor(red, green, blue, alpha)
+
+        vertices.addVertexWith2DPose(pose, x + width, y)
+            .setUv(1f, 1f)
+            .setColor(red, green, blue, alpha)
+
+        vertices.addVertexWith2DPose(pose, x, y)
+            .setUv(0f, 1f)
+            .setColor(red, green, blue, alpha)
     }
 
-    override fun pipeline(): RenderPipeline = pipeline
+    override fun pipeline(): RenderPipeline = pipelineVal
 
-    override fun textureSetup(): TextureSetup = textureSetup
+    override fun textureSetup(): TextureSetup = textureSetupVal
 
-    override fun scissorArea(): ScreenRect? = null
+    override fun scissorArea(): ScreenRectangle? = scissorAreaVal
 
-    override fun bounds(): ScreenRect? = bounds
-
-    companion object {
-        private fun createBounds(
-            x: Int,
-            y: Int,
-            width: Int,
-            height: Int,
-            pose: Matrix3x2f,
-            scissorArea: ScreenRect?
-        ): ScreenRect? {
-            val screenRect = ScreenRect(x, y, width, height).transformEachVertex(pose)
-            return if (scissorArea != null) scissorArea.intersection(screenRect) else screenRect
-        }
-    }
+    override fun bounds(): ScreenRectangle = boundsVal
 }

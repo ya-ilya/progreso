@@ -1,6 +1,6 @@
 package org.progreso.client.gui.clickgui.element.elements
 
-import net.minecraft.client.gui.DrawContext
+import net.minecraft.client.gui.GuiGraphicsExtractor
 import org.progreso.api.setting.settings.EnumSetting
 import org.progreso.client.gui.clickgui.element.ParentElement
 import org.progreso.client.gui.drawTextRelatively
@@ -13,7 +13,7 @@ class EnumElement(
     height: Int,
     parent: ParentElement
 ) : SettingElement<EnumSetting<*>>(setting, height, parent) {
-    override fun render(context: DrawContext, mouseX: Int, mouseY: Int) = context {
+    override fun render(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int) = context {
         drawTextRelatively(
             this@EnumElement,
             setting.name,

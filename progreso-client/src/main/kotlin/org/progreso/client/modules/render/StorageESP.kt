@@ -1,8 +1,8 @@
 package org.progreso.client.modules.render
 
-import net.minecraft.block.entity.*
-import net.minecraft.util.math.BlockPos
-import net.minecraft.util.math.Box
+import net.minecraft.core.BlockPos
+import net.minecraft.world.level.block.entity.*
+import net.minecraft.world.phys.AABB
 import org.progreso.api.module.AbstractModule
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.events.misc.TickEvent
@@ -10,6 +10,7 @@ import org.progreso.client.events.render.Render3DEvent
 import org.progreso.client.events.safeEventListener
 import org.progreso.client.gui.clickgui.element.elements.ColorElement.Companion.copy
 import org.progreso.client.modules.render.ESP.espSetting
+import org.progreso.client.util.level.blockEntities
 import org.progreso.client.util.render.drawOutlinedBox
 import org.progreso.client.util.render.drawSolidBox
 import org.progreso.client.util.render.render3D
@@ -19,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap
 
 @AbstractModule.AutoRegister
 object StorageESP : AbstractModule() {
-    private val DEFAULT_BOX = Box(0.0, 0.0, 0.0, 1.0, 1.0, 1.0)
+    private val DEFAULT_BOX = AABB(0.0, 0.0, 0.0, 1.0, 1.0, 1.0)
 
     private val chest by espSetting("Chest", true, Color.ORANGE)
     private val enderChest by espSetting("EnderChest", true, Color.MAGENTA)
@@ -34,7 +35,7 @@ object StorageESP : AbstractModule() {
         safeEventListener<TickEvent> {
             renderMap.clear()
 
-            for (blockEntity in mc.world.blockEntities) {
+            for (blockEntity in mc.level.blockEntities) {
                 val (render, color) = when (blockEntity) {
                     is ChestBlockEntity -> chest
                     is EnderChestBlockEntity -> enderChest
@@ -45,13 +46,13 @@ object StorageESP : AbstractModule() {
                     else -> continue
                 }
 
-                if (render) renderMap[blockEntity.pos] = color
+                if (render) renderMap[blockEntity.blockPos] = color
             }
         }
 
         safeEventListener<Render3DEvent> { event ->
-            for ((pos, color) in renderMap) {
-                render3D(event.matrices) {
+            render3D(event.matrices) {
+                for ((pos, color) in renderMap) {
                     withRelativeToCameraPosition(pos) {
                         drawSolidBox(DEFAULT_BOX, color.copy(50))
                         drawOutlinedBox(DEFAULT_BOX, color.copy(100))

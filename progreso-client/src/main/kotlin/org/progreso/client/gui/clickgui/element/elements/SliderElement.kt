@@ -1,6 +1,6 @@
 package org.progreso.client.gui.clickgui.element.elements
 
-import net.minecraft.client.gui.DrawContext
+import net.minecraft.client.gui.GuiGraphicsExtractor
 import org.progreso.api.setting.settings.NumberSetting
 import org.progreso.client.gui.clickgui.element.ParentElement
 import org.progreso.client.gui.drawRect
@@ -41,7 +41,7 @@ class SliderElement(
         }
     }
 
-    override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
+    override fun render(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int) {
         if (dragging) {
             sliderWidth = if (mouseX < sliderStartX) {
                 0
@@ -66,7 +66,7 @@ class SliderElement(
                         }
                     }
                 )
-            } catch (ex: NumberFormatException) {
+            } catch (_: NumberFormatException) {
                 // Ignored
             }
         }

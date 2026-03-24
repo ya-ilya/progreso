@@ -1,19 +1,22 @@
 package org.progreso.client.util.player
 
-import net.minecraft.client.network.ClientPlayerInteractionManager
-import net.minecraft.entity.LivingEntity
-import net.minecraft.util.Hand
+import net.minecraft.client.multiplayer.MultiPlayerGameMode
+import net.minecraft.world.InteractionHand
+import net.minecraft.world.entity.LivingEntity
 import org.progreso.client.Client.Companion.mc
 
-fun ClientPlayerInteractionManager.attack(
+fun MultiPlayerGameMode.attack(
     entity: LivingEntity,
     checkStrength: Boolean = true,
-    tickDelta: Float = 0.5f
+    tickDelta: Float = 1.0f
 ) {
-    if (checkStrength && mc.player.getAttackCooldownProgress(tickDelta) != 1.0f) {
+    val player = mc.player
+
+    if (checkStrength && player.getAttackStrengthScale(tickDelta) < 1.0f) {
         return
     }
 
-    attackEntity(mc.player, entity)
-    mc.player.swingHand(Hand.MAIN_HAND)
+    this.attack(player, entity)
+
+    player.swing(InteractionHand.MAIN_HAND)
 }

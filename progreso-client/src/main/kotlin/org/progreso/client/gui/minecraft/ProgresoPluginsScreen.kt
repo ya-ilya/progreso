@@ -1,8 +1,8 @@
 package org.progreso.client.gui.minecraft
 
-import net.minecraft.client.gui.Click
-import net.minecraft.client.gui.DrawContext
-import net.minecraft.client.gui.widget.ElementListWidget
+import net.minecraft.client.gui.GuiGraphicsExtractor
+import net.minecraft.client.gui.components.ContainerObjectSelectionList
+import net.minecraft.client.input.MouseButtonEvent
 import net.minecraft.util.Util
 import org.progreso.api.plugin.AbstractPlugin
 import org.progreso.client.Client.Companion.mc
@@ -43,51 +43,51 @@ class ProgresoPluginsScreen(private val plugins: Set<AbstractPlugin>) : TitledSc
 
         button(i18n = "gui.plugins.button.open_folder") { button ->
             button.dimensions(width / 2 - 154, height - 24, 150, 20)
-            button.onPress { Util.getOperatingSystem().open(Paths.get("mods").toFile()) }
+            button.onPress { Util.getPlatform().openFile(Paths.get("mods").toFile()) }
         }
 
         button(i18n = "gui.plugins.button.done") { button ->
             button.dimensions(width / 2 + 4, height - 24, 150, 20)
-            button.onPress { close() }
+            button.onPress { onClose() }
         }
     }
 
     private class PluginEntry(
-        val parent: ElementListWidget<PluginEntry>,
+        val parent: ContainerObjectSelectionList<PluginEntry>,
         val plugin: AbstractPlugin
     ) : SimpleElementListEntry<PluginEntry>() {
-        override fun render(context: DrawContext, x: Int, y: Int) = context {
+        override fun render(context: GuiGraphicsExtractor, x: Int, y: Int, width: Int, height: Int) = context {
             drawText(
-                mc.textRenderer,
+                mc.font,
                 plugin.name,
                 x + 3,
                 y + 3,
                 Color.WHITE
             )
             drawText(
-                mc.textRenderer,
+                mc.font,
                 i18n("gui.plugins.label.plugin_version", plugin.version),
                 x + 3,
-                y + 4 + mc.textRenderer.fontHeight,
+                y + 4 + mc.font.lineHeight,
                 Color.GRAY
             )
             drawText(
-                mc.textRenderer,
+                mc.font,
                 i18n("gui.plugins.label.plugin_author", plugin.author),
                 x + 3,
-                y + 5 + mc.textRenderer.fontHeight * 2,
+                y + 5 + mc.font.lineHeight * 2,
                 Color.GRAY
             )
 
-            if (parent.selectedOrNull == this@PluginEntry) {
+            if (parent.selected == this@PluginEntry) {
                 drawBorder(x, y, width, height, Color.WHITE)
             }
         }
 
-        override fun mouseClicked(click: Click?, doubled: Boolean): Boolean {
-            parent.setSelected(this)
+        override fun mouseClicked(event: MouseButtonEvent, doubleClick: Boolean): Boolean {
+            parent.selected = this
 
-            return super.mouseClicked(click, doubled)
+            return super.mouseClicked(event, doubleClick)
         }
     }
 }

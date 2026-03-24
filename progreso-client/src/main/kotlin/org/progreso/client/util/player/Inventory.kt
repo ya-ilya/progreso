@@ -1,21 +1,21 @@
 package org.progreso.client.util.player
 
-import net.minecraft.client.network.ClientPlayerInteractionManager
-import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.item.ItemStack
-import net.minecraft.network.packet.c2s.play.UpdateSelectedSlotC2SPacket
-import net.minecraft.screen.slot.SlotActionType
+import net.minecraft.client.multiplayer.MultiPlayerGameMode
+import net.minecraft.network.protocol.game.ServerboundSetCarriedItemPacket
+import net.minecraft.world.entity.player.Inventory
+import net.minecraft.world.inventory.ContainerInput
+import net.minecraft.world.item.ItemStack
 import org.progreso.client.Client.Companion.mc
 
 data class Slot(val index: Int, val stack: ItemStack)
 
-val PlayerInventory.hotbar get() = findItems(0, 9) { _, _ -> true }
+val Inventory.hotbar get() = findItems(0, 9) { _, _ -> true }
 
-fun PlayerInventory.findItemInHotbar(predicate: (Int, ItemStack) -> Boolean): Slot? {
+fun Inventory.findItemInHotbar(predicate: (Int, ItemStack) -> Boolean): Slot? {
     return findItem(0, 9, predicate)
 }
 
-fun PlayerInventory.findItem(
+fun Inventory.findItem(
     fromIndex: Int? = null,
     toIndex: Int? = null,
     predicate: (Int, ItemStack) -> Boolean
@@ -23,15 +23,16 @@ fun PlayerInventory.findItem(
     return findItems(fromIndex, toIndex, predicate).firstOrNull()
 }
 
-fun PlayerInventory.findItems(
+fun Inventory.findItems(
     fromIndex: Int? = null,
     toIndex: Int? = null,
     predicate: (Int, ItemStack) -> Boolean
 ): List<Slot> {
     val result = mutableListOf<Slot>()
 
-    for (i in (fromIndex ?: 0)..<(toIndex ?: size())) {
-        val itemStack = getStack(i)
+    val end = toIndex ?: this.containerSize
+    for (i in (fromIndex ?: 0) until end) {
+        val itemStack = getItem(i)
 
         if (predicate(i, itemStack)) {
             result.add(Slot(i, itemStack))
@@ -41,15 +42,18 @@ fun PlayerInventory.findItems(
     return result
 }
 
-fun PlayerInventory.updateSelectedSlot(index: Int) {
-    mc.networkHandler.sendPacket(UpdateSelectedSlotC2SPacket(index))
-    selectedSlot = index
+fun Inventory.updateSelectedSlot(index: Int) {
+    mc.connection!!.send(ServerboundSetCarriedItemPacket(index))
+
+    this.selected = index
 }
 
-fun ClientPlayerInteractionManager.moveItem(fromIndex: Int, toIndex: Int) {
-    val syncId = mc.player.currentScreenHandler?.syncId ?: 0
+fun MultiPlayerGameMode.moveItem(fromIndex: Int, toIndex: Int) {
+    val player = mc.player
 
-    clickSlot(syncId, fromIndex, 0, SlotActionType.PICKUP, mc.player)
-    clickSlot(syncId, toIndex, 0, SlotActionType.PICKUP, mc.player)
-    clickSlot(syncId, fromIndex, 0, SlotActionType.PICKUP, mc.player)
+    val syncId = player.containerMenu.containerId
+
+    this.handleContainerInput(syncId, fromIndex, 0, ContainerInput.PICKUP, player)
+    this.handleContainerInput(syncId, toIndex, 0, ContainerInput.PICKUP, player)
+    this.handleContainerInput(syncId, fromIndex, 0, ContainerInput.PICKUP, player)
 }

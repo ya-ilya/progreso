@@ -34,6 +34,6 @@ class AltArgumentType(private val container: AltContainer = AltManager) : Argume
         context: CommandContext<S>,
         builder: SuggestionsBuilder
     ): CompletableFuture<Suggestions> {
-        return Api.COMMAND.suggestMatching(container.alts.map { it.username }, builder)
+        return Api.COMMAND.suggest(container.alts.map { it.username }, builder)
     }
 }

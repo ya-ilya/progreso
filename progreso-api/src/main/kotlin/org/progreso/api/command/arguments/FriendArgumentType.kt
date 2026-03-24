@@ -36,7 +36,7 @@ class FriendArgumentType(private val container: FriendContainer = FriendManager)
         context: CommandContext<S>,
         builder: SuggestionsBuilder
     ): CompletableFuture<Suggestions> {
-        return Api.COMMAND.suggestMatching(container.friends.map { it.name }, builder)
+        return Api.COMMAND.suggest(container.friends.map { it.name }, builder)
     }
 
     override fun getExamples(): Collection<String> {

@@ -1,7 +1,7 @@
 package org.progreso.client.modules.client
 
-import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.util.Formatting
+import net.minecraft.ChatFormatting
+import net.minecraft.world.entity.player.Player
 import org.progreso.api.Api
 import org.progreso.api.event.events.ModuleEvent
 import org.progreso.api.managers.FriendManager
@@ -22,7 +22,7 @@ object Notifications : AbstractModule() {
     private val visualRange by setting("VisualRange", false)
 
     private val visualRangeTimer = createTimer(TimeUnit.Second)
-    private val visualRangePlayers = mutableSetOf<PlayerEntity>()
+    private val visualRangePlayers = mutableSetOf<Player>()
 
     init {
         safeEventListener<ModuleEvent.Toggle> { event ->
@@ -31,7 +31,7 @@ object Notifications : AbstractModule() {
 
             Api.CHAT.infoLocalized(
                 "module.notifications.module_message",
-                if (event.module.enabled) Formatting.GREEN else Formatting.RED,
+                if (event.module.enabled) ChatFormatting.GREEN else ChatFormatting.RED,
                 event.module.name
             )
         }
@@ -50,7 +50,7 @@ object Notifications : AbstractModule() {
         }
 
         safeEventListener<EntityDeathEvent> { event ->
-            if (!pops || event.entity !is PlayerEntity) return@safeEventListener
+            if (!pops || event.entity !is Player) return@safeEventListener
 
             Api.CHAT.infoLocalized(
                 "module.notifications.death_message",
@@ -62,7 +62,7 @@ object Notifications : AbstractModule() {
         safeEventListener<TickEvent> { _ ->
             if (!visualRange || !visualRangeTimer.tick(1L)) return@safeEventListener
 
-            val players = mc.world.players.toHashSet()
+            val players = mc.level.players().toHashSet()
 
             for (player in players) {
                 if (player == mc.player || FriendManager.isFriend(player.name.string)) continue

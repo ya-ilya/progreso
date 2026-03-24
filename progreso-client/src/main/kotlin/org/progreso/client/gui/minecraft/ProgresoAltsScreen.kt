@@ -1,9 +1,9 @@
 package org.progreso.client.gui.minecraft
 
-import net.minecraft.client.gui.Click
-import net.minecraft.client.gui.DrawContext
-import net.minecraft.client.gui.widget.ButtonWidget
-import net.minecraft.client.gui.widget.ElementListWidget
+import net.minecraft.client.gui.GuiGraphicsExtractor
+import net.minecraft.client.gui.components.Button
+import net.minecraft.client.gui.components.ContainerObjectSelectionList
+import net.minecraft.client.input.MouseButtonEvent
 import net.minecraft.util.Util
 import org.progreso.api.alt.AltAccount
 import org.progreso.api.managers.AltManager
@@ -25,10 +25,10 @@ import kotlin.concurrent.thread
 class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n = "gui.alts.title") {
     private var selectedAlt: AltAccount? = null
 
-    override fun init() {
-        lateinit var removeButtonWidget: ButtonWidget
-        lateinit var loginButtonWidget: ButtonWidget
+    private var removeButtonWidget: Button? = null
+    private var loginButtonWidget: Button? = null
 
+    override fun init() {
         elementList<AltEntry> { list ->
             list.listDimension(
                 x = width / 2 - 100,
@@ -46,8 +46,8 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
 
             list.select { entry ->
                 selectedAlt = entry?.alt
-                removeButtonWidget.active = selectedAlt != null
-                loginButtonWidget.active = selectedAlt != null
+                removeButtonWidget?.active = selectedAlt != null
+                loginButtonWidget?.active = selectedAlt != null
             }
         }
 
@@ -61,33 +61,33 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
             button.onPress { showAddMicrosoftAltScreen() }
         }
 
-        button(i18n = "gui.alts.button.remove_alt") { button ->
+        removeButtonWidget = button(i18n = "gui.alts.button.remove_alt") { button ->
             button.active = false
             button.dimensions(width / 2 - 100, height - 48, 96, 20)
             button.onPress {
                 AltManager.removeAlt(selectedAlt!!)
-                client!!.setScreen(ProgresoAltsScreen(AltManager.alts))
+                minecraft.setScreen(ProgresoAltsScreen(AltManager.alts))
             }
         }
 
-        button(i18n = "gui.alts.button.login") { button ->
+        loginButtonWidget = button(i18n = "gui.alts.button.login") { button ->
             button.active = false
             button.dimensions(width / 2 + 4, height - 48, 96, 20)
             button.onPress {
                 if (SessionUtil.login(selectedAlt!!) == SessionUtil.LoginResult.Successful) {
-                    close()
+                    onClose()
                 }
             }
         }
 
         button(i18n = "gui.alts.button.done") { button ->
             button.dimensions(width / 2 - 100, height - 24, 200, 20)
-            button.onPress { close() }
+            button.onPress { onClose() }
         }
     }
 
     private fun showAddOfflineAltScreen() {
-        client!!.setScreen(screen(i18n = "gui.alts.title.add_offline_alt") {
+        minecraft.setScreen(screen(i18n = "gui.alts.title.add_offline_alt") {
             init {
                 val name = textField { textField ->
                     textField.dimensions(width / 2 - 66, height / 2 - 20, 132, 20)
@@ -96,10 +96,10 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
                 button(i18n = "gui.alts.button.add_offline_alt") { button ->
                     button.dimensions(width / 2 - 66, height / 2 + 8, 132, 20)
                     button.onPress {
-                        if (name.text.length >= 3) {
-                            if (!AltManager.alts.any { it.username == name.text }) {
-                                AltManager.addAlt(SessionUtil.createOfflineAltAccount(name.text))
-                                close()
+                        if (name.value.length >= 3) {
+                            if (!AltManager.alts.any { it.username == name.value }) {
+                                AltManager.addAlt(SessionUtil.createOfflineAltAccount(name.value))
+                                onClose()
                             } else {
                                 showErrorCreateAltScreen(i18n("gui.alts.label.error_alt_exists"))
                             }
@@ -111,7 +111,7 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
     }
 
     private fun showAddMicrosoftAltScreen() {
-        client!!.setScreen(screen(i18n = "gui.alts.title.add_microsoft_alt") {
+        minecraft.setScreen(screen(i18n = "gui.alts.title.add_microsoft_alt") {
             val result = object {
                 var set = false
                 var url: String? = null
@@ -120,7 +120,7 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
 
             val thread = thread {
                 result.pair = SessionUtil.createMicrosoftAltAccount {
-                    Util.getOperatingSystem().open(it)
+                    Util.getPlatform().openUri(it)
                     result.url = it
                 }
                 result.set = true
@@ -129,12 +129,12 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
             init {
                 button(i18n = "gui.alts.button.open_link") { button ->
                     button.dimensions(width / 2 - 136, height / 2 + 8, 132, 20)
-                    button.onPress { if (result.url != null) Util.getOperatingSystem().open(result.url) }
+                    button.onPress { if (result.url != null) Util.getPlatform().openUri(result.url!!) }
                 }
 
                 button(i18n = "gui.alts.button.done") { button ->
                     button.dimensions(width / 2 + 4, height / 2 + 8, 132, 20)
-                    button.onPress { close() }
+                    button.onPress { onClose() }
                 }
             }
 
@@ -144,13 +144,13 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
 
             render { context, mouseX, mouseY, delta ->
                 if (result.set) {
-                    val (status, account) = result.pair ?: return@render close()
+                    val (status, account) = result.pair ?: return@render onClose()
 
                     if (status is SessionUtil.LoginResult.Error) {
                         showErrorCreateAltScreen(status.message)
                     } else if (!AltManager.alts.any { it.username == account!!.username }) {
                         AltManager.addAlt(account!!)
-                        close()
+                        onClose()
                     } else {
                         showErrorCreateAltScreen(i18n("gui.alts.label.error_alt_exists"))
                     }
@@ -158,11 +158,11 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
 
                 val text = i18n("gui.alts.label.add_microsoft_alt_link")
 
-                renderBackground(context, mouseX, mouseY, delta)
+                extractBackground(context, mouseX, mouseY, delta)
                 context.drawText(
-                    textRenderer,
+                    font,
                     text,
-                    width / 2 - textRenderer.getWidth(text) / 2,
+                    width / 2 - font.width(text) / 2,
                     height / 2 - 14,
                     Color.WHITE
                 )
@@ -173,20 +173,20 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
     private fun showErrorCreateAltScreen(error: String) {
         val errorI18n = i18n("gui.alts.label.error_create_alt", error)
 
-        client!!.setScreen(screen(i18n = "gui.alts.title.error_create_alt") {
+        minecraft.setScreen(screen(i18n = "gui.alts.title.error_create_alt") {
             init {
                 button(i18n = "gui.alts.button.done") { button ->
                     button.dimensions(width / 2 - 66, height / 2 + 8, 132, 20)
-                    button.onPress { close() }
+                    button.onPress { onClose() }
                 }
             }
 
             render { context, mouseX, mouseY, delta ->
-                renderBackground(context, mouseX, mouseY, delta)
+                extractBackground(context, mouseX, mouseY, delta)
                 context.drawText(
-                    textRenderer,
+                    font,
                     errorI18n,
-                    width / 2 - textRenderer.getWidth(errorI18n) / 2,
+                    width / 2 - font.width(errorI18n) / 2,
                     height / 2 - 14, Color.WHITE
                 )
             }
@@ -194,19 +194,19 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
     }
 
     private class AltEntry(
-        val parent: ElementListWidget<AltEntry>,
+        val parent: ContainerObjectSelectionList<AltEntry>,
         val alt: AltAccount
     ) : SimpleElementListEntry<AltEntry>() {
-        override fun render(context: DrawContext, x: Int, y: Int) = context {
+        override fun render(context: GuiGraphicsExtractor, x: Int, y: Int, width: Int, height: Int) = context {
             drawText(
-                mc.textRenderer,
+                mc.font,
                 i18n("gui.alts.label.alt_name", alt.username),
                 x + 3,
                 y + 6,
                 Color.WHITE
             )
             drawText(
-                mc.textRenderer,
+                mc.font,
                 i18n(
                     "gui.alts.label.alt_type", when (alt) {
                         is AltAccount.Offline -> i18n("gui.alts.label.offline_alt_type")
@@ -214,19 +214,19 @@ class ProgresoAltsScreen(private val alts: Set<AltAccount>) : TitledScreen(i18n 
                     }
                 ),
                 x + 3,
-                y + 26 - mc.textRenderer.fontHeight,
+                y + 26 - mc.font.lineHeight,
                 Color.WHITE
             )
 
-            if (parent.selectedOrNull == this@AltEntry) {
+            if (parent.selected == this@AltEntry) {
                 drawBorder(x, y, width, height, Color.WHITE)
             }
         }
 
-        override fun mouseClicked(click: Click?, doubled: Boolean): Boolean {
-            parent.setSelected(this)
+        override fun mouseClicked(event: MouseButtonEvent, doubleClick: Boolean): Boolean {
+            parent.selected = this
 
-            return super.mouseClicked(click, doubled)
+            return super.mouseClicked(event, doubleClick)
         }
     }
 }

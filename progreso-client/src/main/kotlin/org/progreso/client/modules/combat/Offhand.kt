@@ -1,8 +1,8 @@
 package org.progreso.client.modules.combat
 
-import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen
-import net.minecraft.item.Item
-import net.minecraft.item.Items
+import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen
+import net.minecraft.world.item.Item
+import net.minecraft.world.item.Items
 import org.progreso.api.module.AbstractModule
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.events.misc.TickEvent
@@ -17,7 +17,7 @@ object Offhand : AbstractModule() {
 
     init {
         safeEventListener<TickEvent> { _ ->
-            if (mc.currentScreen is CreativeInventoryScreen) return@safeEventListener
+            if (mc.screen is CreativeModeInventoryScreen) return@safeEventListener
 
             if (mc.player.health <= totemHealth) {
                 Mode.Totem.switch()
@@ -33,11 +33,11 @@ object Offhand : AbstractModule() {
         Gapple(Items.ENCHANTED_GOLDEN_APPLE);
 
         fun switch() {
-            if (mc.player.offHandStack.item == item) return
+            if (mc.player.offhandItem.item == item) return
             val slot = mc.player.inventory.findItem(fromIndex = 9) { _, stack -> stack.item == item }
 
             if (slot != null) {
-                mc.interactionManager.moveItem(slot.index, 45)
+                mc.gameMode.moveItem(slot.index, 45)
             }
         }
     }

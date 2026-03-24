@@ -9,7 +9,7 @@ import org.progreso.client.events.safeEventListener
 object Sprint : AbstractModule() {
     init {
         safeEventListener<TickEvent> { _ ->
-            if (mc.options!!.forwardKey.isPressed) {
+            if (mc.options.keyUp.isDown) {
                 mc.player.isSprinting = true
             }
         }

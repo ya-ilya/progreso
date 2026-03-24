@@ -1,8 +1,8 @@
 package org.progreso.client.modules.combat
 
-import net.minecraft.block.Blocks
-import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket
-import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket
+import net.minecraft.network.protocol.game.ServerboundInteractPacket
+import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket
+import net.minecraft.world.level.block.Blocks
 import org.progreso.api.module.AbstractModule
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.events.eventListener
@@ -14,18 +14,27 @@ object Criticals : AbstractModule() {
 
     init {
         eventListener<PacketEvent.Send<*>> { event ->
-            if (event.packet !is PlayerInteractEntityC2SPacket) return@eventListener
+            val packet = event.packet
+
+            if (packet !is ServerboundInteractPacket) return@eventListener
             if (onlyKillAura && !KillAura.enabled) return@eventListener
-            if (!mc.player.isOnGround || mc.world.getBlockState(mc.player.blockPos).block == Blocks.COBWEB) return@eventListener
 
-            val x = mc.player.x
-            val y = mc.player.y
-            val z = mc.player.z
+            val player = mc.player
+            val level = mc.level
+            val connection = mc.connection ?: return@eventListener
 
-            mc.networkHandler.sendPacket(PlayerMoveC2SPacket.PositionAndOnGround(x, y + 0.05, z, false, false))
-            mc.networkHandler.sendPacket(PlayerMoveC2SPacket.PositionAndOnGround(x, y, z, false, false))
-            mc.networkHandler.sendPacket(PlayerMoveC2SPacket.PositionAndOnGround(x, y + 0.012, z, false, false))
-            mc.networkHandler.sendPacket(PlayerMoveC2SPacket.PositionAndOnGround(x, y, z, false, false))
+            if (!player.onGround() || level.getBlockState(player.blockPosition())
+                    .`is`(Blocks.COBWEB)
+            ) return@eventListener
+
+            val x = player.x
+            val y = player.y
+            val z = player.z
+
+            connection.send(ServerboundMovePlayerPacket.Pos(x, y + 0.05, z, false, false))
+            connection.send(ServerboundMovePlayerPacket.Pos(x, y, z, false, false))
+            connection.send(ServerboundMovePlayerPacket.Pos(x, y + 0.012, z, false, false))
+            connection.send(ServerboundMovePlayerPacket.Pos(x, y, z, false, false))
         }
     }
 }

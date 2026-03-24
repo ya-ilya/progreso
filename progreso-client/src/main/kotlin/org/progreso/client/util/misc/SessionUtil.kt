@@ -2,7 +2,7 @@ package org.progreso.client.util.misc
 
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService
 import com.mojang.authlib.yggdrasil.YggdrasilEnvironment
-import net.minecraft.client.session.Session
+import net.minecraft.client.User
 import net.minecraft.util.Util
 import org.progreso.api.alt.AltAccount
 import org.progreso.api.alt.oauth.OAuthServer
@@ -20,14 +20,14 @@ object SessionUtil {
         return when (alt) {
             is AltAccount.Offline -> {
                 try {
-                    mc.session = Session(
+                    mc.user = User(
                         alt.username,
                         UUID.fromString(alt.uuid),
                         "-",
                         Optional.empty(),
                         Optional.empty()
                     )
-                    mc.client.apiServices.sessionService = YggdrasilAuthenticationService(
+                    mc.services.sessionService = YggdrasilAuthenticationService(
                         Proxy.NO_PROXY,
                         YggdrasilEnvironment.PROD.environment
                     ).createMinecraftSessionService()
@@ -39,14 +39,14 @@ object SessionUtil {
 
             is AltAccount.Microsoft -> {
                 try {
-                    mc.session = Session(
+                    mc.user = User(
                         alt.username,
                         UUID.fromString(alt.uuid),
                         alt.accessToken,
                         Optional.empty(),
                         Optional.empty(),
                     )
-                    mc.client.apiServices.sessionService = YggdrasilAuthenticationService(
+                    mc.services.sessionService = YggdrasilAuthenticationService(
                         Proxy.NO_PROXY,
                         YggdrasilEnvironment.PROD.environment
                     ).createMinecraftSessionService()
@@ -63,7 +63,7 @@ object SessionUtil {
     }
 
     fun createMicrosoftAltAccount(
-        openLink: (String) -> Unit = { Util.getOperatingSystem().open(it) }
+        openLink: (String) -> Unit = { Util.getPlatform().openUri(it) }
     ): Pair<LoginResult, AltAccount.Microsoft?>? {
         var result: Pair<LoginResult, AltAccount.Microsoft?>? = null
         val server = object : OAuthServer() {

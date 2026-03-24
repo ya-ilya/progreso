@@ -6,5 +6,5 @@ import org.progreso.client.modules.SimpleTextHudModule
 
 @AbstractModule.AutoRegister
 object Ping : SimpleTextHudModule({
-    "Ping: ${mc.networkHandler.getPlayerListEntry(mc.player.uuid)?.latency ?: 0}"
+    "Ping: ${mc.connection!!.getPlayerInfo(mc.player.uuid)?.latency ?: 0}"
 })

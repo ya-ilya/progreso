@@ -1,4 +1,4 @@
-FROM gradle:jdk24-alpine AS build
+FROM gradle:jdk25-alpine AS build
 
 WORKDIR /progreso-irc
 
@@ -6,7 +6,7 @@ COPY --chown=gradle:gradle . .
 
 RUN --mount=type=cache,target=/root/.gradle gradle --no-daemon :progreso-irc:shadowJar || true
 
-FROM openjdk:24-jdk-slim
+FROM openjdk:25-jdk-slim
 
 RUN mkdir /app
 

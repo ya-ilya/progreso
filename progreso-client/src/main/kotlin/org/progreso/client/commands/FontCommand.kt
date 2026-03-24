@@ -5,8 +5,8 @@ import org.progreso.api.command.AbstractCommand
 import org.progreso.client.Client
 import org.progreso.client.Client.Companion.config
 import org.progreso.client.commands.arguments.FontArgumentType
-import org.progreso.client.gui.createDefaultTextRenderer
-import org.progreso.client.gui.customTextRenderer
+import org.progreso.client.gui.createDefaultFont
+import org.progreso.client.gui.customFont
 import org.progreso.client.managers.ProgresoResourceManager
 import org.progreso.client.util.render.createTextRendererFromProgresoResource
 import java.io.FileNotFoundException
@@ -33,7 +33,7 @@ object FontCommand : AbstractCommand() {
 
         builder.then(
             literal("reset").execute {
-                customTextRenderer = createDefaultTextRenderer()
+                customFont = createDefaultFont()
                 config.customFont = null
 
                 infoLocalized("command.font.reset")
@@ -64,14 +64,14 @@ object FontCommand : AbstractCommand() {
 
     private fun loadFont(fontName: String, size: Float = 11f) {
         try {
-            customTextRenderer = createTextRendererFromProgresoResource(fontName, size)!!
+            customFont = createTextRendererFromProgresoResource(fontName, size)!!
             config.customFont = Client.ProgresoGlobalConfigAccessor.GlobalConfig.CustomFont(fontName, size)
 
             infoLocalized(
                 "command.font.load",
                 fontName
             )
-        } catch (ex: FileNotFoundException) {
+        } catch (_: FileNotFoundException) {
             errorLocalized(
                 "argument.font.error",
                 fontName

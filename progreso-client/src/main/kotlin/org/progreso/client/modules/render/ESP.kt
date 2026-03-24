@@ -1,14 +1,14 @@
 package org.progreso.client.modules.render
 
-import net.minecraft.entity.Entity
-import net.minecraft.entity.mob.Monster
-import net.minecraft.entity.mob.WaterCreatureEntity
-import net.minecraft.entity.passive.IronGolemEntity
-import net.minecraft.entity.passive.PassiveEntity
-import net.minecraft.entity.passive.SnowGolemEntity
-import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.util.math.MathHelper
-import net.minecraft.util.math.Vec3d
+import net.minecraft.util.Mth
+import net.minecraft.world.entity.AgeableMob
+import net.minecraft.world.entity.Entity
+import net.minecraft.world.entity.animal.fish.WaterAnimal
+import net.minecraft.world.entity.animal.golem.IronGolem
+import net.minecraft.world.entity.animal.golem.SnowGolem
+import net.minecraft.world.entity.monster.Monster
+import net.minecraft.world.entity.player.Player
+import net.minecraft.world.phys.Vec3
 import org.progreso.api.module.AbstractModule
 import org.progreso.api.setting.container.SettingContainer
 import org.progreso.client.Client.Companion.mc
@@ -59,13 +59,13 @@ object ESP : AbstractModule() {
         safeEventListener<TickEvent> {
             renderMap.clear()
 
-            for (entity in mc.world.entities) {
+            for (entity in mc.level.entitiesForRendering()) {
                 if (entity == mc.player && !self) continue
 
                 val (render, color) = when (entity) {
-                    is PlayerEntity -> players
+                    is Player -> players
                     is Monster -> monsters
-                    is PassiveEntity, is WaterCreatureEntity, is SnowGolemEntity, is IronGolemEntity -> animals
+                    is AgeableMob, is WaterAnimal, is SnowGolem, is IronGolem -> animals
                     else -> continue
                 }
 
@@ -74,15 +74,21 @@ object ESP : AbstractModule() {
         }
 
         safeEventListener<Render3DEvent> { event ->
-            for ((entity, color) in renderMap) {
-                val pos = Vec3d(
-                    MathHelper.lerp(event.tickDelta.toDouble(), entity.lastRenderX, entity.x) - entity.x,
-                    MathHelper.lerp(event.tickDelta.toDouble(), entity.lastRenderY, entity.y) - entity.y,
-                    MathHelper.lerp(event.tickDelta.toDouble(), entity.lastRenderZ, entity.z) - entity.z
-                )
-                val box = entity.boundingBox.expand(0.1, 0.0, 0.1)
+            render3D(event.matrices) {
+                for ((entity, color) in renderMap) {
+                    val interpolatedX = Mth.lerp(event.tickDelta.toDouble(), entity.xo, entity.x)
+                    val interpolatedY = Mth.lerp(event.tickDelta.toDouble(), entity.yo, entity.y)
+                    val interpolatedZ = Mth.lerp(event.tickDelta.toDouble(), entity.zo, entity.z)
 
-                render3D(event.matrices) {
+                    val pos = Vec3(
+                        interpolatedX - entity.x,
+                        interpolatedY - entity.y,
+                        interpolatedZ - entity.z
+                    )
+
+                    val box = entity.boundingBox
+                        .inflate(0.2)
+
                     withRelativeToCameraPosition(pos) {
                         drawSolidBox(box, color.copy(50))
                         drawOutlinedBox(box, color.copy(100))

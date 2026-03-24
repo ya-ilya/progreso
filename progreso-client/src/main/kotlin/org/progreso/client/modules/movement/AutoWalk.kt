@@ -9,7 +9,7 @@ import org.progreso.client.events.safeEventListener
 object AutoWalk : AbstractModule() {
     private val direction by setting("Direction", Direction.Forward).apply {
         valueChanged { oldValue, _ ->
-            if (mc.options != null && enabled) {
+            if (enabled) {
                 oldValue.setPressed(false)
             }
         }
@@ -35,9 +35,9 @@ object AutoWalk : AbstractModule() {
         val setPressed: (Boolean) -> Unit,
         val isOppositePressed: () -> Boolean
     ) {
-        Forward({ mc.options!!.forwardKey.isPressed = it }, { mc.options!!.backKey.isPressed }),
-        Backward({ mc.options!!.backKey.isPressed = it }, { mc.options!!.forwardKey.isPressed }),
-        Left({ mc.options!!.leftKey.isPressed = it }, { mc.options!!.rightKey.isPressed }),
-        Right({ mc.options!!.rightKey.isPressed = it }, { mc.options!!.leftKey.isPressed });
+        Forward({ mc.options.keyUp.isDown = it }, { mc.options.keyDown.isDown }),
+        Backward({ mc.options.keyDown.isDown = it }, { mc.options.keyUp.isDown }),
+        Left({ mc.options.keyLeft.isDown = it }, { mc.options.keyRight.isDown }),
+        Right({ mc.options.keyRight.isDown = it }, { mc.options.keyLeft.isDown });
     }
 }

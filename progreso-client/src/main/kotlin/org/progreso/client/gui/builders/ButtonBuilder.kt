@@ -1,16 +1,19 @@
 package org.progreso.client.gui.builders
 
-import net.minecraft.client.gui.Click
-import net.minecraft.client.gui.DrawContext
-import net.minecraft.client.gui.screen.Screen
-import net.minecraft.client.gui.widget.ButtonWidget
+import net.minecraft.client.gui.GuiGraphicsExtractor
+import net.minecraft.client.gui.components.Button
+import net.minecraft.client.gui.screens.Screen
+import net.minecraft.client.input.MouseButtonEvent
+import net.minecraft.network.chat.Component
+import net.minecraft.network.chat.MutableComponent
 import org.progreso.api.gui.builders.AbstractButtonBuilder
 import org.progreso.client.accessors.TextAccessor.i18n
+import java.util.function.Supplier
 
-class ButtonBuilder : AbstractButtonBuilder<DrawContext, ButtonWidget>() {
+class ButtonBuilder : AbstractButtonBuilder<GuiGraphicsExtractor, Button>() {
     companion object {
-        fun Screen.button(text: String = "", i18n: String = "", block: (ButtonBuilder) -> Unit): ButtonWidget {
-            return addDrawableChild(
+        fun Screen.button(text: String = "", i18n: String = "", block: (ButtonBuilder) -> Unit): Button {
+            return this.addRenderableWidget(
                 ButtonBuilder().apply {
                     if (text.isNotEmpty() || i18n.isNotEmpty()) {
                         this.text = text.ifEmpty { i18n(i18n) }
@@ -20,40 +23,43 @@ class ButtonBuilder : AbstractButtonBuilder<DrawContext, ButtonWidget>() {
         }
     }
 
-    override fun build(): ButtonWidget {
-        return object : ButtonWidget(
+    override fun build(): Button {
+        return object : Button(
             x,
             y,
             width,
             height,
-            net.minecraft.text.Text.of(text),
+            Component.literal(text),
             { buttonListeners.onPress(it) },
-            DEFAULT_NARRATION_SUPPLIER
+            CreateNarration { defaultNarrationSupplier: Supplier<MutableComponent> -> defaultNarrationSupplier.get() }
         ) {
             init {
-                active = this@ButtonBuilder.active
+                this.active = this@ButtonBuilder.active
                 listeners.init(this)
             }
 
-            override fun drawIcon(
-                context: DrawContext?,
-                mouseX: Int,
-                mouseY: Int,
-                deltaTicks: Float
-            ) {
-                // Empty
+            override fun extractContents(graphics: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, delta: Float) {
+                this.extractDefaultSprite(graphics)
+                this.extractDefaultLabel(
+                    graphics.textRendererForWidget(
+                        this,
+                        GuiGraphicsExtractor.HoveredTextEffects.NONE
+                    )
+                )
+
+                listeners.render(this, graphics, mouseX, mouseY, delta)
             }
 
-            override fun mouseClicked(click: Click, doubled: Boolean): Boolean {
-                listeners.mouseClicked(this, click.x.toInt(), click.y.toInt(), click.button())
+            override fun mouseClicked(event: MouseButtonEvent, doubleClick: Boolean): Boolean {
+                listeners.mouseClicked(this, event.x.toInt(), event.y.toInt(), event.button())
 
-                return super.mouseClicked(click, doubled)
+                return super.mouseClicked(event, doubleClick)
             }
 
-            override fun mouseReleased(click: Click): Boolean {
-                listeners.mouseReleased(this, click.x.toInt(), click.y.toInt(), click.button())
+            override fun mouseReleased(event: MouseButtonEvent): Boolean {
+                listeners.mouseReleased(this, event.x.toInt(), event.y.toInt(), event.button())
 
-                return super.mouseReleased(click)
+                return super.mouseReleased(event)
             }
         }
     }

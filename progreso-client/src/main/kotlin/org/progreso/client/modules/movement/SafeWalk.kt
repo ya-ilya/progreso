@@ -9,7 +9,7 @@ import org.progreso.client.events.safeEventListener
 object SafeWalk : AbstractModule() {
     init {
         safeEventListener<ClipAtLedgeEvent> { event ->
-            if (!mc.player.isSneaking) event.clip = true
+            if (!mc.player.isCrouching) event.clip = true
         }
     }
 }

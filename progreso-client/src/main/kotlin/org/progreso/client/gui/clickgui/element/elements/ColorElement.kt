@@ -1,6 +1,6 @@
 package org.progreso.client.gui.clickgui.element.elements
 
-import net.minecraft.client.gui.DrawContext
+import net.minecraft.client.gui.GuiGraphicsExtractor
 import org.progreso.api.setting.settings.ColorSetting
 import org.progreso.api.setting.settings.NumberSetting
 import org.progreso.client.gui.clickgui.element.AbstractChildElement
@@ -62,7 +62,7 @@ class ColorElement(
                 this.height = PICKER_HEIGHT
             }
 
-            override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
+            override fun render(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int) {
                 super.render(context, mouseX, mouseY)
 
                 if (picking && isHover(mouseX, mouseY)) {
@@ -110,7 +110,7 @@ class ColorElement(
         listElements.add(SliderElement(alphaSetting, height, this))
 
         header = object : AbstractChildElement(height, this@ColorElement) {
-            override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
+            override fun render(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int) {
                 context.drawTextRelatively(
                     this,
                     setting.name,

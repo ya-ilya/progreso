@@ -1,82 +1,83 @@
 package org.progreso.client.util.render
 
-import net.minecraft.client.render.Camera
-import net.minecraft.client.util.math.MatrixStack
-import net.minecraft.util.math.BlockPos
-import net.minecraft.util.math.Box
-import net.minecraft.util.math.Vec3d
+import com.mojang.blaze3d.vertex.PoseStack
+import net.minecraft.client.Camera
+import net.minecraft.core.BlockPos
+import net.minecraft.world.phys.AABB
+import net.minecraft.world.phys.Vec3
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.gui.glColors
 import java.awt.Color
 
-data class Render3DContext(val matrices: MatrixStack, val camera: Camera? = null)
+data class Render3DContext(val matrices: PoseStack, val camera: Camera? = null)
 
-fun render3D(matrices: MatrixStack, block: Render3DContext.() -> Unit) {
-    val camera = mc.client.gameRenderer.camera ?: return
+fun render3D(matrices: PoseStack, block: Render3DContext.() -> Unit) {
+    val camera = mc.gameRenderer.mainCamera
 
-    matrices.push()
+    matrices.pushPose()
     block(Render3DContext(matrices, camera))
-    matrices.pop()
+    matrices.popPose()
 }
 
-fun Render3DContext.withPosition(pos: Vec3d, block: Render3DContext.() -> Unit) {
-    matrices.push()
+fun Render3DContext.withPosition(pos: Vec3, block: Render3DContext.() -> Unit) {
+    matrices.pushPose()
     matrices.translate(pos.x, pos.y, pos.z)
     block()
-    matrices.pop()
+    matrices.popPose()
 }
 
 fun Render3DContext.withPosition(pos: BlockPos, block: Render3DContext.() -> Unit) {
-    withPosition(Vec3d(pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble()), block)
+    withPosition(Vec3(pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble()), block)
 }
 
-fun Render3DContext.withRelativeToCameraPosition(pos: Vec3d, block: Render3DContext.() -> Unit) {
-    val relativePos = pos.subtract(camera!!.cameraPos)
+fun Render3DContext.withRelativeToCameraPosition(pos: Vec3, block: Render3DContext.() -> Unit) {
+    val relativePos = pos.subtract(camera!!.position())
 
-    matrices.push()
+    matrices.pushPose()
     matrices.translate(relativePos.x, relativePos.y, relativePos.z)
     block()
-    matrices.pop()
+    matrices.popPose()
 }
 
 fun Render3DContext.withRelativeToCameraPosition(pos: BlockPos, block: Render3DContext.() -> Unit) {
-    withRelativeToCameraPosition(Vec3d(pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble()), block)
+    withRelativeToCameraPosition(Vec3(pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble()), block)
 }
 
-fun Render3DContext.drawOutlinedBox(box: Box, color: Color, lineWidth: Float = 2.0F) {
+fun Render3DContext.drawOutlinedBox(box: AABB, color: Color, lineWidth: Float = 2.5F) {
     val (red, green, blue, alpha) = color.glColors
-    val matrix = matrices.peek().positionMatrix
+    val matrix = matrices.last().pose()
     val layer = RenderLayers.getLines(false)
-    val buffer = vertexConsumerProvider.getBuffer(layer)
+    val bufferSource = mc.renderBuffers.bufferSource()
+    val buffer = bufferSource.getBuffer(layer)
 
     val vertices = listOf(
-        Vec3d(box.minX, box.minY, box.minZ),
-        Vec3d(box.maxX, box.minY, box.minZ),
-        Vec3d(box.maxX, box.minY, box.minZ),
-        Vec3d(box.maxX, box.minY, box.maxZ),
-        Vec3d(box.maxX, box.minY, box.maxZ),
-        Vec3d(box.minX, box.minY, box.maxZ),
-        Vec3d(box.minX, box.minY, box.maxZ),
-        Vec3d(box.minX, box.minY, box.minZ),
-        Vec3d(box.minX, box.minY, box.minZ),
-        Vec3d(box.minX, box.maxY, box.minZ),
-        Vec3d(box.maxX, box.minY, box.minZ),
-        Vec3d(box.maxX, box.maxY, box.minZ),
-        Vec3d(box.maxX, box.minY, box.maxZ),
-        Vec3d(box.maxX, box.maxY, box.maxZ),
-        Vec3d(box.minX, box.minY, box.maxZ),
-        Vec3d(box.minX, box.maxY, box.maxZ),
-        Vec3d(box.minX, box.maxY, box.minZ),
-        Vec3d(box.maxX, box.maxY, box.minZ),
-        Vec3d(box.maxX, box.maxY, box.minZ),
-        Vec3d(box.maxX, box.maxY, box.maxZ),
-        Vec3d(box.maxX, box.maxY, box.maxZ),
-        Vec3d(box.minX, box.maxY, box.maxZ),
-        Vec3d(box.minX, box.maxY, box.maxZ),
-        Vec3d(box.minX, box.maxY, box.minZ)
+        Vec3(box.minX, box.minY, box.minZ),
+        Vec3(box.maxX, box.minY, box.minZ),
+        Vec3(box.maxX, box.minY, box.minZ),
+        Vec3(box.maxX, box.minY, box.maxZ),
+        Vec3(box.maxX, box.minY, box.maxZ),
+        Vec3(box.minX, box.minY, box.maxZ),
+        Vec3(box.minX, box.minY, box.maxZ),
+        Vec3(box.minX, box.minY, box.minZ),
+        Vec3(box.minX, box.minY, box.minZ),
+        Vec3(box.minX, box.maxY, box.minZ),
+        Vec3(box.maxX, box.minY, box.minZ),
+        Vec3(box.maxX, box.maxY, box.minZ),
+        Vec3(box.maxX, box.minY, box.maxZ),
+        Vec3(box.maxX, box.maxY, box.maxZ),
+        Vec3(box.minX, box.minY, box.maxZ),
+        Vec3(box.minX, box.maxY, box.maxZ),
+        Vec3(box.minX, box.maxY, box.minZ),
+        Vec3(box.maxX, box.maxY, box.minZ),
+        Vec3(box.maxX, box.maxY, box.minZ),
+        Vec3(box.maxX, box.maxY, box.maxZ),
+        Vec3(box.maxX, box.maxY, box.maxZ),
+        Vec3(box.minX, box.maxY, box.maxZ),
+        Vec3(box.minX, box.maxY, box.maxZ),
+        Vec3(box.minX, box.maxY, box.minZ)
     )
 
-    val normals = mutableListOf<Vec3d>()
+    val normals = mutableListOf<Vec3>()
     for (i in 0 until vertices.size - 1 step 2) {
         val start = vertices[i]
         val end = vertices[i + 1]
@@ -85,64 +86,57 @@ fun Render3DContext.drawOutlinedBox(box: Box, color: Color, lineWidth: Float = 2
         normals.add(direction)
     }
 
-    vertices.zip(normals).forEach { (vec3d, normal) ->
-        buffer.vertex(
-            matrix,
-            vec3d.x.toFloat(),
-            vec3d.y.toFloat(),
-            vec3d.z.toFloat()
-        )
-            .lineWidth(lineWidth)
-            .color(red, green, blue, alpha)
-            .normal(normal.x.toFloat(), normal.y.toFloat(), normal.z.toFloat())
+    vertices.zip(normals).forEach { (vec3, normal) ->
+        buffer
+            .addVertex(matrix, vec3.x.toFloat(), vec3.y.toFloat(), vec3.z.toFloat())
+            .setLineWidth(lineWidth)
+            .setColor(red, green, blue, alpha)
+            .setNormal(matrices.last(), normal.x.toFloat(), normal.y.toFloat(), normal.z.toFloat())
     }
 
-    vertexConsumerProvider.draw(layer)
+    bufferSource.endBatch(layer)
 }
 
-fun Render3DContext.drawSolidBox(box: Box, color: Color, lineWidth: Float = 2.0F) {
+fun Render3DContext.drawSolidBox(box: AABB, color: Color, lineWidth: Float = 2.5F) {
     val (red, green, blue, alpha) = color.glColors
-    val matrix = matrices.peek().positionMatrix
+    val matrix = matrices.last().pose()
     val layer = RenderLayers.getQuads(false)
-    val buffer = vertexConsumerProvider.getBuffer(layer)
+    val bufferSource = mc.renderBuffers.bufferSource()
+    val buffer = bufferSource.getBuffer(layer)
 
     val vertices = listOf(
-        Vec3d(box.minX, box.minY, box.minZ),
-        Vec3d(box.maxX, box.minY, box.minZ),
-        Vec3d(box.maxX, box.minY, box.maxZ),
-        Vec3d(box.minX, box.minY, box.maxZ),
-        Vec3d(box.minX, box.maxY, box.minZ),
-        Vec3d(box.minX, box.maxY, box.maxZ),
-        Vec3d(box.maxX, box.maxY, box.maxZ),
-        Vec3d(box.maxX, box.maxY, box.minZ),
-        Vec3d(box.minX, box.minY, box.minZ),
-        Vec3d(box.minX, box.maxY, box.minZ),
-        Vec3d(box.maxX, box.maxY, box.minZ),
-        Vec3d(box.maxX, box.minY, box.minZ),
-        Vec3d(box.maxX, box.minY, box.minZ),
-        Vec3d(box.maxX, box.maxY, box.minZ),
-        Vec3d(box.maxX, box.maxY, box.maxZ),
-        Vec3d(box.maxX, box.minY, box.maxZ),
-        Vec3d(box.minX, box.minY, box.maxZ),
-        Vec3d(box.maxX, box.minY, box.maxZ),
-        Vec3d(box.maxX, box.maxY, box.maxZ),
-        Vec3d(box.minX, box.maxY, box.maxZ),
-        Vec3d(box.minX, box.minY, box.minZ),
-        Vec3d(box.minX, box.minY, box.maxZ),
-        Vec3d(box.minX, box.maxY, box.maxZ),
-        Vec3d(box.minX, box.maxY, box.minZ)
+        Vec3(box.minX, box.minY, box.minZ),
+        Vec3(box.maxX, box.minY, box.minZ),
+        Vec3(box.maxX, box.minY, box.maxZ),
+        Vec3(box.minX, box.minY, box.maxZ),
+        Vec3(box.minX, box.maxY, box.minZ),
+        Vec3(box.minX, box.maxY, box.maxZ),
+        Vec3(box.maxX, box.maxY, box.maxZ),
+        Vec3(box.maxX, box.maxY, box.minZ),
+        Vec3(box.minX, box.minY, box.minZ),
+        Vec3(box.minX, box.maxY, box.minZ),
+        Vec3(box.maxX, box.maxY, box.minZ),
+        Vec3(box.maxX, box.minY, box.minZ),
+        Vec3(box.maxX, box.minY, box.minZ),
+        Vec3(box.maxX, box.maxY, box.minZ),
+        Vec3(box.maxX, box.maxY, box.maxZ),
+        Vec3(box.maxX, box.minY, box.maxZ),
+        Vec3(box.minX, box.minY, box.maxZ),
+        Vec3(box.maxX, box.minY, box.maxZ),
+        Vec3(box.maxX, box.maxY, box.maxZ),
+        Vec3(box.minX, box.maxY, box.maxZ),
+        Vec3(box.minX, box.minY, box.minZ),
+        Vec3(box.minX, box.minY, box.maxZ),
+        Vec3(box.minX, box.maxY, box.maxZ),
+        Vec3(box.minX, box.maxY, box.minZ)
     )
 
-    vertices.forEach { vec3d ->
-        buffer.vertex(
-            matrix,
-            vec3d.x.toFloat(),
-            vec3d.y.toFloat(),
-            vec3d.z.toFloat()
-        )
-            .lineWidth(lineWidth)
-            .color(red, green, blue, alpha)
+    vertices.forEach { vec3 ->
+        buffer
+            .addVertex(matrix, vec3.x.toFloat(), vec3.y.toFloat(), vec3.z.toFloat())
+            .setLineWidth(lineWidth)
+            .setColor(red, green, blue, alpha)
     }
 
-    vertexConsumerProvider.draw(layer)
+    bufferSource.endBatch(layer)
 }

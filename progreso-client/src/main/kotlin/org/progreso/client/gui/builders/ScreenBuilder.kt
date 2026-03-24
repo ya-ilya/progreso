@@ -1,13 +1,13 @@
 package org.progreso.client.gui.builders
 
-import net.minecraft.client.gui.Click
-import net.minecraft.client.gui.DrawContext
-import net.minecraft.client.gui.screen.Screen
-import net.minecraft.text.Text
+import net.minecraft.client.gui.GuiGraphicsExtractor
+import net.minecraft.client.gui.screens.Screen
+import net.minecraft.client.input.MouseButtonEvent
+import net.minecraft.network.chat.Component
 import org.progreso.api.gui.builders.AbstractScreenBuilder
 import org.progreso.client.accessors.TextAccessor.i18n
 
-class ScreenBuilder : AbstractScreenBuilder<DrawContext, Screen>() {
+class ScreenBuilder : AbstractScreenBuilder<GuiGraphicsExtractor, Screen>() {
     companion object {
         fun screen(title: String = "", i18n: String = "", block: ScreenBuilder.() -> Unit): Screen {
             return ScreenBuilder().apply {
@@ -19,33 +19,33 @@ class ScreenBuilder : AbstractScreenBuilder<DrawContext, Screen>() {
     }
 
     override fun build(): Screen {
-        return object : Screen(Text.of(title)) {
+        return object : Screen(Component.literal(title)) {
             override fun init() {
                 listeners.init(this)
             }
 
-            override fun render(context: DrawContext, mouseX: Int, mouseY: Int, delta: Float) {
-                listeners.render(this, context, mouseX, mouseY, delta)
+            override fun extractRenderState(graphics: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, delta: Float) {
+                listeners.render(this, graphics, mouseX, mouseY, delta)
 
-                super.render(context, mouseX, mouseY, delta)
+                super.extractRenderState(graphics, mouseX, mouseY, delta)
             }
 
-            override fun mouseClicked(click: Click, doubled: Boolean): Boolean {
-                listeners.mouseClicked(this, click.x.toInt(), click.y.toInt(), click.button())
+            override fun mouseClicked(event: MouseButtonEvent, doubled: Boolean): Boolean {
+                listeners.mouseClicked(this, event.x.toInt(), event.y.toInt(), event.button())
 
-                return super.mouseClicked(click, doubled)
+                return super.mouseClicked(event, doubled)
             }
 
-            override fun mouseReleased(click: Click): Boolean {
-                listeners.mouseReleased(this, click.x.toInt(), click.y.toInt(), click.button())
+            override fun mouseReleased(event: MouseButtonEvent): Boolean {
+                listeners.mouseReleased(this, event.x.toInt(), event.y.toInt(), event.button())
 
-                return super.mouseReleased(click)
+                return super.mouseReleased(event)
             }
 
-            override fun close() {
-                super.close()
+            override fun onClose() {
+                super.onClose()
 
-                screenListeners.close(this)
+                screenListeners.onClose(this)
             }
         }
     }

@@ -1,11 +1,16 @@
 package org.progreso.client.util.render
 
-import net.minecraft.client.font.*
-import net.minecraft.client.gui.DrawContext
-import net.minecraft.client.texture.TextureSetup
-import net.minecraft.resource.ResourceManager
-import net.minecraft.text.StyleSpriteSource
-import net.minecraft.util.Identifier
+import com.mojang.blaze3d.font.GlyphProvider
+import net.minecraft.client.gui.Font
+import net.minecraft.client.gui.GuiGraphicsExtractor
+import net.minecraft.client.gui.font.FontOption
+import net.minecraft.client.gui.font.FontSet
+import net.minecraft.client.gui.font.GlyphStitcher
+import net.minecraft.client.gui.font.providers.TrueTypeGlyphProviderDefinition
+import net.minecraft.client.gui.navigation.ScreenRectangle
+import net.minecraft.client.gui.render.TextureSetup
+import net.minecraft.resources.Identifier
+import net.minecraft.server.packs.resources.ResourceManager
 import org.joml.Matrix3x2f
 import org.progreso.client.Client
 import org.progreso.client.managers.ProgresoResourceManager
@@ -13,12 +18,12 @@ import org.progreso.client.util.render.elements.EllipseElementRenderState
 import org.progreso.client.util.render.elements.PickerElementRenderState
 import java.awt.Color
 
-data class Render2DContext(val context: DrawContext)
+data class Render2DContext(val extractor: GuiGraphicsExtractor)
 
-fun render2D(context: DrawContext, block: Render2DContext.() -> Unit) {
-    context.matrices.pushMatrix()
-    block(Render2DContext(context))
-    context.matrices.popMatrix()
+fun render2D(extractor: GuiGraphicsExtractor, block: Render2DContext.() -> Unit) {
+    extractor.pose().pushMatrix()
+    block(Render2DContext(extractor))
+    extractor.pose().popMatrix()
 }
 
 fun Render2DContext.drawEllipse(
@@ -28,17 +33,21 @@ fun Render2DContext.drawEllipse(
     height: Float,
     color: Color
 ) {
-    context.state.addSimpleElement(
+    val currentPose = Matrix3x2f(extractor.pose())
+    val bounds = ScreenRectangle(x.toInt(), y.toInt(), width.toInt(), height.toInt())
+
+    extractor.guiRenderState.addGuiElement(
         EllipseElementRenderState(
             Render2DShaderPipelines.ELLIPSE_PIPELINE,
-            TextureSetup.empty(),
-            Matrix3x2f(context.matrices),
+            TextureSetup.noTexture(),
+            currentPose,
             x,
             y,
             width,
             height,
             color,
-            context.scissorStack.peekLast()
+            extractor.scissorStack.peek(),
+            bounds
         )
     )
 }
@@ -50,17 +59,21 @@ fun Render2DContext.drawPicker(
     height: Float,
     color: Color
 ) {
-    context.state.addSimpleElement(
+    val currentPose = Matrix3x2f(extractor.pose())
+    val bounds = ScreenRectangle(x.toInt(), y.toInt(), width.toInt(), height.toInt())
+
+    extractor.guiRenderState.addGuiElement(
         PickerElementRenderState(
             Render2DShaderPipelines.PICKER_PIPELINE,
-            TextureSetup.empty(),
-            Matrix3x2f(context.matrices),
+            TextureSetup.noTexture(),
+            currentPose,
             x,
             y,
             width,
             height,
             color,
-            context.scissorStack.peekLast()
+            extractor.scissorStack.peek(),
+            bounds
         )
     )
 }
@@ -70,36 +83,52 @@ fun createTextRenderer(
     size: Float,
     resourceManager: ResourceManager = Client.mc.resourceManager,
     namespace: String = "progreso"
-): TextRenderer? {
-    val font =
-        TrueTypeFontLoader(Identifier.of(namespace, "$fontName.ttf"), size, 2f, TrueTypeFontLoader.Shift.NONE, "")
-            .build()
-            .left()
+): Font? {
+    val fontId = Identifier.fromNamespaceAndPath(namespace, fontName.lowercase())
+    val fileId = Identifier.fromNamespaceAndPath(namespace, "$fontName.ttf")
 
-    if (font.isPresent) {
-        val baker = GlyphBaker(Client.mc.client.textureManager, Identifier.of("progreso"))
-        val fontStorage = FontStorage(baker)
-        fontStorage.setFonts(
-            listOf(Font.FontFilterPair(font.get().load(resourceManager), FontFilterType.FilterMap.NO_FILTER)),
-            emptySet()
+    val definition = TrueTypeGlyphProviderDefinition(
+        fileId,
+        size,
+        2.0f,
+        TrueTypeGlyphProviderDefinition.Shift(0.0f, 0.0f),
+        ""
+    )
+
+    try {
+        val loader = definition.unpack().left().orElseThrow()
+        val provider = loader.load(resourceManager)
+
+        val stitcher = GlyphStitcher(
+            Client.mc.client.textureManager,
+            fontId
         )
-        return TextRenderer(object : TextRenderer.GlyphsProvider {
-            override fun getGlyphs(source: StyleSpriteSource?): GlyphProvider? {
-                return fontStorage.getGlyphs(false)
+
+        val fontSet = FontSet(stitcher)
+        val conditionalProvider = GlyphProvider.Conditional(provider, FontOption.Filter.ALWAYS_PASS)
+
+        fontSet.reload(listOf(conditionalProvider), emptySet())
+
+        val fontProvider = object : Font.Provider {
+            override fun glyphs(fontDescription: net.minecraft.network.chat.FontDescription): net.minecraft.client.gui.GlyphSource {
+                return fontSet.source(false)
             }
 
-            override fun getRectangleGlyph(): EffectGlyph? {
-                return fontStorage.rectangleBakedGlyph
+            override fun effect(): net.minecraft.client.gui.font.glyphs.EffectGlyph {
+                return fontSet.whiteGlyph()
             }
-        })
+        }
+
+        return Font(fontProvider)
+    } catch (e: Exception) {
+        e.printStackTrace()
+        return null
     }
-
-    return null
 }
 
 fun createTextRendererFromProgresoResource(
     fontName: String,
     size: Float
-): TextRenderer? {
+): Font? {
     return createTextRenderer(fontName, size, ProgresoResourceManager, "progreso-resources")
 }

@@ -1,24 +1,28 @@
 package org.progreso.client.accessors
 
-import net.minecraft.text.Text
-import net.minecraft.util.Formatting
+import net.minecraft.ChatFormatting
+import net.minecraft.network.chat.Component
 import org.progreso.api.accessor.ChatAccessor
 import org.progreso.client.Client.Companion.mc
 
 object ChatAccessor : ChatAccessor {
     override fun send(message: Any, overlay: Boolean) {
-        mc.player.sendMessage(Text.of(message.toString()), overlay)
+        if (overlay) {
+            mc.player.sendOverlayMessage(Component.literal(message.toString()))
+        } else {
+            mc.player.sendSystemMessage(Component.literal(message.toString()))
+        }
     }
 
     override fun info(message: Any) {
-        send("${Formatting.GRAY}$message")
+        send("${ChatFormatting.GRAY}$message")
     }
 
     override fun warn(message: Any) {
-        send("${Formatting.YELLOW}$message")
+        send("${ChatFormatting.YELLOW}$message")
     }
 
     override fun error(message: Any) {
-        send("${Formatting.RED}$message")
+        send("${ChatFormatting.RED}$message")
     }
 }

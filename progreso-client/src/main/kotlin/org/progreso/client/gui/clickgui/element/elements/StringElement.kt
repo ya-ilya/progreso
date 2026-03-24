@@ -1,7 +1,7 @@
 package org.progreso.client.gui.clickgui.element.elements
 
-import net.minecraft.client.gui.DrawContext
-import net.minecraft.client.util.InputUtil
+import net.minecraft.client.gui.GuiGraphicsExtractor
+import org.lwjgl.glfw.GLFW
 import org.progreso.api.setting.settings.StringSetting
 import org.progreso.client.gui.clickgui.element.ParentElement
 import org.progreso.client.gui.drawTextRelatively
@@ -17,7 +17,7 @@ class StringElement(
     private var stringEditing = false
     private var stringEditor = ""
 
-    override fun render(context: DrawContext, mouseX: Int, mouseY: Int) = context {
+    override fun render(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int) = context {
         drawTextRelatively(
             this@StringElement,
             setting.name,
@@ -42,17 +42,17 @@ class StringElement(
 
     override fun keyPressed(keyCode: Int, scanCode: Int) {
         when (keyCode) {
-            InputUtil.GLFW_KEY_ESCAPE -> {
+            GLFW.GLFW_KEY_ESCAPE -> {
                 stringEditing = false
             }
 
-            InputUtil.GLFW_KEY_ENTER, InputUtil.GLFW_KEY_KP_ENTER -> {
+            GLFW.GLFW_KEY_ENTER, GLFW.GLFW_KEY_KP_ENTER -> {
                 setting.value = stringEditor
                 stringEditor = ""
                 stringEditing = false
             }
 
-            InputUtil.GLFW_KEY_BACKSPACE -> {
+            GLFW.GLFW_KEY_BACKSPACE -> {
                 stringEditor = stringEditor.dropLast(1)
             }
         }

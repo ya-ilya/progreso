@@ -1,6 +1,6 @@
 package org.progreso.client.gui.clickgui.window
 
-import net.minecraft.client.gui.DrawContext
+import net.minecraft.client.gui.GuiGraphicsExtractor
 import org.progreso.api.common.ObservableCollection
 import org.progreso.client.gui.clickgui.ClickGUI
 import org.progreso.client.gui.clickgui.element.AbstractChildElement
@@ -12,7 +12,6 @@ import org.progreso.client.gui.drawRect
 import org.progreso.client.gui.invoke
 import java.awt.Color
 
-@Suppress("SuspiciousVarProperty")
 abstract class AbstractWindow(
     override var x: Int,
     override var y: Int,
@@ -53,7 +52,7 @@ abstract class AbstractWindow(
             }
         }
 
-    override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
+    override fun render(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int) {
         if (dragging) {
             x = mouseX - dragX
             y = mouseY - dragY
@@ -90,7 +89,7 @@ abstract class AbstractWindow(
         super.mouseReleased(mouseX, mouseY, state)
     }
 
-    private fun ParentElement.drawRect(context: DrawContext) {
+    private fun ParentElement.drawRect(context: GuiGraphicsExtractor) {
         for (element in this.elements.filter { it.visible }) {
             if (element is ParentElement) {
                 element.drawRect(context)
@@ -104,7 +103,7 @@ abstract class AbstractWindow(
         private val header: String,
         parent: ParentElement
     ) : AbstractChildElement(ClickGUI.ELEMENT_HEIGHT, parent) {
-        override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
+        override fun render(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int) {
             super.render(context, mouseX, mouseY)
 
             context {

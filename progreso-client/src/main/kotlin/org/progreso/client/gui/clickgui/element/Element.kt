@@ -1,6 +1,6 @@
 package org.progreso.client.gui.clickgui.element
 
-import net.minecraft.client.gui.DrawContext
+import net.minecraft.client.gui.GuiGraphicsExtractor
 import org.progreso.client.gui.clickgui.element.data.ElementOffsets
 
 interface Element {
@@ -12,7 +12,7 @@ interface Element {
     val visible: Boolean
     val offsets: ElementOffsets
 
-    fun render(context: DrawContext, mouseX: Int, mouseY: Int) {}
+    fun render(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int) {}
 
     fun mouseClicked(mouseX: Int, mouseY: Int, button: Int) {}
 

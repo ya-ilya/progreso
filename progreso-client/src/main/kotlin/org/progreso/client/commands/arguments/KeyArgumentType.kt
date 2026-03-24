@@ -34,6 +34,6 @@ class KeyArgumentType : ArgumentType<Int> {
         context: CommandContext<S>,
         builder: SuggestionsBuilder
     ): CompletableFuture<Suggestions> {
-        return Api.COMMAND.suggestMatching(KeyboardUtil.keyMap.values, builder)
+        return Api.COMMAND.suggest(KeyboardUtil.keyMap.values, builder)
     }
 }

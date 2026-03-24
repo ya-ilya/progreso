@@ -1,6 +1,6 @@
 package org.progreso.client.gui.clickgui.element
 
-import net.minecraft.client.gui.DrawContext
+import net.minecraft.client.gui.GuiGraphicsExtractor
 
 interface ParentElement : Element {
     val elements: MutableList<AbstractChildElement>
@@ -8,7 +8,7 @@ interface ParentElement : Element {
 
     // override var height = 0; get() = visibleElements.sumOf { it.height }
 
-    override fun render(context: DrawContext, mouseX: Int, mouseY: Int) {
+    override fun render(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int) {
         visibleElements.forEach { it.render(context, mouseX, mouseY) }
     }
 
@@ -41,7 +41,7 @@ interface ParentElement : Element {
     fun getChildElementY(element: Element): Int {
         return try {
             y + visibleElements.subList(0, visibleElements.indexOf(element)).sumOf { it.height }
-        } catch (ex: Exception) {
+        } catch (_: Exception) {
             0
         }
     }

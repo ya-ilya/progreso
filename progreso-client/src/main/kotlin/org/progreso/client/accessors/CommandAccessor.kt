@@ -2,22 +2,22 @@ package org.progreso.client.accessors
 
 import com.mojang.brigadier.suggestion.Suggestions
 import com.mojang.brigadier.suggestion.SuggestionsBuilder
-import net.minecraft.client.network.ClientCommandSource
-import net.minecraft.command.CommandSource
-import net.minecraft.command.permission.PermissionPredicate
+import net.minecraft.client.multiplayer.ClientSuggestionProvider
+import net.minecraft.commands.SharedSuggestionProvider
+import net.minecraft.server.permissions.PermissionSet
 import org.progreso.api.accessor.CommandAccessor
 import org.progreso.client.Client.Companion.mc
 import java.util.concurrent.CompletableFuture
 
 object CommandAccessor : CommandAccessor {
-    override fun createCommandSource(): Any {
-        return ClientCommandSource(null, mc.client, PermissionPredicate.NONE)
+    override fun createSuggestionProvider(): Any {
+        return ClientSuggestionProvider(mc.connection!!, mc.client, PermissionSet.ALL_PERMISSIONS)
     }
 
-    override fun suggestMatching(
+    override fun suggest(
         candidates: Iterable<String>,
         builder: SuggestionsBuilder
     ): CompletableFuture<Suggestions> {
-        return CommandSource.suggestMatching(candidates, builder)
+        return SharedSuggestionProvider.suggest(candidates, builder)
     }
 }

@@ -1,15 +1,15 @@
 package org.progreso.client.modules.combat
 
-import net.minecraft.entity.LivingEntity
-import net.minecraft.entity.mob.Monster
-import net.minecraft.entity.mob.WaterCreatureEntity
-import net.minecraft.entity.passive.IronGolemEntity
-import net.minecraft.entity.passive.PassiveEntity
-import net.minecraft.entity.passive.SnowGolemEntity
-import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.item.AxeItem
-import net.minecraft.item.Items
-import net.minecraft.item.MaceItem
+import net.minecraft.world.entity.AgeableMob
+import net.minecraft.world.entity.LivingEntity
+import net.minecraft.world.entity.animal.fish.WaterAnimal
+import net.minecraft.world.entity.animal.golem.IronGolem
+import net.minecraft.world.entity.animal.golem.SnowGolem
+import net.minecraft.world.entity.monster.Monster
+import net.minecraft.world.entity.player.Player
+import net.minecraft.world.item.AxeItem
+import net.minecraft.world.item.Items
+import net.minecraft.world.item.MaceItem
 import org.progreso.api.module.AbstractModule
 import org.progreso.client.Client.Companion.mc
 import org.progreso.client.events.misc.TickEvent
@@ -43,7 +43,7 @@ object KillAura : AbstractModule() {
 
     init {
         safeEventListener<TickEvent> { _ ->
-            when (mc.player.mainHandStack.item) {
+            when (mc.player.mainHandItem.item) {
                 is AxeItem -> if (!axe) return@safeEventListener
                 in SWORDS -> if (!sword) return@safeEventListener
                 is MaceItem -> if (!mace) return@safeEventListener
@@ -52,16 +52,15 @@ object KillAura : AbstractModule() {
 
             Items.WOODEN_SWORD
 
-            val entity = mc.world.entities
-                .asSequence()
+            val entity = mc.level.entitiesForRendering()
                 .filterIsInstance<LivingEntity>()
                 .filter { it.canBeAttacked }
                 .filter { mc.player.distanceTo(it) <= distance }
                 .filter {
                     when (it) {
-                        is PlayerEntity -> players
+                        is Player -> players
                         is Monster -> monsters
-                        is PassiveEntity, is WaterCreatureEntity, is SnowGolemEntity, is IronGolemEntity -> animals
+                        is AgeableMob, is WaterAnimal, is SnowGolem, is IronGolem -> animals
                         else -> false
                     }
                 }
@@ -73,7 +72,7 @@ object KillAura : AbstractModule() {
                 }
 
             if (entity != null) {
-                mc.interactionManager.attack(entity)
+                mc.gameMode.attack(entity)
             }
         }
     }

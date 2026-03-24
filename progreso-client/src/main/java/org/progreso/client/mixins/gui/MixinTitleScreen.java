@@ -1,9 +1,9 @@
 package org.progreso.client.mixins.gui;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.TitleScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.TitleScreen;
+import net.minecraft.network.chat.Component;
 import org.progreso.api.managers.AltManager;
 import org.progreso.api.managers.PluginManager;
 import org.progreso.client.accessors.TextAccessor;
@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(TitleScreen.class)
 public abstract class MixinTitleScreen extends Screen {
-    protected MixinTitleScreen(Text title) {
+    protected MixinTitleScreen(Component title) {
         super(title);
     }
 
@@ -26,28 +26,32 @@ public abstract class MixinTitleScreen extends Screen {
         at = @At("TAIL")
     )
     public void initHook(CallbackInfo callbackInfo) {
-        addDrawableChild(
-            ButtonWidget.builder(Text.of(TextAccessor.INSTANCE.i18n("gui.alts.title")), b -> showAltsScreen())
-                .dimensions(5, 5, 70, 20)
+        this.addRenderableWidget(
+            Button.builder(
+                    Component.literal(TextAccessor.INSTANCE.i18n("gui.alts.title")),
+                    _ -> showAltsScreen()
+                )
+                .bounds(5, 5, 70, 20)
                 .build()
         );
 
-        addDrawableChild(
-            ButtonWidget.builder(Text.of(TextAccessor.INSTANCE.i18n("gui.plugins.title")), b -> showPluginsScreen())
-                .dimensions(5, 28, 70, 20)
+        this.addRenderableWidget(
+            Button.builder(
+                    Component.literal(TextAccessor.INSTANCE.i18n("gui.plugins.title")),
+                    _ -> showPluginsScreen()
+                )
+                .bounds(5, 28, 70, 20)
                 .build()
         );
     }
 
     @Unique
     private void showAltsScreen() {
-        if (client == null) return;
-        client.setScreen(new ProgresoAltsScreen(AltManager.INSTANCE.getAlts()));
+        this.minecraft.setScreen(new ProgresoAltsScreen(AltManager.INSTANCE.getAlts()));
     }
 
     @Unique
     private void showPluginsScreen() {
-        if (client == null) return;
-        client.setScreen(new ProgresoPluginsScreen(PluginManager.INSTANCE.getPlugins()));
+        this.minecraft.setScreen(new ProgresoPluginsScreen(PluginManager.INSTANCE.getPlugins()));
     }
 }

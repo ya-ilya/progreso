@@ -1,13 +1,12 @@
 val minecraftVersion: String by project
 val progresoVersion: String by project
-val yarnMappings: String by project
 val loaderVersion: String by project
 val fabricVersion: String by project
 val reflectionsVersion: String by project
 
 plugins {
     kotlin("jvm")
-    id("fabric-loom")
+    id("net.fabricmc.fabric-loom")
     id("com.gradleup.shadow")
     `maven-publish`
 }
@@ -16,8 +15,8 @@ group = "org.progreso"
 version = progresoVersion
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_24
-    targetCompatibility = JavaVersion.VERSION_24
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
 }
 
 base {
@@ -41,10 +40,9 @@ configurations {
 
 dependencies {
     "minecraft"("com.mojang:minecraft:$minecraftVersion")
-    "mappings"("net.fabricmc:yarn:$yarnMappings:v2")
 
-    modImplementation("net.fabricmc:fabric-loader:$loaderVersion")
-    modImplementation("net.fabricmc.fabric-api:fabric-api:$fabricVersion")
+    implementation("net.fabricmc:fabric-loader:$loaderVersion")
+    implementation("net.fabricmc.fabric-api:fabric-api:$fabricVersion")
 
     library("org.reflections:reflections:$reflectionsVersion")
     library(project(":progreso-api"))
@@ -89,7 +87,7 @@ tasks {
     }
 
     withType<JavaCompile>().configureEach {
-        options.release.set(24)
+        options.release.set(25)
     }
 
     shadowJar {
@@ -103,11 +101,6 @@ tasks {
 
         relocate("kotlin", "org.progreso.shadow.kotlin")
         archiveClassifier.set("shadow")
-    }
-
-    remapJar {
-        inputFile.set(shadowJar.get().archiveFile)
-        archiveClassifier.set("release")
     }
 }
 
