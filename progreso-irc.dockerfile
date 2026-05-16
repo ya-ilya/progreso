@@ -6,7 +6,7 @@ COPY --chown=gradle:gradle . .
 
 RUN --mount=type=cache,target=/root/.gradle gradle --no-daemon :progreso-irc:shadowJar || true
 
-FROM openjdk:25-jdk-slim
+FROM eclipse-temurin:25-jdk-alpine
 
 RUN mkdir /app
 
